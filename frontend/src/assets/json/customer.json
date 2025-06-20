@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "Alex",
+        "contact": "+91 8393839392",
+        "email": "alex22@gmail.com",
+        "shipping_address": "Nashik",
+        "billing_address": "Same as shipping address",
+        "imageUrl": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Emma",
+        "contact": "+91 9988776655",
+        "email": "emma_wilson@gmail.com",
+        "shipping_address": "Mumbai",
+        "billing_address": "Same as shipping address",
+        "imageUrl": "https://randomuser.me/api/portraits/women/2.jpg"
+    },
+    {
+        "id": 3,
+        "name": "John",
+        "contact": "+91 7854123698",
+        "email": "john_smith@gmail.com",
+        "shipping_address": "Pune",
+        "billing_address": "Delhi",
+        "imageUrl": "https://randomuser.me/api/portraits/men/3.jpg"
+    }
+]

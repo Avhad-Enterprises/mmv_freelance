@@ -1,0 +1,57 @@
+[
+    {
+      "name": "Supplier A",
+      "country": "USA",
+      "address": "123 Tech Street",
+      "state": "New York",
+      "city": "New York City",
+      "street": "5th Avenue",
+      "postal_code": "10001",
+      "contact_number": "+1-212-555-7890",
+      "email": "supplierA@example.com"
+    },
+    {
+      "name": "Supplier B",
+      "country": "USA",
+      "address": "456 Furniture Plaza",
+      "state": "New York",
+      "city": "Brooklyn",
+      "street": "Broadway",
+      "postal_code": "11211",
+      "contact_number": "+1-718-555-1234",
+      "email": "supplierB@example.com"
+    },
+    {
+      "name": "Supplier C",
+      "country": "USA",
+      "address": "789 Silicon Blvd",
+      "state": "California",
+      "city": "Los Angeles",
+      "street": "Sunset Boulevard",
+      "postal_code": "90028",
+      "contact_number": "+1-310-555-4567",
+      "email": "supplierC@example.com"
+    },
+    {
+      "name": "Supplier D",
+      "country": "USA",
+      "address": "159 Market Lane",
+      "state": "California",
+      "city": "Los ngeles",
+      "street": "Downtown Street",
+      "postal_code": "90012",
+      "contact_number": "+1-213-555-7890",
+      "email": "supplierD@example.com"
+    },
+    {
+      "name": "Supplier D",
+      "country": "USA",
+      "address": "159 Market Lane",
+      "state": "California",
+      "city": "L ngeles",
+      "street": "Downtown Street",
+      "postal_code": "90012",
+      "contact_number": "+1-213-555-7890",
+      "email": "supplierD@example.com"
+    }
+  ]

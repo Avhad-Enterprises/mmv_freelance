@@ -1,0 +1,58 @@
+[
+    {
+      "country": "USA",
+      "address": "123 Tech Street",
+      "state": "New York",
+      "city": "New York City",
+      "street": "5th Avenue",
+      "postal_code": "10001"
+    },
+    {
+      "country": "USA",
+      "address": "456 Furniture Plaza",
+      "state": "New York",
+      "city": "Brooklyn",
+      "street": "Broadway",
+      "postal_code": "11211"
+    },
+    {
+      "country": "USA",
+      "address": "789 Silicon Blvd",
+      "state": "California",
+      "city": "Los Angeles",
+      "street": "Sunset Boulevard",
+      "postal_code": "90028"
+    },
+    {
+      "country": "USA",
+      "address": "159 Market Lane",
+      "state": "California",
+      "city": "Los Angeles",
+      "street": "Downtown Street",
+      "postal_code": "90012"
+    },
+    {
+     "country": "USA",
+      "address": "123 Tech Street",
+      "state": "New York",
+     "city": "New York City",
+     "street": "5th Avenue",
+     "postal_code": "10001"
+    },
+    {
+      "country": "USA",
+      "address": "456 Furniture Plaza",
+      "state": "New York",
+     "city": "Brooklyn",
+     "street": "Broadway",
+     "postal_code": "11211"
+    },
+    {
+      "country": "USA",
+      "address": "789 Silicon Blvd",
+      "state": "California",
+      "city": "Los Angeles",
+      "street": "Sunset Boulevard",
+      "postal_code": "90028"
+    }
+  ]

@@ -1,0 +1,156 @@
+[
+    {
+        "title": "Campaign 1 Report",
+        "status": "Completed",
+        "campaign": "Campaign 1",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-01-10",
+        "type": "Awareness",
+        "latestUpdate": "2024-02-10",
+        "createdBy": "John Doe",
+        "tags": [
+            "Social Media",
+            "Paid Ads"
+        ]
+    },
+    {
+        "title": "Campaign 1 Report",
+        "status": "Completed",
+        "campaign": "Campaign 2",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-01-15",
+        "type": "Engagement",
+        "latestUpdate": "2024-02-12",
+        "createdBy": "Jane Smith",
+        "tags": [
+            "Email",
+            "Newsletter"
+        ]
+    },
+    {
+        "title": "Campaign 3 Report",
+        "status": "Completed",
+        "campaign": "Campaign 3",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-01-20",
+        "type": "Conversion",
+        "latestUpdate": "2024-02-15",
+        "createdBy": "Mike Johnson",
+        "tags": [
+            "Landing Page",
+            "Retargeting"
+        ]
+    },
+    {
+        "title": "Campaign 4 Report",
+        "status": "Completed",
+        "campaign": "Campaign 4",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-01-25",
+        "type": "Engagement",
+        "latestUpdate": "2024-02-18",
+        "createdBy": "Alice Brown",
+        "tags": [
+            "SEO",
+            "Organic Reach"
+        ]
+    },
+    {
+        "title": "Campaign 5 Report",
+        "status": "Draft",
+        "campaign": "Campaign 5",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-02-01",
+        "type": "Awareness",
+        "latestUpdate": "2024-02-20",
+        "createdBy": "John Doe",
+        "tags": [
+            "Video Ads",
+            "YouTube"
+        ]
+    },
+    {
+        "title": "Campaign 3 Report",
+        "status": "Draft",
+        "campaign": "Campaign 6",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-02-05",
+        "type": "Conversion",
+        "latestUpdate": "2024-02-22",
+        "createdBy": "Jane Smith",
+        "tags": [
+            "Google Ads",
+            "PPC"
+        ]
+    },
+    {
+        "title": "Campaign 4 Report",
+        "status": "Completed",
+        "campaign": "Campaign 7",
+        "clicks": 3000,
+        "ctr": "3%",
+        "cpc": "₹9200",
+        "cpm": "₹2711",
+        "conversions": 500,
+        "reach": {
+            "organic": 83981,
+            "paid": 6190
+        },
+        "date": "2024-02-10",
+        "type": "Engagement",
+        "latestUpdate": "2024-02-25",
+        "createdBy": "Mike Johnson",
+        "tags": [
+            "Instagram",
+            "Reels"
+        ]
+    }
+]

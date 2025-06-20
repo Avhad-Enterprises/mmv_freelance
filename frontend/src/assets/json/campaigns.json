@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "name": "Summer Sale Campaign",
+        "status": "Running",
+        "budget": 30000,
+        "spend": 15756,
+        "ctr": 56.8,
+        "start_date": "2025-02-01",
+        "end_date": "2025-03-01",
+        "image": "https://i.pinimg.com/736x/6e/08/e3/6e08e3916634dd722f5d1bc5ef5beafd.jpg"
+    },
+    {
+        "id": 2,
+        "name": "New Year Promo",
+        "status": "Paused",
+        "budget": 45000,
+        "spend": 22500,
+        "ctr": 45.2,
+        "start_date": "2025-01-01",
+        "end_date": "2025-02-01",
+        "image": "https://i.pinimg.com/736x/8d/89/f7/8d89f7a20e6d4e440ea55d6ebd7bd3d4.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Black Friday Deals",
+        "status": "Completed",
+        "budget": 50000,
+        "spend": 50000,
+        "ctr": 60.3,
+        "start_date": "2024-11-25",
+        "end_date": "2024-11-30",
+        "image": "https://i.pinimg.com/736x/47/e4/cf/47e4cf5d6ba44ece90a9bb7e6b2e5aeb.jpg"
+    }
+]

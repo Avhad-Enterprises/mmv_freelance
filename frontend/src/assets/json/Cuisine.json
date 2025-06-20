@@ -1,0 +1,45 @@
+[
+    {
+      "col1": "Italian",
+      "col2": "25",
+      "col3": "Active",
+      "col4": ["Pasta", "Pizza", "Mediterranean"],
+      "col5": ["Luigi’s Italian Bistro", "Pasta Palace", "Mamma Mia Ristorante"]
+    },
+    {
+      "col1": "Chinese",
+      "col2": "18",
+      "col3": "Active",
+      "col4": ["Dumplings", "Noodles", "Szechuan"],
+      "col5": ["Golden Dragon", "Beijing Express", "Szechuan Spice"]
+    },
+    {
+      "col1": "Mexican",
+      "col2": "20",
+      "col3": "Pending",
+      "col4": ["Tacos", "Burritos", "Spicy"],
+      "col5": ["El Taco Loco", "Cantina Mexicana", "Baja Fresh"]
+    },
+    {
+      "col1": "Indian",
+      "col2": "30",
+      "col3": "Active",
+      "col4": ["Curry", "Spicy", "Tandoori"],
+      "col5": ["Bombay Bites", "Curry House", "Tandoori Flame"]
+    },
+    {
+      "col1": "Japanese",
+      "col2": "15",
+      "col3": "Inactive",
+      "col4": ["Sushi", "Ramen", "Teriyaki"],
+      "col5": ["Sakura Sushi", "Tokyo Grill", "Ramen House"]
+    },
+    {
+      "col1": "Mediterranean",
+      "col2": "12",
+      "col3": "Active",
+      "col4": ["Hummus", "Falafel", "Olive Oil"],
+      "col5": ["Zaytouna", "Mediterranean Delight", "Olive & Vine"]
+    }
+  ]
+  

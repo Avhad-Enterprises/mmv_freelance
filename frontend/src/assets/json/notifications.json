@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Flash Sale Announcement",
+        "detail": "Pending Approval",
+        "user": "https://randomuser.me/api/portraits/men/75.jpg",
+        "action": [
+            "approval"
+        ],
+        "time": "1 hour ago"
+    },
+    {
+        "title": "Weekend Special Offer",
+        "detail": "Awaiting Feedback",
+        "user": "https://randomuser.me/api/portraits/men/76.jpg",
+        "action": [
+            "approval"
+        ],
+        "time": "2 hours ago"
+    },
+    {
+        "title": "Holiday Promo",
+        "detail": "Low CTR",
+        "user": "https://randomuser.me/api/portraits/women/70.jpg",
+        "action": [
+            "boost"
+        ],
+        "time": "5 hours ago"
+    },
+    {
+        "title": "50% Off Flash Sale",
+        "detail": "45% Engagement",
+        "user": "https://randomuser.me/api/portraits/women/72.jpg",
+        "action": [
+            "sale"
+        ],
+        "time": "10 hours ago"
+    }
+]

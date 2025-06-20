@@ -1,0 +1,28 @@
+[
+    {
+      "col1": "Basic Plan",
+      "col2": "Access to standard features with limited usage.",
+      "col3": "Trusted by 5k+ users."
+    },
+    {
+      "col1": "Pro Plan",
+      "col2": "Includes advanced features and priority support.",
+      "col3": "Trusted by 10k+ users."
+    },
+    {
+      "col1": "Enterprise Plan",
+      "col2": "Customized solutions for large-scale businesses.",
+      "col3": "Trusted by 50k+ users."
+    },
+    {
+      "col1": "Starter Plan",
+      "col2": "Perfect for individuals and freelancers.",
+      "col3": "Trusted by 2k+ users."
+    },
+    {
+      "col1": "Business Plan",
+      "col2": "Optimized for growing teams with collaboration tools.",
+      "col3": "Trusted by 20k+ users."
+    }
+]
+  

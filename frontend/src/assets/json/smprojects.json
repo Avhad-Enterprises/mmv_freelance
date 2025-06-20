@@ -1,0 +1,471 @@
+[
+    {
+        "project_id": 1,
+        "project_name": "Project Alpha",
+        "status": "Completed",
+        "client_name": "Client One",
+        "budget": 25482,
+        "progress": 100,
+        "start_date": "12th Dec, 2024",
+        "end_date": "22nd Feb, 2025",
+        "team_members": [
+            {
+                "user_id": 101,
+                "name": "Alice",
+                "image": "https://randomuser.me/api/portraits/women/1.jpg"
+            },
+            {
+                "user_id": 102,
+                "name": "Bob",
+                "image": "https://randomuser.me/api/portraits/men/2.jpg"
+            },
+            {
+                "user_id": 103,
+                "name": "Charlie",
+                "image": "https://randomuser.me/api/portraits/men/3.jpg"
+            },
+            {
+                "user_id": 104,
+                "name": "Diana",
+                "image": "https://randomuser.me/api/portraits/women/4.jpg"
+            },
+            {
+                "user_id": 105,
+                "name": "Evan",
+                "image": "https://randomuser.me/api/portraits/men/5.jpg"
+            },
+            {
+                "user_id": 106,
+                "name": "Fiona",
+                "image": "https://randomuser.me/api/portraits/women/6.jpg"
+            },
+            {
+                "user_id": 107,
+                "name": "George",
+                "image": "https://randomuser.me/api/portraits/men/7.jpg"
+            },
+            {
+                "user_id": 108,
+                "name": "Hannah",
+                "image": "https://randomuser.me/api/portraits/women/8.jpg"
+            },
+            {
+                "user_id": 109,
+                "name": "Ian",
+                "image": "https://randomuser.me/api/portraits/men/9.jpg"
+            },
+            {
+                "user_id": 110,
+                "name": "Jane",
+                "image": "https://randomuser.me/api/portraits/women/10.jpg"
+            }
+        ],
+        "total_tasks": 182
+    },
+    {
+        "project_id": 2,
+        "project_name": "Project Beta",
+        "status": "In Progress",
+        "client_name": "Client Two",
+        "budget": 45820,
+        "progress": 75,
+        "start_date": "5th Jan, 2025",
+        "end_date": "10th Mar, 2025",
+        "team_members": [
+            {
+                "user_id": 201,
+                "name": "Kevin",
+                "image": "https://randomuser.me/api/portraits/men/11.jpg"
+            },
+            {
+                "user_id": 202,
+                "name": "Laura",
+                "image": "https://randomuser.me/api/portraits/women/12.jpg"
+            },
+            {
+                "user_id": 203,
+                "name": "Mark",
+                "image": "https://randomuser.me/api/portraits/men/13.jpg"
+            },
+            {
+                "user_id": 204,
+                "name": "Nina",
+                "image": "https://randomuser.me/api/portraits/women/14.jpg"
+            },
+            {
+                "user_id": 205,
+                "name": "Oscar",
+                "image": "https://randomuser.me/api/portraits/men/15.jpg"
+            },
+            {
+                "user_id": 206,
+                "name": "Paula",
+                "image": "https://randomuser.me/api/portraits/women/16.jpg"
+            },
+            {
+                "user_id": 207,
+                "name": "Quinn",
+                "image": "https://randomuser.me/api/portraits/men/17.jpg"
+            },
+            {
+                "user_id": 208,
+                "name": "Rachel",
+                "image": "https://randomuser.me/api/portraits/women/18.jpg"
+            },
+            {
+                "user_id": 209,
+                "name": "Steve",
+                "image": "https://randomuser.me/api/portraits/men/19.jpg"
+            },
+            {
+                "user_id": 210,
+                "name": "Tina",
+                "image": "https://randomuser.me/api/portraits/women/20.jpg"
+            },
+            {
+                "user_id": 211,
+                "name": "Umar",
+                "image": "https://randomuser.me/api/portraits/men/21.jpg"
+            },
+            {
+                "user_id": 212,
+                "name": "Vera",
+                "image": "https://randomuser.me/api/portraits/women/22.jpg"
+            }
+        ],
+        "total_tasks": 245
+    },
+    {
+        "project_id": 3,
+        "project_name": "Project Gamma",
+        "status": "Completed",
+        "client_name": "Client Three",
+        "budget": 67230,
+        "progress": 100,
+        "start_date": "20th Feb, 2024",
+        "end_date": "18th Aug, 2024",
+        "team_members": [
+            {
+                "user_id": 301,
+                "name": "Walter",
+                "image": "https://randomuser.me/api/portraits/men/23.jpg"
+            },
+            {
+                "user_id": 302,
+                "name": "Xena",
+                "image": "https://randomuser.me/api/portraits/women/24.jpg"
+            },
+            {
+                "user_id": 303,
+                "name": "Yusuf",
+                "image": "https://randomuser.me/api/portraits/men/25.jpg"
+            },
+            {
+                "user_id": 304,
+                "name": "Zara",
+                "image": "https://randomuser.me/api/portraits/women/26.jpg"
+            },
+            {
+                "user_id": 305,
+                "name": "Adam",
+                "image": "https://randomuser.me/api/portraits/men/27.jpg"
+            },
+            {
+                "user_id": 306,
+                "name": "Beth",
+                "image": "https://randomuser.me/api/portraits/women/28.jpg"
+            },
+            {
+                "user_id": 307,
+                "name": "Chris",
+                "image": "https://randomuser.me/api/portraits/men/29.jpg"
+            },
+            {
+                "user_id": 308,
+                "name": "Dana",
+                "image": "https://randomuser.me/api/portraits/women/30.jpg"
+            },
+            {
+                "user_id": 309,
+                "name": "Eli",
+                "image": "https://randomuser.me/api/portraits/men/31.jpg"
+            },
+            {
+                "user_id": 310,
+                "name": "Faye",
+                "image": "https://randomuser.me/api/portraits/women/32.jpg"
+            }
+        ],
+        "total_tasks": 310
+    },
+    {
+        "project_id": 4,
+        "project_name": "Project Delta",
+        "status": "On Hold",
+        "client_name": "Client Four",
+        "budget": 38910,
+        "progress": 40,
+        "start_date": "1st Mar, 2024",
+        "end_date": "1st Sep, 2024",
+        "team_members": [
+            {
+                "user_id": 401,
+                "name": "Gina",
+                "image": "https://randomuser.me/api/portraits/women/33.jpg"
+            },
+            {
+                "user_id": 402,
+                "name": "Harry",
+                "image": "https://randomuser.me/api/portraits/men/34.jpg"
+            },
+            {
+                "user_id": 403,
+                "name": "Ivy",
+                "image": "https://randomuser.me/api/portraits/women/35.jpg"
+            },
+            {
+                "user_id": 404,
+                "name": "Jack",
+                "image": "https://randomuser.me/api/portraits/men/36.jpg"
+            },
+            {
+                "user_id": 405,
+                "name": "Kara",
+                "image": "https://randomuser.me/api/portraits/women/37.jpg"
+            },
+            {
+                "user_id": 406,
+                "name": "Liam",
+                "image": "https://randomuser.me/api/portraits/men/38.jpg"
+            },
+            {
+                "user_id": 407,
+                "name": "Mona",
+                "image": "https://randomuser.me/api/portraits/women/39.jpg"
+            },
+            {
+                "user_id": 408,
+                "name": "Noah",
+                "image": "https://randomuser.me/api/portraits/men/40.jpg"
+            },
+            {
+                "user_id": 409,
+                "name": "Olivia",
+                "image": "https://randomuser.me/api/portraits/women/41.jpg"
+            }
+        ],
+        "total_tasks": 120
+    },
+    {
+        "project_id": 5,
+        "project_name": "Project Epsilon",
+        "status": "In Progress",
+        "client_name": "Client Five",
+        "budget": 51200,
+        "progress": 60,
+        "start_date": "10th Apr, 2024",
+        "end_date": "20th Oct, 2024",
+        "team_members": [
+            {
+                "user_id": 501,
+                "name": "Peter",
+                "image": "https://randomuser.me/api/portraits/men/42.jpg"
+            },
+            {
+                "user_id": 502,
+                "name": "Quincy",
+                "image": "https://randomuser.me/api/portraits/men/43.jpg"
+            },
+            {
+                "user_id": 503,
+                "name": "Rita",
+                "image": "https://randomuser.me/api/portraits/women/44.jpg"
+            },
+            {
+                "user_id": 504,
+                "name": "Sam",
+                "image": "https://randomuser.me/api/portraits/men/45.jpg"
+            },
+            {
+                "user_id": 505,
+                "name": "Tara",
+                "image": "https://randomuser.me/api/portraits/women/46.jpg"
+            },
+            {
+                "user_id": 506,
+                "name": "Uma",
+                "image": "https://randomuser.me/api/portraits/women/47.jpg"
+            },
+            {
+                "user_id": 507,
+                "name": "Victor",
+                "image": "https://randomuser.me/api/portraits/men/48.jpg"
+            },
+            {
+                "user_id": 508,
+                "name": "Wendy",
+                "image": "https://randomuser.me/api/portraits/women/49.jpg"
+            },
+            {
+                "user_id": 509,
+                "name": "Xavier",
+                "image": "https://randomuser.me/api/portraits/men/50.jpg"
+            },
+            {
+                "user_id": 510,
+                "name": "Yara",
+                "image": "https://randomuser.me/api/portraits/women/51.jpg"
+            },
+            {
+                "user_id": 511,
+                "name": "Zane",
+                "image": "https://randomuser.me/api/portraits/men/52.jpg"
+            }
+        ],
+        "total_tasks": 210
+    },
+    {
+        "project_id": "PJT-001",
+        "project_name": "E-commerce Platform",
+        "status": "Completed",
+        "client_name": "Tech Solutions Ltd.",
+        "budget": 85000,
+        "progress": 100,
+        "start_date": "2024-01-15",
+        "end_date": "2025-01-15",
+        "team_members": [
+            {
+                "user_id": "USR-001",
+                "image": "https://randomuser.me/api/portraits/men/1.jpg"
+            },
+            {
+                "user_id": "USR-002",
+                "image": "https://randomuser.me/api/portraits/women/2.jpg"
+            },
+            {
+                "user_id": "USR-003",
+                "image": "https://randomuser.me/api/portraits/men/3.jpg"
+            },
+            {
+                "user_id": "USR-004",
+                "image": "https://randomuser.me/api/portraits/women/4.jpg"
+            },
+            {
+                "user_id": "USR-005",
+                "image": "https://randomuser.me/api/portraits/men/5.jpg"
+            },
+            {
+                "user_id": "USR-006",
+                "image": "https://randomuser.me/api/portraits/women/6.jpg"
+            },
+            {
+                "user_id": "USR-007",
+                "image": "https://randomuser.me/api/portraits/men/7.jpg"
+            },
+            {
+                "user_id": "USR-008",
+                "image": "https://randomuser.me/api/portraits/men/8.jpg"
+            },
+            {
+                "user_id": "USR-009",
+                "image": "https://randomuser.me/api/portraits/women/9.jpg"
+            },
+            {
+                "user_id": "USR-010",
+                "image": "https://randomuser.me/api/portraits/men/10.jpg"
+            }
+        ],
+        "total_tasks": 182
+    },
+    {
+        "project_id": "PJT-002",
+        "project_name": "Inventory Management",
+        "status": "Ongoing",
+        "client_name": "Avhad Enterprises",
+        "budget": 50000,
+        "progress": 82.8,
+        "start_date": "2024-02-10",
+        "end_date": "2025-06-20",
+        "team_members": [
+            {
+                "user_id": "USR-011",
+                "image": "https://randomuser.me/api/portraits/men/11.jpg"
+            },
+            {
+                "user_id": "USR-012",
+                "image": "https://randomuser.me/api/portraits/women/12.jpg"
+            },
+            {
+                "user_id": "USR-013",
+                "image": "https://randomuser.me/api/portraits/men/13.jpg"
+            },
+            {
+                "user_id": "USR-014",
+                "image": "https://randomuser.me/api/portraits/women/14.jpg"
+            },
+            {
+                "user_id": "USR-015",
+                "image": "https://randomuser.me/api/portraits/men/15.jpg"
+            }
+        ],
+        "total_tasks": 220
+    },
+    {
+        "project_id": "PJT-003",
+        "project_name": "Mobile App Development",
+        "status": "Cancelled",
+        "client_name": "Startup Hub",
+        "budget": 30000,
+        "progress": 12.8,
+        "start_date": "2023-11-01",
+        "end_date": "2024-08-15",
+        "team_members": [
+            {
+                "user_id": "USR-016",
+                "image": "https://randomuser.me/api/portraits/women/16.jpg"
+            },
+            {
+                "user_id": "USR-017",
+                "image": "https://randomuser.me/api/portraits/men/17.jpg"
+            },
+            {
+                "user_id": "USR-018",
+                "image": "https://randomuser.me/api/portraits/women/18.jpg"
+            }
+        ],
+        "total_tasks": 105
+    },
+    {
+        "project_id": "PJT-004",
+        "project_name": "AI Chatbot Integration",
+        "status": "Critical",
+        "client_name": "FinTech Corp",
+        "budget": 75000,
+        "progress": 12.8,
+        "start_date": "2024-05-12",
+        "end_date": "2025-12-01",
+        "team_members": [
+            {
+                "user_id": "USR-019",
+                "image": "https://randomuser.me/api/portraits/men/19.jpg"
+            },
+            {
+                "user_id": "USR-020",
+                "image": "https://randomuser.me/api/portraits/women/20.jpg"
+            },
+            {
+                "user_id": "USR-021",
+                "image": "https://randomuser.me/api/portraits/men/21.jpg"
+            },
+            {
+                "user_id": "USR-022",
+                "image": "https://randomuser.me/api/portraits/men/22.jpg"
+            },
+            {
+                "user_id": "USR-023",
+                "image": "https://randomuser.me/api/portraits/women/23.jpg"
+            }
+        ],
+        "total_tasks": 150
+    }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "col1": "GBC Canteen",
+    "col2": "John Doe",
+    "col3": "Active",
+    "col4": "Indian, Italian",
+    "col5": "New York",
+    "col6": 320,
+    "col7": "15%",
+    "col8": "$5000"
+  },
+  {
+    "col1": "Pizza Paradise",
+    "col2": "Jane Smith",
+    "col3": "Pending",
+    "col4": "Italian, American",
+    "col5": "Los Angeles",
+    "col6": 150,
+    "col7": "10%",
+    "col8": "$3000"
+  },
+  {
+    "col1": "Sushi World",
+    "col2": "Mike Johnson",
+    "col3": "Active",
+    "col4": "Japanese",
+    "col5": "San Francisco",
+    "col6": 200,
+    "col7": "12%",
+    "col8": "$4000"
+  },
+  {
+    "col1": "Taco Town",
+    "col2": "Emily Davis",
+    "col3": "Closed",
+    "col4": "Mexican",
+    "col5": "Miami",
+    "col6": 250,
+    "col7": "8%",
+    "col8": "$3500"
+  },
+  {
+    "col1": "Vegan Delight",
+    "col2": "Chris Green",
+    "col3": "Pending",
+    "col4": "Vegan",
+    "col5": "Chicago",
+    "col6": 120,
+    "col7": "10%",
+    "col8": "$2000"
+  }
+]

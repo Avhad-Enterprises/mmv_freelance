@@ -1,0 +1,33 @@
+[
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/a849/6e77/a5fac069a1bcb479446800585b274b48?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RY~-~DfIwkDYMNiX6IzZXuJk4r2wt6vS3WqqYP5FHviS21aTi0nODNLH3KRlwsPAKs7uNAvUL-JZGGjUtW15fCaf0KXHgskF9EqzjfAMm61auyOGNnbKKsHnkaZCaCUYrx6-A9olph2hbs8xc8~M0aC17iNQ9NTbtF7I86PqDJrtHze5wDGS5rZvHYLNDObu7bkboGU2vCpw0W8Vke6gHPmM2o1ITpCixU2gYE3jVI5RoBEILktukXsx--Gwv1xpDIeNdpGrAVyIFs~bwjkJOjb3O9WE-ni4YC8qdz6rl6kNRaDnnONmjx2~U2rDw-S28MmI6v~MeROv5feM79hxhg__",
+      "col2": "Italian",
+      "col3": "Classic Italian cuisine featuring pasta, pizza, and Mediterranean flavors."
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/2b9b/0619/61d88ab5761a8b39cc968e98572b7854?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fsOZ9Zj1q3pNl-1AnfM-M9xwcoKLFQaLvSrg20MtJqnN9fakDKFbPCHqcrn16baIvdRjxSGLYkaaeygtaVgsoPWzfv7vCxQO3ajN-UeQT6ylTZJfJjyUH9wu8mHEH4LcfNcqlT88H1nv8i8uT9DZGwkWGNpI3uO1yfp8x~RCzeo6GkIv1VuAQR68oMZlx-Wgu3EqgDDHrpQzfsX~CjGSBMmhVdmAMpXqKR9fv9nlB9HuXBjJTaQE3JJZ2jjXr5ihZve5neuvL4rZCtHgb2Wl5PFbJHQ9ccT5Fj9bs~SMQoFWr30RSzJdsmJp9F8FJqvJjB3Ga1SaQJ3Ov2FaDUhg2w__",
+      "col2": "Chinese",
+      "col3": "Traditional Chinese dishes including dumplings, noodles, and Szechuan specialties."
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/a444/7f33/e13ba8cf048276bcff96206190284062?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=nixbC02XmOD8wSu7E7MMKZhyxN~w8mjdrTzIjxOVdlJiZ~TjFO3NgfikqrwUOLZmesIAkdrpb40XJIKf~XCknzwNUhcH2vODqyV4eB1tODP9m0Bgdy1WlCR6IPBr~uXDmKJ9UbJYfs2NL2roA~GOqdCR7CdRzSrs611bzaXpBW0v0iGQDpf4MUA-trYynxn2MLPXJi1Rfr8PBSFmzERCVrWqPKJ~XCDAuX5DCeS~x9T86TDe5k8RvQWDoVmXMmULG8PlBz2UrDWxR5cRJrSAqpgpT7qAvAIifBMbypfsmFvlIkpG6qKGF1irJsMnXZEJc-vfBb4UeXnSMAWVgT6DRA__",
+      "col2": "Mexican",
+      "col3": "Spicy and flavorful Mexican dishes like tacos, burritos, and enchiladas."
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/a444/7f33/e13ba8cf048276bcff96206190284062?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=nixbC02XmOD8wSu7E7MMKZhyxN~w8mjdrTzIjxOVdlJiZ~TjFO3NgfikqrwUOLZmesIAkdrpb40XJIKf~XCknzwNUhcH2vODqyV4eB1tODP9m0Bgdy1WlCR6IPBr~uXDmKJ9UbJYfs2NL2roA~GOqdCR7CdRzSrs611bzaXpBW0v0iGQDpf4MUA-trYynxn2MLPXJi1Rfr8PBSFmzERCVrWqPKJ~XCDAuX5DCeS~x9T86TDe5k8RvQWDoVmXMmULG8PlBz2UrDWxR5cRJrSAqpgpT7qAvAIifBMbypfsmFvlIkpG6qKGF1irJsMnXZEJc-vfBb4UeXnSMAWVgT6DRA__",
+      "col2": "Indian",
+      "col3": "Rich and aromatic Indian curries, tandoori dishes, and flavorful spices."
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/2b9b/0619/61d88ab5761a8b39cc968e98572b7854?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=fsOZ9Zj1q3pNl-1AnfM-M9xwcoKLFQaLvSrg20MtJqnN9fakDKFbPCHqcrn16baIvdRjxSGLYkaaeygtaVgsoPWzfv7vCxQO3ajN-UeQT6ylTZJfJjyUH9wu8mHEH4LcfNcqlT88H1nv8i8uT9DZGwkWGNpI3uO1yfp8x~RCzeo6GkIv1VuAQR68oMZlx-Wgu3EqgDDHrpQzfsX~CjGSBMmhVdmAMpXqKR9fv9nlB9HuXBjJTaQE3JJZ2jjXr5ihZve5neuvL4rZCtHgb2Wl5PFbJHQ9ccT5Fj9bs~SMQoFWr30RSzJdsmJp9F8FJqvJjB3Ga1SaQJ3Ov2FaDUhg2w__",
+      "col2": "Japanese",
+      "col3": "Authentic Japanese cuisine with sushi, ramen, and tempura delights."
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/a849/6e77/a5fac069a1bcb479446800585b274b48?Expires=1742774400&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RY~-~DfIwkDYMNiX6IzZXuJk4r2wt6vS3WqqYP5FHviS21aTi0nODNLH3KRlwsPAKs7uNAvUL-JZGGjUtW15fCaf0KXHgskF9EqzjfAMm61auyOGNnbKKsHnkaZCaCUYrx6-A9olph2hbs8xc8~M0aC17iNQ9NTbtF7I86PqDJrtHze5wDGS5rZvHYLNDObu7bkboGU2vCpw0W8Vke6gHPmM2o1ITpCixU2gYE3jVI5RoBEILktukXsx--Gwv1xpDIeNdpGrAVyIFs~bwjkJOjb3O9WE-ni4YC8qdz6rl6kNRaDnnONmjx2~U2rDw-S28MmI6v~MeROv5feM79hxhg__",
+      "col2": "Mediterranean",
+      "col3": "Healthy Mediterranean dishes with hummus, falafel, and olive oil."
+    }
+  ]
+  

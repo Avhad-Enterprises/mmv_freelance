@@ -1,0 +1,55 @@
+[
+    {
+        "user_profile": "https://img.freepik.com/free-photo/one-beautiful-woman-smiling-looking-camera-exuding-confidence-generated-by-artificial-intelligence_188544-126053.jpg",
+        "username": "John",
+        "post_url": "https://i.pinimg.com/736x/ed/5e/6d/ed5e6da50be7123477231d325d1259a6.jpg",
+        "publish_at": "1 day ago, at 9:23 am",
+        "like": 237,
+        "comment": 37,
+        "share": 287,
+        "save": 28,
+        "platform": [
+            "facebook",
+            "instagram"
+        ]
+    },
+    {
+        "user_profile": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Michael",
+        "post_url": "https://i.pinimg.com/736x/c6/b7/23/c6b723422be6506552e5e3d66a5a6d04.jpg",
+        "publish_at": "3 hours ago, at 11:15 am",
+        "like": 512,
+        "comment": 89,
+        "share": 198,
+        "save": 42,
+        "platform": [
+            "instagram"
+        ]
+    },
+    {
+        "user_profile": "https://randomuser.me/api/portraits/men/75.jpg",
+        "username": "Michael",
+        "post_url": "https://i.pinimg.com/736x/aa/ad/c4/aaadc456af9b6b3b436abfaf68e97643.jpg",
+        "publish_at": "3 hours ago, at 11:15 am",
+        "like": 512,
+        "comment": 89,
+        "share": 198,
+        "save": 42,
+        "platform": [
+            "instagram"
+        ]
+    },
+    {
+        "user_profile": "https://randomuser.me/api/portraits/women/65.jpg",
+        "username": "Sophia",
+        "post_url": "https://i.pinimg.com/736x/7b/91/d2/7b91d275682bfad64926f3476c919a4f.jpg",
+        "publish_at": "2 days ago, at 6:45 pm",
+        "like": 120,
+        "comment": 15,
+        "share": 87,
+        "save": 22,
+        "platform": [
+            "facebook"
+        ]
+    }
+]

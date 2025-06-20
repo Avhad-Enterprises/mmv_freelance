@@ -1,0 +1,75 @@
+[
+    {
+      "col1": "Gourmet",
+      "col2": "Italian, Mediterranean",
+      "col3": "New York, USA",
+      "col4": "Public",
+      "col5": "Active",
+      "col6": 4.5,
+      "col7": "2024-03-12T14:30:00Z"
+    },
+    {
+      "col1": "Symphony",
+      "col2": "Indian, Thai",
+      "col3": "Los Angeles, USA",
+      "col4": "Private",
+      "col5": "Inactive",
+      "col6": 4.2,
+      "col7": "2024-03-10T10:15:00Z"
+    },
+    {
+      "col1": "OceanBreez",
+      "col2": "Seafood, Japanese",
+      "col3": "Sydney, Australia",
+      "col4": "Public",
+      "col5": "Pending",
+      "col6": 4.8,
+      "col7": "2024-03-08T08:45:00Z"
+    },
+    {
+      "col1": "BurgerTown",
+      "col2": "American, Fast Food",
+      "col3": "London, UK",
+      "col4": "Public",
+      "col5": "Active",
+      "col6": 4.0,
+      "col7": "2024-03-09T16:20:00Z"
+    },
+    {
+      "col1": "SushiHaven",
+      "col2": "Japanese, Sushi",
+      "col3": "Tokyo, Japan",
+      "col4": "Private",
+      "col5": "Inactive",
+      "col6": 4.6,
+      "col7": "2024-03-07T12:50:00Z"
+    },
+    {
+      "col1": "GreenPlanet",
+      "col2": "Vegan, Healthy",
+      "col3": "Berlin, Germany",
+      "col4": "Public",
+      "col5": "Active",
+      "col6": 4.9,
+      "col7": "2024-03-06T11:10:00Z"
+    },
+    {
+      "col1": "LaBistro",
+      "col2": "French, Bakery",
+      "col3": "Paris, France",
+      "col4": "Public",
+      "col5": "Pending",
+      "col6": 4.7,
+      "col7": "2024-03-05T09:30:00Z"
+    },
+    {
+      "col1": "TacoFiesta",
+      "col2": "Mexican, Tex-Mex",
+      "col3": "San Diego, USA",
+      "col4": "Private",
+      "col5": "Active",
+      "col6": 4.3,
+      "col7": "2024-03-04T18:00:00Z"
+    }
+  ]
+  

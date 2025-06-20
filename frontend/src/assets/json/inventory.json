@@ -1,0 +1,43 @@
+[
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740",
+      "col2": "Product A",
+      "col3": "SKU12345",
+      "col4": "50",
+      "col5": "12",
+      "col6": "20"
+    },
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740",
+      "col2": "Product B",
+      "col3": "SKU12346",
+      "col4": "30",
+      "col5": "12",
+      "col6": "10"
+    },
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740",
+      "col2": "Product C",
+      "col3": "SKU12347",
+      "col4": "100",
+      "col5": "12",
+      "col6": "60"
+    },
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740",
+      "col2": "Product D",
+      "col3": "SKU12348",
+      "col4": "200",
+      "col5": "12",
+      "col6": "150"
+    },
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740",
+      "col2": "Product E",
+      "col3": "SKU12349",
+      "col4": "75",
+      "col5": "12",
+      "col6": "50"
+    }
+  ]
+  

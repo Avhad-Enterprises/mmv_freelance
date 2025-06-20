@@ -1,0 +1,52 @@
+[
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/ed63/5dfd/3b62fe23b6390ac88aed089dc0a1d849?Expires=1741564800&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=akkdE59PKrPZqoL3MHuePRVMB3JzoiMBq3AgQhoHULSj-K0W2aNryV65U4Eg1WpkzX8PuVTLCUmYahAJq3KMmc-bM7oflaSyiaN0y4zTxoJ5NU3TsvAT~YLDHCZ0FDeqSnHjoma44QbIAoVqZFcEbnWfdp7LSrpUw70ERxR7aqSqdEyw55SirQhZtDflU2cbwM2aF4rTeUx4hSMHHpBwr-ah7K8nIbX97CeXWc1K0SShSlM20J~ArOpCteuEtPdFDso~VAgTWOvxxrkXjOPc5kiLdWj50ovNHCenrMX2LGA9eaRCCCiuKlBVS5peQZ3cF1wMsz0WPDIFzH3xw-y-RA__", 
+      "col2": "Product 1", 
+      "col3": 100, 
+      "col4": "Product category is equal to clothing", 
+      "col7": "2023-06-15T12:30:00Z"
+    },
+    {
+      "col1": "https://img.freepik.com/free-photo/still-life-spring-wardrobe-switch_23-2150478984.jpg?t=st=1740737748~exp=1740741348~hmac=c46158e2b4bb89b845887e447c337e71dca619a629fe5b5cf5a81c30f55797d0&w=740", 
+      "col2": "Product 2", 
+      "col3": 200, 
+      "col4": "Used", 
+      "col7": "2023-07-10T14:45:00Z"
+    },
+    {
+      "col1": "https://s3-alpha-sig.figma.com/img/ed63/5dfd/3b62fe23b6390ac88aed089dc0a1d849?Expires=1741564800&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=akkdE59PKrPZqoL3MHuePRVMB3JzoiMBq3AgQhoHULSj-K0W2aNryV65U4Eg1WpkzX8PuVTLCUmYahAJq3KMmc-bM7oflaSyiaN0y4zTxoJ5NU3TsvAT~YLDHCZ0FDeqSnHjoma44QbIAoVqZFcEbnWfdp7LSrpUw70ERxR7aqSqdEyw55SirQhZtDflU2cbwM2aF4rTeUx4hSMHHpBwr-ah7K8nIbX97CeXWc1K0SShSlM20J~ArOpCteuEtPdFDso~VAgTWOvxxrkXjOPc5kiLdWj50ovNHCenrMX2LGA9eaRCCCiuKlBVS5peQZ3cF1wMsz0WPDIFzH3xw-y-RA__", 
+      "col2": "Product 3", 
+      "col3": 50, 
+      "col4": "Product category is equal to clothing", 
+      "col7": "2023-08-05T09:00:00Z"
+    },
+    {
+        "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740", 
+        "col2": "Product 4", 
+        "col3": 50, 
+        "col4": "Refurbished", 
+        "col7": "2023-08-05T09:00:00Z"
+      },
+      {
+        "col1": "https://s3-alpha-sig.figma.com/img/ed63/5dfd/3b62fe23b6390ac88aed089dc0a1d849?Expires=1741564800&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=akkdE59PKrPZqoL3MHuePRVMB3JzoiMBq3AgQhoHULSj-K0W2aNryV65U4Eg1WpkzX8PuVTLCUmYahAJq3KMmc-bM7oflaSyiaN0y4zTxoJ5NU3TsvAT~YLDHCZ0FDeqSnHjoma44QbIAoVqZFcEbnWfdp7LSrpUw70ERxR7aqSqdEyw55SirQhZtDflU2cbwM2aF4rTeUx4hSMHHpBwr-ah7K8nIbX97CeXWc1K0SShSlM20J~ArOpCteuEtPdFDso~VAgTWOvxxrkXjOPc5kiLdWj50ovNHCenrMX2LGA9eaRCCCiuKlBVS5peQZ3cF1wMsz0WPDIFzH3xw-y-RA__", 
+        "col2": "Product 5", 
+        "col3": 50, 
+        "col4": "Refurbished", 
+        "col7": "2023-08-05T09:00:00Z"
+      },
+      {
+        "col1": "https://img.freepik.com/free-photo/still-life-spring-wardrobe-switch_23-2150478984.jpg?t=st=1740737748~exp=1740741348~hmac=c46158e2b4bb89b845887e447c337e71dca619a629fe5b5cf5a81c30f55797d0&w=740", 
+        "col2": "Product 6", 
+        "col3": 50, 
+        "col4": "Product category is equal to clothing", 
+        "col7": "2023-08-05T09:00:00Z"
+      },
+    {
+      "col1": "https://img.freepik.com/premium-photo/well-organised-white-office-objects-colorful-background_264197-16469.jpg?w=740", 
+      "col2": "Product 7", 
+      "col3": 75, 
+      "col4": "New", 
+      "col7": "2023-09-01T16:00:00Z"
+    }
+  ]
+  

@@ -1,0 +1,106 @@
+[
+    {
+        "client_id": "CL-001",
+        "client_name": "Tech Solutions Ltd.",
+        "status": "Active",
+        "industry": "Technology",
+        "profiles_managed": 213,
+        "last_activity": "2025-01-27",
+        "engagement_rate": 34.9,
+        "team_members": [
+            {
+                "user_id": "USR-001",
+                "img": "https://randomuser.me/api/portraits/men/1.jpg"
+            },
+            {
+                "user_id": "USR-002",
+                "img": "https://randomuser.me/api/portraits/women/2.jpg"
+            },
+            {
+                "user_id": "USR-003",
+                "img": "https://randomuser.me/api/portraits/men/3.jpg"
+            },
+            {
+                "user_id": "USR-004",
+                "img": "https://randomuser.me/api/portraits/women/4.jpg"
+            }
+        ],
+        "total_tasks": 182
+    },
+    {
+        "client_id": "CL-002",
+        "client_name": "Avhad Enterprises",
+        "status": "Inactive",
+        "industry": "Manufacturing",
+        "profiles_managed": 320,
+        "last_activity": "2024-12-15",
+        "engagement_rate": 28.4,
+        "team_members": [
+            {
+                "user_id": "USR-005",
+                "img": "https://randomuser.me/api/portraits/men/5.jpg"
+            },
+            {
+                "user_id": "USR-006",
+                "img": "https://randomuser.me/api/portraits/women/6.jpg"
+            },
+            {
+                "user_id": "USR-007",
+                "img": "https://randomuser.me/api/portraits/men/7.jpg"
+            }
+        ],
+        "total_tasks": 150
+    },
+    {
+        "client_id": "CL-003",
+        "client_name": "FinTech Corp",
+        "status": "Inactive",
+        "industry": "Finance",
+        "profiles_managed": 405,
+        "last_activity": "2024-11-20",
+        "engagement_rate": 41.2,
+        "team_members": [
+            {
+                "user_id": "USR-008",
+                "img": "https://randomuser.me/api/portraits/men/8.jpg"
+            },
+            {
+                "user_id": "USR-009",
+                "img": "https://randomuser.me/api/portraits/women/9.jpg"
+            },
+            {
+                "user_id": "USR-010",
+                "img": "https://randomuser.me/api/portraits/men/10.jpg"
+            },
+            {
+                "user_id": "USR-011",
+                "img": "https://randomuser.me/api/portraits/women/11.jpg"
+            }
+        ],
+        "total_tasks": 240
+    },
+    {
+        "client_id": "CL-004",
+        "client_name": "Startup Hub",
+        "status": "Active",
+        "industry": "Consulting",
+        "profiles_managed": 178,
+        "last_activity": "2025-02-10",
+        "engagement_rate": 50.7,
+        "team_members": [
+            {
+                "user_id": "USR-012",
+                "img": "https://randomuser.me/api/portraits/men/12.jpg"
+            },
+            {
+                "user_id": "USR-013",
+                "img": "https://randomuser.me/api/portraits/women/13.jpg"
+            },
+            {
+                "user_id": "USR-014",
+                "img": "https://randomuser.me/api/portraits/men/14.jpg"
+            }
+        ],
+        "total_tasks": 190
+    }
+]

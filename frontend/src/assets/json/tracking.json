@@ -1,0 +1,164 @@
+[
+    {
+        "Scan": "SHIPMENT DELIVERED",
+        "ScanCode": "000",
+        "ScanType": "DL",
+        "ScanGroupType": "T",
+        "ScanDate": "03-Feb-2025",
+        "ScanTime": "17:29",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "SHIPMENT OUT FOR DELIVERY",
+        "ScanCode": "002",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "03-Feb-2025",
+        "ScanTime": "13:34",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "CONSIGNEE'S ADDRESS INCOMPLETE/INCORRECT",
+        "ScanCode": "010",
+        "ScanType": "UD",
+        "ScanGroupType": "T",
+        "ScanDate": "01-Feb-2025",
+        "ScanTime": "17:29",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "SHIPMENT OUT FOR DELIVERY",
+        "ScanCode": "002",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "01-Feb-2025",
+        "ScanTime": "12:24",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "SHIPMENT ARRIVED",
+        "ScanCode": "001",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "01-Feb-2025",
+        "ScanTime": "03:41",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "PAPER WORK INSCAN",
+        "ScanCode": "014",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "01-Feb-2025",
+        "ScanTime": "03:35",
+        "ScannedLocation": "GUINDY SURFACE PUD"
+    },
+    {
+        "Scan": "SHIPMENT FURTHER CONNECTED",
+        "ScanCode": "003",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "01-Feb-2025",
+        "ScanTime": "01:58",
+        "ScannedLocation": "CHENNAI GROUND WAREH"
+    },
+    {
+        "Scan": "SHIPMENT ARRIVED",
+        "ScanCode": "001",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "31-Jan-2025",
+        "ScanTime": "23:25",
+        "ScannedLocation": "CHENNAI GROUND WAREH"
+    },
+    {
+        "Scan": "PAPER WORK INSCAN",
+        "ScanCode": "014",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "31-Jan-2025",
+        "ScanTime": "20:52",
+        "ScannedLocation": "CHENNAI GROUND WAREH"
+    },
+    {
+        "Scan": "SHIPMENT FURTHER CONNECTED",
+        "ScanCode": "003",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "30-Jan-2025",
+        "ScanTime": "08:29",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "PROCESS COMPLETED, READY TO DESPATCH",
+        "ScanCode": "111",
+        "ScanType": "UD",
+        "ScanGroupType": "T",
+        "ScanDate": "29-Jan-2025",
+        "ScanTime": "16:44",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "PROCESS COMPLETED, READY TO DESPATCH",
+        "ScanCode": "111",
+        "ScanType": "UD",
+        "ScanGroupType": "T",
+        "ScanDate": "29-Jan-2025",
+        "ScanTime": "15:55",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "CONTACT CUSTOMER SERVICE",
+        "ScanCode": "033",
+        "ScanType": "UD",
+        "ScanGroupType": "T",
+        "ScanDate": "29-Jan-2025",
+        "ScanTime": "06:03",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "SHIPMENT ARRIVED",
+        "ScanCode": "001",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "29-Jan-2025",
+        "ScanTime": "05:44",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "PAPER WORK INSCAN",
+        "ScanCode": "014",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "29-Jan-2025",
+        "ScanTime": "01:45",
+        "ScannedLocation": "BHIWANDI HUB"
+    },
+    {
+        "Scan": "SHIPMENT FURTHER CONNECTED",
+        "ScanCode": "003",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "28-Jan-2025",
+        "ScanTime": "23:12",
+        "ScannedLocation": "VASAI APEX/SFC PUD"
+    },
+    {
+        "Scan": "SHIPMENT ARRIVED",
+        "ScanCode": "001",
+        "ScanType": "UD",
+        "ScanGroupType": "S",
+        "ScanDate": "28-Jan-2025",
+        "ScanTime": "22:12",
+        "ScannedLocation": "VASAI APEX/SFC PUD"
+    },
+    {
+        "Scan": "Online shipment booked",
+        "ScanCode": "030",
+        "ScanType": "PU",
+        "ScanGroupType": "S",
+        "ScanDate": "28-Jan-2025",
+        "ScanTime": "09:58",
+        "ScannedLocation": "MEERA ROAD-BHAYANDER"
+    }
+]

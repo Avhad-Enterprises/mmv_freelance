@@ -1,5 +1,6 @@
 import knex from 'knex';
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
 
 dotenv.config();
@@ -23,12 +24,14 @@ const DB = knex(awsConf);
 export default DB;
 
 // Table Names
-import { EMPLOYEE_TABLE } from './users.schema';
+import { USERS_TABLE } from './users.schema';
+import { PROJECTS_TASK } from './projectstask.schema';
 
 
 
 export const T = {
-  EMPLOYEE_TABLE
+  USERS_TABLE,
+  PROJECTS_TASK
 };
 
 // Creates the procedure that is then added as a trigger to every table

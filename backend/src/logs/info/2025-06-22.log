@@ -1,0 +1,89 @@
+2025-06-22 12:04:34 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:04:40 info: [0mPOST /api/v1/users/login [32m200[0m 125.956 ms - -[0m
+2025-06-22 12:06:42 info: [0mPOST /api/v1/users/insertusers [32m201[0m 85.045 ms - 885[0m
+2025-06-22 12:07:05 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-22 12:07:05 info: [0mPUT /api/v1/users/updateuserbyid [33m401[0m 2.563 ms - 40[0m
+2025-06-22 12:07:21 info: [0mPUT /api/v1/users/updateuserbyid [32m200[0m 18.813 ms - 880[0m
+2025-06-22 12:07:47 info: [0mPOST /api/v1/projectsTask/insertprojects_task [32m201[0m 10.465 ms - -[0m
+2025-06-22 12:08:06 info: [0mPOST /api/v1/projectsTask/getprojects_taskbyid [32m200[0m 3.831 ms - 48[0m
+2025-06-22 12:08:25 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [32m200[0m 7.881 ms - -[0m
+2025-06-22 12:08:45 info: [0mPOST /api/v1/projectsTask/deleteprojects_taskbyid [32m200[0m 8.434 ms - -[0m
+2025-06-22 12:09:47 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-22 12:09:47 info: [0mGET /api/v1/projectsTask/countactiveprojects_task [33m401[0m 2.981 ms - 40[0m
+2025-06-22 12:10:08 info: [0mGET /api/v1/projectsTask/countbyprojects_task [32m200[0m 5.339 ms - 11[0m
+2025-06-22 12:10:28 info: [0mGET /api/v1/projectsTask/getallprojects_task [32m200[0m 4.519 ms - -[0m
+2025-06-22 12:10:47 info: [0mGET /api/v1/projectsTask/getIndeletedprojects_task [32m200[0m 4.393 ms - -[0m
+2025-06-22 12:11:04 info: [0mGET /api/v1/projectsTask/getDeletedprojects_task [32m200[0m 4.667 ms - -[0m
+2025-06-22 12:13:18 info: [0mGET /api/v1/projectsTask/getDeletedprojects_task [32m200[0m 4.918 ms - -[0m
+2025-06-22 12:14:52 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-22 12:14:52 info: [0mGET /api/v1/event_collection/getallevent_collection [33m401[0m 3.238 ms - 40[0m
+2025-06-22 12:15:07 info: [0mGET /api/v1/event_collection/getallevent_collection [33m404[0m 3.641 ms - 185[0m
+2025-06-22 12:15:18 info: [0mGET /api/v1/event_collection/getallevent_collection [33m404[0m 2.736 ms - 185[0m
+2025-06-22 12:16:20 info: [0mGET /api/v1/projectsTask/countactiveprojects_task [32m200[0m 3.999 ms - 11[0m
+2025-06-22 12:16:51 info: [0mPOST /api/v1/projectsTask/insertprojects_task [32m201[0m 10.930 ms - -[0m
+2025-06-22 12:17:48 info: [0mPOST /api/v1/projectsTask/getprojects_taskbyid [32m200[0m 4.596 ms - 48[0m
+2025-06-22 12:18:08 info: [0mPOST /api/v1/projectsTask/getprojects_taskbyid [32m200[0m 4.449 ms - 48[0m
+2025-06-22 12:19:34 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [33m400[0m 3.678 ms - 51[0m
+2025-06-22 12:20:11 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [33m400[0m 4.119 ms - 51[0m
+2025-06-22 12:20:12 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [33m400[0m 3.924 ms - 51[0m
+2025-06-22 12:20:22 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [33m400[0m 3.612 ms - 51[0m
+2025-06-22 12:20:31 error: StatusCode : 500, Message : update "projects_task" set "client_id" = $1, "editor_id" = $2, "project_title" = $3, "project_category" = $4, "Deadline" = $5, "project_description" = $6, "Budget" = $7, "skills_required" = $8, "reference_links" = $9, "additional_notes" = $10, "status" = $11, "projects_type" = $12, "project_format" = $13, "audio_voiceover" = $14, "video_length" = $15, "preferred_video_style" = $16, "sample_project_file" = $17, "project_files" = $18, "show_all_files" = $19, "is_active" = $20, "created_by" = $21, "is_deleted" = $22, "deleted_by" = $23 where "projects_task_id" = $24 returning * - invalid input syntax for type json
+2025-06-22 12:20:31 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [31m500[0m 11.851 ms - 682[0m
+2025-06-22 12:23:19 error: StatusCode : 500, Message : update "projects_task" set "client_id" = $1, "editor_id" = $2, "project_title" = $3, "project_category" = $4, "Deadline" = $5, "project_description" = $6, "Budget" = $7, "skills_required" = $8, "reference_links" = $9, "additional_notes" = $10, "status" = $11, "projects_type" = $12, "project_format" = $13, "audio_voiceover" = $14, "video_length" = $15, "preferred_video_style" = $16, "sample_project_file" = $17, "project_files" = $18, "show_all_files" = $19, "is_active" = $20, "created_by" = $21, "is_deleted" = $22, "deleted_by" = $23 where "projects_task_id" = $24 returning * - invalid input syntax for type json
+2025-06-22 12:23:19 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [31m500[0m 5.459 ms - 682[0m
+2025-06-22 12:27:52 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:27:59 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:28:07 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:30:13 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:30:17 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:30:22 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:30:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:31:31 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:31:33 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:31:35 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:31:46 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:31:50 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:32:19 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:32:23 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:32:34 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:33:20 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:33:34 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:33:39 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:33:46 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [32m200[0m 72.576 ms - -[0m
+2025-06-22 12:37:42 info: [0mPOST /api/v1/projectsTask/getprojects_taskbyid [32m200[0m 6.123 ms - 48[0m
+2025-06-22 12:40:12 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-22 12:40:12 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m401[0m 3.641 ms - 40[0m
+2025-06-22 12:40:28 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 4.600 ms - 187[0m
+2025-06-22 12:40:31 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 2.775 ms - 187[0m
+2025-06-22 12:40:37 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 3.670 ms - 187[0m
+2025-06-22 12:40:44 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 4.738 ms - 187[0m
+2025-06-22 12:40:45 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 3.734 ms - 187[0m
+2025-06-22 12:41:38 error: StatusCode : 400, Message : Expected ',' or '}' after property value in JSON at position 25 (line 2 column 23)
+2025-06-22 12:41:38 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m400[0m 4.316 ms - 96[0m
+2025-06-22 12:41:39 error: StatusCode : 400, Message : Expected ',' or '}' after property value in JSON at position 25 (line 2 column 23)
+2025-06-22 12:41:39 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m400[0m 1.338 ms - 96[0m
+2025-06-22 12:41:47 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 3.676 ms - 187[0m
+2025-06-22 12:41:48 info: [0mPOST /api/v1/event_collection/getevent_collectionbyid [33m404[0m 3.858 ms - 187[0m
+2025-06-22 12:50:05 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:50:52 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:50:56 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:50:58 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:51:30 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:51:34 info: [0mPOST /api/v1/projectsTask/getprojects_taskbyid [32m200[0m 82.291 ms - -[0m
+2025-06-22 12:53:08 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:55:31 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:55:40 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:55:49 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:56:04 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:56:08 info: [0mGET /api/v1/projectsTask/getactiveprojectstask [33m404[0m 57.509 ms - 180[0m
+2025-06-22 12:56:10 info: [0mGET /api/v1/projectsTask/getactiveprojectstask [33m404[0m 2.946 ms - 180[0m
+2025-06-22 12:56:11 info: [0mGET /api/v1/projectsTask/getactiveprojectstask [33m404[0m 3.671 ms - 180[0m
+2025-06-22 12:56:38 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:56:45 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:56:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:56:54 info: [0mGET /api/v1/projectsTask/getactivedeletedprojectstask [33m404[0m 56.234 ms - 187[0m
+2025-06-22 12:56:55 info: [0mGET /api/v1/projectsTask/getactivedeletedprojectstask [33m404[0m 4.392 ms - 187[0m
+2025-06-22 12:57:14 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:57:17 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-22 12:57:20 info: [0mGET /api/v1/projectsTask/getactivedeletedprojectstask [32m200[0m 157.197 ms - -[0m
+2025-06-22 13:01:34 info: [0mPUT /api/v1/projectsTask/updateprojects_taskbyid [32m200[0m 24.467 ms - -[0m

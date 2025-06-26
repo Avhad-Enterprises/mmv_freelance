@@ -1,0 +1,148 @@
+import { NextFunction, Request, Response } from "express";
+import { AppliedProjectsDto } from "../dtos/applied_projects.dto";
+import { IAppliedProjects} from "../interfaces/applied_projects.interface";
+import AppliedProjectsService from "../services/applied_projects.services";
+import HttpException from "../exceptions/HttpException";
+import jwt from 'jsonwebtoken';
+import { RequestWithUser } from '../interfaces/auth.interface';
+
+class AppliedProjectsController {
+  public AppliedProjectsService = new AppliedProjectsService();
+
+  public applyToProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { projects_task_id, users_id } = req.body;
+      
+      if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !users_id || isNaN(parseInt(users_id))) {
+        throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
+      }
+
+      const projectData: AppliedProjectsDto = {
+        ...req.body,
+        projects_task_id: parseInt(projects_task_id),
+        users_id: parseInt(users_id),
+      };
+
+      const appliedProject: IAppliedProjects = await this.AppliedProjectsService.apply(
+        projectData
+      );
+      
+      res.status(201).json({ 
+        data: appliedProject, 
+        message: "Successfully applied to project" 
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getProjectApplications = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const projects_task_id = parseInt(req.body.projects_task_id);
+      if (isNaN(projects_task_id)) {
+        throw new HttpException(400, "Invalid Project Task ID");
+      }
+      const applications = await this.AppliedProjectsService.getProjectApplications(projects_task_id);
+      res.status(200).json({
+        data: applications,
+        message: `got all applications for project task ID ${projects_task_id}`
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMyApplications = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const users_id = parseInt(req.body.users_id);
+      if (isNaN(users_id)) {
+        throw new HttpException(400, "Invalid or missing users_id in body");
+      }
+      const applications = await this.AppliedProjectsService.getUserApplications(users_id);
+      res.status(200).json({
+        data: applications,
+        message: `got all applications for user ${users_id}`
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMyApplicationbyId = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const users_id = parseInt(req.body.users_id);
+      const projects_task_id = parseInt(req.body.projects_task_id);
+      if (isNaN(users_id) || isNaN(projects_task_id)) {
+        throw new HttpException(400, "Invalid user or project task id");
+      }
+      const application = await this.AppliedProjectsService.getUserApplicationByProject(users_id, projects_task_id);
+      if (!application) {
+        throw new HttpException(404, "Application not found");
+      }
+      res.status(200).json({
+        data: application,
+        message: `got application for user ${users_id} and project task ${projects_task_id}`
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public updateApplicationStatus = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { applied_projects_id, status } = req.body;
+      if (!applied_projects_id || typeof status === 'undefined') {
+        throw new HttpException(400, "applied_projects_id and status are required");
+      }
+      const updated = await this.AppliedProjectsService.updateApplicationStatus(applied_projects_id, status);
+      res.status(200).json({
+        data: updated,
+        message: "Application status updated successfully"
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public withdrawApplication = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { applied_projects_id } = req.body;
+      if (!applied_projects_id) {
+        throw new HttpException(400, "applied_projects_id is required");
+      }
+      await this.AppliedProjectsService.withdrawApplication(applied_projects_id);
+      res.status(200).json({
+        message: "Application withdrawn successfully"
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+}
+
+export default AppliedProjectsController;

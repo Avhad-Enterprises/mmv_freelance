@@ -1,3 +1,26 @@
+<<<<<<< aditya
+# === Backend ===
+backend/node_modules/
+backend/src/logs/
+backend/.env
+
+# === Frontend ===
+frontend/node_modules/
+
+# === Common Logs ===
+*.log
+npm-debug.log*
+
+# === Build & Dist Output (just in case) ===
+**/build/
+**/dist/
+
+# === OS and IDE Files ===
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+=======
 # Dependency directories
 **/node_modules/
 **/.cache/
@@ -23,3 +46,4 @@ Thumbs.db
 
 # Env files
 .env
+>>>>>>> dev-main

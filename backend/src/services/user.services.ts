@@ -4,8 +4,12 @@ import { User } from '../interfaces/users.interface';
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
 import bcrypt from "bcrypt";
+import crypto from 'crypto';
 import jwt from "jsonwebtoken";
 import { table } from "console";
+import { sendResetEmail } from '../utils/emailer';
+import { USERS_TABLE } from "../database/users.schema";
+
 
 class usersService {
   public async Insert(data: UserDto): Promise<User> {
@@ -65,6 +69,48 @@ class usersService {
     }
     return updated[0];
   }
+
+  public initiatePasswordReset = async (email: string): Promise<void> => {
+    const user = await DB(T.USERS_TABLE).where({ email,is_active: true, is_banned: false, account_status: 1}).first();
+    console.log(user);
+    if (!user) return; // silent on purpose
+
+    const reset_token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
+    await DB('users')
+      .where({ users_id: user.users_id })
+      .update({
+        reset_token,
+        reset_token_expires: expiresAt,
+        updated_at: DB.fn.now()
+      });
+
+    const resetUrl = `${process.env.APP_URL}/reset-password?reset_token=${reset_token}`;
+    console.log(resetUrl);
+
+    await sendResetEmail(user.email, user.first_name ?? 'user', resetUrl);
+  }
+
+  public resetpassword = async (reset_token: string, password: string): Promise<void> => {
+    const user = await DB('users')
+      .where({ reset_token })
+      .andWhere('reset_token_expires', '>', DB.fn.now())
+      .first();
+
+    if (!user) throw new Error('Invalid or expired reset token');
+
+    const hashedpassword = await bcrypt.hash(password, 10);
+
+    await DB('users')
+      .where({ users_id: user.users_id })
+      .update({
+        reset_token: null,
+        password: hashedpassword,
+        reset_token_expires: null,
+        updated_at: DB.fn.now()
+      });
+  };
+
 
 }
 

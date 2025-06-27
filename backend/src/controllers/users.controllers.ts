@@ -78,6 +78,37 @@ class usersController {
     }
   };
   
+  public forgetpasswordusers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { email } = req.body;
+    console.log(email);
+    if (!email) res.status(400).json({ error: 'Email is required' });
+
+    try {
+      await this.usersService.initiatePasswordReset(email);
+      res.json({ message: 'If this email exists, you will receive a reset link.' });
+    } catch {
+      res.json({ message: 'If this email exists, you will receive a reset link.' });
+      return
+    }
+  }
+
+  public reset_password = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { reset_token, password } = req.body;
+
+    if (!reset_token || !password) {
+      res.status(400).json({ error: 'reset_token and password are required' });
+      return;
+    }
+
+    try {
+      await this.usersService.resetpassword(reset_token, password);
+      res.json({ message: 'password has been successfully reset.' });
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  };
+
+
 }
 
 export default usersController;

@@ -21,6 +21,8 @@ class usersRoute implements Route {
     this.router.post(`${this.path}/insertusers`, validationMiddleware(UserDto, 'body', false, []), this.usersController.insertusers);
     this.router.post(`${this.path}/login`, this.usersController.loginusers);
     this.router.put(`${this.path}/updateuserbyid`, this.usersController.updateuserById);
+    this.router.put(`${this.path}/forget_password`, this.usersController.forgetpasswordusers);
+    this.router.put(`${this.path}/reset_password`, this.usersController.reset_password);
 
   }
 }

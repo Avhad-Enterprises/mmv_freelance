@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from 'express';
 import { ProjectsTaskDto } from '../dtos/projectstask.dto';
 import { IProjectTask } from '../interfaces/projectstask.interfaces';
@@ -8,6 +7,8 @@ import DB, { T } from '../database/index.schema';
 import HttpException from '../exceptions/HttpException';
 import { isEmpty } from 'class-validator';
 import { PROJECTS_TASK } from '../database/projectstask.schema';
+import { SubmitProjectDto } from '../dtos/submit_project.dto';
+import { ISubmittedProjects } from '../interfaces/submit_project.interface';
 
 
 class projectstaskcontroller {
@@ -128,6 +129,69 @@ class projectstaskcontroller {
       next(err);
     }
   };
+
+  public submitProject = async(
+    req : Request,
+    res : Response,
+    next : NextFunction
+  ): Promise<void> =>{
+    try {
+      const {editor_id, projects_task_id} = req.body;
+  
+      if (!projects_task_id || !editor_id){
+        throw new HttpException(400, "Missing values");
+      }
+      const submitData: SubmitProjectDto ={
+        ...req.body,
+        editor_id : editor_id,
+        projects_task_id : projects_task_id, 
+      };
+      const submitted : ISubmittedProjects = await this.ProjectstaskService.submit(
+        submitData
+      )
+  
+      res.status(201).json({
+        data: submitted,
+        message : "Successfully Submitted "
+      });
+    } catch (error: any) {
+      if (error instanceof HttpException && error.status === 409) {
+        res.status(409).json({ message: "You have already submitted this project." });
+      } else {
+        next(error);
+      }
+    }
+  } 
+
+  public approveProject = async(
+    req: Request,
+    res : Response,
+    next : NextFunction
+  ): Promise<void> => {
+    try {
+      const {submission_id, status} = req.body;
+      if (!submission_id || !status) {
+        throw new HttpException(400, "Submission id and status is required");
+      }
+      const approvedData: SubmitProjectDto ={
+        ...req.body,
+        submission_id : submission_id,
+        status : status, 
+      };
+      const approved = await this.ProjectstaskService.approve(submission_id,status,approvedData);
+
+      res.status(200).json({
+        data: approved,
+        message : "Submission status approved successfully" 
+      });
+    } catch (error: any) {
+      if (error instanceof HttpException && error.status === 409) {
+        res.status(409).json({ message: "You have already updated status of this project." });
+      } else {
+        next(error);
+      }
+    }
+  }
 }
 
 export default projectstaskcontroller; 

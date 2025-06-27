@@ -4,6 +4,8 @@ import { IProjectTask } from '../interfaces/projectstask.interfaces';
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
 import { PROJECTS_TASK } from "../database/projectstask.schema";
+import { SubmitProjectDto } from "../dtos/submit_project.dto";
+import { SUBMITTED_PROJECTS } from "../database/submitted_projects.schema";
 
 class ProjectstaskService {
   public async Insertmyprojectstask(data: ProjectsTaskDto): Promise<any> {
@@ -146,6 +148,78 @@ class ProjectstaskService {
     } catch (error) {
       throw new Error('Error fetching projects Task');
     }
+  }
+
+  public async submit(data: SubmitProjectDto): Promise<any> {
+    
+    if (!data.projects_task_id || !data.editor_id) {
+      throw new HttpException(400, "Project Task ID and User ID are required");
+    }
+
+    const existing = await DB(SUBMITTED_PROJECTS)
+    .where({
+        projects_task_id: data.projects_task_id, 
+        editor_id: data.editor_id, 
+        is_deleted: false
+    })
+    .first();
+
+    if (existing) {
+    throw new HttpException(409, "Already Submitted");
+    }
+    const submitData = {
+      ...data,
+      status: data.status ?? 0, // 0 = pending
+      is_active: true,
+      is_deleted: false,
+      created_at: new Date(),
+      updated_at: new Date()
+    };
+
+    const submitted_project = await DB (T.SUBMITTED_PROJECTS)
+      .insert(submitData)
+      .returning("*");
+
+    return submitted_project[0];  
+  }
+
+  public async approve (submission_id:number ,status: number, data: SubmitProjectDto): Promise<any>{
+    if(!submission_id || !status){
+      throw new HttpException(400, "Submission id and Status is required");
+    }
+
+    const existing = await DB(SUBMITTED_PROJECTS)
+    .where({
+        submission_id: data.submission_id, 
+        status : data.status, 
+        is_deleted: false
+    })
+    .first();
+
+    if (existing) {
+      throw new HttpException(409, "Already Updated");
+      }
+      const submitData = {
+        ...data,
+        submission_id: submission_id,
+        status: status,
+        is_active: true,
+        is_deleted: false,
+        created_at: new Date(),
+        updated_at: new Date()
+      };
+
+    const approved = await DB(T.SUBMITTED_PROJECTS)
+      .where({submission_id})
+      .update({
+        status,
+        updated_at : new Date()
+      })
+      .returning('*');
+    if(!approved || approved.length === 0){
+      throw new HttpException(404, "Submission not found");
+    }  
+    return approved[0];
   }
 
 }

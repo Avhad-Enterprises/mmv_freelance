@@ -1,21 +1,30 @@
-import {
+import{
     IsBoolean,
-    IsEnum,
     IsInt,
     IsOptional,
     IsString,
     IsDateString,
+    isInt,
 } from 'class-validator';
 
-export class AppliedProjectsDto {
+export class SubmitProjectDto{
+    
+    @IsOptional({ groups: ['create'] })
     @IsInt({ groups: ['update'] })
-    applied_projects_id: number;
+    submission_id?: number;
 
-    @IsInt({ groups: ['create', 'update'] })
+    @IsInt({ groups: ['create' ,'update'] })
     projects_task_id: number;
 
-    @IsInt({ groups: ['create', 'update'] })
-    users_id: number;
+    @IsInt({ groups: ['create' ,'update'] })
+    editor_id : number;
+
+    @IsString()
+    submitted_files: string;
+
+    @IsOptional()
+    @IsString()
+    additional_notes : string;
 
     @IsOptional({ groups: ['create', 'update'] })
     @IsInt({ groups: ['create', 'update'] })
@@ -49,4 +58,3 @@ export class AppliedProjectsDto {
     @IsDateString()
     updated_at?: string;
 }
-  

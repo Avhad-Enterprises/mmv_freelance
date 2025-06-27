@@ -14,7 +14,6 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
       const { projects_task_id, users_id } = req.body;
       
       if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !users_id || isNaN(parseInt(users_id))) {
@@ -35,9 +34,7 @@ class AppliedProjectsController {
         data: appliedProject, 
         message: "Successfully applied to project" 
       });
-    } catch (error) {
-      next(error);
-    }
+
   };
 
   public getProjectApplications = async (
@@ -45,7 +42,6 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
       const projects_task_id = parseInt(req.body.projects_task_id);
       if (isNaN(projects_task_id)) {
         throw new HttpException(400, "Invalid Project Task ID");
@@ -55,9 +51,6 @@ class AppliedProjectsController {
         data: applications,
         message: `got all applications for project task ID ${projects_task_id}`
       });
-    } catch (error) {
-      next(error);
-    }
   };
 
   public getMyApplications = async (
@@ -65,7 +58,6 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
       const users_id = parseInt(req.body.users_id);
       if (isNaN(users_id)) {
         throw new HttpException(400, "Invalid or missing users_id in body");
@@ -75,9 +67,7 @@ class AppliedProjectsController {
         data: applications,
         message: `got all applications for user ${users_id}`
       });
-    } catch (error) {
-      next(error);
-    }
+
   };
 
   public getMyApplicationbyId = async (
@@ -85,7 +75,7 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
+
       const users_id = parseInt(req.body.users_id);
       const projects_task_id = parseInt(req.body.projects_task_id);
       if (isNaN(users_id) || isNaN(projects_task_id)) {
@@ -99,9 +89,7 @@ class AppliedProjectsController {
         data: application,
         message: `got application for user ${users_id} and project task ${projects_task_id}`
       });
-    } catch (error) {
-      next(error);
-    }
+
   };
 
   public updateApplicationStatus = async (
@@ -109,7 +97,6 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
       const { applied_projects_id, status } = req.body;
       if (!applied_projects_id || typeof status === 'undefined') {
         throw new HttpException(400, "applied_projects_id and status are required");
@@ -119,9 +106,7 @@ class AppliedProjectsController {
         data: updated,
         message: "Application status updated successfully"
       });
-    } catch (error) {
-      next(error);
-    }
+
   };
 
   public withdrawApplication = async (
@@ -129,7 +114,6 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    try {
       const { applied_projects_id } = req.body;
       if (!applied_projects_id) {
         throw new HttpException(400, "applied_projects_id is required");
@@ -138,9 +122,6 @@ class AppliedProjectsController {
       res.status(200).json({
         message: "Application withdrawn successfully"
       });
-    } catch (error) {
-      next(error);
-    }
   };
 
 }

@@ -51,7 +51,7 @@ class AppliedProjectsRoute implements Route {
       this.appliedProjectsController.getProjectApplications
     );
 
-    // Update application status - DONE
+    // Update application status, HIRE THE EDITOR - DONE 
     this.router.patch(
       `${this.path}/update-status`,
       this.appliedProjectsController.updateApplicationStatus

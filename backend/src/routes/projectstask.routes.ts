@@ -4,6 +4,10 @@ import { RequestHandler } from 'express';
 import validationMiddleware from '../middlewares/validation.middleware';
 import projectstaskcontroller from '../controllers/projectstask.controllers';
 import { ProjectsTaskDto } from '../dtos/projectstask.dto';
+import { SubmitProjectDto } from '../dtos/submit_project.dto'; 
+import { ApproveProjectDto } from '../dtos/approve_project.dto';
+import { validate } from 'class-validator';
+import { request } from 'http';
 
 class projectstaskRoute implements Route {
 
@@ -29,6 +33,11 @@ class projectstaskRoute implements Route {
     this.router.get(`${this.path}/getactivedeletedprojectstask`, this.projectstaskcontroller.getactivedeletedprojectstask);
     this.router.get(`${this.path}/getDeletedprojects_task`, this.projectstaskcontroller.getDeletedprojectstask);
 
+    // EDITOR : Submit his project work and click submit
+    this.router.post(`${this.path}/submitproject`,validationMiddleware(SubmitProjectDto, 'body', false,[]), (req,res,next) => this.projectstaskcontroller.submitProject(req,res,next));
+
+    // CLIENT : Update status of project after submission of editor (0: Submitted 1: Under Review 2: Approved 3: Rejected)
+    this.router.patch(`${this.path}/updatestatus`,validationMiddleware(ApproveProjectDto, 'body', false, []),(req, res, next) => this.projectstaskcontroller.approveProject(req,res,next));
   }
 }
 

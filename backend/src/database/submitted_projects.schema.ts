@@ -14,7 +14,7 @@ export const seed = async (dropFirst = false) => {
         await DB.schema.createTable(SUBMITTED_PROJECTS, table => {
             table.increments('submission_id').primary();
             table.integer('projects_task_id').notNullable();
-            table.integer('editor_id').notNullable();
+            table.integer('user_id').notNullable();
             table.string('submitted_files').notNullable();
             table.text('additional_notes');
             table.integer("status").notNullable().defaultTo(0); // 0: Submitted, 1: Under Review, 2: Approved, 3: Rejected

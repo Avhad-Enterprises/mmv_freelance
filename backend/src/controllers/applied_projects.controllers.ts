@@ -3,8 +3,6 @@ import { AppliedProjectsDto } from "../dtos/applied_projects.dto";
 import { IAppliedProjects} from "../interfaces/applied_projects.interface";
 import AppliedProjectsService from "../services/applied_projects.services";
 import HttpException from "../exceptions/HttpException";
-import jwt from 'jsonwebtoken';
-import { RequestWithUser } from '../interfaces/auth.interface';
 
 class AppliedProjectsController {
   public AppliedProjectsService = new AppliedProjectsService();
@@ -14,16 +12,16 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-      const { projects_task_id, users_id } = req.body;
+      const { projects_task_id, user_id } = req.body;
       
-      if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !users_id || isNaN(parseInt(users_id))) {
+      if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !user_id || isNaN(parseInt(user_id))) {
         throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
       }
 
       const projectData: AppliedProjectsDto = {
         ...req.body,
         projects_task_id: parseInt(projects_task_id),
-        users_id: parseInt(users_id),
+        user_id: parseInt(user_id),
       };
 
       const appliedProject: IAppliedProjects = await this.AppliedProjectsService.apply(
@@ -58,14 +56,14 @@ class AppliedProjectsController {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-      const users_id = parseInt(req.body.users_id);
-      if (isNaN(users_id)) {
-        throw new HttpException(400, "Invalid or missing users_id in body");
+      const user_id = parseInt(req.body.user_id);
+      if (isNaN(user_id)) {
+        throw new HttpException(400, "Invalid or missing user_id in body");
       }
-      const applications = await this.AppliedProjectsService.getUserApplications(users_id);
+      const applications = await this.AppliedProjectsService.getUserApplications(user_id);
       res.status(200).json({
         data: applications,
-        message: `got all applications for user ${users_id}`
+        message: `got all applications for user ${user_id}`
       });
 
   };
@@ -76,18 +74,18 @@ class AppliedProjectsController {
     next: NextFunction
   ): Promise<void> => {
 
-      const users_id = parseInt(req.body.users_id);
+      const user_id = parseInt(req.body.user_id);
       const projects_task_id = parseInt(req.body.projects_task_id);
-      if (isNaN(users_id) || isNaN(projects_task_id)) {
+      if (isNaN(user_id) || isNaN(projects_task_id)) {
         throw new HttpException(400, "Invalid user or project task id");
       }
-      const application = await this.AppliedProjectsService.getUserApplicationByProject(users_id, projects_task_id);
+      const application = await this.AppliedProjectsService.getUserApplicationByProject(user_id, projects_task_id);
       if (!application) {
         throw new HttpException(404, "Application not found");
       }
       res.status(200).json({
         data: application,
-        message: `got application for user ${users_id} and project task ${projects_task_id}`
+        message: `got application for user ${user_id} and project task ${projects_task_id}`
       });
 
   };

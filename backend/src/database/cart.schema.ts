@@ -1,4 +1,3 @@
-
 import DB from './index.schema';
 
 export const ABANDONED_CART_TABLE = 'forms';

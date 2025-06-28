@@ -13,15 +13,15 @@ export const seed = async (dropFirst = false) => {
         console.log('Seeding Tables');
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(USERS_TABLE, table => {
-            table.increments('users_id').primary(); // ID
-            table.string("first_name").notNullable;
-            table.string("last_name").nullable;
+            table.increments('user_id').primary(); // ID
+            table.string("first_name").notNullable();
+            table.string("last_name").nullable();
             table.string("username").notNullable();
             table.string("email").unique();
             table.string('phone_number').notNullable();
             table.string('profile_picture').nullable();
             table.string("address_line_first").notNullable();
-            table.string("address_line_second").defaultTo(null);
+            table.string("address_line_second").nullable();
             table.string("city").nullable();
             table.string("state").nullable();
             table.string("country").nullable();
@@ -32,19 +32,20 @@ export const seed = async (dropFirst = false) => {
             table.boolean('phone_verified').defaultTo(false);
             table.text("reset_token").nullable();
             table.timestamp("reset_token_expires").nullable();
-            table.string('login_attempts').defaultTo(0);
+            table.integer('login_attempts').defaultTo(0);
             table.boolean('kyc_verified').defaultTo(false);
             table.string ("role").nullable();
             table.text('banned_reason').nullable();
             table.text('bio').nullable();
             table.string('timezone').nullable();
-            table.jsonb("skill").nullable();
+            table.string('niche').nullable();
+            table.specificType('artworks', 'text[]');
             table.boolean("email_notifications").nullable();
             table.jsonb("tags").defaultTo(true);
             table.boolean("notes").nullable();
             table.jsonb('certification').nullable();
-            table.jsonb('education').nullable;
-            table.text('experience').nullable()
+            table.jsonb('education').nullable();
+            table.text('experience').nullable();
             table.jsonb('services').nullable();
             table.jsonb('previous_works').nullable();
             table.integer('projects_created').defaultTo(0);
@@ -69,6 +70,16 @@ export const seed = async (dropFirst = false) => {
             table.timestamp('last_login_at').nullable();
         });
 
+        await DB.raw(`
+            ALTER TABLE ${USERS_TABLE}
+            ADD CONSTRAINT artworks_max_length CHECK (array_length(artworks, 1) <= 3);
+          `);
+  
+        await DB.raw(`
+            ALTER TABLE ${USERS_TABLE}
+            ADD CONSTRAINT fk_users_niche
+            FOREIGN KEY (niche) REFERENCES niches(niche_name);
+        `);
 
     console.log('Finished Seeding Tables');
     console.log('Creating Triggers');

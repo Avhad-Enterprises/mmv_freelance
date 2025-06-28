@@ -15,10 +15,7 @@ import {
   
   export class ProjectsTaskDto {
     @IsInt()
-    client_id: number;
-  
-    @IsInt()
-    editor_id: number;
+    user_id: number;
   
     @IsString()
     @IsNotEmpty()

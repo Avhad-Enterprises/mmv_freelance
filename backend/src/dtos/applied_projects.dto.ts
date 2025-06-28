@@ -15,7 +15,7 @@ export class AppliedProjectsDto {
     projects_task_id: number;
 
     @IsInt({ groups: ['create', 'update'] })
-    users_id: number;
+    user_id: number;
 
     @IsOptional({ groups: ['create', 'update'] })
     @IsInt({ groups: ['create', 'update'] })

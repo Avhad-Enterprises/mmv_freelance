@@ -136,14 +136,14 @@ class projectstaskcontroller {
     next : NextFunction
   ): Promise<void> =>{
     try {
-      const {editor_id, projects_task_id} = req.body;
+      const {user_id, projects_task_id} = req.body;
   
-      if (!projects_task_id || !editor_id){
+      if (!projects_task_id || !user_id){
         throw new HttpException(400, "Missing values");
       }
       const submitData: SubmitProjectDto ={
         ...req.body,
-        editor_id : editor_id,
+        user_id : user_id,
         projects_task_id : projects_task_id, 
       };
       const submitted : ISubmittedProjects = await this.ProjectstaskService.submit(

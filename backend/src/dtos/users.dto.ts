@@ -1,18 +1,17 @@
 import {
-  IsString, IsEmail, IsBoolean, IsInt, IsOptional, IsObject, IsDefined
+  IsString, IsEmail, IsBoolean, IsInt, IsOptional, IsObject, IsDefined, IsArray, IsIn
 } from 'class-validator';
 
 export class UserDto {
   @IsOptional({ groups: ['update'] }) 
   @IsInt({ groups: ['update'] })
-  users_id: number;
+  user_id: number;
 
   @IsString({ groups: ['create', 'update'] }) first_name: string;
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] })
   last_name?: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] }) 
   username: string;
   
@@ -20,7 +19,6 @@ export class UserDto {
   @IsEmail({}, { groups: ['create', 'update'] })
   email?: string;
   
-  @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] }) 
   phone_number: string;
   
@@ -33,7 +31,6 @@ export class UserDto {
   @IsDefined({ message: 'password are required' })
   password?: string;
   
-  @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] }) 
   address_line_first: string;
   
@@ -75,27 +72,34 @@ export class UserDto {
 
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] })
-  role: string;
+  role?: string;
 
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] }) 
-  bio: string;
+  banned_reason?: string;
+
+  @IsOptional({ groups: ['create', 'update'] }) 
+  @IsString({ groups: ['create', 'update'] }) 
+  bio?: string;
   
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] })
   timezone?: string;
 
   @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject()
-  skill?: Record<string, any>;
+  @IsString({ groups: ['create', 'update'] })
+  niche?: string;
+
+  @IsOptional({ groups: ['create', 'update'] })
+  artworks?: string[];
 
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsBoolean({ groups: ['create', 'update'] })
   email_notifications?: boolean;
 
   @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject()
-  tags?: Record<string, any>;
+  @IsBoolean({ groups: ['create', 'update'] })
+  tags?: boolean;
 
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsBoolean({ groups: ['create', 'update'] })
@@ -103,33 +107,36 @@ export class UserDto {
 
   @IsOptional({ groups: ['create', 'update'] })  
   @IsObject({ groups: ['create', 'update'] })
-  certification: Record<string, any>;
+  certification?: Record<string, any>;
   
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsObject({ groups: ['create', 'update'] })
-  education: Record<string, any>;
+  education?: Record<string, any>;
   
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] })
-  experience: string;
+  experience?: string;
   
-  @IsOptional()
-  @IsObject()
-  services: Record<string, any>;
+  @IsOptional({ groups: ['create', 'update'] })
+  @IsObject({ groups: ['create', 'update'] })
+  services?: Record<string, any>;
     
   @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject()
+  @IsObject({ groups: ['create', 'update'] })
   previous_works?: Record<string, any>;
 
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsObject({ groups: ['create', 'update'] })
-  payment_method: Record<string, any>;
-        
+  payment_method?: Record<string, any>;
+  
   @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject()
+  @IsObject({ groups: ['create', 'update'] })
+  payout_method?: Record<string, any>;
+  
+  @IsOptional({ groups: ['create', 'update'] }) 
+  @IsObject({ groups: ['create', 'update'] })
   bank_account_info?: Record<string, any>;
 
-  // Numeric stats
   @IsOptional({ groups: ['update'] }) 
   @IsInt({ groups: ['update'] }) projects_created?: number;
   
@@ -151,14 +158,13 @@ export class UserDto {
   @IsOptional({ groups: ['update'] }) 
   @IsInt({ groups: ['update'] }) total_spent?: number;
 
-
   @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString()
-  account_type: string;
+  @IsString({ groups: ['create', 'update'] })
+  account_type?: string;
     
   @IsOptional({ groups: ['create', 'update'] }) 
   @IsString({ groups: ['create', 'update'] }) 
-  availability: string;
+  availability?: string;
 
   @IsOptional({ groups: ['update'] }) 
   @IsInt({ groups: ['update'] }) time_spent?: number;
@@ -179,12 +185,40 @@ export class UserDto {
 
   @IsOptional({ groups: ['create', 'update'] }) // map timestamp string or Date
   reset_token_expires?: Date;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  login_attempts?: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  banned_reason?: string;
+
+  @IsOptional({ groups: ['create', 'update'] })
+  @IsInt({ groups: ['create', 'update'] })
+  login_attempts?: number;
+}
+
+export class ArtworkSelectionDto {
+  @IsString()
+  @IsIn(['user', 'creator'])
+  account_type: string;
+
+  @IsInt()
+  user_id: number;
+
+  @IsOptional()
+  @IsInt()
+  projects_task_id?: number;
+
+  @IsOptional()
+  artworks?: string | string[];
+}
+
+export class NicheSelectionDto {
+  @IsString()
+  @IsIn(['user', 'creator'])
+  account_type: string;
+
+  @IsInt()
+  user_id: number;
+
+  @IsOptional()
+  @IsInt()
+  projects_task_id?: number;
+
+  @IsString()
+  niche: string;
 }

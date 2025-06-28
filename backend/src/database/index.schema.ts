@@ -28,13 +28,15 @@ import { USERS_TABLE } from './users.schema';
 import { PROJECTS_TASK } from './projectstask.schema';
 import { APPLIED_PROJECTS } from './applied_projects.schema';
 import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
+import { NICHES_TABLE } from './niches.schema';
 
 
 export const T = {
   USERS_TABLE,
   PROJECTS_TASK,
   APPLIED_PROJECTS,
-  SUBMITTED_PROJECTS
+  SUBMITTED_PROJECTS,
+  NICHES_TABLE
 };
 
 // Creates the procedure that is then added as a trigger to every table

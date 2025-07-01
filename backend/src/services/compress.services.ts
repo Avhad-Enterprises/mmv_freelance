@@ -5,16 +5,7 @@ import { getCloudReadableStream, uploadToCloud } from '../utils/cloudStream';
 import HttpException from '../exceptions/HttpException';
 
 class CompressService {
-  /**
-   * Handles the full compression pipeline:
-   * 1. Fetches the video stream from the cloud
-   * 2. Compresses it using FFmpeg
-   * 3. Uploads the compressed stream back to the cloud
-   * @param provider 'gdrive' | 'dropbox'
-   * @param fileId File ID or path
-   * @param accessToken OAuth access token
-   * @returns Upload result (file metadata)
-   */
+
   public async handleCompression(
     provider: 'gdrive' | 'dropbox',
     fileId: string,
@@ -30,7 +21,7 @@ class CompressService {
         '-c:v', 'libx264',      // Video codec
         '-preset', 'veryfast',  // Compression speed
         '-crf', '21',           // Quality (lower = better)
-        '-movflags', '+faststart', // For better streaming
+        '-movflags', 'frag_keyframe+empty_moov', // For better streaming
         '-c:a', 'aac',          // Audio codec
         '-f', 'mp4',            // Output format
         'pipe:1'                // Output to stdout

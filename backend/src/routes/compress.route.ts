@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import Route from '../interfaces/routes.interface';
 import compressController from '../controllers/compress.controller';
+import {CompressVideoDto} from "../dtos/compress_video.dto"
+import validationMiddleware from '../middlewares/validation.middleware';
 
 class compressRoute implements Route {
 
@@ -15,7 +17,7 @@ class compressRoute implements Route {
     private initializeRoutes(){
 
         // POST /compress
-        this.router.post(this.path, this.compressController.compressVideo);
+        this.router.post(this.path, validationMiddleware(CompressVideoDto, 'body', false, []), this.compressController.compressVideo);
 
     }
     

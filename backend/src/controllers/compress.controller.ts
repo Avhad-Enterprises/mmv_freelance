@@ -16,22 +16,18 @@ class compressController{
     const { provider, fileId, accessToken } = req.body;
 
     if (!provider || !fileId || !accessToken) {
-      res.status(400).json({ error: 'Missing provider, fileId, or accessToken' });
-      return;
+      throw new HttpException(400,"Missing provider, fileId, or accessToken");
     }
   
     try {
       const result = await this.CompressService.handleCompression(provider, fileId, accessToken);
       res.json({ status: 'success', result });
-    } catch (err) {
+    } 
+    catch (err) {
       console.error('Compression error:', err);
-      res.status(500).json({ error: err.message || 'Compression failed' });
+      throw new HttpException(500,"Compression Failed")
     }
   }
 
 }
 export default compressController;
-
-// const inputStream = await getCloudReadableStream('gdrive', fileId, accessToken);
-// const compressedStream = compressStream(inputStream);
-// const uploadResult = await uploadToCloud('gdrive', compressedStream, accessToken);

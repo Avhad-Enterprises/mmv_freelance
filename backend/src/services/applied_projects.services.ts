@@ -8,7 +8,7 @@ class AppliedProjectsService {
 
     public async apply(data: AppliedProjectsDto): Promise<any> {
         // Validate required fields
-        if (!data.projects_task_id || !data.users_id) {
+        if (!data.projects_task_id || !data.user_id) {
             throw new HttpException(400, "Project Task ID and User ID are required");
         }
 
@@ -16,7 +16,7 @@ class AppliedProjectsService {
         const existing = await DB(APPLIED_PROJECTS)
             .where({
                 projects_task_id: data.projects_task_id, 
-                users_id: data.users_id, 
+                user_id: data.user_id, 
                 is_deleted: false
             })
             .first();
@@ -47,7 +47,7 @@ class AppliedProjectsService {
             throw new HttpException(400, "Project Task ID Required")
         }
         const projects = await DB(T.APPLIED_PROJECTS)
-            .join('users', 'applied_projects.users_id', '=', 'users.users_id')
+            .join('users', 'applied_projects.user_id', '=', 'users.user_id')
             .where({
                 'applied_projects.projects_task_id': projects_task_id,
                 'applied_projects.is_deleted': false
@@ -63,14 +63,14 @@ class AppliedProjectsService {
         return projects;
     }
 
-    public async getUserApplications(users_id: number): Promise<any[]> {
-        if (!users_id) {
+    public async getUserApplications(user_id: number): Promise<any[]> {
+        if (!user_id) {
             throw new HttpException(400, "User ID Required");
         }
         const applications = await DB(T.APPLIED_PROJECTS)
             .join('projects_task', 'applied_projects.projects_task_id', '=', 'projects_task.projects_task_id')
             .where({
-                'applied_projects.users_id': users_id,
+                'applied_projects.user_id': user_id,
                 'applied_projects.is_deleted': false
             })
             .orderBy('applied_projects.created_at', 'desc')
@@ -81,14 +81,14 @@ class AppliedProjectsService {
         return applications;
     }
 
-    public async getUserApplicationByProject(users_id: number, projects_task_id: number): Promise<any> {
-        if (!users_id || !projects_task_id) {
+    public async getUserApplicationByProject(user_id: number, projects_task_id: number): Promise<any> {
+        if (!user_id || !projects_task_id) {
             throw new HttpException(400, "User ID and Project Task ID required");
         }
         const applications = await DB(T.APPLIED_PROJECTS)
             .join('projects_task', 'applied_projects.projects_task_id', '=', 'projects_task.projects_task_id')
             .where({
-                'applied_projects.users_id': users_id,
+                'applied_projects.user_id': user_id,
                 'applied_projects.projects_task_id': projects_task_id,
                 'applied_projects.is_deleted': false
             })

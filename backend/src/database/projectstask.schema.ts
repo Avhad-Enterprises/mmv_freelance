@@ -13,8 +13,7 @@ export const seed = async (dropFirst = false) => {
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(PROJECTS_TASK, table => {
             table.increments('projects_task_id').primary();  //ID
-            table.integer('client_id').notNullable();
-            table.integer('editor_id').notNullable();
+            table.integer('user_id').notNullable();
             table.string('project_title').notNullable();
             table.text('project_category').defaultTo(0);
             table.date('Deadline').notNullable();
@@ -37,7 +36,7 @@ export const seed = async (dropFirst = false) => {
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 

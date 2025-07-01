@@ -54,17 +54,17 @@ class usersController {
 
   public updateuserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const raw = (req.body as any).users_id;
+      const raw = (req.body as any).user_id;
       console.log(raw);
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
   
       if (isNaN(idNum)) {
-        res.status(400).json({ error: 'users_id must be a number' });
+        res.status(400).json({ error: 'user_id must be a number' });
         return;
       }
   
       // Clone body and exclude code_id
-      const { users_id, ...fieldsToUpdate } = req.body;
+      const { user_id, ...fieldsToUpdate } = req.body;
   
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });

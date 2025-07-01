@@ -31,6 +31,7 @@ import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
 import { REPORT_TABLE } from './report_system.schema';
 import { FAVORITES_TABLE } from './favorites.schema';
 import { VISITOR_LOGS } from './visitor_logsschema';
+import { NICHES_TABLE } from './niches.schema';
 
 
 export const T = {
@@ -40,7 +41,8 @@ export const T = {
   SUBMITTED_PROJECTS,
   REPORT_TABLE,
   FAVORITES_TABLE,
-  VISITOR_LOGS
+  VISITOR_LOGS,
+  NICHES_TABLE
 };
 
 // Creates the procedure that is then added as a trigger to every table

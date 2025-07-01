@@ -17,7 +17,7 @@ export class SubmitProjectDto{
     projects_task_id: number;
 
     @IsInt({ groups: ['create' ,'update'] })
-    editor_id : number;
+    user_id : number;
 
     @IsString()
     submitted_files: string;

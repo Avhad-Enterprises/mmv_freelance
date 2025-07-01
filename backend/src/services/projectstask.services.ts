@@ -152,14 +152,14 @@ class ProjectstaskService {
 
   public async submit(data: SubmitProjectDto): Promise<any> {
     
-    if (!data.projects_task_id || !data.editor_id) {
+    if (!data.projects_task_id || !data.user_id) {
       throw new HttpException(400, "Project Task ID and User ID are required");
     }
 
     const existing = await DB(SUBMITTED_PROJECTS)
     .where({
         projects_task_id: data.projects_task_id, 
-        editor_id: data.editor_id, 
+        user_id: data.user_id, 
         is_deleted: false
     })
     .first();

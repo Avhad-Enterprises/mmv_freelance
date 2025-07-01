@@ -8,6 +8,7 @@ import AppliedProjectsRoute from './routes/applied_projects.route';
 import report_systemRoute from './routes/report_system.routes';
 import favoritesRoute from './routes/favorites.routes';
 import visitor_logsRoute from './routes/visitor_logs.routes';
+import EMCRoute from './routes/emc.routes'
 
 
 validateEnv();

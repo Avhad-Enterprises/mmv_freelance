@@ -1,7 +1,7 @@
 export interface IAppliedProjects {
     applied_projects_id: number;
     projects_task_id: number;
-    users_id: number;
+    user_id: number;
     status: number;
     is_active?: boolean;
     is_deleted?: boolean;

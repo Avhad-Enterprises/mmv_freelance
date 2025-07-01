@@ -55,12 +55,12 @@ class usersService {
     };
   }
 
-  public async update(users_id: number, data: Partial<UserDto>): Promise<any> {
-    if (!users_id) throw new HttpException(400, 'users ID is required');
+  public async update(user_id: number, data: Partial<UserDto>): Promise<any> {
+    if (!user_id) throw new HttpException(400, 'users ID is required');
     if (isEmpty(data)) throw new HttpException(400, 'Update data is empty');
 
     const updated = await DB(T.USERS_TABLE)
-      .where({ users_id })
+      .where({ user_id })
       .update(data)
       .returning('*');
 
@@ -78,7 +78,7 @@ class usersService {
     const reset_token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
     await DB('users')
-      .where({ users_id: user.users_id })
+      .where({ user_id: user.user_id })
       .update({
         reset_token,
         reset_token_expires: expiresAt,
@@ -102,7 +102,7 @@ class usersService {
     const hashedpassword = await bcrypt.hash(password, 10);
 
     await DB('users')
-      .where({ users_id: user.users_id })
+      .where({ user_id: user.user_id })
       .update({
         reset_token: null,
         password: hashedpassword,

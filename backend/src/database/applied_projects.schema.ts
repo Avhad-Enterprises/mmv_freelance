@@ -15,7 +15,7 @@ export const seed = async (dropFirst = false) => {
         await DB.schema.createTable(APPLIED_PROJECTS, table => {
             table.increments('applied_projects_id').primary();
             table.integer("projects_task_id").notNullable();
-            table.integer("users_id").notNullable();
+            table.integer("user_id").notNullable();
             table.integer("status").notNullable().defaultTo(0); // 0: pending, 1: accepted, 2: rejected, 3: withdrawn
 
             // compulsory columns

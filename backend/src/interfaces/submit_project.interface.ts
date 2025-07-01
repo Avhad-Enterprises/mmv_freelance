@@ -1,7 +1,7 @@
 export interface ISubmittedProjects{
     submission_id : number;
     projects_task_id : number;
-    editor_id : number;
+    user_id : number;
     submitted_files : string;
     additional_notes : string;
     status : number;

@@ -1,0 +1,31 @@
+import { Router } from 'express';
+import Route from '../interfaces/route.interface';
+import { RequestHandler } from 'express';
+import validationMiddleware from '../middlewares/validation.middleware';
+import reportcontroller from '../controllers/report_system.controllers';
+import { ReportDto } from '../dtos/report_system.dto';
+
+class projectstaskRoute implements Route {
+
+  public path = '/report';
+  public router = Router();
+  public reportcontroller = new reportcontroller();
+
+  constructor() {
+    console.log("Routes");
+    this.initializeRoutes();
+  }
+
+  private initializeRoutes() {
+
+    //report_system section  , validationMiddleware(reportDto, 'body', false, [])
+    this.router.post(`${this.path}/user`, validationMiddleware(ReportDto, 'body', false, []), this.reportcontroller.reportsuser);
+    this.router.post(`${this.path}/project`, validationMiddleware(ReportDto, 'body', false, []), this.reportcontroller.reportProject);
+    this.router.post(`${this.path}/status`, this.reportcontroller.getreportstatus);
+    this.router.get(`${this.path}/getallreports`, this.reportcontroller.getAllReports);
+    this.router.post(`${this.path}/statusupdate`, validationMiddleware(ReportDto, 'body', false, []), this.reportcontroller.updateReportStatus);
+
+  }
+}
+
+export default projectstaskRoute;

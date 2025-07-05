@@ -1,5 +1,6 @@
 import knex from 'knex';
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
 
 dotenv.config();
@@ -23,12 +24,39 @@ const DB = knex(awsConf);
 export default DB;
 
 // Table Names
-import { EMPLOYEE_TABLE } from './users.schema';
-
+import { USERS_TABLE } from './users.schema';
+import { PROJECTS_TASK } from './projectstask.schema';
+import { APPLIED_PROJECTS } from './applied_projects.schema';
+import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
+import { REPORT_TABLE } from './report_system.schema';
+import { FAVORITES_TABLE } from './favorites.schema';
+import { VISITOR_LOGS } from './visitor_logsschema';
+import { NICHES_TABLE } from './niches.schema';
+import {CATEGORY} from './category.schema';
+import {BLOG} from './blog.schema';
+import {NOTIFICATION} from './notification.schema';
+import {PERMISSION} from './permission.schema';
+import {ROLE} from './role.schema';
+import {ROLE_PERMISSION} from './role_permission.schema';
+import {USER_ROLES} from './user_role.schema';
 
 
 export const T = {
-  EMPLOYEE_TABLE
+  USERS_TABLE,
+  PROJECTS_TASK,
+  APPLIED_PROJECTS,
+  SUBMITTED_PROJECTS,
+  REPORT_TABLE,
+  FAVORITES_TABLE,
+  VISITOR_LOGS,
+  NICHES_TABLE,
+  CATEGORY,
+  BLOG,
+  NOTIFICATION,
+  PERMISSION,
+  ROLE,
+  ROLE_PERMISSION,
+  USER_ROLES
 };
 
 // Creates the procedure that is then added as a trigger to every table

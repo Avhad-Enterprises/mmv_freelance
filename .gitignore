@@ -1,6 +1,7 @@
 # Dependency directories
 **/node_modules/
 **/.cache/
+**/package-lock.json
 
 # Build output
 **/build/
@@ -11,11 +12,14 @@ logs
 *.log
 npm-debug.log*
 
+
+=======
 # IDE & system
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
 
 # Env files
 .env

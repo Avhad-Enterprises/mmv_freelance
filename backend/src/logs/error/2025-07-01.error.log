@@ -1,0 +1,137 @@
+2025-07-01 10:35:49 error: StatusCode : 400, Message : Category query param is required
+2025-07-01 13:33:06 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:44:58 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:44:59 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:45:01 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:48:58 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:48:59 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 13:49:01 error: StatusCode : 500, Message : Error fetching Notification
+2025-07-01 16:29:01 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - invalid input syntax for type integer: ":id"
+2025-07-01 16:29:09 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:29:11 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:29:18 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:29:24 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:29:29 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:38:37 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:40:21 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:40:40 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:41:40 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:46:21 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:46:22 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:46:25 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:46:31 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:46:47 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:50:08 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:50:40 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:51:26 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 16:51:33 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:51:38 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:59:55 error: StatusCode : 404, Message : Notification not found
+2025-07-01 16:59:56 error: StatusCode : 404, Message : Notification not found
+2025-07-01 17:00:43 error: StatusCode : 404, Message : Notification not found
+2025-07-01 17:08:07 error: StatusCode : 404, Message : Notification not found
+2025-07-01 17:10:00 error: StatusCode : 404, Message : Notification not found
+2025-07-01 17:10:48 error: StatusCode : 404, Message : Notification not found
+2025-07-01 17:15:16 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning * - record "new" has no field "updated_at"
+2025-07-01 17:18:07 error: StatusCode : 500, Message : update "notification" set "is_read" = $1 where "id" = $2 and "is_read" = $3 returning * - record "new" has no field "updated_at"
+2025-07-01 17:20:48 error: StatusCode : 500, Message : update "notification" set "is_read" = $1, "read_at" = $2 where "id" = $3 and "is_read" = $4 returning "id", "is_read", "read_at" - record "new" has no field "updated_at"
+2025-07-01 17:26:37 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:26:40 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:26:43 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:27:06 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:27:07 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:27:12 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:28:25 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:28:26 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:28:32 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:28:52 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:28:56 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:30:01 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:30:09 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:30:31 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:30:37 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:32:14 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:32:22 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 17:32:27 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 18:12:39 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 18:14:32 error: StatusCode : 404, Message : Authentication token missing
+2025-07-01 18:19:14 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:19:19 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:20:21 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:23:49 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:24:43 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:24:49 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:24:54 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:25:04 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:25:13 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:25:18 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:25:32 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 18:25:33 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 18:25:35 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 18:27:41 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:27:43 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:27:48 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:36:49 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:36:51 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:36:52 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:36:58 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:37:00 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:37:00 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:37:01 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:37:02 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:37:03 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:38:20 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:38:22 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:38:24 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:40:55 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:41:59 error: StatusCode : 400, Message : User ID is required
+2025-07-01 18:45:50 error: StatusCode : 400, Message : User ID is required
+2025-07-01 19:05:12 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:05:19 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:05:29 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:05:40 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:05:41 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:05:57 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:06:04 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:06:24 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:06:34 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:06:43 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:07:51 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:08:14 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:08:16 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:08:18 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:09:34 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:09:35 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:09:55 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:09:56 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:17:34 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:17:36 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:17:42 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:17:43 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:17:51 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:29:39 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:34:12 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:34:20 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:34:32 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:36:40 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:38:30 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:38:31 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:39:49 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:39:50 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:39:58 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:40:34 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:40:38 error: StatusCode : 404, Message : Notification not found
+2025-07-01 19:41:08 error: StatusCode : 400, Message :  Notification is null
+2025-07-01 19:45:00 error: StatusCode : 404, Message : Notification not found
+2025-07-01 20:38:54 error: uncaughtException: ID must be a valid number
+Error: ID must be a valid number
+    at NotificationController.notificationcount (D:\mmv1\mmv_freelance\backend\src\controllers\notification.controller.ts:60:15)
+    at D:\mmv1\mmv_freelance\backend\src\routes\notification.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)

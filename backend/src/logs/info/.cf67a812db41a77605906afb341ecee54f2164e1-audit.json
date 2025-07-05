@@ -1,0 +1,65 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\.cf67a812db41a77605906afb341ecee54f2164e1-audit.json",
+    "files": [
+        {
+            "date": 1750771805000,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-24.log",
+            "hash": "8c1cc357b7651d8a7311dca5765cf9b12465ae308e9a0e6b458f58f0483b84db"
+        },
+        {
+            "date": 1750826984961,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-25.log",
+            "hash": "b92e3b51682a99f44aa4d0f7cb02e74b85e254750d532188c6c86f9a75d2ab1c"
+        },
+        {
+            "date": 1750914966013,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-26.log",
+            "hash": "590d212015a4491dc0578deec12afc4b406abfeb64da412ba84f5f41a9849f70"
+        },
+        {
+            "date": 1750999815817,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-27.log",
+            "hash": "6b614a84a2657a05630e66446c0394a84ecdbfcb3f53d4d2dd561b8e60ef67a7"
+        },
+        {
+            "date": 1751086312520,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-28.log",
+            "hash": "4dea805a7690ef9f6adfb2717e1c5c0f4d3ca807bc290386b7ff1d331beb315c"
+        },
+        {
+            "date": 1751181548806,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-06-29.log",
+            "hash": "e95195d7479e02153bb0378b8aa17be002651993d62b3776e13f5f52279323b3"
+        },
+        {
+            "date": 1751345601671,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-07-01.log",
+            "hash": "35a1a1bfac77c8db56e96a09df54dc7ed0b3d9f9ab3061dc1009c029e0716727"
+        },
+        {
+            "date": 1751431883365,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-07-02.log",
+            "hash": "8a754af4a9b03104a301aeb9dc1f4fbc66456db8dcacbd4da24e4e60adb60153"
+        },
+        {
+            "date": 1751519280022,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-07-03.log",
+            "hash": "bc575e37a3d1a77180fc61561210cb58dc328db202ee8225f88138bdce9fbcf4"
+        },
+        {
+            "date": 1751605367068,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-07-04.log",
+            "hash": "8860f046b47b16e8d83002d10ae979f45100030127acca8a0561b5a2636048be"
+        },
+        {
+            "date": 1751694392293,
+            "name": "D:\\mmv1\\mmv_freelance\\backend\\src\\logs\\info\\2025-07-05.log",
+            "hash": "c8cf8433ac7e90c8636ecf7ffc65ce8fb68a8873ef6414d1c2656f4378ce8e76"
+        }
+    ],
+    "hashType": "sha256"
+}

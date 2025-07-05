@@ -28,7 +28,7 @@ class projectstaskRoute implements Route {
     this.router.get(`${this.path}/getallprojects_task`, this.projectstaskcontroller.getallprojectstask);
     this.router.get(`${this.path}/getactivedeletedprojectstask`, this.projectstaskcontroller.getactivedeletedprojectstask);
     this.router.get(`${this.path}/getDeletedprojects_task`, this.projectstaskcontroller.getDeletedprojectstask);
-
+    this.router.get(`${this.path}/getprojecttypes`, this.projectstaskcontroller.getprojecttypesby);
   }
 }
 

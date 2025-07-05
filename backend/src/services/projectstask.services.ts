@@ -147,7 +147,16 @@ class ProjectstaskService {
       throw new Error('Error fetching projects Task');
     }
   }
+  public getprojecttypesbytable = async(): Promise<IProjectTask[]> => {
+    try {
+      const result = await DB(T.CATEGORY)
+        .where({ is_active: 1, is_deleted: false, types: 'project_task'})
+        .select("*");
+      return result;
+    } catch (error) {
+      throw new Error('Error fetching projects');
+    }
+  }
 
 }
-
 export default ProjectstaskService;

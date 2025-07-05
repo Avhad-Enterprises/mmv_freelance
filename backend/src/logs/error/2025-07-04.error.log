@@ -1,0 +1,90 @@
+2025-07-04 10:34:08 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-04 11:26:04 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number2025-07-04 11:44:46 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-04 11:48:01 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-04 11:48:20 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-04 11:49:33 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-04 12:04:28 error: StatusCode : 500, Message : insert into "category" ("created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7) returning * - column "tags" of relation "category" does not exist
+2025-07-04 17:04:01 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 17:04:26 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 17:34:03 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:05:16 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:16:09 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:16:11 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:22:25 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:22:28 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:22:29 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:22:35 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:22:36 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 18:23:00 error: StatusCode : 400, Message : Unexpected end of JSON input
+2025-07-04 18:58:18 error: StatusCode : 400, Message : Unexpected end of JSON input
+2025-07-04 18:58:29 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:15:21 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:15:36 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:15:42 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:16:31 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:20:31 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:22:40 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:22:42 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:25:03 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:25:27 error: StatusCode : 500, Message : Method not implemented.
+2025-07-04 19:51:54 error: StatusCode : 400, Message : Unexpected end of JSON input
+2025-07-04 19:54:32 error: uncaughtException: Role ID and permissions are required
+Error: Role ID and permissions are required
+    at roleController.permissionfrom (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:44:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-04 19:57:57 error: uncaughtException: Role ID and permissions are required
+Error: Role ID and permissions are required
+    at roleController.permissionfrom (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:44:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-04 20:01:33 error: uncaughtException: Role ID and permissions are required
+Error: Role ID and permissions are required
+    at roleController.permissionfrom (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:44:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-04 20:12:11 error: uncaughtException: Role ID and permissions are required
+Error: Role ID and permissions are required
+    at roleController.permissionfrom (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:44:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-04 20:17:28 error: uncaughtException: Role ID and permissions are required
+Error: Role ID and permissions are required
+    at roleController.permissionfrom (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:44:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:22:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)

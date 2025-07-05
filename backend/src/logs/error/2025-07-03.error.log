@@ -1,0 +1,51 @@
+2025-07-03 11:03:57 error: StatusCode : 500, Message : insert into "role" ("created_at", "description", "is_active", "label", "name", "updated_at") values ($1, $2, $3, $4, $5, $6) returning * - duplicate key value violates unique constraint "role_name_unique"
+2025-07-03 11:04:26 error: StatusCode : 500, Message : insert into "role" ("created_at", "description", "is_active", "label", "name") values ($1, $2, $3, $4, $5) returning * - duplicate key value violates unique constraint "role_name_unique"
+2025-07-03 11:24:26 error: StatusCode : 500, Message : Undefined binding(s) detected when compiling UPDATE. Undefined column(s): [role_id] query: update "role" set "name" = ?, "label" = ?, "description" = ?, "is_active" = ?, "created_at" = ?, "updated_at" = ? where "role_id" = ? returning *
+2025-07-03 11:24:52 error: StatusCode : 500, Message : Undefined binding(s) detected when compiling UPDATE. Undefined column(s): [role_id] query: update "role" set "name" = ?, "label" = ?, "description" = ?, "is_active" = ?, "updated_at" = ? where "role_id" = ? returning *
+2025-07-03 11:25:01 error: StatusCode : 500, Message : Undefined binding(s) detected when compiling UPDATE. Undefined column(s): [role_id] query: update "role" set "name" = ?, "label" = ?, "description" = ?, "is_active" = ? where "role_id" = ? returning *
+2025-07-03 11:25:03 error: StatusCode : 500, Message : Undefined binding(s) detected when compiling UPDATE. Undefined column(s): [role_id] query: update "role" set "name" = ?, "label" = ?, "description" = ?, "is_active" = ? where "role_id" = ? returning *
+2025-07-03 13:05:41 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:09:43 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:09:44 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:13:00 error: StatusCode : 500, Message : insert into "category" ("category_id", "created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning * - column "tags" of relation "category" does not exist
+2025-07-03 13:13:02 error: StatusCode : 500, Message : insert into "category" ("category_id", "created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning * - column "tags" of relation "category" does not exist
+2025-07-03 13:14:29 error: StatusCode : 500, Message : insert into "category" ("category_id", "created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning * - column "tags" of relation "category" does not exist
+2025-07-03 13:14:31 error: StatusCode : 500, Message : insert into "category" ("category_id", "created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning * - column "tags" of relation "category" does not exist
+2025-07-03 13:14:46 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:14:47 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:18:39 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:18:40 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:28:07 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:28:15 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:29:21 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:29:22 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:31:37 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:31:40 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:32:27 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:32:28 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:37:44 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:37:47 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:38:03 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 13:38:05 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 15:43:11 error: StatusCode : 401, Message : Wrong authentication token
+2025-07-03 15:50:30 error: StatusCode : 500, Message : insert into "permission" ("created_at", "description", "is_critical", "label", "module", "name") values ($1, $2, $3, $4, $5, $6) returning * - duplicate key value violates unique constraint "permission_name_unique"
+2025-07-03 17:54:42 error: StatusCode : 400, Message : Category query param is required
+2025-07-03 18:49:00 error: StatusCode : 401, Message : Wrong authentication token
+2025-07-03 18:49:28 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 18:53:29 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:14:15 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:14:17 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:14:18 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:14:20 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:16:42 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:41:15 error: StatusCode : 500, Message : insert into "category" ("created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8) returning * - column "tags" of relation "category" does not exist
+2025-07-03 19:42:05 error: StatusCode : 500, Message : insert into "category" ("created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8) returning * - column "tags" of relation "category" does not exist
+2025-07-03 19:43:13 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:48:19 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:49:13 error: StatusCode : 500, Message : insert into "category" ("category_id", "created_at", "created_by", "is_active", "name", "notes", "slug", "tags", "value") values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning * - column "tags" of relation "category" does not exist
+2025-07-03 19:49:43 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:49:57 error: StatusCode : 500, Message : insert into "blogs" ("author_name", "category", "comment_count", "content", "created_at", "created_by", "featured_image", "is_active", "is_featured", "notes", "reading_time", "scheduled_at", "seo_description", "seo_title", "short_description", "slug", "sub_section", "tags", "title", "views") values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) returning * - duplicate key value violates unique constraint "blogs_slug_unique"
+2025-07-03 19:51:21 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:51:23 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:55:50 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-07-03 19:55:59 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number

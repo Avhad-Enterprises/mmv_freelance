@@ -1,0 +1,90 @@
+2025-06-27 10:20:17 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:20:38 info: [0mPOST /api/v1/users/login [32m200[0m 199.060 ms - -[0m
+2025-06-27 10:29:45 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:33:20 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:33:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:37:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:38:00 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:38:44 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:39:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:39:55 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:46:02 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:48:13 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:48:16 info: [0mPOST /api/v1/category/getprojectcategory/video-editing [32m200[0m 113.566 ms - -[0m
+2025-06-27 10:48:49 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:49:15 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:49:16 info: [0mPOST /api/v1/category/getprojectcategory/video-editing [32m200[0m 224.206 ms - -[0m
+2025-06-27 10:49:44 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:49:52 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:50:12 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:50:16 info: [0mPOST /api/v1/category/getprojectcategory/video-editing [32m200[0m 109.932 ms - -[0m
+2025-06-27 10:53:28 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:54:35 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:54:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:54:54 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:54:55 info: [0mPOST /api/v1/category/getprojectcategory/photo-editing [32m200[0m 103.838 ms - 75[0m
+2025-06-27 10:55:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 10:56:20 info: [0mPOST /api/v1/category/getprojectcategory/video-editing [32m200[0m 181.635 ms - 75[0m
+2025-06-27 11:00:32 info: [0mPOST /api/v1/category/getprojectcategory/video-editing [32m200[0m 10.400 ms - -[0m
+2025-06-27 11:06:23 info: [0mPOST /api/v1/category/getprojectcategory/ [33m404[0m 5.598 ms - 175[0m
+2025-06-27 11:06:30 info: [0mPOST /api/v1/category/getprojectcategory [33m404[0m 3.921 ms - 174[0m
+2025-06-27 11:07:59 info: [0mPOST /api/v1/category/getprojectcategory/34 [32m200[0m 5.679 ms - 64[0m
+2025-06-27 15:20:00 info: [0mPOST /api/v1/category/getprojectcategory/1 [32m200[0m 18.798 ms - 63[0m
+2025-06-27 15:20:12 info: [0mPOST /api/v1/category/getprojectcategory/15 [32m200[0m 6.326 ms - 64[0m
+2025-06-27 15:20:48 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:20:55 info: [0mPOST /api/v1/category/getprojectcategory/1 [32m200[0m 105.796 ms - 63[0m
+2025-06-27 15:21:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:21:40 info: [0mPOST /api/v1/category/getprojectcategory/1 [32m200[0m 103.922 ms - 63[0m
+2025-06-27 15:21:42 info: [0mPOST /api/v1/category/getprojectcategory/1 [32m200[0m 8.986 ms - 63[0m
+2025-06-27 15:22:10 info: [0mPOST /api/v1/category/getprojectcategory/1 [32m200[0m 6.744 ms - 63[0m
+2025-06-27 15:22:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:42:47 error: StatusCode : 404, Message : Authentication token missing
+2025-06-27 15:42:47 info: [0mGET /api/v1/category/projects?category=video-editing [33m404[0m 7.468 ms - 42[0m
+2025-06-27 15:42:47 info: [0mGET /favicon.ico [33m404[0m 2.679 ms - 150[0m
+2025-06-27 15:53:30 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:53:35 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:53:37 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 15:55:31 info: [0mGET /api/v1/category/projects?category=video-editing [32m200[0m 209.812 ms - -[0m
+2025-06-27 15:59:54 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 16:08:07 info: [0mGET /api/v1/category/projects?category=video-editing [32m200[0m 120.741 ms - -[0m
+2025-06-27 17:10:23 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 17:18:47 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:13:29 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:17:50 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:18:15 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:20:04 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:21:05 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:28:56 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:32:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:34:33 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:34:40 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:35:16 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:37:55 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:38:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 18:40:28 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:01:17 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:02:40 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:03:06 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:07:24 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:07:26 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:09:10 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:09:13 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:12:19 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:20:26 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 111.895 ms - 162[0m
+2025-06-27 19:21:37 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 8.398 ms - 162[0m
+2025-06-27 19:21:40 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 10.372 ms - 162[0m
+2025-06-27 19:22:29 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 3.527 ms - 162[0m
+2025-06-27 19:23:33 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 3.960 ms - 162[0m
+2025-06-27 19:37:40 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 6.212 ms - 162[0m
+2025-06-27 19:38:16 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 3.389 ms - 162[0m
+2025-06-27 19:38:25 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 3.244 ms - 162[0m
+2025-06-27 19:38:42 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 5.402 ms - 162[0m
+2025-06-27 19:41:08 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 4.228 ms - 162[0m
+2025-06-27 19:58:11 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:58:26 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 19:58:30 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-27 20:00:50 info: [0mPUT /api/v1/blog/updateblog [33m404[0m 98.544 ms - 161[0m
+2025-06-27 20:17:41 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 27.477 ms - 162[0m
+2025-06-27 20:17:43 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 4.223 ms - 162[0m
+2025-06-27 20:17:44 info: [0mPOST /api/v1/blog/insertblog [33m404[0m 5.626 ms - 162[0m
+2025-06-27 20:22:15 info: 🚀 App listening on the port 8000. Current Env development.

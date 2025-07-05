@@ -21,7 +21,8 @@ class usersRoute implements Route {
     this.router.post(`${this.path}/insertusers`, validationMiddleware(UserDto, 'body', false, []), this.usersController.insertusers);
     this.router.post(`${this.path}/login`, this.usersController.loginusers);
     this.router.put(`${this.path}/updateuserbyid`, this.usersController.updateuserById);
-
+    this.router.get(`${this.path}/getrole`, (req, res, next) => this.usersController.getroleby(req, res, next));
+    this.router.post(`${this.path}/insertrole`, (req, res, next) => this.usersController.insertrolefrom(req, res, next));
   }
 }
 

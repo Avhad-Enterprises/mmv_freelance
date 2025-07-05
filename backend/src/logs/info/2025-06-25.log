@@ -1,0 +1,283 @@
+2025-06-25 10:19:46 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 10:33:15 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 10:33:15 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 4.744 ms - 42[0m
+2025-06-25 10:35:41 error: StatusCode : 400, Message : Expected double-quoted property name in JSON at position 332 (line 10 column 1)
+2025-06-25 10:35:41 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 42.731 ms - 93[0m
+2025-06-25 10:39:52 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 10:39:52 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 2.260 ms - 42[0m
+2025-06-25 10:41:05 error: StatusCode : 400, Message : Expected double-quoted property name in JSON at position 332 (line 10 column 1)
+2025-06-25 10:41:05 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 1.640 ms - 93[0m
+2025-06-25 10:41:35 error: StatusCode : 400, Message : Expected double-quoted property name in JSON at position 332 (line 10 column 1)
+2025-06-25 10:41:35 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 1.719 ms - 93[0m
+2025-06-25 10:49:01 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 10:49:01 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 1.700 ms - 42[0m
+2025-06-25 10:54:40 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 10:54:40 info: [0mGET /api/v1/category/insertcategory [33m404[0m 1.305 ms - 42[0m
+2025-06-25 10:54:45 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 10:54:45 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 1.249 ms - 42[0m
+2025-06-25 10:58:47 info: [0mPOST /api/v1/users/login [32m200[0m 325.553 ms - -[0m
+2025-06-25 11:00:11 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 19.836 ms - 170[0m
+2025-06-25 11:01:50 info: [0mPOST /api/category/insertcategory [33m404[0m 1.181 ms - 167[0m
+2025-06-25 11:07:09 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 7.325 ms - 170[0m
+2025-06-25 11:08:21 info: [0mPOST /api/v1/users/insertemployee [33m404[0m 5.383 ms - 167[0m
+2025-06-25 11:09:16 info: [0mPOST /api/v1/users/insertemployee [33m404[0m 3.985 ms - 167[0m
+2025-06-25 11:09:18 info: [0mPOST /api/v1/users/insertemployee [33m404[0m 8.616 ms - 167[0m
+2025-06-25 11:09:23 info: [0mPOST /api/v1/users/insertemployee [33m404[0m 5.001 ms - 167[0m
+2025-06-25 11:09:40 info: [0mPOST /api/v1/users/insertemployee [33m404[0m 4.936 ms - 167[0m
+2025-06-25 11:14:07 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 4.342 ms - 170[0m
+2025-06-25 11:15:18 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 3.318 ms - 170[0m
+2025-06-25 11:15:22 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 2.933 ms - 170[0m
+2025-06-25 11:15:30 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 2.924 ms - 170[0m
+2025-06-25 11:15:34 info: [0mPUT /api/v1/category/insertcategory [33m404[0m 3.234 ms - 169[0m
+2025-06-25 11:15:49 info: [0mGET /api/v1/category/insertcategory [33m404[0m 5.371 ms - 169[0m
+2025-06-25 11:15:55 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 4.306 ms - 170[0m
+2025-06-25 11:20:38 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:20:43 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:20:53 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:21:11 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:22:37 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 123.015 ms - 170[0m
+2025-06-25 11:29:25 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:53:12 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 11:53:25 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 11:53:25 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 8.803 ms - 42[0m
+2025-06-25 11:54:58 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 11:54:58 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 16.446 ms - 42[0m
+2025-06-25 11:55:02 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 11:55:02 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 3.376 ms - 42[0m
+2025-06-25 11:55:27 info: [0mPOST /api/v1/category/insertcategory [33m404[0m 95.665 ms - 170[0m
+2025-06-25 13:30:38 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 13:30:50 error: StatusCode : 400, Message : categories_name should not be empty, categories_name must be a string, categories_value should not be empty, categories_value must be a string, categories_slug should not be empty, categories_slug must be a string
+2025-06-25 13:30:50 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 119.914 ms - 227[0m
+2025-06-25 13:31:21 error: StatusCode : 400, Message : categories_name should not be empty, categories_name must be a string, categories_value should not be empty, categories_value must be a string, categories_slug should not be empty, categories_slug must be a string
+2025-06-25 13:31:21 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 10.883 ms - 227[0m
+2025-06-25 13:32:35 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 13:32:43 error: StatusCode : 400, Message : categories_name should not be empty, categories_name must be a string, categories_value should not be empty, categories_value must be a string, categories_slug should not be empty, categories_slug must be a string
+2025-06-25 13:32:43 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 115.413 ms - 227[0m
+2025-06-25 14:34:07 error: StatusCode : 400, Message : categories_name should not be empty, categories_name must be a string, categories_value should not be empty, categories_value must be a string, categories_slug should not be empty, categories_slug must be a string
+2025-06-25 14:34:07 info: [0mPOST /api/v1/category/insertcategory [33m400[0m 9.862 ms - 227[0m
+2025-06-25 14:38:53 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 14:39:22 error: StatusCode : 500, Message : Cannot read properties of undefined (reading 'addcategory')
+2025-06-25 14:39:22 info: [0mPOST /api/v1/category/insertcategory [31m500[0m 122.698 ms - 73[0m
+2025-06-25 14:40:35 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 14:40:40 error: StatusCode : 500, Message : Cannot read properties of undefined (reading 'addcategory')
+2025-06-25 14:40:40 info: [0mPOST /api/v1/category/insertcategory [31m500[0m 120.345 ms - 73[0m
+2025-06-25 14:45:59 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 14:46:03 info: [0mPOST /api/v1/category/insertcategory [32m201[0m 125.386 ms - 464[0m
+2025-06-25 15:26:26 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 15:37:57 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 15:38:01 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 15:38:03 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 15:44:49 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 15:44:49 info: [0mPOST /api/v1/category/editcategory/:id [33m404[0m 5.574 ms - 42[0m
+2025-06-25 15:46:51 info: [0mPOST /api/v1/category/editcategory/:id [33m404[0m 105.144 ms - 172[0m
+2025-06-25 15:48:53 error: StatusCode : 400, Message : Event ID is required
+2025-06-25 15:48:53 info: [0mGET /api/v1/category/editcategory/:id [33m400[0m 7.986 ms - 34[0m
+2025-06-25 15:50:12 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 15:50:24 error: StatusCode : 400, Message : Category ID is required
+2025-06-25 15:50:24 info: [0mGET /api/v1/category/editcategory/:id [33m400[0m 104.639 ms - 37[0m
+2025-06-25 15:58:39 error: StatusCode : 400, Message : Category ID is required
+2025-06-25 15:58:39 info: [0mGET /api/v1/category/editcategory/:id [33m400[0m 27.293 ms - 37[0m
+2025-06-25 15:58:47 error: StatusCode : 400, Message : Category ID is required
+2025-06-25 15:58:47 info: [0mGET /api/v1/category/editcategory/:id [33m400[0m 7.180 ms - 37[0m
+2025-06-25 15:59:02 error: StatusCode : 400, Message : Category ID is required
+2025-06-25 15:59:02 info: [0mGET /api/v1/category/editcategory/:id [33m400[0m 4.261 ms - 37[0m
+2025-06-25 16:10:43 info: [0mGET /api/v1/category/editcategory/1 [32m200[0m 16.285 ms - 472[0m
+2025-06-25 16:32:36 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 16:32:42 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 16:47:20 info: [0mGET /api/v1/category/updatecategory/1 [33m404[0m 98.006 ms - 171[0m
+2025-06-25 16:51:42 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 16:51:42 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 2.602 ms - 42[0m
+2025-06-25 16:52:16 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 5.779 ms - 169[0m
+2025-06-25 16:54:33 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 21.957 ms - 169[0m
+2025-06-25 16:55:04 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 3.190 ms - 169[0m
+2025-06-25 16:55:28 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 8.173 ms - 169[0m
+2025-06-25 17:31:24 info: [0mGET /api/v1/category/updatecategory [33m404[0m 5.120 ms - 169[0m
+2025-06-25 17:31:39 info: [0mGET /api/v1/category/updatecategory [33m404[0m 3.485 ms - 169[0m
+2025-06-25 17:32:03 info: [0mGET /api/v1/category/updatecategory [33m404[0m 5.222 ms - 169[0m
+2025-06-25 17:32:05 info: [0mGET /api/v1/category/updatecategory [33m404[0m 4.750 ms - 169[0m
+2025-06-25 17:32:58 info: [0mGET /api/v1/category/updatecategory [33m404[0m 3.929 ms - 169[0m
+2025-06-25 17:33:16 info: [0mGET /api/v1/category/updatecategory [33m404[0m 4.411 ms - 169[0m
+2025-06-25 17:33:19 info: [0mGET /api/v1/category/updatecategory [33m404[0m 5.001 ms - 169[0m
+2025-06-25 17:34:25 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 4.742 ms - 169[0m
+2025-06-25 17:34:48 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 4.662 ms - 169[0m
+2025-06-25 17:40:57 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 3.339 ms - 169[0m
+2025-06-25 17:40:58 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 3.279 ms - 169[0m
+2025-06-25 17:42:50 error: StatusCode : 500, Message : this.categoryController.updatecategory is not a function
+2025-06-25 17:42:50 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 9.021 ms - 70[0m
+2025-06-25 17:50:20 info: [0mPUT /api/v1/category/updatecategoryid [33m404[0m 6.780 ms - 171[0m
+2025-06-25 17:50:29 error: StatusCode : 500, Message : this.categoryController.updatecategory is not a function
+2025-06-25 17:50:29 info: [0mPUT /api/v1/category/updatecategory/id [31m500[0m 7.505 ms - 70[0m
+2025-06-25 17:50:38 error: StatusCode : 500, Message : this.categoryController.updatecategory is not a function
+2025-06-25 17:50:38 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 64.440 ms - 70[0m
+2025-06-25 17:51:21 error: StatusCode : 500, Message : this.categoryController.updatecategory is not a function
+2025-06-25 17:51:21 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 3.862 ms - 70[0m
+2025-06-25 17:52:37 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 17:52:42 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "created_by" = $7, "created_at" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 17:52:42 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 122.020 ms - 252[0m
+2025-06-25 17:58:55 error: StatusCode : 400, Message : created_by must be an integer number
+2025-06-25 17:58:55 info: [0mPUT /api/v1/category/updatecategory/1 [33m400[0m 8.041 ms - 50[0m
+2025-06-25 17:59:41 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 17:59:46 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6 where "categoryId" = $7 returning * - column "categoryId" does not exist
+2025-06-25 17:59:46 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 129.331 ms - 210[0m
+2025-06-25 18:02:25 error: StatusCode : 500, Message : update "category" set "category_id" = $1, "name" = $2, "value" = $3, "slug" = $4, "tags" = $5, "notes" = $6, "is_active" = $7, "updated_at" = $8, "updated_by" = $9 where "categoryId" = $10 returning * - column "categoryId" does not exist
+2025-06-25 18:02:25 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 9.299 ms - 275[0m
+2025-06-25 18:02:41 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:02:41 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 9.600 ms - 252[0m
+2025-06-25 18:03:31 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:03:31 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 7.374 ms - 252[0m
+2025-06-25 18:03:53 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:03:53 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 7.920 ms - 252[0m
+2025-06-25 18:04:07 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:04:07 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 6.144 ms - 252[0m
+2025-06-25 18:04:52 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:04:52 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 6.433 ms - 252[0m
+2025-06-25 18:05:29 info: [0mPOST /api/v1/category/updatecategory/1 [33m404[0m 9.033 ms - 172[0m
+2025-06-25 18:05:34 info: [0mGET /api/v1/category/updatecategory/1 [33m404[0m 5.498 ms - 171[0m
+2025-06-25 18:05:37 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:05:37 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 7.787 ms - 252[0m
+2025-06-25 18:12:32 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:12:32 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 11.620 ms - 252[0m
+2025-06-25 18:16:38 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:16:42 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:16:42 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 105.125 ms - 252[0m
+2025-06-25 18:17:41 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:17:41 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 13.258 ms - 252[0m
+2025-06-25 18:19:50 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:19:50 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 7.131 ms - 252[0m
+2025-06-25 18:19:56 info: [0mPOST /api/v1/category/updatecategory/1 [33m404[0m 5.870 ms - 172[0m
+2025-06-25 18:20:01 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:20:02 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 9.647 ms - 252[0m
+2025-06-25 18:23:51 error: StatusCode : 404, Message : Authentication token missing
+2025-06-25 18:23:51 info: [0mPUT /api/v1/category/updatecategory/1 [33m404[0m 1.615 ms - 42[0m
+2025-06-25 18:24:04 error: StatusCode : 400, Message : name should not be empty, name must be a string, value should not be empty, value must be a string, slug should not be empty, slug must be a string
+2025-06-25 18:24:04 info: [0mPUT /api/v1/category/updatecategory/1 [33m400[0m 5.577 ms - 161[0m
+2025-06-25 18:24:37 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:24:37 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 5.603 ms - 252[0m
+2025-06-25 18:24:48 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:24:48 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 7.772 ms - 252[0m
+2025-06-25 18:25:17 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:25:17 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 4.932 ms - 252[0m
+2025-06-25 18:25:21 error: StatusCode : 500, Message : update "category" set "name" = $1, "value" = $2, "slug" = $3, "tags" = $4, "notes" = $5, "is_active" = $6, "updated_at" = $7, "updated_by" = $8 where "categoryId" = $9 returning * - column "categoryId" does not exist
+2025-06-25 18:25:21 info: [0mPUT /api/v1/category/updatecategory/1 [31m500[0m 6.946 ms - 252[0m
+2025-06-25 18:27:20 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 4.276 ms - 169[0m
+2025-06-25 18:27:48 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:34:16 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:34:39 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:34:41 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:35:33 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:35:33 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 111.222 ms - 57[0m
+2025-06-25 18:35:48 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-25 18:35:48 info: [0mPUT /api/v1/category/updatecategory [33m400[0m 5.758 ms - 84[0m
+2025-06-25 18:35:53 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-25 18:35:53 info: [0mPUT /api/v1/category/updatecategory [33m400[0m 4.126 ms - 84[0m
+2025-06-25 18:36:26 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:36:26 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 5.666 ms - 57[0m
+2025-06-25 18:40:59 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:40:59 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 5.419 ms - 57[0m
+2025-06-25 18:50:08 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:50:08 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 7.685 ms - 57[0m
+2025-06-25 18:50:10 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:50:10 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 3.951 ms - 57[0m
+2025-06-25 18:50:12 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:50:12 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 3.926 ms - 57[0m
+2025-06-25 18:50:13 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:50:13 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 11.590 ms - 57[0m
+2025-06-25 18:50:40 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:50:49 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 18:50:49 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 118.293 ms - 47[0m
+2025-06-25 18:54:23 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 18:54:23 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 8.623 ms - 47[0m
+2025-06-25 18:54:33 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 18:54:33 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 6.816 ms - 47[0m
+2025-06-25 18:54:49 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 18:54:58 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 18:54:58 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 206.316 ms - 57[0m
+2025-06-25 18:59:05 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:01:26 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:01:38 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 19:01:38 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 116.511 ms - 57[0m
+2025-06-25 19:01:40 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 19:01:40 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 7.026 ms - 57[0m
+2025-06-25 19:02:06 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:02:18 error: StatusCode : 500, Message : The operator "undefined" is not permitted
+2025-06-25 19:02:18 info: [0mPUT /api/v1/category/updatecategory [31m500[0m 123.890 ms - 57[0m
+2025-06-25 19:03:15 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:03:21 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:03:21 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 141.490 ms - 47[0m
+2025-06-25 19:07:15 info: [0mPUT /api/v1/category/updatecategoryid [33m404[0m 10.058 ms - 171[0m
+2025-06-25 19:07:27 info: [0mPUT /api/v1/category/updatecategory/id [33m404[0m 4.671 ms - 172[0m
+2025-06-25 19:07:33 info: [0mPUT /api/v1/category/updatecategory/1 [33m404[0m 4.792 ms - 171[0m
+2025-06-25 19:07:38 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:07:38 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 6.921 ms - 47[0m
+2025-06-25 19:08:33 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:08:33 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 12.495 ms - 47[0m
+2025-06-25 19:11:10 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:11:10 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 11.565 ms - 47[0m
+2025-06-25 19:11:52 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-25 19:11:52 info: [0mPUT /api/v1/category/updatecategory [33m400[0m 5.961 ms - 84[0m
+2025-06-25 19:12:08 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:12:08 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 9.688 ms - 47[0m
+2025-06-25 19:13:15 info: [0mPUT /api/v1/category/updatecategoryid [33m404[0m 3.825 ms - 171[0m
+2025-06-25 19:13:25 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:13:25 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 7.356 ms - 47[0m
+2025-06-25 19:14:31 info: [0mPOST /api/v1/category/updatecategory [33m404[0m 3.616 ms - 170[0m
+2025-06-25 19:14:35 info: [0mGET /api/v1/category/updatecategory [33m404[0m 3.525 ms - 169[0m
+2025-06-25 19:14:43 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:14:43 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 4.937 ms - 47[0m
+2025-06-25 19:22:30 info: [0mPUT /api/v1/category/updatecategory [32m200[0m 43.744 ms - 466[0m
+2025-06-25 19:30:12 error: StatusCode : 404, Message : Category not found or not updated
+2025-06-25 19:30:12 info: [0mPUT /api/v1/category/updatecategory [33m404[0m 7.125 ms - 47[0m
+2025-06-25 19:58:51 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:58:53 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 19:59:17 info: [0mPUT /api/v1/category/updatecategory [32m200[0m 149.542 ms - 466[0m
+2025-06-25 20:01:55 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 9.985 ms - 169[0m
+2025-06-25 20:04:14 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.372 ms - 169[0m
+2025-06-25 20:04:35 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.151 ms - 169[0m
+2025-06-25 20:05:57 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.647 ms - 169[0m
+2025-06-25 20:05:59 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 2.967 ms - 169[0m
+2025-06-25 20:12:20 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.006 ms - 169[0m
+2025-06-25 20:28:26 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:28:38 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 94.485 ms - 169[0m
+2025-06-25 20:28:59 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.221 ms - 169[0m
+2025-06-25 20:30:48 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 6.075 ms - 169[0m
+2025-06-25 20:30:55 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.226 ms - 169[0m
+2025-06-25 20:41:48 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:41:56 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 151.949 ms - 169[0m
+2025-06-25 20:42:23 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 21.848 ms - 169[0m
+2025-06-25 20:42:25 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.023 ms - 169[0m
+2025-06-25 20:42:31 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 5.198 ms - 169[0m
+2025-06-25 20:42:36 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 8.475 ms - 169[0m
+2025-06-25 20:42:56 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 5.256 ms - 169[0m
+2025-06-25 20:42:59 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.388 ms - 169[0m
+2025-06-25 20:43:59 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.346 ms - 169[0m
+2025-06-25 20:44:22 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:44:26 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 137.637 ms - 169[0m
+2025-06-25 20:44:28 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 8.843 ms - 169[0m
+2025-06-25 20:45:32 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:45:35 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 116.440 ms - 169[0m
+2025-06-25 20:45:38 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 5.617 ms - 169[0m
+2025-06-25 20:46:21 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:46:27 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 198.690 ms - 169[0m
+2025-06-25 20:53:00 info: 🚀 App listening on the port 8000. Current Env development.
+2025-06-25 20:53:22 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 103.386 ms - 169[0m
+2025-06-25 20:53:28 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 6.128 ms - 169[0m
+2025-06-25 20:53:42 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.503 ms - 169[0m
+2025-06-25 20:53:43 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.635 ms - 169[0m
+2025-06-25 20:54:06 error: StatusCode : 400, Message : Unexpected token '}', ..."te_at": 
+}
+" is not valid JSON
+2025-06-25 20:54:06 info: [0mPUT /api/v1/category/deletecategory [33m400[0m 8.604 ms - 79[0m
+2025-06-25 20:54:25 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.365 ms - 169[0m
+2025-06-25 20:55:09 error: StatusCode : 400, Message : Unexpected token '}', ..."ete_at":
+}
+" is not valid JSON
+2025-06-25 20:55:09 info: [0mPUT /api/v1/category/deletecategory [33m400[0m 3.508 ms - 79[0m
+2025-06-25 20:56:08 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 5.814 ms - 169[0m
+2025-06-25 20:59:32 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 7.382 ms - 169[0m
+2025-06-25 20:59:33 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.001 ms - 169[0m
+2025-06-25 20:59:36 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.222 ms - 169[0m
+2025-06-25 20:59:37 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.484 ms - 169[0m
+2025-06-25 20:59:57 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.862 ms - 169[0m
+2025-06-25 21:00:08 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 2.844 ms - 169[0m
+2025-06-25 21:00:16 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 4.057 ms - 169[0m
+2025-06-25 21:01:12 info: [0mPUT /api/v1/category/deletecategory [33m404[0m 3.854 ms - 169[0m

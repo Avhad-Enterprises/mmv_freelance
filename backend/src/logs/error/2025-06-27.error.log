@@ -1,0 +1,73 @@
+2025-06-27 10:21:37 error: uncaughtException: select "category".*, "projects_task".* from "category" inner join "projects_task" on "category"."projects_task_id" = "projects_task"."projects_task_id" where "category"."category_id" = $1 and "category"."is_deleted" = $2 order by "category"."created_at" desc - column category.projects_task_id does not exist
+error: select "category".*, "projects_task".* from "category" inner join "projects_task" on "category"."projects_task_id" = "projects_task"."projects_task_id" where "category"."category_id" = $1 and "category"."is_deleted" = $2 order by "category"."created_at" desc - column category.projects_task_id does not exist
+    at Parser.parseErrorMessage (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:368:69)
+    at Parser.handlePacket (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:187:21)
+    at Parser.parse (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:102:30)
+    at Socket.<anonymous> (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\index.ts:7:48)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+2025-06-27 10:33:22 error: uncaughtException: categoryId is not defined
+ReferenceError: categoryId is not defined
+    at CategoryController.getprojectbycategory (D:\mmv1\mmv_freelance\backend\src\controllers\category.controller.ts:48:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\categories.routes.ts:24:105
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at param (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:421:3)
+2025-06-27 10:39:56 error: uncaughtException: select "category".*, "projects_task".* from "category" inner join "projects_task" on "category"."projects_task_id" = "projects_task"."projects_task_id" where "projects_task"."project_category" = $1 and "category"."is_deleted" = $2 order by "category"."created_at" desc - column category.projects_task_id does not exist
+error: select "category".*, "projects_task".* from "category" inner join "projects_task" on "category"."projects_task_id" = "projects_task"."projects_task_id" where "projects_task"."project_category" = $1 and "category"."is_deleted" = $2 order by "category"."created_at" desc - column category.projects_task_id does not exist
+    at Parser.parseErrorMessage (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:368:69)
+    at Parser.handlePacket (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:187:21)
+    at Parser.parse (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\parser.ts:102:30)
+    at Socket.<anonymous> (D:\mmv1\mmv_freelance\backend\node_modules\pg-protocol\src\index.ts:7:48)
+    at Socket.emit (node:events:524:28)
+    at Socket.emit (node:domain:489:12)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Socket.Readable.push (node:internal/streams/readable:392:5)
+    at TCP.onStreamRead (node:internal/stream_base_commons:189:23)
+2025-06-27 10:46:04 error: uncaughtException: Category "video-editing" not found
+Error: Category "video-editing" not found
+    at CategoryService.getprojectbycategoryid (D:\mmv1\mmv_freelance\backend\src\services\category.service.ts:72:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async CategoryController.getprojectbycategory (D:\mmv1\mmv_freelance\backend\src\controllers\category.controller.ts:52:30)
+2025-06-27 10:49:52 error: uncaughtException: No projects found in this category
+Error: No projects found in this category
+    at CategoryController.getprojectbycategory (D:\mmv1\mmv_freelance\backend\src\controllers\category.controller.ts:55:13)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+2025-06-27 10:50:51 error: uncaughtException: Category "photo-editing" not found
+Error: Category "photo-editing" not found
+    at CategoryService.getprojectbycategoryid (D:\mmv1\mmv_freelance\backend\src\services\category.service.ts:72:19)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async CategoryController.getprojectbycategory (D:\mmv1\mmv_freelance\backend\src\controllers\category.controller.ts:52:30)
+2025-06-27 15:42:47 error: StatusCode : 404, Message : Authentication token missing
+2025-06-27 19:01:13 error: uncaughtException: Cannot find module './blogs.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+Error: Cannot find module './blogs.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1249:15)
+    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (D:\mmv1\mmv_freelance\backend\node_modules\@cspotcode\source-map-support\source-map-support.js:811:30)
+    at Function._load (node:internal/modules/cjs/loader:1075:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+    at Module.require (node:internal/modules/cjs/loader:1340:12)
+    at require (node:internal/modules/helpers:138:16)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts:30:1)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)

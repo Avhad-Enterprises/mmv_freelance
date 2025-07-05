@@ -1,0 +1,486 @@
+2025-06-24 19:00:06 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:01:55 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:02:32 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:07:08 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:07:39 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:08:47 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:09:40 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:15:03 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:15:10 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:16:00 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:32:03 error: uncaughtException: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+Error: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1249:15)
+    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (D:\mmv1\mmv_freelance\backend\node_modules\@cspotcode\source-map-support\source-map-support.js:811:30)
+    at Function._load (node:internal/modules/cjs/loader:1075:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+    at Module.require (node:internal/modules/cjs/loader:1340:12)
+    at require (node:internal/modules/helpers:138:16)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts:29:1)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+2025-06-24 19:32:09 error: uncaughtException: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+Error: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1249:15)
+    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (D:\mmv1\mmv_freelance\backend\node_modules\@cspotcode\source-map-support\source-map-support.js:811:30)
+    at Function._load (node:internal/modules/cjs/loader:1075:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+    at Module.require (node:internal/modules/cjs/loader:1340:12)
+    at require (node:internal/modules/helpers:138:16)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts:29:1)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+2025-06-24 19:32:25 error: uncaughtException: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+Error: Cannot find module './categories.schema'
+Require stack:
+- D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts
+- D:\mmv1\mmv_freelance\backend\src\middlewares\auth.middleware.ts
+- D:\mmv1\mmv_freelance\backend\src\app.ts
+- D:\mmv1\mmv_freelance\backend\src\server.ts
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1249:15)
+    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue [as _resolveFilename] (D:\mmv1\mmv_freelance\backend\node_modules\@cspotcode\source-map-support\source-map-support.js:811:30)
+    at Function._load (node:internal/modules/cjs/loader:1075:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:219:24)
+    at Module.require (node:internal/modules/cjs/loader:1340:12)
+    at require (node:internal/modules/helpers:138:16)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\database\index.schema.ts:29:1)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+2025-06-24 19:32:57 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:33:41 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:33:59 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:34:23 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:34:40 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:35:15 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:36:39 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:49:41 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:49:55 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:50:53 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:50:56 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:52:06 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 19:53:53 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:15:25 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:20:01 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:20:06 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:23:24 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:27:20 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:30:28 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:34:21 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:34:32 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:34:49 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:39:22 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:41:30 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-24 20:54:38 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)

@@ -1,0 +1,48 @@
+2025-07-05 11:50:02 error: StatusCode : 500, Message : role_service_1.default.getpermissionby is not a function
+2025-07-05 11:53:38 error: StatusCode : 500, Message : role_service_1.default.getpermissionby is not a function
+2025-07-05 12:11:20 error: StatusCode : 500, Message : role_service_1.default.getpermissionby is not a function
+2025-07-05 12:25:12 error: uncaughtException: Role ID is required
+Error: Role ID is required
+    at roleController.assignpermissionstorole (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:65:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:23:99
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at param (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:365:14)
+    at param (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:376:14)
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:421:3)
+2025-07-05 12:26:42 error: StatusCode : 500, Message : role_service_1.default.assignPermissions is not a function
+2025-07-05 12:28:38 error: StatusCode : 500, Message : role_service_1.default.assignPermissions is not a function
+2025-07-05 12:28:39 error: StatusCode : 500, Message : role_service_1.default.assignPermissions is not a function
+2025-07-05 12:29:59 error: StatusCode : 500, Message : role_service_1.default.getpermissionby is not a function
+2025-07-05 12:33:21 error: uncaughtException: Role ID is required
+Error: Role ID is required
+    at roleController.assignpermissionstorole (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:65:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:23:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-05 12:33:40 error: uncaughtException: Role ID is required
+Error: Role ID is required
+    at roleController.assignpermissionstorole (D:\mmv1\mmv_freelance\backend\src\controllers\role.controller.ts:65:19)
+    at D:\mmv1\mmv_freelance\backend\src\routes\role.routes.ts:23:95
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:149:13)
+    at Route.dispatch (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\route.js:119:3)
+    at Layer.handle [as handle_request] (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\layer.js:95:5)
+    at D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:284:15
+    at Function.process_params (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:346:12)
+    at next (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:280:10)
+    at Function.handle (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\router\index.js:175:3)
+2025-07-05 12:43:54 error: StatusCode : 500, Message : role_service_1.default.getpermissionby is not a function
+2025-07-05 12:49:24 error: StatusCode : 500, Message : Error fetching Role
+2025-07-05 13:00:28 error: StatusCode : 500, Message : Error fetching Role
+2025-07-05 13:00:31 error: StatusCode : 500, Message : Error fetching Role
+2025-07-05 13:01:49 error: StatusCode : 500, Message : Error fetching Role

@@ -57,27 +57,43 @@ class usersController {
       const raw = (req.body as any).users_id;
       console.log(raw);
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
-  
+
       if (isNaN(idNum)) {
         res.status(400).json({ error: 'users_id must be a number' });
         return;
       }
-  
+
       // Clone body and exclude code_id
       const { users_id, ...fieldsToUpdate } = req.body;
-  
+
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
-  
+
       const updated = await this.usersService.update(idNum, fieldsToUpdate);
-      res.status(200).json({ data: updated, message: 'users updated'});
+      res.status(200).json({ data: updated, message: 'users updated' });
     } catch (error) {
       next(error);
     }
   };
-  
-}
+ public getroleby = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+             const user_id: number = req.body.role_id;
+            const user = await this.usersService.getrolebyuser(user_id);
+            res.status(200).json({ data: user, message: "User fetched" });
+        } catch (error) {
+            next();
+        }
+    };
+      public insertrolefrom = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+            try {
+                const userData: UserDto = req.body;
+                const inserteddata = await this.usersService.insertrolefromuser(userData);
+                res.status(201).json({ data: inserteddata, message: "Inserted" });
+            } catch (error) {
+                next(error);
+            }
+}}
 
 export default usersController;

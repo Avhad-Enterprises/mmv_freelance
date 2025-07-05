@@ -128,6 +128,15 @@ class projectstaskcontroller {
       next(err);
     }
   };
+  
+  public getprojecttypesby = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projects = await this.ProjectstaskService.getprojecttypesbytable();
+      res.status(200).json({ data: projects, success: true });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 export default projectstaskcontroller; 

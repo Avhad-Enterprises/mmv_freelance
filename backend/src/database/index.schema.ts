@@ -26,12 +26,25 @@ export default DB;
 // Table Names
 import { USERS_TABLE } from './users.schema';
 import { PROJECTS_TASK } from './projectstask.schema';
-
-
+import {CATEGORY} from './category.schema';
+import {BLOG} from './blog.schema';
+import {NOTIFICATION} from './notification.schema';
+import {PERMISSION} from './permission.schema';
+import {ROLE} from './role.schema';
+import {ROLE_PERMISSION} from './role_permission.schema'
+import {USER_ROLES} from './user_role.schema'
 
 export const T = {
   USERS_TABLE,
-  PROJECTS_TASK
+  PROJECTS_TASK,
+  CATEGORY,
+  BLOG,
+  NOTIFICATION,
+  PERMISSION,
+  ROLE,
+  ROLE_PERMISSION,
+  USER_ROLES
+  
 };
 
 // Creates the procedure that is then added as a trigger to every table

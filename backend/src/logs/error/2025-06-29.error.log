@@ -1,0 +1,63 @@
+2025-06-29 13:34:39 error: StatusCode : 404, Message : Authentication token missing
+2025-06-29 13:44:36 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-29 13:45:06 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-29 13:45:07 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-29 13:54:17 error: StatusCode : 400, Message : Blog query param is required
+2025-06-29 13:55:12 error: StatusCode : 400, Message : Blog query param is required
+2025-06-29 13:55:13 error: StatusCode : 400, Message : Blog query param is required
+2025-06-29 14:08:43 error: StatusCode : 500, Message : select "value" from "blogs" where "value" = $1 limit $2 - column "value" does not exist
+2025-06-29 14:10:27 error: StatusCode : 500, Message : select "value" from "blogs" where "value" = $1 limit $2 - column "value" does not exist
+2025-06-29 14:10:28 error: StatusCode : 500, Message : select "value" from "blogs" where "value" = $1 limit $2 - column "value" does not exist
+2025-06-29 14:17:55 error: StatusCode : 500, Message : select "value" from "blogs" where "value" = $1 limit $2 - column "value" does not exist
+2025-06-29 14:29:43 error: StatusCode : 500, Message : select * from "blogs" where "category" = $1 and "is_active" = $2 order by "created_at" desc - invalid input syntax for type integer: "true"
+2025-06-29 14:34:29 error: StatusCode : 500, Message : select * from "blogs" where "category" = $1 and "is_active" = $2 order by "created_at" desc - invalid input syntax for type integer: "true"
+2025-06-29 15:43:08 error: StatusCode : 500, Message : select * from "blogs" where "category" = $1 and "is_active" = $2 order by "created_at" desc - invalid input syntax for type integer: "true"
+2025-06-29 16:14:01 error: StatusCode : 500, Message : select "value" from "blogs" where "value" = $1 limit $2 - column "value" does not exist
+2025-06-29 16:18:54 error: StatusCode : 500, Message : Cannot read properties of undefined (reading 'length')
+2025-06-29 16:21:39 error: StatusCode : 500, Message : Cannot read properties of undefined (reading 'length')
+2025-06-29 16:47:54 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-29 16:48:09 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-29 16:48:13 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-29 16:49:24 error: StatusCode : 400, Message : category_id should not be empty, category_id must be an integer number
+2025-06-29 18:41:01 error: uncaughtException: projectstask_services_1.default is not a constructor
+TypeError: projectstask_services_1.default is not a constructor
+    at new projectstaskcontroller (D:\mmv1\mmv_freelance\backend\src\controllers\projectstask.controllers.ts:15:32)
+    at new projectstaskRoute (D:\mmv1\mmv_freelance\backend\src\routes\projectstask.routes.ts:12:35)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:12:41)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+    at Module.load (node:internal/modules/cjs/loader:1318:32)
+    at Function._load (node:internal/modules/cjs/loader:1128:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+2025-06-29 19:19:58 error: StatusCode : 400, Message : Blog ID is required
+2025-06-29 19:24:20 error: StatusCode : 400, Message : Blog ID is required
+2025-06-29 19:26:48 error: StatusCode : 400, Message : Blog ID is required
+2025-06-29 19:26:50 error: StatusCode : 400, Message : Blog ID is required
+2025-06-29 19:45:09 error: StatusCode : 401, Message : Wrong authentication token
+2025-06-29 20:03:09 error: StatusCode : 400, Message : Category query param is required
+2025-06-29 20:26:18 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:14:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)
+2025-06-29 20:29:03 error: uncaughtException: listen EADDRINUSE: address already in use :::8000
+Error: listen EADDRINUSE: address already in use :::8000
+    at Server.setupListenHandle [as _listen2] (node:net:1912:16)
+    at listenInCluster (node:net:1969:12)
+    at Server.listen (node:net:2074:7)
+    at Function.listen (D:\mmv1\mmv_freelance\backend\node_modules\express\lib\application.js:635:24)
+    at App.listen (D:\mmv1\mmv_freelance\backend\src\app.ts:46:14)
+    at Object.<anonymous> (D:\mmv1\mmv_freelance\backend\src\server.ts:14:5)
+    at Module._compile (node:internal/modules/cjs/loader:1565:14)
+    at Module.m._compile (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1618:23)
+    at node:internal/modules/cjs/loader:1708:10
+    at Object.require.extensions.<computed> [as .ts] (D:\mmv1\mmv_freelance\backend\node_modules\ts-node\src\index.ts:1621:12)

@@ -11,6 +11,7 @@ import { sendResetEmail } from '../utils/emailer';
 import { USERS_TABLE } from "../database/users.schema";
 
 
+
 class usersService {
   public async Insert(data: UserDto): Promise<User> {
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
@@ -71,7 +72,7 @@ class usersService {
   }
 
   public initiatePasswordReset = async (email: string): Promise<void> => {
-    const user = await DB(T.USERS_TABLE).where({ email,is_active: true, is_banned: false, account_status: 1}).first();
+    const user = await DB(T.USERS_TABLE).where({ email, is_active: true, is_banned: false, account_status: 1 }).first();
     console.log(user);
     if (!user) return; // silent on purpose
 
@@ -110,6 +111,21 @@ class usersService {
         updated_at: DB.fn.now()
       });
   };
+  public async getrolebyuser(user_id: number): Promise<any> {
+    if (!user_id) throw new HttpException(400, "User ID is required");
+
+    const user = await DB(T.USER_ROLES).where({ user_id }).first();
+    if (!user) throw new HttpException(404, "User not found");
+
+    return user;
+  }
+  public async insertrolefromuser(data: UserDto): Promise<any> {
+    if (isEmpty(data)) {
+      throw new HttpException(400, "User data is empty");
+    }
+    const insertedUSER_ROLES = await DB(T.USER_ROLES).insert(data).returning("*");
+    return insertedUSER_ROLES[0];
+  }
 
 
 }

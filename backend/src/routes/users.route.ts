@@ -23,7 +23,8 @@ class usersRoute implements Route {
     this.router.put(`${this.path}/updateuserbyid`, this.usersController.updateuserById);
     this.router.put(`${this.path}/forget_password`, this.usersController.forgetpasswordusers);
     this.router.put(`${this.path}/reset_password`, this.usersController.reset_password);
-
+    this.router.get(`${this.path}/getrole`, (req, res, next) => this.usersController.getroleby(req, res, next));
+    this.router.post(`${this.path}/insertrole`, (req, res, next) => this.usersController.insertrolefrom(req, res, next));
   }
 }
 

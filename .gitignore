@@ -7,13 +7,13 @@
 **/build/
 **/dist/
 
-
 # Logs
 logs
 *.log
 npm-debug.log*
 
 
+=======
 # IDE & system
 .vscode/
 .idea/

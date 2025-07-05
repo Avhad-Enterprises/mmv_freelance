@@ -18,40 +18,63 @@ export const isEmpty = (value: any): boolean => {
     }
 };
 
-// export const cleanObj = (input: any, allowedKeys: string[] = []) => {
-//   return Object.keys(input)
-//     .filter(key => allowedKeys.includes(key))
-//     .reduce((obj, key) => {
-//       obj[key] = input[key];
-//       return obj;
-//     }, {});
-// };
-
-// export const uploadToAws = async (name: string, base64String: string) => {
-//   const s3 = new AWS.S3({
-//     accessKeyId: AWS_ID,
-//     secretAccessKey: AWS_SECRET,
-//   });
-//   const extension = base64String.split(';')[0].split('/')[1];
-//   const buffer = Buffer.from(base64String.replace(/^data:image\/\w+;base64,/, ''), 'base64');
-//   const params1 = {
-//     Bucket: AWS_BUCKET_NAME,
-//     Key: name + '.' + extension, // File name you want to save as in S3
-//     Body: buffer,
-//     ContentEncoding: 'base64',
-//     ContentType: 'image/png',
-//     ACL: 'public-read',
-//   };
-//   const response: any = await new Promise((resolve, reject) => {
-//     s3.upload(params1, (err, data) => (err == null ? resolve(data) : reject(err)));
-//   });
-//   return response;
-// };
+export const cleanObj = (input: any, allowedKeys: string[] = []) => {
+    return Object.keys(input)
+        .filter(key => allowedKeys.includes(key))
+        .reduce((obj, key) => {
+            obj[key] = input[key];
+            return obj;
+        }, {});
+};
 
 export const s3 = new AWS.S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_KEY,
+    region: process.env.AWS_REGION,
 });
 
+
+export const uploadToAws = async (
+    name: string,
+    base64String: string,
+): Promise<{ fileUrl: string }> => {
+    const s3 = new AWS.S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_KEY,
+    });
+
+    const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+    if (!AWS_BUCKET_NAME) throw new Error("Missing AWS_BUCKET_NAME");
+
+    const matches = base64String.match(/^data:(.+);base64,/);
+    if (!matches) {
+        throw new Error("Invalid base64 format");
+    }
+
+    const mimeType = matches[1];
+    const extension = mimeType.split("/")[1] || "bin"; // fallback extension
+    const baseName = name.substring(0, name.lastIndexOf(".")) || name;
+
+    const base64Data = base64String.replace(/^data:(.+);base64,/, "");
+
+    const buffer = Buffer.from(base64Data, "base64");
+
+    const params = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `uploads/${baseName}.${extension}`,
+        Body: buffer,
+        ContentEncoding: "base64",
+        ContentType: mimeType,
+        ACL: "public-read",
+    };
+
+    try {
+        const response = await s3.upload(params).promise();
+        return { fileUrl: response.Location };
+    } catch (error: any) {
+        console.error("❌ AWS Upload Error:", error);
+        throw new Error("Error uploading file to S3: " + error.message);
+    }
+};
 
 

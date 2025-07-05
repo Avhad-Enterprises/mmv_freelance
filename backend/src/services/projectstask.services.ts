@@ -11,18 +11,16 @@ class ProjectstaskService {
       throw new HttpException(400, 'Data invalid or empty');
     }
 
-    // Explicitly stringify JSONB arrays to avoid "invalid input syntax for type json"
     const payload: Record<string, any> = {
-        ...data,
-        skills_required: JSON.stringify(data.skills_required),
-        reference_links: JSON.stringify(data.reference_links),
-        status: JSON.stringify(data.status),
-        sample_project_file: JSON.stringify(data.sample_project_file),
-        show_all_files: JSON.stringify(data.show_all_files),
-        project_files: data.project_files
-          ? JSON.stringify(data.project_files)
-          : null,
-      };
+      ...data,
+      skills_required: JSON.stringify(data.skills_required),
+      reference_links: JSON.stringify(data.reference_links),
+      // status: JSON.stringify(data.status),
+      sample_project_file: JSON.stringify(data.sample_project_file),
+      project_files: data.project_files
+        ? JSON.stringify(data.project_files)
+        : null,
+    };
     try {
       const [created] = await DB(PROJECTS_TASK)
         .insert(payload)
@@ -32,7 +30,7 @@ class ProjectstaskService {
       console.error('DB insert error:', err);
       throw new HttpException(500, `Project insertion failed — ${err.message}`);
     };
-    }
+  }
 
   public async getById(projects_task_id: number): Promise<any | null> {
     if (!projects_task_id) {
@@ -42,12 +40,12 @@ class ProjectstaskService {
       .where({ projects_task_id, is_deleted: false })
       .first();
     return projects || null;
-   }
+  }
 
-   public async update(projects_task_id: number, data: Partial<ProjectsTaskDto>): Promise<any> {
+  public async update(projects_task_id: number, data: Partial<ProjectsTaskDto>): Promise<any> {
     if (!projects_task_id) throw new HttpException(400, 'projects Task ID is required');
     if (isEmpty(data)) throw new HttpException(400, 'Update data is empty');
-  
+
     // 👇 Stringify JSON/array fields to avoid PostgreSQL JSON error
     const fieldsToStringify = [
       'skills_required',
@@ -57,24 +55,24 @@ class ProjectstaskService {
       'project_files',
       'show_all_files'
     ];
-  
+
     for (const key of fieldsToStringify) {
-        if ((data as any)[key] !== undefined) {
-          (data as any)[key] = JSON.stringify((data as any)[key]);
-        }
-      }      
-  
+      if ((data as any)[key] !== undefined) {
+        (data as any)[key] = JSON.stringify((data as any)[key]);
+      }
+    }
+
     const updated = await DB(T.PROJECTS_TASK)
       .where({ projects_task_id })
       .update(data)
       .returning('*');
-  
+
     if (!updated || updated.length === 0) {
       throw new HttpException(404, 'projects Task not found or not updated');
     }
     return updated[0];
   }
-  
+
   public async SoftDeleteEvent(projects_task_id: number): Promise<any> {
     if (!projects_task_id) throw new HttpException(400, " is required");
 
@@ -115,7 +113,7 @@ class ProjectstaskService {
     return Number(result[0].count);
   }
 
-  public getallprojectstask = async(): Promise<IProjectTask[]> => {
+  public getallprojectstask = async (): Promise<IProjectTask[]> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ is_active: 1, is_deleted: false })
@@ -126,7 +124,7 @@ class ProjectstaskService {
     }
   }
 
-  public getactivedeletedprojectstask = async(): Promise<IProjectTask[]> => {
+  public getactivedeletedprojectstask = async (): Promise<IProjectTask[]> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ is_deleted: false })
@@ -137,7 +135,7 @@ class ProjectstaskService {
     }
   }
 
-  public getDeletedprojectstask = async(): Promise<IProjectTask[]> => {
+  public getDeletedprojectstask = async (): Promise<IProjectTask[]> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ is_deleted: true })

@@ -13,40 +13,65 @@ export const seed = async (dropFirst = false) => {
         console.log('Seeding Tables');
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(USERS_TABLE, table => {
-            table.increments('users_id').primary(); // ID
+            table.increments('user_id').primary(); // ID
             table.string("first_name").notNullable;
             table.string("last_name").nullable;
-            table.string("profile_picture").defaultTo(null);
-            table.string("phone_number").notNullable();
-            table.string("Username").notNullable();
+            table.string("username").notNullable();
             table.string("email").unique();
-            table.string("password").notNullable();
-            table.string ("confirm_password").nullable();
+            table.string('phone_number').notNullable();
+            table.string('profile_picture').nullable();
             table.string("address_line_first").notNullable();
             table.string("address_line_second").defaultTo(null);
-            table.string("city").notNullable();
-            table.string("state").notNullable();
-            table.string("country").notNullable();
-            table.string("pincode").notNullable();
-            table.string("role").notNullable();
+            table.string("city").nullable();
+            table.string("state").nullable();
+            table.string("country").nullable();
+            table.string("pincode").nullable();
+            table.string("password").nullable();
+            table.boolean("aadhaar_verification").defaultTo(false);
+            table.boolean("email_verified").defaultTo(false);
+            table.boolean('phone_verified').defaultTo(false);
+            table.text("reset_token").nullable();
+            table.timestamp("reset_token_expires").nullable();
+            table.string('login_attempts').defaultTo(0);
+            table.boolean('kyc_verified').defaultTo(false);
+            table.string("role").nullable();
+            table.text('banned_reason').nullable();
+            table.text('bio').nullable();
+            table.string('timezone').nullable();
             table.jsonb("skill").nullable();
-            table.boolean("email_notifications").defaultTo(true);
-            table.text("tags", "jsonb").nullable();
-            table.text("notes", "jsonb").nullable();
-            table.boolean("aadhaar_verification").defaultTo(true);
-            table.boolean("is_active").defaultTo(true);
-            table.integer("created_by").nullable();
+            table.boolean("email_notifications").nullable();
+            table.jsonb("tags").defaultTo(true);
+            table.boolean("notes").nullable();
+            table.jsonb('certification').nullable();
+            table.jsonb('education').nullable;
+            table.text('experience').nullable()
+            table.jsonb('services').nullable();
+            table.jsonb('previous_works').nullable();
+            table.integer('projects_created').defaultTo(0);
+            table.integer('projects_applied').defaultTo(0);
+            table.integer('projects_completed').defaultTo(0);
+            table.integer('hire_count').defaultTo(0);
+            table.integer('review_id').defaultTo(0);
+            table.integer('total_earnings').defaultTo(0);
+            table.integer('total_spent').defaultTo(0);
+            table.jsonb('payment_method').nullable();
+            table.jsonb('payout_method').nullable();
+            table.jsonb('bank_account_info').nullable();
+            table.string('account_type').nullable(); // (Freelancer, Client, Customer)
+            table.string('availability').nullable();
+            table.integer('time_spent').defaultTo(0);
+            table.string('account_status').defaultTo(1); // (Active, Inactive, Banned)
+            table.boolean("is_active").defaultTo(true); // is_active is used to check if the user is active or not
+            table.boolean('is_banned').defaultTo(false); // is_banned is used to check if the user is banned or not
             table.timestamp("created_at").defaultTo(DB.fn.now());
             table.timestamp("updated_at").defaultTo(DB.fn.now());
-            table.integer("updated_by").nullable();
-            table.boolean("is_deleted").defaultTo(false);
-            table.integer("deleted_by").nullable();
-            table.timestamp("deleted_at").nullable();
+            table.timestamp("updated_by").nullable();
+            table.timestamp('last_login_at').nullable();
         });
 
 
-    console.log('Finished Seeding Tables');
-    console.log('Creating Triggers');
+        console.log('Finished Seeding Tables');
+        console.log('Creating Triggers');
         await DB.raw(`
           CREATE TRIGGER update_timestamp
           BEFORE UPDATE
@@ -54,9 +79,9 @@ export const seed = async (dropFirst = false) => {
           FOR EACH ROW
           EXECUTE PROCEDURE update_timestamp();
         `);
-     console.log('Finished Creating Triggers');
+        console.log('Finished Creating Triggers');
     } catch (error) {
-    console.log(error);
+        console.log(error);
     }
 };
 

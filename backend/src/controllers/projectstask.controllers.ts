@@ -28,16 +28,13 @@ class projectstaskcontroller {
 
   public getbytaskid = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const raw = (req.body as any).projects_task_id;
-      const idNum: number = typeof raw === 'string'
-        ? parseInt(raw, 10)
-        : raw;
+      const projectid = req.body.projects_task_id;
 
-      if (isNaN(idNum)) {
-        res.status(400).json({ error: 'project_task_id must be a number' });
+      if (!projectid) {
+        res.status(400).json({ error: 'Id is Required' });
         return;
       }
-      const projects = await this.ProjectstaskService.getById(idNum);
+      const projects = await this.ProjectstaskService.getById(projectid);
       if (!projects) {
         res.status(404).json({ error: 'projects_task not found' });
         return;

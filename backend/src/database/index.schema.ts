@@ -26,12 +26,14 @@ export default DB;
 // Table Names
 import { USERS_TABLE } from './users.schema';
 import { PROJECTS_TASK } from './projectstask.schema';
+import { TAGS_TABLE } from './tags.schema';
 
 
 
 export const T = {
   USERS_TABLE,
-  PROJECTS_TASK
+  PROJECTS_TASK,
+  TAGS_TABLE
 };
 
 // Creates the procedure that is then added as a trigger to every table

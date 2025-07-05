@@ -2,14 +2,17 @@
 **/node_modules/
 **/.cache/
 
+
 # Build output
 **/build/
 **/dist/
+
 
 # Logs
 logs
 *.log
 npm-debug.log*
+
 
 # IDE & system
 .vscode/
@@ -17,5 +20,7 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
+
 # Env files
 .env
+

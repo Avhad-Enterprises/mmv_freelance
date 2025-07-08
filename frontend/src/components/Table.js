@@ -407,6 +407,23 @@ const Table = ({
       return <span>{formattedTime}</span>;
     }
 
+    if (type === "datetimetime") {
+      if (!value) return "—";
+      const dateTime = moment(value);
+      return <span>{dateTime.format("Do MMM YYYY, hh:mm A")}</span>; // e.g., 29th Jun 2025, 10:33 AM
+    }
+
+    if (type === "datetimetimezone") {
+      if (!value) return "—";
+      const dateTime = moment(value);
+      const localZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      return (
+        <span>
+          {dateTime.format("Do MMM YYYY, hh:mm A")} ({localZone})
+        </span>
+      );
+    }
+
     if (type === "rating") {
       const rating = Math.min(Math.max(Number(value) || 0, 0), 5);
       return (

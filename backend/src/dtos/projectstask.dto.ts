@@ -1,6 +1,6 @@
 import {
     IsString, IsNotEmpty, IsDateString,
-    IsInt, IsArray, ArrayNotEmpty, IsUrl, IsObject,
+    IsInt, IsJSON, IsArray, ArrayNotEmpty, IsUrl, IsObject,
     IsBoolean, IsOptional, ValidateNested
   } from 'class-validator';
   import { Type } from 'class-transformer';
@@ -15,7 +15,11 @@ import {
   
   export class ProjectsTaskDto {
     @IsInt()
-    user_id: number;
+    client_id: number;
+  
+    @IsOptional()
+    @IsInt()
+    editor_id: number;
   
     @IsString()
     @IsNotEmpty()
@@ -35,6 +39,10 @@ import {
     @Type(() => Number)
     @IsInt()
     Budget: number;
+
+    @IsOptional()
+    @IsJSON()
+    tags?: any;
   
     @IsArray()
     @ArrayNotEmpty()
@@ -49,9 +57,6 @@ import {
     @IsString()
     @IsNotEmpty()
     additional_notes: string;
-  
-    @IsObject()
-    status: Record<string, any>;
   
     @IsString()
     @IsNotEmpty()
@@ -83,15 +88,11 @@ import {
     @Type(() => ProjectFileItem)
     sample_project_file: ProjectFileItem[];
   
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProjectFileItem)
-    show_all_files: ProjectFileItem[];
+    // @IsOptional()
+    // @Type(() => Number)
+    // is_active?: number;
   
     @IsOptional()
-    @Type(() => Number)
-    is_active?: number;
-  
     @Type(() => Number)
     @IsInt()
     created_by: number;

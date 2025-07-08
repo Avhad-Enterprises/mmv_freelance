@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { UserDto } from "../dtos/users.dto";
-import { User } from "../interfaces/users.interface";
+import { UsersDto } from "../dtos/users.dto";
+import { Users } from "../interfaces/users.interface";
 import emcService from '../services/emc.services';
 import HttpException from "../exceptions/HttpException";
 

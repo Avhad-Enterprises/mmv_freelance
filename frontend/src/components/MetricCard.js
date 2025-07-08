@@ -17,12 +17,12 @@ const MetricCard = ({
   tooltipText,
   icon,
   children,
+  customFilter,
 }) => {
   const [metricValue, setMetricValue] = useState(null);
-  const [borderColor, setBorderColor] = useState("#ccc"); // Default color
+  const [borderColor, setBorderColor] = useState("#ccc");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1137);
 
-  // ✅ Function to check if an image URL is valid
   const isValidImage = (url) => {
     return (
       url &&
@@ -30,11 +30,10 @@ const MetricCard = ({
     );
   };
 
-  // ✅ Function to extract dominant color from an image
   const getDominantColor = (imageUrl) => {
     return new Promise((resolve) => {
       if (!isValidImage(imageUrl)) {
-        resolve(getRandomColor()); // Use random color if the image is invalid
+        resolve(getRandomColor());
         return;
       }
 
@@ -48,20 +47,17 @@ const MetricCard = ({
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        // Get pixel data from the center of the image
         const data = ctx.getImageData(img.width / 2, img.height / 2, 1, 1).data;
         const color = `rgb(${data[0]}, ${data[1]}, ${data[2]})`;
         resolve(color);
       };
 
       img.onerror = () => {
-        resolve(getRandomColor()); // If error, assign a random color
+        resolve(getRandomColor());
       };
     });
   };
 
-  // ✅ Function to get a random color if no image is available
   const getRandomColor = () => {
     const colors = [
       "#007aff",
@@ -74,7 +70,6 @@ const MetricCard = ({
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
-  // ✅ Detect mobile view on resize
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1137);
@@ -84,7 +79,6 @@ const MetricCard = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ✅ Set border color based on image or random color
   useEffect(() => {
     if (icon) {
       getDominantColor(icon).then((color) => setBorderColor(color));
@@ -109,6 +103,10 @@ const MetricCard = ({
   };
 
   const processMetrics = (data) => {
+    if (!Array.isArray(data)) return;
+
+    const filteredData = customFilter ? data.filter(customFilter) : data;
+
     let result = 0,
       count = 0,
       positiveCount = 0,
@@ -119,38 +117,49 @@ const MetricCard = ({
       ratioNumerator = 0,
       ratioDenominator = 0;
 
-    data.forEach((row) => {
+    filteredData.forEach((row) => {
       const columnsArray = column?.split(",");
 
       switch (operation) {
         case "total":
           columnsArray.forEach((col) => {
-            if (!isNaN(row[col])) result += parseFloat(row[col]);
+            if (Array.isArray(row[col])) {
+              result += row[col].length;
+            } else if (!isNaN(row[col])) {
+              result += parseFloat(row[col]);
+            }
           });
           break;
+
         case "count":
           count += 1;
           break;
+
         case "positiveCount":
           columnsArray.forEach((col) => {
-            if (row[col] === "true" || row[col] === "Active")
-              positiveCount += 1;
+            if (row[col] === "true" || row[col] === "Active") positiveCount += 1;
           });
           break;
+
         case "negativeCount":
           columnsArray.forEach((col) => {
             if (row[col] === "false" || row[col] === "Inactive")
               negativeCount += 1;
           });
           break;
+
         case "mean":
           columnsArray.forEach((col) => {
-            if (!isNaN(row[col])) {
+            if (Array.isArray(row[col])) {
+              sum += row[col].length;
+              totalEntries += 1;
+            } else if (!isNaN(row[col])) {
               sum += parseFloat(row[col]);
               totalEntries += 1;
             }
           });
           break;
+
         case "average":
           if (columnsArray.length === 2) {
             const startDate = new Date(row[columnsArray[0]]);
@@ -161,16 +170,19 @@ const MetricCard = ({
             }
           }
           break;
+
         case "percentage":
           columnsArray.forEach((col) => {
             if (!isNaN(row[col])) result += parseFloat(row[col]);
           });
           break;
+
         case "1000+":
           columnsArray.forEach((col) => {
             if (!isNaN(row[col]) && parseFloat(row[col]) >= 1000) result += 1;
           });
           break;
+
         case "ratio":
           if (columnsArray.length === 2) {
             const numerator = parseFloat(row[columnsArray[0]]);
@@ -181,6 +193,7 @@ const MetricCard = ({
             }
           }
           break;
+
         default:
           break;
       }
@@ -190,19 +203,23 @@ const MetricCard = ({
       operation === "mean" && totalEntries > 0
         ? (sum / totalEntries).toFixed(2)
         : 0;
+
     const average =
       operation === "average" && totalEntries > 0
         ? (totalDays / totalEntries).toFixed(2)
         : 0;
+
     const percentage =
-      operation === "percentage" && data.length > 0
-        ? ((result / (data.length * 100)) * 100).toFixed(2)
+      operation === "percentage" && filteredData.length > 0
+        ? ((result / (filteredData.length * 100)) * 100).toFixed(2)
         : "0.00%";
+
     const ratio =
       operation === "ratio" && ratioDenominator > 0
         ? (ratioNumerator / ratioDenominator).toFixed(2)
         : "0.00";
 
+    // Final metric value
     if (operation === "total") setMetricValue(result);
     else if (operation === "count") setMetricValue(count);
     else if (operation === "positiveCount") setMetricValue(positiveCount);
@@ -214,8 +231,9 @@ const MetricCard = ({
     else if (operation === "ratio") setMetricValue(ratio);
   };
 
+
   useEffect(() => {
-    if (!operation && !children) return; // Skip processing if only using child elements
+    if (!operation && !children) return;
     const data = jsonData || extractTableData();
     processMetrics(data);
   }, [operation, column, tableRef, jsonData]);

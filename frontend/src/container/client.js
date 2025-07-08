@@ -1,0 +1,180 @@
+import React, { useState, useEffect, useRef } from "react";
+import Layout from "./layout";
+import { useNavigate } from "react-router-dom";
+import { makeGetRequest, makePostRequest } from "../utils/api";
+import MetricCard from "../components/MetricCard";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import DataTable from "../components/DataTable";
+import DateInput from "../components/DateInput";
+import Button from "../components/Button";
+import { showErrorToast } from "../utils/toastUtils";
+import wallet from "../assets/svg/wallet.svg";
+import calender from "../assets/svg/calender.svg";
+import channel from "../assets/svg/channel.svg";
+import group from "../assets/svg/group.svg";
+
+const Clients = () => {
+  const [clientData, setClientData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const tableRef = useRef();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchClientData = async () => {
+      try {
+        const response = await makeGetRequest("users/customers/active");
+        const data = Array.isArray(response.data?.data) ? response.data.data : [];
+        setClientData(data);
+      } catch (error) {
+        console.error("Error fetching clients:", error);
+        showErrorToast("Failed to load client data.");
+        setClientData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (localStorage.getItem("jwtToken")) {
+      fetchClientData();
+    } else {
+      showErrorToast("Please log in to view clients.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  // Updated columns to match expected API response fields
+  const columns = [
+    {
+      headname: "Client ID",
+      dbcol: "user_id",
+      type: "link",
+      linkTemplate: "/client/edit/:user_id",
+      linkLabelFromRow: "first_name",
+      linkParamKey: "user_id",
+    },
+    {
+      headname: "Name",
+      dbcol: "first_name",
+      type: "",
+    },
+    {
+      headname: "Projects Posted",
+      dbcol: "projects_created",
+      type: "",
+    },
+    {
+      headname: "Rating",
+      dbcol: "review_id",
+      type: "",
+    },
+    {
+      headname: "Status",
+      dbcol: "is_active",
+      type: "badge",
+    },
+    {
+      headname: "Joined Date",
+      dbcol: "created_at",
+      type: "",
+    },
+  ];
+
+  return (
+    <Layout>
+      <div className="d-flex justify-content-between">
+        <div className="mt-3 d-flex align-items-center">
+          <div className="d-flex gap-5 md-date">
+            <DateInput label="" type="range" includeTime={false} />
+          </div>
+          <div className="mb-2 ps-3 md-refresh">
+            <i
+              className="bi bi-arrow-repeat icon-refresh"
+              onClick={handleRefresh}
+            ></i>
+          </div>
+        </div>
+        <div className="text-right gap-3 mt-3 ie-btn d-flex">
+          <div className="dropdown">
+            <Button
+              buttonType="add"
+              onClick={() => navigate("/client/create-project")}
+              label="Add New"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="card-container gap-4 flex-wrap">
+        <Row className="metrix-container">
+          <Col xs={4} md={3}>
+            <MetricCard
+              title="Active Clients"
+              operation="count"
+              column="is_active"
+              jsonData={clientData}
+              customFilter={(item) => item.is_active === 1}
+              icon={calender}
+              tooltipText="This shows the count of active clients"
+            />
+          </Col>
+          <Col xs={4} md={3}>
+            <MetricCard
+              title="Projects Posted"
+              operation="sum"
+              column="projects_posted"
+              jsonData={clientData}
+              icon={wallet}
+              tooltipText="This shows the total number of projects posted"
+            />
+          </Col>
+          <Col xs={4} md={3}>
+            <MetricCard
+              title="Total Spend"
+              operation="sum"
+              column="total_spend"
+              jsonData={clientData}
+              icon={channel}
+              tooltipText="This shows the total spend by clients"
+            />
+          </Col>
+          <Col xs={4} md={3}>
+            <MetricCard
+              title="Client Ratings"
+              operation="average"
+              column="average_rating"
+              jsonData={clientData}
+              icon={group}
+              tooltipText="This shows the average client rating"
+            />
+          </Col>
+        </Row>
+      </div>
+
+      {loading ? (
+        <div>Loading...</div>
+      ) : clientData.length === 0 ? (
+        <div>No clients found.</div>
+      ) : (
+        <DataTable
+          id="table1"
+          tableRef={tableRef}
+          columns={columns}
+          data={clientData}
+          defaultView="table"
+          searchable
+          filterable
+          sortable
+          paginated
+          onFilteredDataChange={(data) => console.log("Filtered Data:", data)}
+        />
+      )}
+    </Layout>
+  );
+};
+
+export default Clients;

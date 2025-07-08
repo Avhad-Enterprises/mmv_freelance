@@ -1,6 +1,6 @@
-import { UserDto } from "../dtos/users.dto";
+import { UsersDto } from "../dtos/users.dto";
 import DB, { T } from "../database/index.schema";
-import { User } from '../interfaces/users.interface';
+import { Users } from '../interfaces/users.interface';
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
 import bcrypt from "bcrypt";
@@ -13,7 +13,7 @@ import { USERS_TABLE } from "../database/users.schema";
 
 
 class usersService {
-  public async Insert(data: UserDto): Promise<User> {
+  public async Insert(data: UsersDto): Promise<Users> {
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
     const existingusers = await DB(T.USERS_TABLE)
       .where({ email: data.email })
@@ -26,7 +26,7 @@ class usersService {
     return res[0];
   }
 
-  public async Login(email: string, password: string): Promise<User & { token: string }> {
+  public async Login(email: string, password: string): Promise<Users & { token: string }> {
     if (!email || !password) {
       throw new HttpException(400, "Email and password are required");
     }
@@ -56,7 +56,7 @@ class usersService {
     };
   }
 
-  public async update(user_id: number, data: Partial<UserDto>): Promise<any> {
+  public async update(user_id: number, data: Partial<UsersDto>): Promise<any> {
     if (!user_id) throw new HttpException(400, 'users ID is required');
     if (isEmpty(data)) throw new HttpException(400, 'Update data is empty');
 
@@ -119,7 +119,7 @@ class usersService {
 
     return user;
   }
-  public async insertrolefromuser(data: UserDto): Promise<any> {
+  public async insertrolefromuser(data: UsersDto): Promise<any> {
     if (isEmpty(data)) {
       throw new HttpException(400, "User data is empty");
     }

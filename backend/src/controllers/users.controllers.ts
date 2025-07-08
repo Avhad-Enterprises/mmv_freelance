@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
-import { IUser } from "../interfaces/users.interface";
+import { Users } from "../interfaces/users.interface";
 import UsersService from "../services/users.services";
 import { generateToken } from "../utils/jwt";
 import HttpException from "../exceptions/HttpException";
 import crypto from 'crypto';
-//import sendPasswordResetEmail from '../utils/sendResetPasswordEmail';
+import sendPasswordResetEmail from '../utils/sendResetPasswordEmail';
 import DB, { T } from "../database/index.schema";
-//import sendEmail from '../utils/sendemail';
+import sendEmail from '../utils/sendemail';
 
 class UsersController {
   public UsersService = new UsersService();
@@ -37,7 +37,7 @@ class UsersController {
   ): Promise<void> => {
     try {
       const userData: UsersDto = req.body;
-      const locationData: IUser = await this.UsersService.Insert(
+      const locationData: Users = await this.UsersService.Insert(
         userData
       );
       res.status(201).json({ data: locationData, message: "Inserted" });
@@ -107,31 +107,31 @@ class UsersController {
     }
   };
 
-  // public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const { email } = req.body;
-  //     if (!email) throw new HttpException(400, "Email is required");
+  public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email } = req.body;
+      if (!email) throw new HttpException(400, "Email is required");
 
-  //     const user = await this.UsersService.getUserByEmail(email);
-  //     if (!user) throw new HttpException(404, "User not found");
+      const user = await this.UsersService.getUserByEmail(email);
+      if (!user) throw new HttpException(404, "User not found");
 
-  //     const token = crypto.randomBytes(32).toString("hex");
-  //     const expires = new Date(Date.now() + 60 * 60 * 1000);
+      const token = crypto.randomBytes(32).toString("hex");
+      const expires = new Date(Date.now() + 60 * 60 * 1000);
 
-  //     await this.UsersService.saveResetToken(user.user_id, token, expires);
+      await this.UsersService.saveResetToken(user.user_id, token, expires);
 
-  //     const protocol = req.protocol;
-  //     const host = req.get('host');
+      const protocol = req.protocol;
+      const host = req.get('host');
 
-  //     const resetLink = `${protocol}://${host}/reset-password?token=${token}`;
+      const resetLink = `${protocol}://${host}/reset-password?token=${token}`;
 
-  //     await sendPasswordResetEmail(email, 'Reset Your Password', `Click this link to reset your password: ${resetLink}`);
+      await sendPasswordResetEmail(email, 'Reset Your Password', `Click this link to reset your password: ${resetLink}`);
 
-  //     res.status(200).json({ message: "Password reset link sent" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+      res.status(200).json({ message: "Password reset link sent" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -198,60 +198,60 @@ class UsersController {
     }
   };
 
-  // public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
-  //   try {
-  //     const body = req.body;
-  //     if (!body.email) throw new HttpException(400, "Email is required");
-  //     const token = crypto.randomBytes(32).toString("hex");
-  //     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-  //     await this.UsersService.createUserInvitation({
-  //       ...body,
-  //       invite_token: token,
-  //       expires_at: expiresAt,
-  //     });
-  //     const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-  //     await sendEmail({
-  //       to: body.email,
-  //       subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
-  //       html: `
-  //       <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
-  //       <p>You’ve been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
-  //       <p>Please click the link below to register your account:</p>
-  //       <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
-  //       <p>This link will expire in 24 hours.</p>
-  //       <p>If you did not expect this invitation, you can safely ignore this email.</p>
-  //       <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
-  //     `,
-  //     });
-  //     res.status(200).json({ message: "Invitation sent" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+  public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const body = req.body;
+      if (!body.email) throw new HttpException(400, "Email is required");
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      await this.UsersService.createUserInvitation({
+        ...body,
+        invite_token: token,
+        expires_at: expiresAt,
+      });
+      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
+      await sendEmail({
+        to: body.email,
+        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
+        html: `
+        <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
+        <p>You’ve been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
+        <p>Please click the link below to register your account:</p>
+        <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
+        <p>This link will expire in 24 hours.</p>
+        <p>If you did not expect this invitation, you can safely ignore this email.</p>
+        <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
+      `,
+      });
+      res.status(200).json({ message: "Invitation sent" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 
-  // public insertEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const userData: UsersDto & { invite_token: string } = req.body;
-  //     await this.UsersService.validateInvitation(userData.email, userData.invite_token);
-  //     const user = await this.UsersService.Insert(userData);
-  //     await DB(T.USERINVITATIONS)
-  //       .where({ email: userData.email })
-  //       .update({ used: true });
-  //     res.status(201).json({ data: user, message: "User registered successfully" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+  public insertEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UsersDto & { invite_token: string } = req.body;
+      await this.UsersService.validateInvitation(userData.email, userData.invite_token);
+      const user = await this.UsersService.Insert(userData);
+      await DB(T.USERINVITATIONS)
+        .where({ email: userData.email })
+        .update({ used: true });
+      res.status(201).json({ data: user, message: "User registered successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-  // public getAllInvitations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  //   try {
-  //     const invitations = await this.UsersService.getAllInvitations();
-  //     res.status(200).json({ data: invitations, message: "Invitations fetched successfully" });
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // };
+  public getAllInvitations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const invitations = await this.UsersService.getAllInvitations();
+      res.status(200).json({ data: invitations, message: "Invitations fetched successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 }
 

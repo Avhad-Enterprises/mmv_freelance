@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest, makePostRequest } from "../utils/api"; // Changed to makePostRequest
+import { makeGetRequest, makePostRequest } from "../utils/api";
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
 import DateInput from "../components/DateInput";
 import Button from "../components/Button";
-import { showErrorToast } from "../utils/toastUtils"; // Added for error handling
-
+import { showErrorToast } from "../utils/toastUtils";
 import wallet from "../assets/svg/wallet.svg";
 import calender from "../assets/svg/calender.svg";
 import channel from "../assets/svg/channel.svg";
@@ -24,11 +23,8 @@ const Clients = () => {
   useEffect(() => {
     const fetchClientData = async () => {
       try {
-        // Use makePostRequest to match backend route
         const response = await makeGetRequest("users/customers/active");
-        console.log("Clients API Response:", response); // Debug log
         const data = Array.isArray(response.data?.data) ? response.data.data : [];
-        console.log("Parsed Client Data:", data); // Debug log
         setClientData(data);
       } catch (error) {
         console.error("Error fetching clients:", error);
@@ -58,22 +54,22 @@ const Clients = () => {
       dbcol: "user_id",
       type: "link",
       linkTemplate: "/client/edit/:user_id",
-      linkLabelFromRow: "first_name", // Changed to use name for link label
+      linkLabelFromRow: "first_name",
       linkParamKey: "user_id",
     },
     {
       headname: "Name",
-      dbcol: "first_name", // Updated to match API response
+      dbcol: "first_name",
       type: "",
     },
     {
       headname: "Projects Posted",
-      dbcol: "projects_created", // Updated to match a likely field name
+      dbcol: "projects_created",
       type: "",
     },
     {
       headname: "Rating",
-      dbcol: "review_id", // Updated to match a likely field name
+      dbcol: "review_id",
       type: "",
     },
     {
@@ -121,7 +117,7 @@ const Clients = () => {
               operation="count"
               column="is_active"
               jsonData={clientData}
-              customFilter={(item) => item.is_active === 1} // Filter active clients
+              customFilter={(item) => item.is_active === 1}
               icon={calender}
               tooltipText="This shows the count of active clients"
             />
@@ -140,7 +136,7 @@ const Clients = () => {
             <MetricCard
               title="Total Spend"
               operation="sum"
-              column="total_spend" // Updated to match a likely field name
+              column="total_spend"
               jsonData={clientData}
               icon={channel}
               tooltipText="This shows the total spend by clients"
@@ -150,7 +146,7 @@ const Clients = () => {
             <MetricCard
               title="Client Ratings"
               operation="average"
-              column="average_rating" // Updated to match a likely field name
+              column="average_rating"
               jsonData={clientData}
               icon={group}
               tooltipText="This shows the average client rating"

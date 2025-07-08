@@ -1,6 +1,6 @@
 import { UsersDto } from "../dtos/users.dto";
 import DB, { T } from "../database/index.schema";
-import { IUser } from "../interfaces/users.interface";
+import { Users } from "../interfaces/users.interface";
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
 import bcrypt from "bcrypt";
@@ -8,11 +8,11 @@ import jwt from "jsonwebtoken";
 
 class UsersService {
 
-  public async getAllActiveCustomers(): Promise<IUser[]> {
+  public async getAllActiveCustomers(): Promise<Users[]> {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
-        account_type: "client",
+        account_type: "customer",
         is_active: true,
         is_banned: false,
       })
@@ -21,7 +21,7 @@ class UsersService {
     return users;
   }
 
-  public async getAllActiveFreelancers(): Promise<IUser[]> {
+  public async getAllActiveFreelancers(): Promise<Users[]> {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
@@ -34,7 +34,7 @@ class UsersService {
     return users;
   }
 
-  public async Insert(data: UsersDto): Promise<IUser> {
+  public async Insert(data: UsersDto): Promise<Users> {
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
     const existingEmployee = await DB(T.USERS_TABLE)
       .where({ email: data.email })
@@ -58,7 +58,7 @@ class UsersService {
     return res[0];
   }
 
-  public async Login(email: string, password: string): Promise<IUser & { token: string }> {
+  public async Login(email: string, password: string): Promise<Users & { token: string }> {
     if (!email || !password) {
       throw new HttpException(400, "Email and password are required");
     }
@@ -88,7 +88,7 @@ class UsersService {
     };
   }
 
-  public async getById(user_id: number): Promise<IUser> {
+  public async getById(user_id: number): Promise<Users> {
     const user = await DB(T.USERS_TABLE)
       .where({ user_id, is_active: true, account_status: '1' }) // active user
       .first();
@@ -97,7 +97,7 @@ class UsersService {
     return user;
   }
 
-  public async updateById(data: UsersDto): Promise<IUser> {
+  public async updateById(data: UsersDto): Promise<Users> {
     if (!data.user_id) throw new HttpException(400, "User ID required for update");
 
     const user = await DB(T.USERS_TABLE)
@@ -118,7 +118,7 @@ class UsersService {
     return updated[0];
   }
 
-  public async softDelete(user_id: number): Promise<IUser> {
+  public async softDelete(user_id: number): Promise<Users> {
     const user = await DB(T.USERS_TABLE)
       .where({ user_id })
       .first();
@@ -137,7 +137,7 @@ class UsersService {
     return updated[0];
   }
 
-  public async getUserByEmail(email: string): Promise<IUser> {
+  public async getUserByEmail(email: string): Promise<Users> {
     return await DB(T.USERS_TABLE).where({ email }).first();
   }
 
@@ -170,7 +170,7 @@ class UsersService {
       });
   }
 
-  private async getUserByType(user_id: number, account_type: string): Promise<IUser> {
+  private async getUserByType(user_id: number, account_type: string): Promise<Users> {
     const user = await DB(T.USERS_TABLE)
       .where({
         user_id,
@@ -185,52 +185,52 @@ class UsersService {
     return user;
   }
 
-  public getFreelancerById(user_id: number): Promise<IUser> {
+  public getFreelancerById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'freelancer');
   }
 
-  public getClientById(user_id: number): Promise<IUser> {
+  public getClientById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'client');
   }
 
-  public getCustomerById(user_id: number): Promise<IUser> {
+  public getCustomerById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'customer');
   }
 
-  public getAdminById(user_id: number): Promise<IUser> {
+  public getAdminById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'admin');
   }
 
-  // public async createUserInvitation(data: Record<string, any>): Promise<void> {
-  //   const { email } = data;
+  public async createUserInvitation(data: Record<string, any>): Promise<void> {
+    const { email } = data;
 
-  //   if (!email) throw new HttpException(400, "Email is required");
+    if (!email) throw new HttpException(400, "Email is required");
 
-  //   const exists = await DB(T.USERINVITATIONS).where({ email }).first();
-  //   if (exists) throw new HttpException(409, "User already invited");
+    const exists = await DB(T.USERINVITATIONS).where({ email }).first();
+    if (exists) throw new HttpException(409, "User already invited");
 
-  //   await DB(T.USERINVITATIONS).insert(data);
-  // }
+    await DB(T.USERINVITATIONS).insert(data);
+  }
 
 
-  // public async validateInvitation(email: string, token: string): Promise<void> {
-  //   const invite = await DB(T.USERINVITATIONS)
-  //     .where({ email, invite_token: token, used: false })
-  //     .andWhere('expires_at', '>', new Date())
-  //     .first();
+  public async validateInvitation(email: string, token: string): Promise<void> {
+    const invite = await DB(T.USERINVITATIONS)
+      .where({ email, invite_token: token, used: false })
+      .andWhere('expires_at', '>', new Date())
+      .first();
 
-  //   if (!invite) {
-  //     throw new HttpException(403, "Invalid or expired invitation token");
-  //   }
-  // }
+    if (!invite) {
+      throw new HttpException(403, "Invalid or expired invitation token");
+    }
+  }
 
-  // public async getAllInvitations(): Promise<any[]> {
-  //   const invitations = await DB(T.USERINVITATIONS)
-  //     .select('*')
-  //     .orderBy('created_at', 'desc');
+  public async getAllInvitations(): Promise<any[]> {
+    const invitations = await DB(T.USERINVITATIONS)
+      .select('*')
+      .orderBy('created_at', 'desc');
 
-  //   return invitations;
-  // }
+    return invitations;
+  }
 }
 
 export default UsersService;

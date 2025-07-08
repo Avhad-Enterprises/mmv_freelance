@@ -61,7 +61,7 @@ class projectstaskcontroller {
       }
   
       // Clone body and exclude code_id
-      const { projects_task_id, ...fieldsToUpdate } = req.body;
+      const fieldsToUpdate  = req.body;
   
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
@@ -75,11 +75,26 @@ class projectstaskcontroller {
     }
   };
   
-  public async deleteprojectstask(req: Request, res: Response, next: NextFunction) {
+  public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const projects_task_id = Number(req.body.projects_task_id);
-      const Deleted = await this.ProjectstaskService.SoftDeleteEvent(projects_task_id);
-      res.status(200).json({ data: Deleted, message: 'Deleted successfully' });
+      const raw = (req.body as any).projects_task_id;
+      const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
+  
+      if (isNaN(idNum)) {
+        res.status(400).json({ error: '  "projects_task_id" must be a number' });
+        return;
+      }
+  
+      // Clone body and exclude code_id
+      const fieldsToUpdate = req.body;
+  
+      if (Object.keys(fieldsToUpdate).length === 0) {
+        res.status(400).json({ error: 'No update data provided' });
+        return;
+      }
+  
+      const updated = await this.ProjectstaskService.softDelete(idNum, fieldsToUpdate);
+      res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
       next(error);
     }

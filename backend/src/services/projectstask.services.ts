@@ -77,29 +77,19 @@ class ProjectstaskService {
     return updated[0];
   }
   
-  public async SoftDeleteEvent(projects_task_id: number): Promise<any> {
-    if (!projects_task_id) throw new HttpException(400, " is required");
+  public async softDelete(project_task_id: number, data: Partial<any> ): Promise<any> {
+  
+    const deleted_at = new Date();
 
-    console.log(projects_task_id)
+    const result = await DB(T.PROJECTS_TASK)
+      .where({ project_task_id })
+      .update({
+        ...data,
+        deleted_at,
+      })
+      .returning('*');
 
-    const update = {
-      is_deleted: true,
-      deleted_by: 1,
-      deleted_at: new Date()
-    };
-
-    console.log(DB(T.PROJECTS_TASK)
-      .where({ projects_task_id })
-      .update(update)
-      .returning("*").toQuery());
-    const deleted = await DB(T.PROJECTS_TASK)
-      .where({ projects_task_id })
-      .update(update)
-      .returning("*");
-
-    if (!deleted.length) throw new HttpException(404, "projects Task not found or already deleted");
-
-    return deleted[0];
+    return result[0];
   }
 
   public async projectstaskActive(): Promise<number> {

@@ -9,6 +9,8 @@ import jwt from "jsonwebtoken";
 import { table } from "console";
 import { sendResetEmail } from '../utils/emailer';
 import { USERS_TABLE } from "../database/users.schema";
+import { sendEmail } from '../utils/email.util';
+import { InviteDTO } from "../dtos/admin_invites.dto";
 
 
 class usersService {
@@ -111,7 +113,31 @@ class usersService {
       });
   };
 
+  public async createInvite(data: InviteDTO) {
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
 
+    const invite = await DB(T.INVITATION_TABLE)
+      .insert({
+        full_name: data.full_name,
+        email: data.email,
+        role: data.role,
+        invited_by: data.invited_by || null,
+        invite_token: token,
+        expires_at: expiresAt,
+      })
+      .returning('*');
+
+    await sendEmail({
+      to: data.email,
+      subject: 'Admin Invite - Freelyancer',
+      html: `
+        <h3>You're Invited!</h3>
+        <p>Click below to accept your admin invite:</p>
+        <a href="https://yourdomain.com/invite/verify?token=${token}">Accept Invitation</a>
+        `,
+    });
+  }
 }
 
 export default usersService;

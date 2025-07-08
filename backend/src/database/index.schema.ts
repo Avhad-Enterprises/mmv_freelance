@@ -32,6 +32,10 @@ import { REPORT_TABLE } from './report_system.schema';
 import { FAVORITES_TABLE } from './favorites.schema';
 import { VISITOR_LOGS } from './visitor_logsschema';
 import { NICHES_TABLE } from './niches.schema';
+import { ROBOTS_TXT } from './robots.txt.schema';
+import { INVITATION_TABLE } from './admin_invites.schema';
+import { REPORT_TEMPLATES } from './report_templates.schema';
+import { REPORT_SCHEDULES } from './reports_schedules.schema';
 
 
 export const T = {
@@ -42,7 +46,11 @@ export const T = {
   REPORT_TABLE,
   FAVORITES_TABLE,
   VISITOR_LOGS,
-  NICHES_TABLE
+  NICHES_TABLE,
+  ROBOTS_TXT,
+  INVITATION_TABLE,
+  REPORT_TEMPLATES,
+  REPORT_SCHEDULES
 };
 
 // Creates the procedure that is then added as a trigger to every table

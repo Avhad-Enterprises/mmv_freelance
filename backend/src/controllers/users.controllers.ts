@@ -4,6 +4,7 @@ import { User } from "../interfaces/users.interface";
 import usersService from "../services/user.services";
 import { generateToken } from "../utils/jwt";
 import HttpException from "../exceptions/HttpException";
+import { InviteDTO } from "../dtos/admin_invites.dto";
 
 class usersController {
   public usersService = new usersService();
@@ -105,6 +106,26 @@ class usersController {
       res.json({ message: 'password has been successfully reset.' });
     } catch (err: any) {
       res.status(400).json({ error: err.message });
+    }
+  };
+
+  public insertInviteEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inviteData: InviteDTO = req.body;
+      const result = await this.usersService.createInvite(inviteData);
+      res.status(201).json({ message: 'Invite sent successfully', data: result });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+ public register = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userData = req.body;
+      const newUser = await this.usersService.registerUser(userData);
+      res.status(201).json({ message: 'token verified successfully', user: newUser });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
   };
 

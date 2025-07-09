@@ -58,27 +58,27 @@ class usersController {
       const raw = (req.body as any).user_id;
       console.log(raw);
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
-  
+
       if (isNaN(idNum)) {
         res.status(400).json({ error: 'user_id must be a number' });
         return;
       }
-  
+
       // Clone body and exclude code_id
       const { user_id, ...fieldsToUpdate } = req.body;
-  
+
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
-  
+
       const updated = await this.usersService.update(idNum, fieldsToUpdate);
-      res.status(200).json({ data: updated, message: 'users updated'});
+      res.status(200).json({ data: updated, message: 'users updated' });
     } catch (error) {
       next(error);
     }
   };
-  
+
   public forgetpasswordusers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const { email } = req.body;
     console.log(email);
@@ -116,16 +116,6 @@ class usersController {
       res.status(201).json({ message: 'Invite sent successfully', data: result });
     } catch (err) {
       next(err);
-    }
-  };
-
- public register = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const userData = req.body;
-      const newUser = await this.usersService.registerUser(userData);
-      res.status(201).json({ message: 'token verified successfully', user: newUser });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
     }
   };
 

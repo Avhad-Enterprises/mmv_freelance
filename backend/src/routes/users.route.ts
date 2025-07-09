@@ -3,6 +3,8 @@ import Route from "../interfaces/route.interface";
 import validationMiddleware from "../middlewares/validation.middleware";
 import UsersController from "../controllers/users.controllers";
 import { UsersDto } from "../dtos/users.dto";
+import userController from '../controllers/users.controllers';
+import { InviteDTO } from '../dtos/admin_invites.dto';
 
 class UsersRoute implements Route {
   public path = "/users";
@@ -37,6 +39,8 @@ class UsersRoute implements Route {
 
     // Register invited user
     this.router.post(`${this.path}/register`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertEmployee);
+    this.router.post(`${this.path}/invite/send`, validationMiddleware(InviteDTO, 'body', false, []), this.usersController.insertInviteEmail);
+
   }
 }
 

@@ -4,6 +4,7 @@ import { Users } from "../interfaces/users.interface";
 import UsersService from "../services/users.services";
 import { generateToken } from "../utils/jwt";
 import HttpException from "../exceptions/HttpException";
+import { InviteDTO } from "../dtos/admin_invites.dto";
 import crypto from 'crypto';
 import sendPasswordResetEmail from '../utils/sendResetPasswordEmail';
 import DB, { T } from "../database/index.schema";
@@ -250,6 +251,16 @@ class UsersController {
       res.status(200).json({ data: invitations, message: "Invitations fetched successfully" });
     } catch (error) {
       next(error);
+    }
+  };
+
+  public insertInviteEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const inviteData: InviteDTO = req.body;
+      const result = await this.usersService.createInvite(inviteData);
+      res.status(201).json({ message: 'Invite sent successfully', data: result });
+    } catch (err) {
+      next(err);
     }
   };
 

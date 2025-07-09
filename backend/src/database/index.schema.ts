@@ -38,6 +38,10 @@ import { REPORT_TABLE } from './report_system.schema';
 import { ROLE } from './role.schema';
 import { VISITOR_LOGS } from './visitor_logs.schema';
 import { NICHES_TABLE } from './niches.schema';
+import { ROBOTS_TXT } from './robots.txt.schema';
+import { INVITATION_TABLE } from './admin_invites.schema';
+import { REPORT_TEMPLATES } from './report_templates.schema';
+import { REPORT_SCHEDULES } from './reports_schedules.schema';
 import { ROLE_PERMISSION } from './role_permission.schema';
 import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
 import { USER_ROLES } from './user_role.schema';
@@ -58,6 +62,10 @@ export const T = {
   ROLE,
   VISITOR_LOGS,
   NICHES_TABLE,
+  ROBOTS_TXT,
+  INVITATION_TABLE,
+  REPORT_TEMPLATES,
+  REPORT_SCHEDULES,
   ROLE_PERMISSION,
   SUBMITTED_PROJECTS,
   USER_ROLES

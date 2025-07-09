@@ -2,7 +2,6 @@
 export interface IProjectTask {
     projects_task_id?: number;
     user_id: number;
-  user_id: number;
     project_title: string;
     project_category?: string | null;
     Deadline: Date;

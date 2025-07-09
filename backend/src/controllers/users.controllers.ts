@@ -257,7 +257,7 @@ class UsersController {
   public insertInviteEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const inviteData: InviteDTO = req.body;
-      const result = await this.usersService.createInvite(inviteData);
+      const result = await this.UsersService.createInvite(inviteData);
       res.status(201).json({ message: 'Invite sent successfully', data: result });
     } catch (err) {
       next(err);

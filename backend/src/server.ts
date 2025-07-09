@@ -16,13 +16,12 @@ import permissionRoute from './routes/permission.routes';
 import ReportsRoute from './routes/report_system.routes';
 import roleRoute from './routes/role.routes';
 import visitor_logsRoute from './routes/visitor_logs.routes';
-import EMCRoute from './routes/emc.routes'
 import robots_txtRoutes from './routes/robots.txt.routes';
 import report_templatesRoute from './routes/report_templates.routes';
 
 
 validateEnv();
 
-const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute(), new robots_txtRoutes(), new report_templatesRoute()  ]);
+const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_templatesRoute(), new favoritesRoute(), new visitor_logsRoute(), new robots_txtRoutes(), new report_templatesRoute()  ]);
 
 app.listen();

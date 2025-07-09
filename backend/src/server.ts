@@ -9,10 +9,13 @@ import report_systemRoute from './routes/report_system.routes';
 import favoritesRoute from './routes/favorites.routes';
 import visitor_logsRoute from './routes/visitor_logs.routes';
 import EMCRoute from './routes/emc.routes'
-
-
+import ReviewRoute from './routes/review.route';
+import supportTicketsRoute from './routes/support_tickets.route'
 validateEnv();
 
-const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute() ]);
+const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute() ,new ReviewRoute()
+, new supportTicketsRoute()
+
+]);
 
 app.listen();

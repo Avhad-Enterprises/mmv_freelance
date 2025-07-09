@@ -99,6 +99,7 @@ export const seed = async (dropFirst = false) => {
 //  exports.seed = seed;
 //  const run = async () => {
 //     //createProcedure();
-//      seed();
+//      seed(true);
 //  };
 //  run();
+

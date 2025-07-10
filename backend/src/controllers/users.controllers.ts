@@ -1,17 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
 import { Users } from "../interfaces/users.interface";
-import UsersService from "../services/users.services";
+import UsersService from "../services/user.services";
 import { generateToken } from "../utils/jwt";
 import HttpException from "../exceptions/HttpException";
-import { InviteDTO } from "../dtos/admin_invites.dto";
 import crypto from 'crypto';
 import sendPasswordResetEmail from '../utils/sendResetPasswordEmail';
 import DB, { T } from "../database/index.schema";
-import sendEmail from '../utils/sendemail';
+import sendEmail from '../utils/sendEmail';
+
 
 class UsersController {
   public UsersService = new UsersService();
+
 
   public getAllActiveCustomers = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +23,7 @@ class UsersController {
     }
   };
 
+
   public getAllActiveFreelance = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const freelancers = await this.UsersService.getAllActiveFreelancers();
@@ -30,6 +32,7 @@ class UsersController {
       next(error);
     }
   };
+
 
   public insertUser = async (
     req: Request,
@@ -47,6 +50,7 @@ class UsersController {
     }
   };
 
+
   public loginEmployee = async (
     req: Request,
     res: Response,
@@ -55,15 +59,20 @@ class UsersController {
     try {
       const { email, password } = req.body;
 
+
       if (!email || !password) {
         throw new HttpException(400, "Please provide both email and password");
       }
 
+
       const user = await this.UsersService.Login(email, password);
+
 
       const { password: _pw, ...userData } = user as any;
 
+
       const token = generateToken(userData);
+
 
       res.status(200).json({
         data: { user: userData, token },
@@ -74,10 +83,12 @@ class UsersController {
     }
   };
 
+
   public getUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
+
 
       const user = await this.UsersService.getById(user_id);
       res.status(200).json({ data: user, message: "User fetched successfully" });
@@ -85,6 +96,7 @@ class UsersController {
       next(error);
     }
   };
+
 
   public updateUserById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -96,10 +108,12 @@ class UsersController {
     }
   };
 
+
   public softDeleteUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
+
 
       const deleted = await this.UsersService.softDelete(user_id);
       res.status(200).json({ data: deleted, message: "User soft-deleted successfully" });
@@ -108,25 +122,33 @@ class UsersController {
     }
   };
 
+
   public forgotPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email } = req.body;
       if (!email) throw new HttpException(400, "Email is required");
 
+
       const user = await this.UsersService.getUserByEmail(email);
       if (!user) throw new HttpException(404, "User not found");
+
 
       const token = crypto.randomBytes(32).toString("hex");
       const expires = new Date(Date.now() + 60 * 60 * 1000);
 
+
       await this.UsersService.saveResetToken(user.user_id, token, expires);
+
 
       const protocol = req.protocol;
       const host = req.get('host');
 
+
       const resetLink = `${protocol}://${host}/reset-password?token=${token}`;
 
+
       await sendPasswordResetEmail(email, 'Reset Your Password', `Click this link to reset your password: ${resetLink}`);
+
 
       res.status(200).json({ message: "Password reset link sent" });
     } catch (error) {
@@ -134,17 +156,22 @@ class UsersController {
     }
   };
 
+
   public resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token, newPassword, confirmPassword } = req.body;
 
+
       if (!token || !newPassword || !confirmPassword)
         throw new HttpException(400, "All fields are required");
+
 
       if (newPassword !== confirmPassword)
         throw new HttpException(400, "Passwords do not match");
 
+
       await this.UsersService.resetPassword(token, newPassword);
+
 
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
@@ -152,10 +179,12 @@ class UsersController {
     }
   };
 
+
   public getFreelancerById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
+
 
       const user = await this.UsersService.getFreelancerById(user_id);
       res.status(200).json({ data: user, message: "Freelancer fetched successfully" });
@@ -164,10 +193,12 @@ class UsersController {
     }
   };
 
+
   public getClientById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
+
 
       const user = await this.UsersService.getClientById(user_id);
       res.status(200).json({ data: user, message: "Client fetched successfully" });
@@ -176,10 +207,12 @@ class UsersController {
     }
   };
 
+
   public getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
+
 
       const user = await this.UsersService.getCustomerById(user_id);
       res.status(200).json({ data: user, message: "Customer fetched successfully" });
@@ -187,6 +220,7 @@ class UsersController {
       next(error);
     }
   };
+
 
   public getAdminById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -198,6 +232,7 @@ class UsersController {
       next(error);
     }
   };
+
 
   public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -231,12 +266,14 @@ class UsersController {
   };
 
 
+
+
   public insertEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: UsersDto & { invite_token: string } = req.body;
       await this.UsersService.validateInvitation(userData.email, userData.invite_token);
       const user = await this.UsersService.Insert(userData);
-      await DB(T.USERINVITATIONS)
+      await DB(T.USERS_TABLE)
         .where({ email: userData.email })
         .update({ used: true });
       res.status(201).json({ data: user, message: "User registered successfully" });
@@ -244,6 +281,7 @@ class UsersController {
       next(error);
     }
   };
+
 
   public getAllInvitations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -254,16 +292,57 @@ class UsersController {
     }
   };
 
-  public insertInviteEmail = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+  public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const inviteData: InviteDTO = req.body;
-      const result = await this.UsersService.createInvite(inviteData);
-      res.status(201).json({ message: 'Invite sent successfully', data: result });
-    } catch (err) {
-      next(err);
+      const { email, password } = req.body;
+
+
+      if (!email || !password) {
+        throw new HttpException(400, "Please provide both email and password");
+      }
+
+
+      const user = await this.UsersService.login(email, password);
+
+
+      // Exclude password from response
+      const { password: _pw, ...userData } = user as any;
+
+
+      const token = generateToken(userData);
+
+
+      res.status(200).json({
+        data: { user: userData, token },
+        message: "Login successful",
+      });
+    } catch (error) {
+      next(error);
     }
   };
 
+
+    // project get client and editor
+    public getProjectsByClientAndEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+      try {
+        const { user_id } = req.body;
+   
+        if (!user_id) {
+         res.status(400).json({ message: "user_id is required in request body" });
+        }
+   
+        const data = await this.usersService.getProjectsByUserRole(user_id);
+        res.status(200).json({ data, success: true });
+      } catch (error) {
+        next(error);
+      }
+    };
+ 
 }
 
+
 export default UsersController;
+
+
+

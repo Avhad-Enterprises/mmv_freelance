@@ -1,8 +1,11 @@
 import DB from './index.schema';
 
+
 export const USERS_TABLE = 'users';
 
+
 export const seed = async (dropFirst = false) => {
+
 
     try {
         if (dropFirst) {
@@ -40,16 +43,16 @@ export const seed = async (dropFirst = false) => {
             table.string('timezone').nullable();
             table.jsonb("skill").nullable();
             table.boolean("email_notifications").nullable();
-            table.jsonb("tags").defaultTo(true);
-            table.boolean("notes").nullable();
+            table.jsonb("tags").defaultTo(DB.raw(`'[]'`));
+            table.jsonb("notes").nullable();
             table.jsonb('certification').nullable();
-            table.jsonb('education').nullable;
-            table.text('experience').nullable()
+            table.jsonb('education').nullable();
+            table.jsonb('experience').nullable()
             table.jsonb('services').nullable();
             table.jsonb('previous_works').nullable();
-            table.integer('projects_created').defaultTo(0);
-            table.integer('projects_applied').defaultTo(0);
-            table.integer('projects_completed').defaultTo(0);
+            table.jsonb('projects_created').defaultTo(DB.raw(`'[]'`));
+            table.jsonb('projects_applied').defaultTo(DB.raw(`'[]'`));
+            table.jsonb('projects_completed').defaultTo(DB.raw(`'[]'`));
             table.integer('hire_count').defaultTo(0);
             table.integer('review_id').defaultTo(0);
             table.integer('total_earnings').defaultTo(0);
@@ -70,6 +73,8 @@ export const seed = async (dropFirst = false) => {
         });
 
 
+
+
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
         await DB.raw(`
@@ -85,9 +90,13 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
+
 //  exports.seed = seed;
 //  const run = async () => {
 //     //createProcedure();
 //      seed();
 //  };
 //  run();
+
+
+

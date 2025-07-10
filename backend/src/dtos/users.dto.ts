@@ -1,6 +1,5 @@
-import {
-  IsString, IsEmail, IsBoolean, IsInt, IsOptional, IsObject, IsDefined, IsArray, IsIn
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber } from 'class-validator';
+
 
 export class UsersDto {
   @IsOptional({ groups: ["update"] })
@@ -213,32 +212,29 @@ export class UsersDto {
 
 export class ArtworkSelectionDto {
   @IsString()
-  @IsIn(['user', 'creator'])
-  account_type: string;
+  account_status: string;
 
-  @IsInt()
-  user_id: number;
 
-  @IsOptional()
-  @IsInt()
-  projects_task_id?: number;
+  @IsBoolean()
+  is_active: boolean;
 
-  @IsOptional()
-  artworks?: string | string[];
-}
 
-export class NicheSelectionDto {
-  @IsString()
-  @IsIn(['user', 'creator'])
-  account_type: string;
+  @IsBoolean()
+  is_banned: boolean;
 
-  @IsInt()
-  user_id: number;
 
   @IsOptional()
-  @IsInt()
-  projects_task_id?: number;
+  created_at?: Date;
 
-  @IsString()
-  niche: string;
+
+  @IsOptional()
+  updated_at?: Date;
+
+
+  @IsOptional()
+  updated_by?: Date;
+
+
+  @IsOptional()
+  last_login_at?: Date;
 }

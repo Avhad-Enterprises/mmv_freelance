@@ -95,9 +95,7 @@ class ProjectstaskService {
       .update(update)
       .returning("*");
 
-    if (!deleted.length) throw new HttpException(404, "projects Task not found or already deleted");
-
-    return deleted[0];
+    return result[0];
   }
 
   public async projectstaskActive(): Promise<number> {

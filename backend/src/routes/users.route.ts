@@ -3,6 +3,8 @@ import Route from "../interfaces/route.interface";
 import validationMiddleware from "../middlewares/validation.middleware";
 import UsersController from "../controllers/users.controllers";
 import { UsersDto } from "../dtos/users.dto";
+import userController from '../controllers/users.controllers';
+import { InviteDTO } from '../dtos/admin_invites.dto';
 
 class UsersRoute implements Route {
   public path = "/users";

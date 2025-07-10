@@ -1,6 +1,8 @@
 import DB from './index.schema';
 
+
 export const PROJECTS_TASK = 'projects_task';
+
 
 export const seed = async (dropFirst = false) => {
     try {
@@ -20,7 +22,7 @@ export const seed = async (dropFirst = false) => {
             table.date('Deadline').notNullable();
             table.text('project_description').notNullable();
             table.integer('Budget').notNullable();
-            table.jsonb('tags');
+            table.jsonb('tags').nullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();
             table.text('additional_notes').notNullable();
@@ -41,7 +43,9 @@ export const seed = async (dropFirst = false) => {
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 
+
         });
+
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
@@ -58,9 +62,13 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
+
 //   exports.seed = seed;
 //   const run = async () => {
 //      //createProcedure();
 //       seed();
 //   };
 //   run();
+
+
+

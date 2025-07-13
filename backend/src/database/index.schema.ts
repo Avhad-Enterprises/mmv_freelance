@@ -38,6 +38,11 @@ import { REPORT_TABLE } from './report_system.schema';
 import { ROLE } from './role.schema';
 import { VISITOR_LOGS } from './visitor_logs.schema';
 import { NICHES_TABLE } from './niches.schema';
+import { REVIEWS_TABLE } from './review.schema';
+import {SUPPORT_TICKETS_TABLE} from './support_ticket.schema'
+import {TICKET_REPLY_TABLE} from './support_ticket_reply.schema'
+import {TICKET_NOTE_TABLE} from './support_ticket_note.schema'
+import {EMAIL_LOG_TABLE} from './emai.log.schema'
 import { ROBOTS_TXT } from './robots.txt.schema';
 import { INVITATION_TABLE } from './admin_invites.schema';
 import { REPORT_TEMPLATES } from './report_templates.schema';
@@ -62,13 +67,11 @@ export const T = {
   ROLE,
   VISITOR_LOGS,
   NICHES_TABLE,
-  ROBOTS_TXT,
-  INVITATION_TABLE,
-  REPORT_TEMPLATES,
-  REPORT_SCHEDULES,
-  ROLE_PERMISSION,
-  SUBMITTED_PROJECTS,
-  USER_ROLES
+  REVIEWS_TABLE,
+  SUPPORT_TICKETS_TABLE,
+  TICKET_REPLY_TABLE,
+  TICKET_NOTE_TABLE,
+  EMAIL_LOG_TABLE
 };
 
 // Creates the procedure that is then added as a trigger to every table

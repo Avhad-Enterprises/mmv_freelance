@@ -18,8 +18,8 @@ import ReportsRoute from './routes/report_system.routes';
 import roleRoute from './routes/role.routes';
 import visitor_logsRoute from './routes/visitor_logs.routes';
 import robots_txtRoutes from './routes/robots.txt.routes';
-import report_templatesRoute from './routes/report_templates.routes';
-
+import report_templatesRoute from './routes/report_templates.routes'; import ReviewRoute from './routes/review.route';
+import supportTicketsRoute from './routes/support_tickets.route'
 validateEnv();
 
 const app = new App([
@@ -39,6 +39,9 @@ const app = new App([
     new visitor_logsRoute(),
     new robots_txtRoutes(),
     new report_templatesRoute(),
+    new ReviewRoute(),
+    new supportTicketsRoute(),
+
 ]);
 
 app.listen();

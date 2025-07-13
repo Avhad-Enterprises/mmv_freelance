@@ -9,12 +9,12 @@ import { IsEmpty } from 'class-validator';
 const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFunction) => {
 
   try {
-    //if (req.path.includes('/users/insertusers') || req.path.includes('/public')) {
+    // if (req.path.includes('/users/insertusers') || req.path.includes('/public')) {
     if (req.path.includes('/users/login')) {
       await DB.raw("SET search_path TO public");
       return next();
     }
-
+  
     const bearerHeader = req.headers['authorization'];
 
     if (bearerHeader) {

@@ -17,14 +17,12 @@ export const sendResetEmail = async (
     });
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.SMTP_USER,
       to,
-      subject: "🔐 password Reset Request",
+      subject: "🔐 Password Reset Request",
       html: `<p>Hi ${first_name},</p>
-    <p>Click <a href="${resetUrl}">here</url> to reset your password.</p>
-    <p>If you didn’t request this, you can ignore this email.</p>'
-    
-`
+             <p>Click <a href="${resetUrl}">here</a> to reset your password.</p>
+             <p>If you didn’t request this, you can ignore this email.</p>`
     };
 
     const info = await transporter.sendMail(mailOptions);

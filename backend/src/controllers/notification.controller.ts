@@ -75,6 +75,23 @@ class NotificationController {
             next(error);
         }
     };
+
+       //notification projects details
+       public getnotificationprojectdetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+          const { user_id } = req.body;
+      
+          if (!user_id) {
+           res.status(400).json({ message: "user_id is required in request body" });
+          }
+      
+          const data = await this.NotificationService.getnotificationprojectdetails(user_id);
+          res.status(200).json({ data, success: true });
+        } catch (error) {
+          next(error);
+        }
+      };
+ 
 }
 export default NotificationController;
 

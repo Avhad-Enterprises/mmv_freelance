@@ -67,5 +67,20 @@ class NotificationService {
         }
         return count;
     }
+
+ //notification projects details
+    public getnotificationprojectdetails = async (user_id: number): Promise<any[]> => {
+        return await DB(T.FAVORITES_TABLE)
+          .join(T.USERS_TABLE, `${T.FAVORITES_TABLE}.user_id`, '=', `${T.USERS_TABLE}.user_id`)
+          .join(T.PROJECTS_TASK, `${T.FAVORITES_TABLE}.favorite_project_id`, '=', `${T.PROJECTS_TASK}.projects_task_id`)
+          .where(`${T.FAVORITES_TABLE}.user_id`, user_id)
+          .select(
+            `${T.FAVORITES_TABLE}.favorite_project_id`,
+            `${T.USERS_TABLE}.username`,
+            `${T.USERS_TABLE}.email`,
+            `${T.PROJECTS_TASK}.*`
+        );
+    }
+    
 }
 export default NotificationService;

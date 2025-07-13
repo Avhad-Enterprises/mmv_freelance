@@ -37,6 +37,9 @@ class UsersRoute implements Route {
 
     // Register invited user
     this.router.post(`${this.path}/register`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertEmployee);
+    //frontend login
+    this.router.post(`${this.path}/loginf`, this.usersController.Login);
+    
   }
 }
 

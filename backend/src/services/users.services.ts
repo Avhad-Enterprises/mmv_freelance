@@ -231,6 +231,51 @@ class UsersService {
 
     return invitations;
   }
+
+  public async login(email: string, password: string): Promise<Users & { token: string }> {
+    if (!email || !password){
+      throw new HttpException(400, "Email and password are required");
+    }
+    const user = await DB(T.USERS_TABLE).where({ email }).first();
+    if (!user) {
+      throw new HttpException(404, "Email not registered");
+    }
+    if (user.is_banned = false) {
+      throw new HttpException(403, "Your account has been banned.");
+    }
+    
+    if (!user.is_active) {
+      throw new HttpException(403, "Your account is not active.");
+    }
+
+    const allowedaccountTypes = ['freelancer', 'customer' ];
+    if (!allowedaccountTypes.includes(user.account_type)) {
+      throw new HttpException(403, "Access denied for this account type");
+    }
+
+    const ispasswordValid = await bcrypt.compare(password, user.password);
+    if (!ispasswordValid) {
+      throw new HttpException(401, "Incorrect password");
+    }
+    const token = jwt.sign(
+      {
+        user_id: user.user_id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        profile_picture: user.profile_picture,
+        role: user.role,
+        is_banned: user.is_banned,
+        is_active: user.is_active,
+      },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "24h" }
+    );
+    return {
+      ...user,
+      token,
+    };
+  }
 }
 
 export default UsersService;

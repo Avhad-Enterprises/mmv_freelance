@@ -20,6 +20,9 @@ class notificationRoute implements Route {
         this.router.get(`${this.path}/read/:id`, (req, res, next) => this.notificationController.notificationisread(req, res, next));
         this.router.post(`${this.path}/read-all`, (req, res, next) => this.notificationController.readallnotification(req, res, next));
         this.router.get(`${this.path}/count/:id`, (req, res, next) => this.notificationController.notificationcount(req, res, next));
+    //notification project details
+        this.router.get(`${this.path}/projectsdetails`, this.notificationController.getnotificationprojectdetails);
+
     }
 }
 

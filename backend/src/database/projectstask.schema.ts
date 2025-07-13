@@ -14,30 +14,33 @@ export const seed = async (dropFirst = false) => {
         await DB.schema.createTable(PROJECTS_TASK, table => {
             table.increments('projects_task_id').primary();  //ID
             table.integer('client_id').notNullable();
-            table.integer('editor_id').nullable();
+            table.integer('editor_id').notNullable();
             table.string('project_title').notNullable();
-            table.text('project_category').notNullable();
-            table.date('Deadline').notNullable();
+            table.text('project_category').defaultTo(0);
+            table.date('deadline').notNullable();
             table.text('project_description').notNullable();
-            table.integer('Budget').notNullable();
-            table.jsonb('tags');
+            table.integer('budget').notNullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();
-            table.text('additional_notes').notNullable();
+            table.string('additional_notes').notNullable();
+            table.jsonb('status').notNullable();
             table.text('projects_type').notNullable();
             table.string('project_format').notNullable();
             table.string('audio_voiceover').notNullable();
             table.integer('video_length').notNullable();
             table.text('preferred_video_style').notNullable();
-            table.string('sample_project_file').nullable();
+            table.jsonb('sample_project_file').notNullable();
             table.jsonb('project_files').notNullable();
-            table.boolean('show_all_files').defaultTo(false);
+            table.jsonb('show_all_files').notNullable();
+            table.string('url').unique();
+            table.string('meta_title').notNullable();
+            table.text('meta_description').notNullable();
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(false);
+            table.boolean('is_deleted').defaultTo(true);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 

@@ -41,6 +41,9 @@ import { NICHES_TABLE } from './niches.schema';
 import { ROLE_PERMISSION } from './role_permission.schema';
 import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
 import { USER_ROLES } from './user_role.schema';
+import { SUBSCRIBED_EMAILS } from './subscribed_emails.schema';
+import { ANALYTICS_SETTINGS } from './analytics_setting.schema';
+import { BRANDING_ASSETS } from './branding_assets.schema';
 
 
 export const T = {
@@ -60,7 +63,12 @@ export const T = {
   NICHES_TABLE,
   ROLE_PERMISSION,
   SUBMITTED_PROJECTS,
-  USER_ROLES
+  USER_ROLES,
+  SUBSCRIBED_EMAILS,
+  ANALYTICS_SETTINGS,
+  BRANDING_ASSETS
+
+
 };
 
 // Creates the procedure that is then added as a trigger to every table

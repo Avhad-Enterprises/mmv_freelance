@@ -253,6 +253,30 @@ class UsersController {
     }
   };
 
+  public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        throw new HttpException(400, "Please provide both email and password");
+      }
+
+      const user = await this.UsersService.login(email, password);
+
+      // Exclude password from response
+      const { password: _pw, ...userData } = user as any;
+
+      const token = generateToken(userData);
+
+      res.status(200).json({
+        data: { user: userData, token },
+        message: "Login successful",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 }
 
 export default UsersController;

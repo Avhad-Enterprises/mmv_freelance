@@ -32,23 +32,39 @@ class favoritescontroller {
 
     public getAllprojects = async (req: Request, res: Response, next: NextFunction) => {
         try {
-          const favorites = await this.favoritesservices.getAllprojects();
-          res.status(200).json({ data: favorites, success: true });
+            const favorites = await this.favoritesservices.getAllprojects();
+            res.status(200).json({ data: favorites, success: true });
         } catch (err) {
-          next(err);
+            next(err);
         }
-      };
-      
+    };
+
     public listFavoriteFreelancers = async (_req: Request, res: Response): Promise<void> => {
         try {
             const favorites = await this.favoritesservices.getFavoriteFreelancers();
 
-            res.status(200).json({ total: favorites.length, data: favorites, message: 'All projecct fetched successfully'});
+            res.status(200).json({ total: favorites.length, data: favorites, message: 'All projecct fetched successfully' });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
     };
-    
+
+    //favoritesprojects details
+    public getFavoriteprojectsdetails = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { user_id } = req.body;
+
+            if (!user_id) {
+                res.status(400).json({ message: "user_id is required in request body" });
+            }
+
+            const data = await this.favoritesservices.getFavoriteProjectDetails(user_id);
+            res.status(200).json({ data, success: true });
+        } catch (error) {
+            next(error);
+        }
+    };
+
 }
 
 export default favoritescontroller; 

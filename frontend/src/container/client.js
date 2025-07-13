@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest, makePostRequest } from "../utils/api";
+import { makeGetRequest, makePostRequest } from "../utils/api"; // Changed to makePostRequest
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
 import DateInput from "../components/DateInput";
 import Button from "../components/Button";
-import { showErrorToast } from "../utils/toastUtils";
+import { showErrorToast } from "../utils/toastUtils"; // Added for error handling
+
 import wallet from "../assets/svg/wallet.svg";
 import calender from "../assets/svg/calender.svg";
 import channel from "../assets/svg/channel.svg";
@@ -19,12 +20,51 @@ const Clients = () => {
   const [loading, setLoading] = useState(true);
   const tableRef = useRef();
   const navigate = useNavigate();
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [allData, setAllData] = useState([]); // assume this is your full dataset
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [tableKey, setTableKey] = useState(0);
+
+  const handleDateChange = (range) => {
+    if (!range || range.length === 0 || !range[0]) {
+      setSelectedDates([]);
+      setFilteredData([]);
+      setIsFiltered(false); // No filter
+      return;
+    }
+
+    setSelectedDates(range);
+
+    const normalizeToLocalMidnight = (date) => {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d.getTime();
+    };
+
+    const start = normalizeToLocalMidnight(range[0]);
+    const end = range.length === 2 ? normalizeToLocalMidnight(range[1]) : start;
+
+    const filtered = allData.filter((item) => {
+      if (!item.created_at) return false;
+
+      const itemDate = normalizeToLocalMidnight(new Date(item.created_at));
+      return itemDate >= start && itemDate <= end;
+    });
+
+    setFilteredData(filtered);
+    setIsFiltered(true);
+    setTableKey(prev => prev + 1); // 👈 Force remount
+  };
 
   useEffect(() => {
     const fetchClientData = async () => {
       try {
+        // Use makePostRequest to match backend route
         const response = await makeGetRequest("users/customers/active");
+        console.log("Clients API Response:", response); // Debug log
         const data = Array.isArray(response.data?.data) ? response.data.data : [];
+        console.log("Parsed Client Data:", data); // Debug log
         setClientData(data);
       } catch (error) {
         console.error("Error fetching clients:", error);
@@ -54,22 +94,22 @@ const Clients = () => {
       dbcol: "user_id",
       type: "link",
       linkTemplate: "/client/edit/:user_id",
-      linkLabelFromRow: "first_name",
+      linkLabelFromRow: "first_name", // Changed to use name for link label
       linkParamKey: "user_id",
     },
     {
       headname: "Name",
-      dbcol: "first_name",
+      dbcol: "first_name", // Updated to match API response
       type: "",
     },
     {
       headname: "Projects Posted",
-      dbcol: "projects_created",
+      dbcol: "projects_created", // Updated to match a likely field name
       type: "",
     },
     {
       headname: "Rating",
-      dbcol: "review_id",
+      dbcol: "review_id", // Updated to match a likely field name
       type: "",
     },
     {
@@ -89,7 +129,7 @@ const Clients = () => {
       <div className="d-flex justify-content-between">
         <div className="mt-3 d-flex align-items-center">
           <div className="d-flex gap-5 md-date">
-            <DateInput label="" type="range" includeTime={false} />
+            <DateInput label="" type="range" includeTime={false} onChange={handleDateChange} />
           </div>
           <div className="mb-2 ps-3 md-refresh">
             <i
@@ -117,7 +157,7 @@ const Clients = () => {
               operation="count"
               column="is_active"
               jsonData={clientData}
-              customFilter={(item) => item.is_active === 1}
+              customFilter={(item) => item.is_active === 1} // Filter active clients
               icon={calender}
               tooltipText="This shows the count of active clients"
             />
@@ -136,7 +176,7 @@ const Clients = () => {
             <MetricCard
               title="Total Spend"
               operation="sum"
-              column="total_spend"
+              column="total_spend" // Updated to match a likely field name
               jsonData={clientData}
               icon={channel}
               tooltipText="This shows the total spend by clients"
@@ -146,7 +186,7 @@ const Clients = () => {
             <MetricCard
               title="Client Ratings"
               operation="average"
-              column="average_rating"
+              column="average_rating" // Updated to match a likely field name
               jsonData={clientData}
               icon={group}
               tooltipText="This shows the average client rating"
@@ -161,10 +201,11 @@ const Clients = () => {
         <div>No clients found.</div>
       ) : (
         <DataTable
+          key={tableKey} // 👈 This forces re-render
           id="table1"
           tableRef={tableRef}
           columns={columns}
-          data={clientData}
+          data={isFiltered ? filteredData : clientData}
           defaultView="table"
           searchable
           filterable

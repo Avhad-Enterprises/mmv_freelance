@@ -4,6 +4,7 @@ import Homepage from "./container/homepage";
 import Login from "./container/login";
 import Dashboard from "./container/Dashboard";
 import Sample from "./container/Sample";
+import Profile from "./container/profile";
 import ProjectManagemet from "./container/ProjectManagement";
 import CreateNewProject from "./container/create-new-project";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -27,6 +28,15 @@ const App = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />

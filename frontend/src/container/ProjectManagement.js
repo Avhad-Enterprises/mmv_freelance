@@ -22,32 +22,39 @@ const Projects = () => {
   const [selectedDates, setSelectedDates] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [allData, setAllData] = useState([]); // assume this is your full dataset
+  const [isFiltered, setIsFiltered] = useState(false);
+  const [tableKey, setTableKey] = useState(0);
 
   const handleDateChange = (range) => {
-    if (!range || range.length === 0) {
+    if (!range || range.length === 0 || !range[0]) {
+      setSelectedDates([]);
       setFilteredData([]);
+      setIsFiltered(false); // No filter
       return;
     }
-  
+
     setSelectedDates(range);
-  
-    const formatDateOnly = (date) => {
+
+    const normalizeToLocalMidnight = (date) => {
       const d = new Date(date);
       d.setHours(0, 0, 0, 0);
       return d.getTime();
     };
-  
-    const [start, end] = range.length === 2 ? range.map(formatDateOnly) : [formatDateOnly(range[0]), formatDateOnly(range[0])];
-  
+
+    const start = normalizeToLocalMidnight(range[0]);
+    const end = range.length === 2 ? normalizeToLocalMidnight(range[1]) : start;
+
     const filtered = allData.filter((item) => {
       if (!item.created_at) return false;
-      const itemDate = formatDateOnly(item.created_at);
+
+      const itemDate = normalizeToLocalMidnight(new Date(item.created_at));
       return itemDate >= start && itemDate <= end;
     });
-  
-    console.log("Filtered Editors:", filtered);
+
     setFilteredData(filtered);
-  };  
+    setIsFiltered(true);
+    setTableKey(prev => prev + 1); // 👈 Force remount
+  };
 
   useEffect(() => {
     const fetchprojectData = async () => {
@@ -181,10 +188,11 @@ const Projects = () => {
         <div>No Projects found.</div>
       ) : (
         <DataTable
+          key={tableKey} // 👈 This forces re-render
           id="table1"
           tableRef={tableRef}
           columns={columns}
-          data={filteredData.length > 0 ? filteredData : projectData} // ✅ Use filteredData if exists
+          data={isFiltered ? filteredData : projectData}
           defaultView="table"
           searchable
           filterable

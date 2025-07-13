@@ -300,7 +300,7 @@ class UsersService {
   }
 
 
-  public async login(email: string, password: string): Promise<User & { token: string }> {
+  public async login(email: string, password: string): Promise<Users & { token: string }> {
     if (!email || !password) {
       throw new HttpException(400, "Email and password are required");
     }

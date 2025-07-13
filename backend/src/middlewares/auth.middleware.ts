@@ -11,6 +11,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
   try {
     // if (req.path.includes('/users/insertusers') || req.path.includes('/public')) {
     if (req.path.includes('/users/login')) {
+      console.log("in if for /user/login");
       await DB.raw("SET search_path TO public");
       return next();
     }

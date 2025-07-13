@@ -22,26 +22,6 @@ import report_templatesRoute from './routes/report_templates.routes'; import Rev
 import supportTicketsRoute from './routes/support_tickets.route'
 validateEnv();
 
-const app = new App([
-    new usersRoutes(),
-    new projects_taskRoute(),
-    new AppliedProjectsRoute(),
-    new blogRoute(),
-    new categoryRoute(),
-    new EMCRoute(),
-    new TagsRoute(),
-    new uploadtoaws(),
-    new favoritesRoute(),
-    new notificationRoute(),
-    new permissionRoute(),
-    new ReportsRoute(),
-    new roleRoute(),
-    new visitor_logsRoute(),
-    new robots_txtRoutes(),
-    new report_templatesRoute(),
-    new ReviewRoute(),
-    new supportTicketsRoute(),
-
-]);
+const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute(), new categoryRoute(), new blogRoute(), new notificationRoute(), new permissionRoute(), new roleRoute() ]);
 
 app.listen();

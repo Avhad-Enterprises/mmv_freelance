@@ -17,6 +17,6 @@ import roleRoute from './routes/role.routes';
 
 validateEnv();
 
-const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute(), new categoryRoute(), new blogRoute(), new notificationRoute(), new permissionRoute(), new roleRoute() ]);
+const app = new App([new usersRoutes(), new projects_taskRoute(), new AppliedProjectsRoute(), new report_systemRoute(), new favoritesRoute(), new visitor_logsRoute(), new categoryRoute(), new blogRoute(), new notificationRoute(), new permissionRoute(), new roleRoute()]);
 
 app.listen();

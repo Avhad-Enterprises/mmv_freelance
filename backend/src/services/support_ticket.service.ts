@@ -8,7 +8,7 @@ import { ITicketNote } from '../interfaces/support_ticket_notes.interface';
 import { TicketNoteDto } from '../dtos/support_ticlet_notes.dto';
 
 class supportTicketService {
-  public async createTicket(ticketData: Partial<SupportTicket>): Promise<SupportTicket> {
+ public async createTicket(ticketData: Partial<SupportTicket>): Promise<SupportTicket> {
   if (!ticketData || Object.keys(ticketData).length === 0) {
     throw new HttpException(400, 'Ticket data is required');
   }
@@ -18,8 +18,6 @@ class supportTicketService {
   if (!subject || !ticket_category || !description) {
     throw new HttpException(400, 'Subject, category, and description are required');
   }
-
-  
 
   const emailContent = `
 New Support Ticket Received
@@ -53,13 +51,33 @@ User Email: ${email ?? 'N/A'}
       body: emailContent,
       replyTo,
     });
+
+    // ✅ Log success in email_logs table
+    await DB(T.EMAIL_LOG_TABLE).insert({
+      ticket_id: ticket.id,
+      to_email: supportEmail,
+      subject: 'New Support Ticket',
+      body: emailContent,
+      status: 'sent',
+      sent_at: DB.fn.now(),
+    });
   } catch (err) {
     console.error('Support email send failed:', err);
-    // Do not throw here to avoid blocking ticket creation
+
+    // ✅ Log failure in email_logs table
+    await DB(T.EMAIL_LOG_TABLE).insert({
+      ticket_id: ticket.id,
+      to_email: supportEmail,
+      subject: 'New Support Ticket',
+      body: emailContent,
+      status: 'failed',
+      sent_at: DB.fn.now(),
+    });
   }
 
   return ticket;
 }
+
 
   public async addAdminNote(data: TicketNoteDto): Promise<ITicketNote> {
     if (isEmpty(data)) throw new HttpException(400, "Note data is required");
@@ -223,7 +241,7 @@ User Email: ${email ?? 'N/A'}
     return updated as SupportTicket;
   }
 
-  public async addTicketReply(data: {
+ public async addTicketReply(data: {
   ticket_id: number;
   sender_id: number;
   sender_role: "client" | "freelancer" | "admin";
@@ -258,26 +276,49 @@ User Email: ${email ?? 'N/A'}
     if (user) recipientEmail = user.email;
   } else {
     const admin = await DB(T.USERS_TABLE).where({ role: "admin" }).first();
-     if (admin){
-      recipientEmail="aanyagupta980@gmail.com"
-     }
-        //recipientEmail = admin.email;
+    if (admin) {
+      recipientEmail = "aanyagupta980@gmail.com"; // OR admin.email if dynamic
+    }
   }
 
-  if (recipientEmail) {
-    const emailContent = `
+  const emailContent = `
 New reply to Support Ticket #${ticket_id}
 
 From: ${sender_role} (${sender.email})
 Message: ${message}
 `;
 
-    await sendSupportEmail({
-      to: recipientEmail,
-      subject: `Reply to Ticket #${ticket_id}`,
-      body: emailContent,
-      replyTo: sender.email,
-    });
+  if (recipientEmail) {
+    try {
+      await sendSupportEmail({
+        to: recipientEmail,
+        subject: `Reply to Ticket #${ticket_id}`,
+        body: emailContent,
+        replyTo: sender.email,
+      });
+
+      // ✅ Log successful email
+      await DB(T.EMAIL_LOG_TABLE).insert({
+        ticket_id,
+        to_email: recipientEmail,
+        subject: `Reply to Ticket #${ticket_id}`,
+        body: emailContent,
+        status: 'sent',
+        sent_at: DB.fn.now(),
+      });
+    } catch (err) {
+      console.error('Reply email send failed:', err);
+
+      // ✅ Log failed email
+      await DB(T.EMAIL_LOG_TABLE).insert({
+        ticket_id,
+        to_email: recipientEmail,
+        subject: `Reply to Ticket #${ticket_id}`,
+        body: emailContent,
+        status: 'failed',
+        sent_at: DB.fn.now(),
+      });
+    }
   }
 
   return "Reply added and notification sent";

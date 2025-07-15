@@ -42,3 +42,11 @@ class ReviewRoute implements Route {
 }
 
 export default ReviewRoute;
+
+// {
+//   "project_id": 101,
+//   "client_id": 5,
+//   "user_id": 12,
+//   "rating": 4,
+//   "review": "Great work delivered on time and with excellent communication."
+// }

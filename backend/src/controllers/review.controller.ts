@@ -26,8 +26,8 @@ public createReview = async (
   }
 };
 
-  // POST /api/reviews/freelancer
-  public getReviewsByFreelancer = async (
+  // POST /api/reviews/getreviews
+  public getReviews = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -37,30 +37,14 @@ public createReview = async (
       throw new HttpException(400, "Invalid or missing user_id");
     }
 
-    const reviews = await this.reviewsService.getReviewsByFreelancer(parseInt(user_id));
+    const reviews = await this.reviewsService.getReviews(parseInt(user_id));
     res.status(200).json({
       data: reviews,
-      message: `Fetched reviews for freelancer ${user_id}`,
+      message: `Fetched reviews for  ${user_id}`,
     });
   };
 
-  // POST /api/reviews/client
-  public getReviewsByClient = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    const { client_id } = req.body;
-    if (!client_id || isNaN(parseInt(client_id))) {
-      throw new HttpException(400, "Invalid or missing client_id");
-    }
-
-    const reviews = await this.reviewsService.getReviewsByClient(parseInt(client_id));
-    res.status(200).json({
-      data: reviews,
-      message: `Fetched reviews by client ${client_id}`,
-    });
-  };
+ 
 
   // POST /api/reviews/delete
   public deleteReview = async (

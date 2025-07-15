@@ -7,7 +7,7 @@ import HttpException from "../exceptions/HttpException";
 import crypto from 'crypto';
 import sendPasswordResetEmail from '../utils/sendResetPasswordEmail';
 import DB, { T } from "../database/index.schema";
-import sendEmail from '../utils/sendEmail';
+import sendEmail from '../utils/sendemail';
 
 
 class UsersController {
@@ -321,23 +321,6 @@ class UsersController {
       next(error);
     }
   };
-
-
-    // project get client and editor
-    public getProjectsByClientAndEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-      try {
-        const { user_id } = req.body;
-   
-        if (!user_id) {
-         res.status(400).json({ message: "user_id is required in request body" });
-        }
-   
-        const data = await this.usersService.getProjectsByUserRole(user_id);
-        res.status(200).json({ data, success: true });
-      } catch (error) {
-        next(error);
-      }
-    };
  
 }
 

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import EmcController from '../controllers/emc.controller';
 import validationMiddleware from '../middlewares/validation.middleware';
-import { UserDto, ArtworkSelectionDto, NicheSelectionDto } from '../dtos/users.dto';
+import { NicheSelectionDto } from '../dtos/niche.dto';
 import Route from '../interfaces/routes.interface';
 
 class EMCRoute implements Route{
@@ -16,7 +16,7 @@ class EMCRoute implements Route{
 
     private initializeRoutes(){
 
-        this.router.post(`${this.path}/artwork-selection`, validationMiddleware(ArtworkSelectionDto, 'body', false, []), this.emcController.saveArtworkSelection);
+        this.router.post(`${this.path}/artwork-selection`, validationMiddleware(NicheSelectionDto, 'body', false, []), this.emcController.saveArtworkSelection);
         this.router.post(`${this.path}/niche-selection`, validationMiddleware(NicheSelectionDto, 'body', false, []), this.emcController.saveNicheSelection);
         this.router.get(`${this.path}/recommended-editors/:projectid`, this.emcController.getRecommendedEditors);
     }

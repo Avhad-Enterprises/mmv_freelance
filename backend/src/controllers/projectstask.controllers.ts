@@ -90,7 +90,7 @@ class projectstaskcontroller {
         return;
       }
   
-      const updated = await this.ProjectstaskService.softDelete(idNum, fieldsToUpdate);
+      const updated = await this.ProjectstaskService.softDelete(fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
       next(error);

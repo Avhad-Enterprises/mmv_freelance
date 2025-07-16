@@ -5,7 +5,7 @@ import emcService from '../services/emc.services';
 import HttpException from "../exceptions/HttpException";
 
 class EmcController {
-  public EMCService = emcService;
+  public EMCService = emcService;s
 
   public saveArtworkSelection = async (
     req: Request,

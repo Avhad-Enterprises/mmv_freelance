@@ -75,7 +75,7 @@ class ProjectstaskService {
     return updated[0];
   }
 
-  public async SoftDeleteEvent(projects_task_id: number): Promise<any> {
+  public async softDelete(projects_task_id: number): Promise<any> {
     if (!projects_task_id) throw new HttpException(400, " is required");
 
     console.log(projects_task_id)
@@ -95,7 +95,7 @@ class ProjectstaskService {
       .update(update)
       .returning("*");
 
-    return result[0];
+    return deleted[0];
   }
 
   public async projectstaskActive(): Promise<number> {

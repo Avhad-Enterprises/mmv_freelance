@@ -50,8 +50,9 @@ import { REPORT_SCHEDULES } from './reports_schedules.schema';
 import { ROLE_PERMISSION } from './role_permission.schema';
 import { SUBMITTED_PROJECTS } from './submitted_projects.schema';
 import { USER_ROLES } from './user_role.schema';
-
-
+import { FAQ } from "../database/faq.schema";
+import { APPLICATION} from "../database/application.schema";
+import {TRANSACTION_TABLE} from "../database/transactions.schema";
 
 export const T = {
   USERS_TABLE,
@@ -72,7 +73,17 @@ export const T = {
   SUPPORT_TICKETS_TABLE,
   TICKET_REPLY_TABLE,
   TICKET_NOTE_TABLE,
-  EMAIL_LOG_TABLE
+  EMAIL_LOG_TABLE,
+  FAQ ,
+  USER_ROLES,
+  SUBMITTED_PROJECTS,
+  ROBOTS_TXT,
+  INVITATION_TABLE,
+  REPORT_TEMPLATES,
+  REPORT_SCHEDULES,
+  ROLE_PERMISSION,
+  APPLICATION,
+  TRANSACTION_TABLE
 };
 
 // Creates the procedure that is then added as a trigger to every table

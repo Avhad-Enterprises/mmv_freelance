@@ -21,7 +21,9 @@ import robots_txtRoutes from './routes/robots.txt.routes';
 import report_templatesRoute from './routes/report_templates.routes';
 import ReviewRoute from './routes/review.route';
 import supportTicketsRoute from './routes/support_tickets.route';
-
+import faqRoute from './routes/faq.routes';
+import PaymentRoute from './routes/payment.route';
+import WebhookRoute from './routes/webhook.route';
 import validateEnv from './utils/validateEnv';
 
 // Validate .env variables
@@ -46,7 +48,10 @@ const app = new App([
     new robots_txtRoutes(),
     new report_templatesRoute(),
     new ReviewRoute(),
-    new supportTicketsRoute()
+    new supportTicketsRoute(),
+    new faqRoute(),
+    new PaymentRoute(),
+    new WebhookRoute()
 ]);
 
 // Start server

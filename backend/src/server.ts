@@ -25,6 +25,10 @@ import faqRoute from './routes/faq.routes';
 import PaymentRoute from './routes/payment.route';
 import WebhookRoute from './routes/webhook.route';
 import validateEnv from './utils/validateEnv';
+import SEORoute from './routes/SEO.routes';
+import branding_assetsRoute from './routes/branding_assets.routes';
+import analytics_settingsRoute from './routes/analytics_Settings.routes';
+import subscribed_emailsRoute from './routes/subscribed_emails.routes';
 
 // Validate .env variables
 validateEnv();
@@ -51,7 +55,11 @@ const app = new App([
     new supportTicketsRoute(),
     new faqRoute(),
     new PaymentRoute(),
-    new WebhookRoute()
+    new WebhookRoute(),
+    new SEORoute(),
+    new branding_assetsRoute(),
+    new analytics_settingsRoute(),
+    new subscribed_emailsRoute()
 ]);
 
 // Start server

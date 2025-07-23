@@ -11,12 +11,12 @@ export const seed = async (dropFirst = false) => {
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
-        
+
         await DB.schema.createTable(APPLIED_PROJECTS, table => {
             table.increments('applied_projects_id').primary();
             table.integer("projects_task_id").notNullable();
             table.integer("user_id").notNullable();
-            table.integer("status").notNullable().defaultTo(0); // 0: pending, 1: accepted, 2: rejected, 3: withdrawn
+            table.integer("status").notNullable().defaultTo(0);
 
             // compulsory columns
             table.boolean("is_active").defaultTo(true);
@@ -32,7 +32,7 @@ export const seed = async (dropFirst = false) => {
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
-        
+
         await DB.raw(`
           CREATE OR REPLACE FUNCTION update_timestamp()
           RETURNS TRIGGER AS $$
@@ -51,7 +51,7 @@ export const seed = async (dropFirst = false) => {
           FOR EACH ROW
           EXECUTE FUNCTION update_timestamp();
         `);
-        
+
         console.log('Finished Creating Triggers');
     } catch (error) {
         console.log(error);

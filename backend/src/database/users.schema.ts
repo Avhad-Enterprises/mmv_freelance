@@ -10,7 +10,7 @@ export const seed = async (dropFirst = false) => {
     try {
         if (dropFirst) {
             console.log('Dropping Tables');
-            await DB.schema.dropTable(USERS_TABLE);
+            await DB.schema.dropTableIfExists(USERS_TABLE);
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
@@ -68,12 +68,9 @@ export const seed = async (dropFirst = false) => {
             table.boolean('is_banned').defaultTo(false); // is_banned is used to check if the user is banned or not
             table.timestamp("created_at").defaultTo(DB.fn.now());
             table.timestamp("updated_at").defaultTo(DB.fn.now());
-            table.timestamp("updated_by").nullable();
+            table.integer("updated_by").nullable();
             table.timestamp('last_login_at').nullable();
         });
-
-
-
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
@@ -91,12 +88,9 @@ export const seed = async (dropFirst = false) => {
 };
 
 
-    //   exports.seed = seed;
-    //   const run = async () => {
-    //      //createProcedure();
-    //       seed(true);
-    //   };
-    //   run();
-
-
-
+// exports.seed = seed;
+// const run = async () => {
+//     //createProcedure();
+//     seed(true);
+// };
+// run();

@@ -1,224 +1,240 @@
-import {
-  IsString, IsEmail, IsBoolean, IsInt, IsOptional, IsObject, IsDefined, IsArray, IsIn
-} from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber, IsInt } from 'class-validator';
 
-export class UserDto {
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] })
+
+export class UsersDto {
+  @IsOptional({ groups: ["update"] })
+  @IsInt({ groups: ["update"] })
   user_id: number;
 
-  @IsString({ groups: ['create', 'update'] }) first_name: string;
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  last_name?: string;
+  @IsOptional()
+  @IsString()
+  first_name: string;
 
-  @IsString({ groups: ['create', 'update'] }) 
+  @IsOptional()
+  @IsString()
+  last_name: string;
+
+  @IsOptional()
+  @IsString()
   username: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsEmail({}, { groups: ['create', 'update'] })
-  email?: string;
-  
-  @IsString({ groups: ['create', 'update'] }) 
+
+  @IsOptional()
+  @IsEmail()
+  email: string;
+
+  @IsOptional()
+  @IsString()
   phone_number: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  profile_picture?: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  @IsDefined({ message: 'password are required' })
-  password?: string;
-  
-  @IsString({ groups: ['create', 'update'] }) 
+  @IsOptional()
+  @IsString()
+  profile_picture: string;
+
+  @IsOptional()
+  @IsString()
   address_line_first: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  address_line_second?: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  city?: string;
+  @IsOptional()
+  @IsString()
+  address_line_second: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  state?: string;
+  @IsOptional()
+  @IsString()
+  city: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  country?: string;
+  @IsOptional()
+  @IsString()
+  state: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  pincode?: string;
+  @IsOptional()
+  @IsString()
+  country: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  aadhaar_verification?: boolean;
+  @IsOptional()
+  @IsString()
+  pincode: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  email_verified?: boolean;
+  @IsOptional()
+  @IsString()
+  password: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  phone_verified?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  aadhaar_verification: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  kyc_verified?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  email_verified: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  role?: string;
+  @IsOptional()
+  @IsBoolean()
+  phone_verified: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] }) 
-  banned_reason?: string;
+  @IsOptional()
+  @IsString()
+  reset_token: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] }) 
-  bio?: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  timezone?: string;
+  @IsOptional()
+  @IsString()
+  reset_token_expires: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  niche?: string;
+  @IsOptional()
+  @IsInt()
+  login_attempts: number;
 
-  @IsOptional({ groups: ['create', 'update'] })
-  artworks?: string[];
+  @IsOptional()
+  @IsBoolean()
+  kyc_verified: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  email_notifications?: boolean;
+  @IsOptional()
+  @IsString()
+  role: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  tags?: boolean;
+  @IsOptional()
+  @IsString()
+  banned_reason: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] })
-  notes?: boolean;
+  @IsOptional()
+  @IsString()
+  bio: string;
 
-  @IsOptional({ groups: ['create', 'update'] })  
-  @IsObject({ groups: ['create', 'update'] })
-  certification?: Record<string, any>;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject({ groups: ['create', 'update'] })
-  education?: Record<string, any>;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  experience?: string;
-  
-  @IsOptional({ groups: ['create', 'update'] })
-  @IsObject({ groups: ['create', 'update'] })
-  services?: Record<string, any>;
-    
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject({ groups: ['create', 'update'] })
-  previous_works?: Record<string, any>;
+  @IsOptional()
+  @IsString()
+  timezone: string;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject({ groups: ['create', 'update'] })
-  payment_method?: Record<string, any>;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject({ groups: ['create', 'update'] })
-  payout_method?: Record<string, any>;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsObject({ groups: ['create', 'update'] })
-  bank_account_info?: Record<string, any>;
+  @IsOptional()
+  skill: any; // JSONB
 
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) projects_created?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) projects_applied?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) projects_completed?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) hire_count?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) review_id?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) total_earnings?: number;
-  
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) total_spent?: number;
+  @IsOptional()
+  @IsBoolean()
+  email_notifications: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  account_type?: string;
-    
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] }) 
-  availability?: string;
+  @IsOptional()
+  tags: any; // JSONB
 
-  @IsOptional({ groups: ['update'] }) 
-  @IsInt({ groups: ['update'] }) time_spent?: number;
-  
-  @IsOptional({ groups: ['create', 'update'] })
-  @IsString({ groups: ['create', 'update'] }) account_status?: string;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] }) is_active?: boolean;
-  
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsBoolean({ groups: ['create', 'update'] }) is_banned?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  notes: boolean;
 
-  @IsOptional({ groups: ['create', 'update'] }) 
-  @IsString({ groups: ['create', 'update'] })
-  @IsDefined({ message: 'reset_token are required' })
-  reset_token?: string;
+  @IsOptional()
+  certification: any; // JSONB
 
-  @IsOptional({ groups: ['create', 'update'] }) // map timestamp string or Date
-  reset_token_expires?: Date;
+  @IsOptional()
+  education: any; // JSONB
 
-  @IsOptional({ groups: ['create', 'update'] })
-  @IsInt({ groups: ['create', 'update'] })
-  login_attempts?: number;
+  @IsOptional()
+  @IsString()
+  experience: string;
+
+  @IsOptional()
+  services: any; // JSONB
+
+  @IsOptional()
+  previous_works: any; // JSONB
+
+  @IsOptional()
+  @IsInt()
+  projects_created: number;
+
+  @IsOptional()
+  @IsInt()
+  projects_applied: number;
+
+  @IsOptional()
+  @IsInt()
+  projects_completed: number;
+
+  @IsOptional()
+  @IsInt()
+  hire_count: number;
+
+  @IsOptional()
+  @IsInt()
+  review_id: number;
+
+  @IsOptional()
+  @IsInt()
+  total_earnings: number;
+
+  @IsOptional()
+  @IsInt()
+  total_spent: number;
+
+  @IsOptional()
+  payment_method: any;
+
+  @IsOptional()
+  payout_method: any;
+
+  @IsOptional()
+  bank_account_info: any;
+
+  @IsOptional()
+  @IsString()
+  account_type: string;
+
+  @IsOptional()
+  @IsString()
+  availability: string;
+
+  @IsOptional()
+  @IsInt()
+  time_spent: number;
+
+  @IsOptional()
+  @IsString()
+  account_status: string;
+
+  @IsOptional()
+  @IsBoolean()
+  is_active: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  is_banned: boolean;
+
+  @IsOptional()
+  @IsString()
+  created_at: string;
+
+  @IsOptional()
+  @IsString()
+  updated_at: string;
+
+  @IsOptional()
+  @IsString()
+  updated_by: string;
+
+  @IsOptional()
+  @IsString()
+  last_login_at: string;
 }
 
 export class ArtworkSelectionDto {
   @IsString()
-  @IsIn(['user', 'creator'])
-  account_type: string;
+  account_status: string;
 
-  @IsInt()
-  user_id: number;
 
-  @IsOptional()
-  @IsInt()
-  projects_task_id?: number;
+  @IsBoolean()
+  is_active: boolean;
 
-  @IsOptional()
-  artworks?: string | string[];
-}
 
-export class NicheSelectionDto {
-  @IsString()
-  @IsIn(['user', 'creator'])
-  account_type: string;
+  @IsBoolean()
+  is_banned: boolean;
 
-  @IsInt()
-  user_id: number;
 
   @IsOptional()
-  @IsInt()
-  projects_task_id?: number;
+  created_at?: Date;
 
-  @IsString()
-  niche: string;
+
+  @IsOptional()
+  updated_at?: Date;
+
+
+  @IsOptional()
+  updated_by?: Date;
+
+
+  @IsOptional()
+  last_login_at?: Date;
 }

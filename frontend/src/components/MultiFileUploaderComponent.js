@@ -17,6 +17,8 @@ const allowedTypes = {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     "text/csv",
   ],
+
+  zip: ["application/zip", "application/x-zip-compressed", "application/x-rar-compressed", "application/x-7z-compressed"],
 };
 
 const MultiFileUploaderComponent = ({
@@ -27,7 +29,7 @@ const MultiFileUploaderComponent = ({
   info,
   multiple = true,
   required = false,
-  folderPath = "uploads/images",
+  folderPath = "uploads/",
   initialFiles = [],
 }) => {
   const inputRef = useRef(null);
@@ -227,6 +229,77 @@ const MultiFileUploaderComponent = ({
                     Your browser does not support the video tag.
                   </video>
                 )}
+
+                {/* PDF Preview */}
+                {file.type === "application/pdf" && (
+                  <iframe
+                    src={fileUrl || URL.createObjectURL(file)}
+                    title={`PDF Preview ${index}`}
+                    width="184"
+                    height="130"
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      opacity: uploading ? 0.5 : 1,
+                    }}
+                  />
+                )}
+
+                {/* DOC/DOCX Preview (download link or icon) */}
+                {["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"].includes(file.type) && (
+                  <div
+                    style={{
+                      width: "184px",
+                      height: "130px",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      padding: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#f8f9fa",
+                      opacity: uploading ? 0.5 : 1,
+                    }}
+                  >
+                    <a
+                      href={fileUrl || URL.createObjectURL(file)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download={file.name}
+                    >
+                      📄 {file.name}
+                    </a>
+                  </div>
+                )}
+
+                {/* ZIP and archive file preview */}
+                {["application/zip", "application/x-zip-compressed", "application/x-rar-compressed", "application/x-7z-compressed"].includes(file.type) && (
+                  <div
+                    style={{
+                      width: "184px",
+                      height: "130px",
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      padding: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "#f8f9fa",
+                      opacity: uploading ? 0.5 : 1,
+                    }}
+                  >
+                    <a
+                      href={fileUrl || URL.createObjectURL(file)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download={file.name}
+                      style={{ textAlign: "center", color: "#333", textDecoration: "none" }}
+                    >
+                      🗜️ {file.name}
+                    </a>
+                  </div>
+                )}
+
 
                 <button
                   type="button"

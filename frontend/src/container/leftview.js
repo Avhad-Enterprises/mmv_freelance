@@ -93,6 +93,33 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
           <ul className="p-0">
 
             <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/projectmanagement") ? "active" : ""}`}>
+                <Link to="/projectmanagement" className="d-flex align-items-center">
+                  <i className="bi bi-menu-button-wide-fill"></i>
+                  <div className="LeftMenuHead ml-2">Project Management</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/client") ? "active" : ""}`}>
+                <Link to="/client" className="d-flex align-items-center">
+                  <i className="bi bi-person-fill"></i>
+                  <div className="LeftMenuHead ml-2">Clients</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/editors") ? "active" : ""}`}>
+                <Link to="/editors" className="d-flex align-items-center">
+                  <i className="bi bi-person-workspace"></i>
+                  <div className="LeftMenuHead ml-2">Editors</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
               <div
                 className={`nav-link d-flex justify-content-between align-items-center ${openDropdowns["resources"] ? "active" : ""}`}
                 onClick={() => handleDropdown("resources")}

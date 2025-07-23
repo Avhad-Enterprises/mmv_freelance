@@ -1,113 +1,77 @@
 import {
-    IsString, IsNotEmpty, IsDateString,
-    IsInt, IsArray, ArrayNotEmpty, IsUrl, IsObject,
-    IsBoolean, IsOptional, ValidateNested
-  } from 'class-validator';
-  import { Type } from 'class-transformer';
+  IsNotEmpty, IsString, IsArray, IsInt, IsDateString, IsBoolean, IsObject
+} from 'class-validator';
+
+export class ProjectsTaskDto {
+  @IsInt() 
+  client_id: number;
   
-  class ProjectFileItem {
-    @IsString()
-    filename: string;
+  @IsInt() 
+  editor_id: number;
   
-    @IsUrl()
-    url: string;
-  }
+  @IsString() 
+  project_title: string;
   
-  export class ProjectsTaskDto {
-    @IsInt()
-    user_id: number;
+  @IsString() 
+  project_category: string;
   
-    @IsString()
-    @IsNotEmpty()
-    project_title: string;
+  @IsDateString() 
+  deadline: string;
   
-    @IsString()
-    @IsOptional()
-    project_category: string;
+  @IsString() 
+  project_description: string;
   
-    @IsDateString()
-    Deadline: string;
+  @IsInt() 
+  budget: number;
   
-    @IsString()
-    @IsNotEmpty()
-    project_description: string;
+  @IsArray() 
+  skills_required: string[];
   
-    @Type(() => Number)
-    @IsInt()
-    Budget: number;
+  @IsArray() 
+  reference_links: string[];
   
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsString({ each: true })
-    skills_required: string[];
+  @IsString() 
+  additional_notes: string;
   
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsUrl({}, { each: true })
-    reference_links: string[];
+  @IsObject() 
+  status: object;
   
-    @IsString()
-    @IsNotEmpty()
-    additional_notes: string;
+  @IsString() 
+  projects_type: string;
   
-    @IsObject()
-    status: Record<string, any>;
+  @IsString() 
+  project_format: string;
   
-    @IsString()
-    @IsNotEmpty()
-    projects_type: string;
+  @IsString() 
+  audio_voiceover: string;
   
-    @IsString()
-    @IsNotEmpty()
-    project_format: string;
+  @IsInt() 
+  video_length: number;
   
-    @IsString()
-    @IsNotEmpty()
-    audio_voiceover: string;
+  @IsString() 
+  preferred_video_style: string;
   
-    @Type(() => Number)
-    @IsInt()
-    video_length: number;
+  @IsArray() 
+  sample_project_file: string[];
   
-    @IsString()
-    @IsNotEmpty()
-    preferred_video_style: string;
+  @IsArray() 
+  project_files: string[];
   
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProjectFileItem)
-    project_files: ProjectFileItem[];
+  @IsArray() 
+  show_all_files: string[];
   
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProjectFileItem)
-    sample_project_file: ProjectFileItem[];
+  @IsString() 
+  url: string;
   
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ProjectFileItem)
-    show_all_files: ProjectFileItem[];
+  @IsString() 
+  meta_title: string;
   
-    @IsOptional()
-    @Type(() => Number)
-    is_active?: number;
+  @IsString() 
+  meta_description: string;
   
-    @Type(() => Number)
-    @IsInt()
-    created_by: number;
+  @IsInt() 
+  is_active: number;
   
-    @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    updated_by?: number;
-  
-    @IsOptional()
-    @Type(() => Number)
-    @IsInt()
-    deleted_by?: number;
-  
-    @IsOptional()
-    @IsBoolean()
-    is_deleted?: boolean;
-  }
-  
+  @IsInt() 
+  created_by: number;
+}

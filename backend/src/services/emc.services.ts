@@ -1,5 +1,5 @@
 import DB, { T } from '../database/index.schema';
-import { UserDto } from '../dtos/users.dto';
+import { UsersDto } from '../dtos/users.dto';
 import HttpException from '../exceptions/HttpException';
 import { USERS_TABLE } from '../database/users.schema';
 import { PROJECTS_TASK } from '../database/projectstask.schema';

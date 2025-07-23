@@ -1,3 +1,4 @@
+
 import { NextFunction, Request, Response } from 'express';
 import { ProjectsTaskDto } from '../dtos/projectstask.dto';
 import { IProjectTask } from '../interfaces/projectstask.interfaces';
@@ -7,22 +8,21 @@ import DB, { T } from '../database/index.schema';
 import HttpException from '../exceptions/HttpException';
 import { isEmpty } from 'class-validator';
 import { PROJECTS_TASK } from '../database/projectstask.schema';
-import { SubmitProjectDto } from '../dtos/submit_project.dto';
-import { ISubmittedProjects } from '../interfaces/submit_project.interface';
-
+import projectsservice from '../services/projectstask.services';
+import { validateUrlFormatWithReason } from '../utils/validateUrlformat';
 
 class projectstaskcontroller {
 
   public ProjectstaskService = new ProjectstaskService();
 
-  public insertprojectstask = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public insert = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     try {
-
       const userData: ProjectsTaskDto = req.body;
-      const insertedData = await this.ProjectstaskService.Insertmyprojectstask(userData);
-      res.status(201).json({ data: insertedData, message: "Inserted" });
+      const createdproject = await this.ProjectstaskService.Insert(userData);
+      res.status(201).json({ data: createdproject, message: "Inserted" });
     } catch (error) {
+      console.error('Insert Project Task Error:', error);
       next(error);
     }
   };
@@ -50,7 +50,40 @@ class projectstaskcontroller {
     }
   };
 
-  public updateById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public update = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { project_task_id, ...updateData } = req.body;
+  
+      // 1. Validate project ID
+      if (!project_task_id) {
+        res.status(400).json({ message: 'project_task_id is required' });
+        return;
+      }
+  
+      // 2. If URL is being updated, validate format
+      if (updateData.url) {
+        const { valid, reason } = validateUrlFormatWithReason(updateData.url);
+        if (!valid) {
+          res.status(400).json({ message: `Invalid URL format: ${reason}` });
+          return;
+        }
+      }
+  
+      // 3. Call service method to update
+      const updatedProject = await this.ProjectstaskService.updateProject(project_task_id, updateData);
+  
+      res.status(200).json({
+        message: 'Project updated successfully',
+        data: updatedProject
+      });
+  
+    } catch (error: any) {
+      console.error("Controller error:", error);
+      res.status(500).json({ message: error.message || 'Internal Server Error' });
+    }
+  }    
+  
+  public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
@@ -61,25 +94,15 @@ class projectstaskcontroller {
       }
   
       // Clone body and exclude code_id
-      const { projects_task_id, ...fieldsToUpdate } = req.body;
+      const fieldsToUpdate = req.body;
   
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
   
-      const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
+      const updated = await this.ProjectstaskService.softDelete(idNum, fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
-    } catch (error) {
-      next(error);
-    }
-  };
-  
-  public async deleteprojectstask(req: Request, res: Response, next: NextFunction) {
-    try {
-      const projects_task_id = Number(req.body.projects_task_id);
-      const Deleted = await this.ProjectstaskService.SoftDeleteEvent(projects_task_id);
-      res.status(200).json({ data: Deleted, message: 'Deleted successfully' });
     } catch (error) {
       next(error);
     }
@@ -112,9 +135,9 @@ class projectstaskcontroller {
     }
   };
 
-  public getactivedeletedprojectstask = async (req: Request, res: Response, next: NextFunction) => {
+  public getactivedeleted = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projects = await this.ProjectstaskService.getactivedeletedprojectstask();
+      const projects = await this.ProjectstaskService.getactivedeleted();
       res.status(200).json({ data: projects, success: true });
     } catch (err) {
       next(err);
@@ -130,68 +153,82 @@ class projectstaskcontroller {
     }
   };
 
-  public submitProject = async(
-    req : Request,
-    res : Response,
-    next : NextFunction
-  ): Promise<void> =>{
+  public  getAllTasksWithClientInfo = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const {user_id, projects_task_id} = req.body;
-  
-      if (!projects_task_id || !user_id){
-        throw new HttpException(400, "Missing values");
-      }
-      const submitData: SubmitProjectDto ={
-        ...req.body,
-        user_id : user_id,
-        projects_task_id : projects_task_id, 
-      };
-      const submitted : ISubmittedProjects = await this.ProjectstaskService.submit(
-        submitData
-      )
-  
-      res.status(201).json({
-        data: submitted,
-        message : "Successfully Submitted "
-      });
-    } catch (error: any) {
-      if (error instanceof HttpException && error.status === 409) {
-        res.status(409).json({ message: "You have already submitted this project." });
-      } else {
-        next(error);
-      }
+      const tasks = await this.ProjectstaskService.getTasksWithClientInfo();
+      res.status(200).json({data: tasks, success: true });
+    } catch (error) {
+      next(error);
     }
-  } 
-
-  public approveProject = async(
-    req: Request,
-    res : Response,
-    next : NextFunction
-  ): Promise<void> => {
+  };
+  
+  public getTaskWithClientById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const {submission_id, status} = req.body;
-      if (!submission_id || !status) {
-        throw new HttpException(400, "Submission id and status is required");
+      const { id } = req.params;
+      const task = await this.ProjectstaskService.getTaskWithClientById(Number(id));
+  
+      if (!task) {
+         res.status(404).json({ success: false, message: "Task not found" });
       }
-      const approvedData: SubmitProjectDto ={
-        ...req.body,
-        submission_id : submission_id,
-        status : status, 
-      };
-      const approved = await this.ProjectstaskService.approve(submission_id,status,approvedData);
-
-      res.status(200).json({
-        data: approved,
-        message : "Submission status approved successfully" 
-      });
-    } catch (error: any) {
-      if (error instanceof HttpException && error.status === 409) {
-        res.status(409).json({ message: "You have already updated status of this project." });
-      } else {
-        next(error);
-      }
+  
+      res.status(200).json({ data: task, success: true });
+    } catch (error) {
+      next(error);
     }
-  }
+  };
+    
+  public getprojectstaskbyurl = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const url = req.params.url;
+  
+      if (!url) {
+        res.status(400).json({ message: "URL is required" });
+        return;
+      }
+  
+      const projecttask = await this.ProjectstaskService.getByUrl(url);
+  
+      if (!projecttask) {
+        res.status(404).json({ message: "projects task not found" });
+        return;
+      }
+  
+      res.status(200).json({ data: projecttask });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public checkUrlExists = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { url } = req.body;
+  
+      if (!url) {
+        res.status(400).json({ message: 'URL is required' });
+        return;
+      }
+  
+      // 🔍 Validate format with specific error
+      const { valid, reason } = validateUrlFormatWithReason(url);
+  
+      if (!valid) {
+        res.status(400).json({ message: `Invalid URL format: ${reason}` });
+        return;
+      }
+  
+      const exists = await this.ProjectstaskService.checkUrlInprojects(url);
+  
+      if (exists) {
+        res.status(200).json({ message: 'URL exists in projects task table', url });
+      } else {
+        res.status(404).json({ message: 'URL not found in projects task table', url });
+      }
+  
+    } catch (error: any) {
+      console.error("checkUrlExists error:", error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }  
 }
 
 export default projectstaskcontroller; 

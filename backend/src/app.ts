@@ -12,6 +12,9 @@ import errorMiddleware from "./middlewares/error.middleware";
 import { logger, stream } from "./utils/logger";
 import authMiddleware from "./middlewares/auth.middleware";
 import nunjucks from "nunjucks";
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 class App {
   public app: express.Application;
@@ -42,6 +45,7 @@ class App {
     });
   }
 
+  
   public listen() {
     this.app.listen(this.port, () => {
       logger.info(

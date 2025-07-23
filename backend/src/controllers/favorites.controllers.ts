@@ -1,11 +1,8 @@
-
 import { NextFunction, Request, Response } from 'express';
 import { favoritesDto } from '../dtos/favorites.dto';
 import favoritesservices from '../services/favorites.services';
-import { RequestHandler } from 'express-serve-static-core';
 import DB, { T } from '../database/index.schema';
 import HttpException from '../exceptions/HttpException';
-import { isEmpty } from 'class-validator';
 
 
 class favoritescontroller {

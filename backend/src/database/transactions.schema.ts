@@ -27,8 +27,9 @@ export const seed = async (dropFirst = false) => {
             table
                 .integer("application_id")
                 .references("id")
-                .inTable(T.APPLICATION)
+                .inTable(T.APPLIED_PROJECTS)
                 .onDelete("CASCADE"); //doubtful, what is this, and from where I can get this application id.
+
             table
                 .integer("payer_id")
                 .references("user_id")

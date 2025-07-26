@@ -51,45 +51,45 @@ class projectstaskcontroller {
     try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
-  
+
       if (isNaN(idNum)) {
         res.status(400).json({ error: '  "projects_task_id" must be a number' });
         return;
       }
-  
+
       // Clone body and exclude code_id
-      const fieldsToUpdate  = req.body;
-  
+      const fieldsToUpdate = req.body;
+
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
-  
+
       const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
       next(error);
     }
   };
-  
+
   public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
-  
+
       if (isNaN(idNum)) {
         res.status(400).json({ error: '  "projects_task_id" must be a number' });
         return;
       }
-  
+
       // Clone body and exclude code_id
       const fieldsToUpdate = req.body;
-  
+
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
-  
+
       const updated = await this.ProjectstaskService.softDelete(fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
@@ -117,7 +117,7 @@ class projectstaskcontroller {
 
   public getallprojectstask = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projects = await this.ProjectstaskService.getallprojectstask();
+      const projects = await this.ProjectstaskService.getAllProjectsTask();
       res.status(200).json({ data: projects, success: true });
     } catch (err) {
       next(err);
@@ -142,29 +142,29 @@ class projectstaskcontroller {
     }
   };
 
-  public submitProject = async(
-    req : Request,
-    res : Response,
-    next : NextFunction
-  ): Promise<void> =>{
+  public submitProject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
     try {
-      const {user_id, projects_task_id} = req.body;
-  
-      if (!projects_task_id || !user_id){
+      const { user_id, projects_task_id } = req.body;
+
+      if (!projects_task_id || !user_id) {
         throw new HttpException(400, "Missing values");
       }
-      const submitData: SubmitProjectDto ={
+      const submitData: SubmitProjectDto = {
         ...req.body,
-        user_id : user_id,
-        projects_task_id : projects_task_id, 
+        user_id: user_id,
+        projects_task_id: projects_task_id,
       };
-      const submitted : ISubmittedProjects = await this.ProjectstaskService.submit(
+      const submitted: ISubmittedProjects = await this.ProjectstaskService.submit(
         submitData
       )
-  
+
       res.status(201).json({
         data: submitted,
-        message : "Successfully Submitted "
+        message: "Successfully Submitted "
       });
     } catch (error: any) {
       if (error instanceof HttpException && error.status === 409) {
@@ -173,28 +173,28 @@ class projectstaskcontroller {
         next(error);
       }
     }
-  } 
+  }
 
-  public approveProject = async(
+  public approveProject = async (
     req: Request,
-    res : Response,
-    next : NextFunction
+    res: Response,
+    next: NextFunction
   ): Promise<void> => {
     try {
-      const {submission_id, status} = req.body;
+      const { submission_id, status } = req.body;
       if (!submission_id || !status) {
         throw new HttpException(400, "Submission id and status is required");
       }
-      const approvedData: SubmitProjectDto ={
+      const approvedData: SubmitProjectDto = {
         ...req.body,
-        submission_id : submission_id,
-        status : status, 
+        submission_id: submission_id,
+        status: status,
       };
-      const approved = await this.ProjectstaskService.approve(submission_id,status,approvedData);
+      const approved = await this.ProjectstaskService.approve(submission_id, status, approvedData);
 
       res.status(200).json({
         data: approved,
-        message : "Submission status approved successfully" 
+        message: "Submission status approved successfully"
       });
     } catch (error: any) {
       if (error instanceof HttpException && error.status === 409) {

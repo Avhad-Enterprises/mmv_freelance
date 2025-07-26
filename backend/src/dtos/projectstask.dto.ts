@@ -30,7 +30,7 @@ import {
     project_category: string;
   
     @IsDateString()
-    Deadline: string;
+    deadline: string;
   
     @IsString()
     @IsNotEmpty()
@@ -38,7 +38,7 @@ import {
   
     @Type(() => Number)
     @IsInt()
-    Budget: number;
+    budget: number;
 
     @IsOptional()
     @IsJSON()

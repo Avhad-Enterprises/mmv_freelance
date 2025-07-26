@@ -13,7 +13,7 @@ export const seed = async (dropFirst = false) => {
         console.log('Seeding Tables');
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(VISITOR_LOGS, table => {
-            table.increments('id').primary();  //ID
+            table.increments('visitor_id').primary();  //ID
             table.string('session_id').notNullable();
             table.integer('user_id').nullable();
             table.string('ip_address').nullable();
@@ -63,7 +63,6 @@ export const seed = async (dropFirst = false) => {
             table.timestamp('deleted_at').nullable();
 
         });
-
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
         await DB.raw(`
@@ -79,9 +78,9 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//   exports.seed = seed;
-//   const run = async () => {
-//      //createProcedure();
-//       seed();
-//   };
-//   run();
+    // exports.seed = seed;
+    // const run = async () => {
+    //    //createProcedure();
+    //     seed();
+    // };
+    // run();

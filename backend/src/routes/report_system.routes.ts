@@ -12,7 +12,6 @@ class ReportsRoute implements Route {
   public reportcontroller = new reportcontroller();
 
   constructor() {
-    console.log("Routes");
     this.initializeRoutes();
   }
 

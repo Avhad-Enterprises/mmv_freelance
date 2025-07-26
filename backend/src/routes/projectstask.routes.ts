@@ -16,7 +16,6 @@ class projectstaskRoute implements Route {
   public projectstaskcontroller = new projectstaskcontroller();
 
   constructor() {
-    console.log("Routes");
     this.initializeRoutes();
   }
 

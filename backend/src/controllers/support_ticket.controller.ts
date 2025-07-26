@@ -40,29 +40,29 @@ class supportTicketsController {
     }
   };
 
- public getAdminNotes = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { ticket_id, admin_id } = req.body;
+  public getAdminNotes = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { ticket_id, admin_id } = req.body;
 
-    if (!ticket_id || !admin_id) {
-      throw new HttpException(400, "ticket_id and admin_id are required");
+      if (!ticket_id || !admin_id) {
+        throw new HttpException(400, "ticket_id and admin_id are required");
+      }
+
+      const notes = await this.supportTicketsService.getAdminNotes({
+        ticket_id,
+        admin_id,
+      });
+
+      res.status(200).json({ notes, message: "Admin notes fetched successfully" });
+    } catch (error) {
+      next(error);
     }
-
-    const notes = await this.supportTicketsService.getAdminNotes({
-      ticket_id,
-      admin_id,
-    });
-
-    res.status(200).json({ notes, message: "Admin notes fetched successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
-public softDeleteTicket = async (
+  };
+  public softDeleteTicket = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -127,33 +127,33 @@ public softDeleteTicket = async (
   };
 
   public updateTicketStatus = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { admin_id, ticket_id, status } = req.body;
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { admin_id, ticket_id, status } = req.body;
 
-    if (!admin_id || !ticket_id || !status) {
-      throw new HttpException(400, "admin_id, ticket_id and status are required");
+      if (!admin_id || !ticket_id || !status) {
+        throw new HttpException(400, "admin_id, ticket_id and status are required");
+      }
+
+      const updatedTicket = await this.supportTicketsService.updateTicketStatus({
+        admin_id,
+        ticket_id,
+        status,
+      });
+
+      res.status(200).json({
+        message: "Ticket status updated successfully",
+        ticket: updatedTicket,
+      });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    const updatedTicket = await this.supportTicketsService.updateTicketStatus({
-      admin_id,
-      ticket_id,
-      status,
-    });
-
-    res.status(200).json({
-      message: "Ticket status updated successfully",
-      ticket: updatedTicket,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-public replyToTicket = async (req: Request, res: Response, next: NextFunction) => {
+  public replyToTicket = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { ticket_id, sender_id, sender_role, message } = req.body;
 
@@ -161,7 +161,7 @@ public replyToTicket = async (req: Request, res: Response, next: NextFunction) =
         throw new HttpException(400, 'ticket_id, sender_id, sender_role, and message are required');
       }
 
-      const reply = await this.supportTicketsService. addTicketReply({
+      const reply = await this.supportTicketsService.addTicketReply({
         ticket_id,
         sender_id,
         sender_role,
@@ -172,6 +172,19 @@ public replyToTicket = async (req: Request, res: Response, next: NextFunction) =
         message: 'Reply posted successfully',
         reply,
       });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public getallticket = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { user_id, projects_task_id } = req.body;
+      if (!user_id || !projects_task_id) {
+        res.status(400).json({ message: "user_id and project_task_id are required" });
+        return;
+      }
+      const tickets = await this.supportTicketsService.getallticketsid(user_id, projects_task_id);
+      res.status(200).json({ data: tickets, message: "Support tickets retrieved successfully" });
     } catch (error) {
       next(error);
     }

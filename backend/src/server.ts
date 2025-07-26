@@ -17,14 +17,17 @@ import permissionRoute from './routes/permission.routes';
 import ReportsRoute from './routes/report_system.routes';
 import roleRoute from './routes/role.routes';
 import visitor_logsRoute from './routes/visitor_logs.routes';
-import robots_txtRoutes from './routes/robots.txt.routes';
 import report_templatesRoute from './routes/report_templates.routes';
 import ReviewRoute from './routes/review.route';
 import supportTicketsRoute from './routes/support_tickets.route';
 import faqRoute from './routes/faq.routes';
 import PaymentRoute from './routes/payment.route';
 import WebhookRoute from './routes/webhook.route';
+import CmsRoute from './routes/cms.routes';
+import MacroRoute from './routes/macro.routes'
 import validateEnv from './utils/validateEnv';
+import robotstxtRoutes from './routes/robotstxt.routes';
+
 
 // Validate .env variables
 validateEnv();
@@ -45,13 +48,15 @@ const app = new App([
     new ReportsRoute(),
     new roleRoute(),
     new visitor_logsRoute(),
-    new robots_txtRoutes(),
+    new robotstxtRoutes(),
     new report_templatesRoute(),
     new ReviewRoute(),
     new supportTicketsRoute(),
     new faqRoute(),
     new PaymentRoute(),
-    new WebhookRoute()
+    new WebhookRoute(),
+    new CmsRoute(),
+    new MacroRoute()
 ]);
 
 // Start server

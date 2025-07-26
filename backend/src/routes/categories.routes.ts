@@ -22,6 +22,9 @@ class categoryRoute implements Route {
     this.router.post(`${this.path}/deletecategory`, validationMiddleware(CategoryDto, 'body', true, []), (req, res, next) => this.categoryController.deletecategory(req, res, next));
     this.router.post(`${this.path}/getprojectcategory/:id`, (req, res, next) => this.categoryController.getprojectbycategory(req, res, next));
     this.router.get(`${this.path}/projects`, (req, res, next) => this.categoryController.getprojectbyitscategory(req, res, next));
+    this.router.get(`${this.path}/getallcategorys`, (req, res, next) => this.categoryController.getallcategorysby(req, res, next));
+   this.router.get(`${this.path}/getcategorytypes`, (req, res, next) => this.categoryController.getcategorytypesby(req, res, next));
+
 
   }
 }

@@ -17,34 +17,34 @@ export const seed = async (dropFirst = false) => {
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(USERS_TABLE, table => {
             table.increments('user_id').primary(); // ID
-            table.string("first_name").notNullable;
-            table.string("last_name").nullable;
-            table.string("username").notNullable();
-            table.string("email").unique();
+            table.string('first_name').notNullable;
+            table.string('last_name').nullable;
+            table.string('username').notNullable();
+            table.string('email').unique();
             table.string('phone_number').notNullable();
             table.string('profile_picture').nullable();
-            table.string("address_line_first").notNullable();
-            table.string("address_line_second").defaultTo(null);
-            table.string("city").nullable();
-            table.string("state").nullable();
-            table.string("country").nullable();
-            table.string("pincode").nullable();
-            table.string("password").nullable();
-            table.boolean("aadhaar_verification").defaultTo(false);
-            table.boolean("email_verified").defaultTo(false);
+            table.string('address_line_first').notNullable();
+            table.string('address_line_second').defaultTo(null);
+            table.string('city').nullable();
+            table.string('state').nullable();
+            table.string('country').nullable();
+            table.string('pincode').nullable();
+            table.string('password').nullable();
+            table.boolean('aadhaar_verification').defaultTo(false);
+            table.boolean('email_verified').defaultTo(false);
             table.boolean('phone_verified').defaultTo(false);
-            table.text("reset_token").nullable();
-            table.timestamp("reset_token_expires").nullable();
+            table.text('reset_token').nullable();
+            table.timestamp('reset_token_expires').nullable();
             table.string('login_attempts').defaultTo(0);
             table.boolean('kyc_verified').defaultTo(false);
-            table.string("role").nullable();
+            table.string('role').nullable();
             table.text('banned_reason').nullable();
             table.text('bio').nullable();
             table.string('timezone').nullable();
-            table.jsonb("skill").nullable();
-            table.boolean("email_notifications").nullable();
-            table.jsonb("tags").defaultTo(DB.raw(`'[]'`));
-            table.jsonb("notes").nullable();
+            table.jsonb('skill').nullable();
+            table.boolean('email_notifications').nullable();
+            table.jsonb('tags').defaultTo(DB.raw(`'[]'`));
+            table.jsonb('notes').nullable();
             table.jsonb('certification').nullable();
             table.jsonb('education').nullable();
             table.jsonb('experience').nullable()
@@ -64,7 +64,7 @@ export const seed = async (dropFirst = false) => {
             table.string('availability').nullable();
             table.integer('time_spent').defaultTo(0);
             table.string('account_status').defaultTo(1); // (Active, Inactive, Banned)
-            table.boolean("is_active").defaultTo(true); // is_active is used to check if the user is active or not
+            table.boolean('is_active').defaultTo(true); // is_active is used to check if the user is active or not
             table.boolean('is_banned').defaultTo(false); // is_banned is used to check if the user is banned or not
             table.timestamp("created_at").defaultTo(DB.fn.now());
             table.timestamp("updated_at").defaultTo(DB.fn.now());

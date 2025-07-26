@@ -16,8 +16,8 @@ export const seed = async (dropFirst = false) => {
             table.increments('applied_projects_id').primary();
             table.integer("projects_task_id").notNullable();
             table.integer("user_id").notNullable();
-            table.integer("status").notNullable().defaultTo(0);
-
+            table.integer("status").notNullable().defaultTo(0); // 0: pending, 1: accepted, 2: rejected, 3: withdrawn
+            table.text('description');
             // compulsory columns
             table.boolean("is_active").defaultTo(true);
             table.boolean("is_deleted").defaultTo(false);
@@ -58,9 +58,9 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//  exports.seed = seed;
-//  const run = async () => {
-//     //createProcedure();
-//      seed();
-//  };
-//  run();
+//   exports.seed = seed;
+//   const run = async () => {
+//      //createProcedure();
+//       seed();
+//   };
+//   run();

@@ -26,7 +26,7 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/get_user_by_id`, this.usersController.getUserById);
     this.router.post(`${this.path}/update_user_by_id`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.updateUserById);
     this.router.post(`${this.path}/soft_delete_user`, this.usersController.softDeleteUser);
-    //this.router.post(`${this.path}/forgot-password`, this.usersController.forgotPassword);
+    this.router.post(`${this.path}/forgot-password`, this.usersController.forgotPassword);
     this.router.post(`${this.path}/reset-password`, this.usersController.resetPassword);
 
 

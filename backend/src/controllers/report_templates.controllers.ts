@@ -57,7 +57,7 @@ import createHttpError from 'http-errors';
   public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const raw = (req.body as any).id;
-
+     
       if (isNaN(raw)) {
         res.status(400).json({ error: 'id must be a required' });
         return;

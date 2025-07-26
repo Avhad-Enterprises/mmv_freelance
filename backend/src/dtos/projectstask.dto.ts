@@ -15,14 +15,19 @@ export class ProjectsTaskDto {
   @IsString() 
   project_category: string;
   
-  @IsDateString() 
-  deadline: string;
+    @IsDateString()
+    deadline: string;
   
   @IsString() 
   project_description: string;
   
-  @IsInt() 
-  budget: number;
+    @Type(() => Number)
+    @IsInt()
+    budget: number;
+
+    @IsOptional()
+    @IsJSON()
+    tags?: any;
   
   @IsArray() 
   skills_required: string[];

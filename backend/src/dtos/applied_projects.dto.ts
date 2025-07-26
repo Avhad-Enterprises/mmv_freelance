@@ -21,6 +21,10 @@ export class AppliedProjectsDto {
     @IsInt({ groups: ['create', 'update'] })
     status?: number;
 
+    @IsOptional()
+    @IsString()
+    description?: string;
+
     @IsOptional({ groups: ['create', 'update'] })
     @IsBoolean({ groups: ['create', 'update'] })
     is_active?: boolean;
@@ -49,4 +53,3 @@ export class AppliedProjectsDto {
     @IsDateString()
     updated_at?: string;
 }
-  

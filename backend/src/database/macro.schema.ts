@@ -1,33 +1,32 @@
 import DB from './index.schema';
 
-export const REPORT_SCHEDULES = 'report_schedules';
+export const MACRO = 'macro';
 
 export const seed = async (dropFirst = false) => {
     try {
         if (dropFirst) {
             console.log('Dropping Tables');
-            await DB.schema.dropTable(REPORT_SCHEDULES);
+            await DB.schema.dropTable(MACRO);
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
         // await DB.raw("set search_path to public")
-        await DB.schema.createTable(REPORT_SCHEDULES, table => {
-            table.increments('id').primary(); //id
-            table.integer('template_id').notNullable().references('id').inTable('report_templates').onDelete('CASCADE'); //id
-            table.enu('interval',['daily','weekly']).notNullable();
-            table.time('time').notNullable();
-            table.specificType('email_to', 'text[]').notNullable();
+        await DB.schema.createTable(MACRO, table => {
+            table.increments('macro_id').primary();
+            table.string('title').notNullable();
+            table.text('description').nullable();
+            table.text('reply_template').notNullable();
+            table.text("tags", "jsonb").nullable();
+            table.enum('category', ['refund', 'delay', 'feedback', 'general', 'technical']).defaultTo('general');
+            table.jsonb('placeholders').nullable();
+            table.boolean('is_active').defaultTo(true);
             table.integer('created_by').notNullable();
-            table.timestamp('last_run_at').nullable();
-            table.timestamp('next_run_at').nullable();
-            table.integer('is_active').defaultTo(0);
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
-
         });
 
         console.log('Finished Seeding Tables');
@@ -35,7 +34,7 @@ export const seed = async (dropFirst = false) => {
         await DB.raw(`
           CREATE TRIGGER update_timestamp
           BEFORE UPDATE
-          ON ${REPORT_SCHEDULES}
+          ON ${MACRO}
           FOR EACH ROW
           EXECUTE PROCEDURE update_timestamp();
         `);
@@ -45,10 +44,9 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//    exports.seed = seed;
-//    const run = async () => {
-//       //createProcedure();
-//        seed();
-//    };
-//    run();
- 
+    //   exports.seed = seed;
+    //   const run = async () => {
+    //       //createProcedure();
+    //       seed();
+    //   };
+    //   run();

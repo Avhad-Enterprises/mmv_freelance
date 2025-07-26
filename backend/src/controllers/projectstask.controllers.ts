@@ -52,55 +52,47 @@ class projectstaskcontroller {
 
   public update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { project_task_id, ...updateData } = req.body;
-  
-      // 1. Validate project ID
-      if (!project_task_id) {
-        res.status(400).json({ message: 'project_task_id is required' });
-        return;
-      }
-  
-      // 2. If URL is being updated, validate format
-      if (updateData.url) {
-        const { valid, reason } = validateUrlFormatWithReason(updateData.url);
-        if (!valid) {
-          res.status(400).json({ message: `Invalid URL format: ${reason}` });
-          return;
-        }
-      }
-  
-      // 3. Call service method to update
-      const updatedProject = await this.ProjectstaskService.updateProject(project_task_id, updateData);
-  
-      res.status(200).json({
-        message: 'Project updated successfully',
-        data: updatedProject
-      });
-  
-    } catch (error: any) {
-      console.error("Controller error:", error);
-      res.status(500).json({ message: error.message || 'Internal Server Error' });
-    }
-  }    
-  
-  public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
-  
+
       if (isNaN(idNum)) {
         res.status(400).json({ error: '  "projects_task_id" must be a number' });
         return;
       }
-  
+
       // Clone body and exclude code_id
       const fieldsToUpdate = req.body;
-  
+
       if (Object.keys(fieldsToUpdate).length === 0) {
         res.status(400).json({ error: 'No update data provided' });
         return;
       }
-  
+
+      const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
+      res.status(200).json({ data: updated, message: 'projects_task updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const raw = (req.body as any).projects_task_id;
+      const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
+
+      if (isNaN(idNum)) {
+        res.status(400).json({ error: '  "projects_task_id" must be a number' });
+        return;
+      }
+
+      // Clone body and exclude code_id
+      const fieldsToUpdate = req.body;
+
+      if (Object.keys(fieldsToUpdate).length === 0) {
+        res.status(400).json({ error: 'No update data provided' });
+        return;
+      }
+
       const updated = await this.ProjectstaskService.softDelete(idNum, fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
@@ -128,7 +120,7 @@ class projectstaskcontroller {
 
   public getallprojectstask = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projects = await this.ProjectstaskService.getallprojectstask();
+      const projects = await this.ProjectstaskService.getAllProjectsTask();
       res.status(200).json({ data: projects, success: true });
     } catch (err) {
       next(err);

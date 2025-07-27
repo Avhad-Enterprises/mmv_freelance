@@ -32,7 +32,7 @@ export const seed = async (dropFirst = false) => {
             table.integer('video_length').notNullable();
             table.text('preferred_video_style').notNullable();
             table.string('sample_project_file').nullable();
-            table.jsonb('project_files').notNullable();
+            table.jsonb('project_files').nullable();
             table.boolean('show_all_files').defaultTo(false);
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();

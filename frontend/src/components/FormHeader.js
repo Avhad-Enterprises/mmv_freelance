@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
 import { ImBin } from "react-icons/im";
+import { Button } from "react-bootstrap";
 
 const FormHeader = ({
   title,
@@ -12,6 +13,9 @@ const FormHeader = ({
   showDelete = false,
   showPreview = false,
   onDelete = () => { },
+  onApplications,
+  applicationsBtnStyle,
+  applicationsClassName,
   onBack = null,
   onPreview = null,
 }) => {
@@ -50,6 +54,18 @@ const FormHeader = ({
             Add
           </button>
         )}
+
+        {onApplications && (
+          <Button
+            type="button"
+            className={applicationsClassName || "btn secondary-btn-primary"}
+            style={{ width: applicationsBtnStyle ? "auto" : "auto" }}
+            onClick={onApplications}
+          >
+            Applications
+          </Button>
+        )}
+
         {showDelete && (
           <button
             type="button"

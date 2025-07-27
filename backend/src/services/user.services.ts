@@ -318,7 +318,7 @@ class UsersService {
     }
 
 
-    const allowedaccountTypes = ['freelancer', 'customer'];
+    const allowedaccountTypes = ['freelancer', 'client'];
     if (!allowedaccountTypes.includes(user.account_type)) {
       throw new HttpException(403, "Access denied for this account type");
     }

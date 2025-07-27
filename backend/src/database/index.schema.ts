@@ -55,12 +55,11 @@ import { APPLICATION} from "../database/application.schema";
 import {TRANSACTION_TABLE} from "../database/transactions.schema";
 import { CMS } from "../database/cms.schema";
 import { MACRO } from "../database/macro.schema";
-import { SKILLS } from "../database/skill.schema ";
-
 import { SEO } from './SEO.schema';
 import { BRANDING_ASSETS } from './branding_assets.schema';
 import { ANALYTICS_SETTINGS } from './analytics_setting.schema';
 import { SUBSCRIBED_EMAILS } from './subscribed_emails.schema';
+import { SKILLS } from './skill.schema';
 
 export const T = {
   USERS_TABLE,
@@ -92,13 +91,7 @@ export const T = {
   ROLE_PERMISSION,
   APPLICATION,
   TRANSACTION_TABLE,
-  CMS,
-  MACRO,
-  SKILLS,
-  SEO,
-  BRANDING_ASSETS,
-  ANALYTICS_SETTINGS,
-  SUBSCRIBED_EMAILS
+  SKILLS
 };
 
 // Creates the procedure that is then added as a trigger to every table

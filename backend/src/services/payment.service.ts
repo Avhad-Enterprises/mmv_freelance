@@ -8,7 +8,6 @@ export default class PaymentService {
     public async createOrder(
         payload: TransactionDto
     ): Promise<{ razorpayOrder: any; transaction: ITransaction }> {
-
         const platform = "razorpay";
 
         const [payer, payee, job, application] = await Promise.all([
@@ -17,7 +16,9 @@ export default class PaymentService {
             DB(T.PROJECTS_TASK)
                 .where({ projects_task_id: payload.project_id })
                 .first(),
-            DB(T.APPLIED_PROJECTS).where({ applied_projects_id: payload.application_id }).first(),
+            DB(T.APPLIED_PROJECTS)
+                .where({ applied_projects_id: payload.application_id })
+                .first(),
         ]);
 
         if (!payer) {
@@ -39,19 +40,19 @@ export default class PaymentService {
             throw new HttpException(403, "Payee must be a freelancer");
         }
 
-        if (
-            application.applied_to_job_id !== payload.project_id ||
-            application.applicant_id !== payload.payee_id
-        ) {
-            throw new HttpException(
-                400,
-                "Application does not belong to this project or payee"
-            );
-        }
+        // if (
+        //     application.applied_to_job_id !== payload.project_id ||
+        //     application.applicant_id !== payload.payee_id
+        // ) {
+        //     throw new HttpException(
+        //         400,
+        //         "Application does not belong to this project or payee"
+        //     );
+        // }
 
         const order = await razorpay.orders.create({
             amount: payload.amount * 100,
-            currency: "INR",
+            currency: payload.currency,
             receipt: `order_${Date.now()}`,
         });
 
@@ -60,7 +61,6 @@ export default class PaymentService {
                 ...payload,
                 transaction_type: "escrow",
                 transaction_status: "pending",
-                currency: "INR",
                 payment_gateway: platform,
                 gateway_transaction_id: order.id,
             })

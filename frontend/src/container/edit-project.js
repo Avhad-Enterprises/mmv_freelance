@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Layout from "./layout";
@@ -8,9 +8,13 @@ import NumberInputComponent from "../components/NumberInputComponent";
 import Aetextarea from "../components/Aetextarea";
 import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
+import DataTable from "../components/DataTable";
+import Modal from "../components/Modal";
+import { Button } from "react-bootstrap";
 import FileUploadComponent from "../components/FileUploadComponent";
 import MultiFileUploaderComponent from "../components/MultiFileUploaderComponent";
 import CheckboxInput from "../components/CheckboxInput";
+import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { makePutRequest, makeGetRequest, makePostRequest } from "../utils/api";
@@ -18,7 +22,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
 import { getLoggedInUser } from "../utils/auth";
-import _ from "lodash"; // Import lodash for robust deep comparison
+import _ from "lodash";
 
 const EditProject = () => {
   const navigate = useNavigate();
@@ -53,26 +57,29 @@ const EditProject = () => {
   });
   const [sampleProjectFile, setSampleProjectFile] = useState(null);
   const [uploadedProjectFiles, setUploadedProjectFiles] = useState([]);
+  const tableRef = useRef();
   const [uploadedShowFiles, setUploadedShowFiles] = useState([]);
   const [showAllFiles, setShowAllFiles] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [skillsTags, setSkillsTags] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [availableCategories, setAvailableCategory] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [canEdit, setCanEdit] = useState(false); // New state to track edit permission
-  const [clients, setClients] = useState([]); // New state for clients
+  const [canEdit, setCanEdit] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [isApplicationsModalOpen, setApplicationsModalOpen] = useState(false);
+  const [ApplicationaData, setApplicationaData] = useState([]);
+  const [viewMode, setViewMode] = useState("form")
 
-  // Use lodash for deep comparison
   const areObjectsEqual = (obj1, obj2) => {
     return _.isEqual(obj1, obj2);
   };
 
-  // Effect for fetching project data and checking user permissions
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
@@ -83,7 +90,6 @@ const EditProject = () => {
           return;
         }
 
-        // Fetch clients
         const fetchClients = async () => {
           try {
             const response = await makeGetRequest("users/customers/active", {});
@@ -99,11 +105,26 @@ const EditProject = () => {
           }
         };
 
+        const fetchCategories = async () => {
+          try {
+            // use your existing route
+            const response = await makeGetRequest("category/getallcategorys");
+            const fetchedCategories = response.data?.data || [];
+            const categoryOptions = fetchedCategories.map((cat) => ({
+              value: cat.category_id,
+              label: cat.category_name || `${cat.name}`,
+            }));
+            setAvailableCategory(categoryOptions);
+          } catch (error) {
+            console.error("Failed to fetch categories:", error);
+            showErrorToast("Failed to load categories.");
+          }
+        };
+
         const payload = { projects_task_id: parseInt(id, 10) };
         const response = await makePostRequest("projectsTask/getprojects_taskbyid", payload);
         const project = response.data.projects;
 
-        // Check if the logged-in user can edit the project
         setCanEdit(user.user_id === project.created_by);
 
         let parsedTags = [];
@@ -133,7 +154,7 @@ const EditProject = () => {
         setSkillsTags(parsedSkills);
 
         const newFormData = {
-          client_id: project.client_id ? parseInt(project.client_id, 10) : null, // Ensure client_id is a number
+          client_id: project.client_id ? parseInt(project.client_id, 10) : null,
           project_title: project.project_title || "",
           project_category: project.project_category || "",
           Deadline: project.Deadline || null,
@@ -210,9 +231,7 @@ const EditProject = () => {
 
         setSampleProjectFile(sampleProjectFileState);
         setUploadedProjectFiles(projectFilesState);
-        setUploadedShowFiles(
-          newFormData.show_all_files ? projectFilesState : []
-        );
+        setUploadedShowFiles(newFormData.show_all_files ? projectFilesState : []);
         setShowAllFiles(newFormData.show_all_files);
         setSelectedTags(parsedTags);
         setSkillsTags(parsedSkills);
@@ -220,7 +239,6 @@ const EditProject = () => {
           newFormData.audio_voiceover === "Yes" && newFormData.additional_notes?.audio_description
         );
 
-        // Set initial state for comparison
         setInitialState({
           formData: { ...newFormData },
           sampleProjectFile: sampleProjectFileState ? sampleProjectFileState.fileUrl : null,
@@ -236,8 +254,8 @@ const EditProject = () => {
         });
 
         setLoading(false);
-        // Fetch clients after setting project data
         await fetchClients();
+        await fetchCategories();
       } catch (error) {
         console.error("Failed to fetch project:", error);
         showErrorToast("Failed to load project data.");
@@ -253,7 +271,6 @@ const EditProject = () => {
     }
   }, [id, navigate]);
 
-  // Effect for tracking form changes
   useEffect(() => {
     if (initialState) {
       const currentState = {
@@ -268,7 +285,6 @@ const EditProject = () => {
       };
       const hasFormChanges = !areObjectsEqual(currentState, initialState);
       setHasChanges(hasFormChanges);
-      console.log("hasChanges:", hasFormChanges, "Current State:", currentState, "Initial State:", initialState); // Debugging
     }
   }, [
     formData,
@@ -282,7 +298,6 @@ const EditProject = () => {
     initialState,
   ]);
 
-  // Effect for handling beforeunload event
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (hasChanges && canEdit) {
@@ -553,14 +568,12 @@ const EditProject = () => {
     }
 
     const payload = {
-      projects_task_id: projectId, // Use 'projects_task_id' instead of 'id'
+      projects_task_id: projectId,
       is_active: 0,
       is_deleted: true,
       deleted_by: userId,
       deleted_at: new Date().toISOString(),
     };
-
-    console.log("Delete payload:", payload); // Log payload for debugging
 
     showAlert({
       title: "Are you sure?",
@@ -602,6 +615,88 @@ const EditProject = () => {
     });
   };
 
+  useEffect(() => {
+    const fetchApplicationData = async () => {
+      try {
+        const payload = {
+          projects_task_id: parseInt(id, 10)};
+        const response = await makePostRequest("applications/projects/get-applications", payload);
+        const data = Array.isArray(response.data?.data) ? response.data.data : [];
+        setApplicationaData(data);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
+        showErrorToast("Failed to load application data.");
+        setApplicationaData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (localStorage.getItem("jwtToken")) {
+      fetchApplicationData();
+    } else {
+      showErrorToast("Please log in to view applications.");
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const Applications = [
+    {
+      headname: "Application ID",
+      dbcol: "applied_projects_id",
+      type: "",
+    },
+    {
+      headname: "Name",
+      dbcol: "first_name",
+      type: "",
+    },
+    {
+      headname: "Status",
+      dbcol: "status",
+      type: "badge",
+    },
+    {
+      headname: "Skills",
+      dbcol: "skill",
+      type: "tags",
+    },
+  ];
+
+  const handleViewChange = () => {
+    if (viewMode === "form" && hasChanges && canEdit) {
+      showAlert({
+        title: "Unsaved Changes",
+        text: "You have unsaved changes. Do you want to save them before viewing applications?",
+        icon: "warning",
+        confirmButton: {
+          text: "Save & View",
+          backgroundColor: "#372d80",
+          textColor: "#fff",
+        },
+        cancelButton: {
+          text: "Discard",
+          backgroundColor: "#c0392b",
+          textColor: "#fff",
+        },
+        denyButton: {
+          text: "Cancel",
+          backgroundColor: "#2c333a",
+          textColor: "#fff",
+        },
+        onConfirm: async () => {
+          await handleSubmit(new Event("submit"));
+          setViewMode("table");
+        },
+        onCancel: () => {
+          setHasChanges(false);
+          setViewMode("table");
+        },
+      });
+    } else {
+      setViewMode(viewMode === "form" ? "table" : "form");
+    }
+  };
 
   const handleBackNavigation = () => {
     if (hasChanges && canEdit) {
@@ -660,258 +755,231 @@ const EditProject = () => {
     <Layout>
       <form onSubmit={handleSubmit}>
         <FormHeader
-          title="Edit Project"
-          showUpdate={hasChanges && canEdit} // Only show Update button if user can edit and there are changes
-          showDelete={canEdit} // Only show Delete button if user can edit
+          title={viewMode === "form" ? "Edit Project" : "Applications"}
+          showUpdate={hasChanges && canEdit && viewMode === "form"}
+          onApplications={handleViewChange}
+          applicationsBtnStyle="col col-md-3"
+          applicationsClassName="a-btn-primary"
+          showDelete={canEdit && viewMode === "form"}
           backUrl="/projectmanagement"
           onBack={handleBackNavigation}
           onDelete={handleDelete}
+        // applicationsBtnText={viewMode === "form" ? "Applications" : "Back to Project"}
         />
-        <Row>
-          <Col md={7}>
-            <div className="form_section">
-              <h6 className="card-title">Project Details</h6>
-              <SelectComponent
-                label="Client Name"
-                name="client_id"
-                options={clients}
-                value={formData.client_id}
-                onChange={(value) => handleInputChange("client_id", value)}
-                placeholder="Select a client"
-                required
-                disabled={!canEdit}
-              />
-              <TextInput
-                label="Project Title"
-                name="project_title"
-                placeholder="Type project title here"
-                value={formData.project_title || ""}
-                onChange={handleInputChange}
-                required
-                disabled={!canEdit}
-              />
-              <Aetextarea
-                label="Project Description"
-                name="project_description"
-                placeholder="Type description here"
-                value={formData.project_description || ""}
-                onChange={handleInputChange}
-                required
-                disabled={!canEdit}
-              />
-              <TextInput
-                label="Preferred Video Style"
-                name="preferred_video_style"
-                placeholder="Type preferred video style"
-                value={formData.preferred_video_style || ""}
-                onChange={handleInputChange}
-                required
-                disabled={!canEdit}
-              />
-              <SelectComponent
-                label="Audio Voiceover"
-                name="audio_voiceover"
-                options={audioVoiceoverOptions}
-                value={formData.audio_voiceover || "No"}
-                onChange={(value) => handleInputChange("audio_voiceover", value)}
-                required
-                disabled={!canEdit}
-              />
-              {formData.audio_voiceover === "Yes" && (
-                <>
-                  <CheckboxInput
-                    label="Add Audio Description"
-                    name="audio_description_checkbox"
-                    value={showAudioDescription}
-                    onChange={handleCheckboxChange}
-                    disabled={!canEdit}
-                  />
-                  {showAudioDescription && (
-                    <TextInput
-                      label="Audio Description"
-                      name="audio_description"
-                      placeholder="Type audio description"
-                      value={formData.audio_description || ""}
-                      onChange={handleInputChange}
-                      required
+
+        {viewMode === "table" ? (
+          <div className="mt-4">
+            <DataTable
+              id="applications-table"
+              columns={Applications}
+              tableRef={tableRef}
+              data={ApplicationaData}
+              keyField="applied_projects_id"
+              defaultView="table"
+              searchable={true}
+              filterable={true}
+              sortable={true}
+              paginated={true}
+              showCheckbox={false}
+              grid={false}
+            />
+          </div>
+        ) : (
+          <Row>
+            <Col md={7}>
+              <div className="form_section">
+                <h6 className="card-title">Project Details</h6>
+                <SelectComponent
+                  label="Client Name"
+                  name="client_id"
+                  options={clients}
+                  value={formData.client_id}
+                  onChange={(value) => handleInputChange("client_id", value)}
+                  placeholder="Select a client"
+                  required
+                  disabled={!canEdit}
+                />
+                <TextInput
+                  label="Project Title"
+                  name="project_title"
+                  placeholder="Type project title here"
+                  value={formData.project_title || ""}
+                  onChange={handleInputChange}
+                  required
+                  disabled={!canEdit}
+                />
+                <Aetextarea
+                  label="Project Description"
+                  name="project_description"
+                  placeholder="Type description here"
+                  value={formData.project_description || ""}
+                  onChange={handleInputChange}
+                  required
+                  disabled={!canEdit}
+                />
+                <TextInput
+                  label="Preferred Video Style"
+                  name="preferred_video_style"
+                  placeholder="Type preferred video style"
+                  value={formData.preferred_video_style || ""}
+                  onChange={handleInputChange}
+                  required
+                  disabled={!canEdit}
+                />
+                <SelectComponent
+                  label="Audio Voiceover"
+                  name="audio_voiceover"
+                  options={audioVoiceoverOptions}
+                  value={formData.audio_voiceover || "No"}
+                  onChange={(value) => handleInputChange("audio_voiceover", value)}
+                  required
+                  disabled={!canEdit}
+                />
+                {formData.audio_voiceover === "Yes" && (
+                  <>
+                    <CheckboxInput
+                      label="Add Audio Description"
+                      name="audio_description_checkbox"
+                      value={showAudioDescription}
+                      onChange={handleCheckboxChange}
                       disabled={!canEdit}
                     />
-                  )}
-                </>
-              )}
-              <Aetextarea
-                label="Additional Notes"
-                name="additional_notes"
-                placeholder="Type additional notes"
-                value={formData.additional_notes || ""}
-                onChange={handleInputChange}
-                disabled={!canEdit}
-              />
-            </div>
-            <div className="form_section">
-              <h6 className="uram-title">Files</h6>
-              <FileUploadComponent
-                labelText="Sample Project File"
-                name="sample_project_file"
-                allowedClasses="pdf image video document zip"
-                info="Supported: JPG, PNG, MP4, PDF (single file)"
-                onChange={handleFileChange("sample_project_file")}
-                initialFiles={sampleProjectFile}
-                onError={(error) => showErrorToast(`Sample file upload error: ${error.message}`)}
-                disabled={!canEdit}
-              />
-              {sampleProjectFile && (
-                <div className="mt-2">
-                  {sampleProjectFile.uploading ? (
-                    <span className="text-warning">Uploading sample file...</span>
-                  ) : !sampleProjectFile.isValid || !sampleProjectFile.fileUrl ? (
-                    <span className="text-danger">Sample file failed to upload. Please try again.</span>
-                  ) : (
-                    <span className="text-success">
-                      Sample file uploaded: {sampleProjectFile.file.name}
-                    </span>
-                  )}
-                </div>
-              )}
-              <MultiFileUploaderComponent
-                label="Project Files"
-                name="project_files"
-                allowedClasses="pdf image video document"
-                info="Supported: JPG, PNG, MP4, PDF"
-                onChange={handleFileChange("project_files")}
-                multiple
-                required
-                folderPath="projects/files"
-                initialFiles={uploadedProjectFiles}
-                onError={(error) => showErrorToast(`Project files upload error: ${error.message}`)}
-                disabled={!canEdit}
-              />
-              {uploadedProjectFiles.length > 0 && (
-                <div className="mt-2">
-                  {uploadedProjectFiles.some((f) => f.uploading) ? (
-                    <span className="text-warning">Uploading project files...</span>
-                  ) : uploadedProjectFiles.some((f) => !f.isValid || !f.fileUrl) ? (
-                    <span className="text-danger">Some project files failed to upload. Please try again.</span>
-                  ) : (
-                    <span className="text-success">{uploadedProjectFiles.length} project file(s) uploaded</span>
-                  )}
-                </div>
-              )}
-              <CheckboxInput
-                label="Show All Files"
-                name="show_all_files_checkbox"
-                value={showAllFiles}
-                onChange={handleShowAllFilesChange}
-                info=""
-                disabled={!canEdit}
-              />
-            </div>
-          </Col>
-          <Col md={5}>
-            <div className="form_section">
-              <h6 className="card-title">Project Settings</h6>
-              <SelectComponent
-                label="Status"
-                name="is_active"
-                placeholder="Select status"
-                options={activeOptions}
-                value={formData.is_active || "0"}
-                onChange={(value) => handleInputChange("is_active", value)}
-                required
-                disabled={!canEdit}
-              />
-              <TagInput
-                label="Tags"
-                name="tags"
-                availableTags={availableTags}
-                initialTags={selectedTags}
-                onTagsChange={(tags) => handleTagsChange(tags, "tags")}
-                info="Select or add tags"
-                tagTypeFieldName="tag_type"
-                tagTypeValue="events"
-                required
-                disabled={!canEdit}
-              />
-              <TagInput
-                label="Skills Required"
-                name="skills_required"
-                availableTags={availableSkills}
-                initialTags={skillsTags}
-                onTagsChange={(skills) => handleTagsChange(skills, "skills_required")}
-                info="Add skills (e.g., Video Editing, Animation)"
-                tagTypeFieldName="tag_type"
-                tagTypeValue="skills"
-                required
-                disabled={!canEdit}
-              />
-              <Aetextarea
-                label="Reference Links"
-                name="reference_links"
-                placeholder="Type reference links or notes here"
-                value={formData.reference_links || ""}
-                onChange={handleInputChange}
-                disabled={!canEdit}
-              />
-              <DateInput
-                label="Deadline"
-                name="Deadline"
-                type="future"
-                value={formData.Deadline}
-                includeTime={false}
-                onDateChange={handleDateChange}
-                initialDate={formData.Deadline ? new Date(formData.Deadline) : null}
-                required
-                disabled={!canEdit}
-              />
-              <TextInput
-                label="Project Category"
-                name="project_category"
-                placeholder="Type project category"
-                value={formData.project_category || ""}
-                onChange={handleInputChange}
-                disabled={!canEdit}
-              />
-              <TextInput
-                label="Project Type"
-                name="projects_type"
-                placeholder="Type project type"
-                value={formData.projects_type || ""}
-                onChange={handleInputChange}
-                required
-                disabled={!canEdit}
-              />
-              <TextInput
-                label="Project Format"
-                name="project_format"
-                placeholder="Type project format"
-                value={formData.project_format || ""}
-                onChange={handleInputChange}
-                required
-                disabled={!canEdit}
-              />
-              <NumberInputComponent
-                label="Budget"
-                name="Budget"
-                placeholder="Type budget"
-                value={formData.Budget || ""}
-                onChange={handleInputChange}
-                min={1}
-                required
-                disabled={!canEdit}
-              />
-              <NumberInputComponent
-                label="Video Length in Min"
-                name="video_length"
-                placeholder="Type video length (minutes)"
-                value={formData.video_length || ""}
-                onChange={handleInputChange}
-                min={1}
-                required
-                disabled={!canEdit}
-              />
-            </div>
-          </Col>
-        </Row>
+                    {showAudioDescription && (
+                      <TextInput
+                        label="Audio Description"
+                        name="audio_description"
+                        placeholder="Type audio description"
+                        value={formData.audio_description || ""}
+                        onChange={handleInputChange}
+                        required
+                        disabled={!canEdit}
+                      />
+                    )}
+                  </>
+                )}
+                <Aetextarea
+                  label="Additional Notes"
+                  name="additional_notes"
+                  placeholder="Type additional notes"
+                  value={formData.additional_notes || ""}
+                  onChange={handleInputChange}
+                  disabled={!canEdit}
+                />
+              </div>
+
+            </Col>
+            <Col md={5}>
+              <div className="form_section">
+                <h6 className="card-title">Project Settings</h6>
+                <SelectComponent
+                  label="Status"
+                  name="is_active"
+                  placeholder="Select status"
+                  options={activeOptions}
+                  value={formData.is_active || "0"}
+                  onChange={(value) => handleInputChange("is_active", value)}
+                  required
+                  disabled={!canEdit}
+                />
+                <TagInput
+                  label="Tags"
+                  name="tags"
+                  availableTags={availableTags}
+                  initialTags={selectedTags}
+                  onTagsChange={(tags) => handleTagsChange(tags, "tags")}
+                  info="Select or add tags"
+                  tagTypeFieldName="tag_type"
+                  tagTypeValue="events"
+                  required
+                  disabled={!canEdit}
+                />
+                <TagInput
+                  label="Skills Required"
+                  name="skills_required"
+                  availableTags={availableSkills}
+                  initialTags={skillsTags}
+                  onTagsChange={(skills) => handleTagsChange(skills, "skills_required")}
+                  info="Add skills (e.g., Video Editing, Animation)"
+                  tagTypeFieldName="tag_type"
+                  tagTypeValue="skills"
+                  required
+                  disabled={!canEdit}
+                />
+                <Aetextarea
+                  label="Reference Links"
+                  name="reference_links"
+                  placeholder="Type reference links or notes here"
+                  value={formData.reference_links || ""}
+                  onChange={handleInputChange}
+                  disabled={!canEdit}
+                />
+                <DateInput
+                  label="Deadline"
+                  name="Deadline"
+                  type="future"
+                  value={formData.Deadline}
+                  includeTime={false}
+                  onDateChange={handleDateChange}
+                  initialDate={formData.Deadline ? new Date(formData.Deadline) : null}
+                  required
+                  disabled={!canEdit}
+                />
+                <CategoryInput
+                  value={formData.project_category}
+                  availableCategories={availableCategories}
+                  onChange={(val) => handleInputChange("project_category", val)}
+                  onCategoryAdded={(newCat) => {
+                    // Add new category to dropdown dynamically:
+                    const newOption = {
+                      value: newCat.category_id,
+                      label: newCat.category_name,
+                    };
+                    setAvailableCategory((prev) => [...prev, newOption]);
+                  }}
+                  disabled={!canEdit}
+                />
+                <TextInput
+                  label="Project Type"
+                  name="projects_type"
+                  placeholder="Type project type"
+                  value={formData.projects_type || ""}
+                  onChange={handleInputChange}
+                  required
+                  disabled={!canEdit}
+                />
+                <TextInput
+                  label="Project Format"
+                  name="project_format"
+                  placeholder="Type project format"
+                  value={formData.project_format || ""}
+                  onChange={handleInputChange}
+                  required
+                  disabled={!canEdit}
+                />
+                <NumberInputComponent
+                  label="Budget"
+                  name="Budget"
+                  placeholder="Type budget"
+                  value={formData.Budget || ""}
+                  onChange={handleInputChange}
+                  min={1}
+                  required
+                  disabled={!canEdit}
+                />
+                <NumberInputComponent
+                  label="Video Length in Min"
+                  name="video_length"
+                  placeholder="Type video length (minutes)"
+                  value={formData.video_length || ""}
+                  onChange={handleInputChange}
+                  min={1}
+                  required
+                  disabled={!canEdit}
+                />
+              </div>
+            </Col>
+          </Row>
+        )}
       </form>
     </Layout>
   );

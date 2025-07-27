@@ -4,6 +4,9 @@ import moment from "moment";
 import Button from "../components/Button";
 import ProductDropdown from "../components/ProductDropdown";
 import { useSweetAlert } from "../components/SweetAlert";
+import { RxCross1 } from "react-icons/rx";
+import { FaCheck } from "react-icons/fa6";
+import { FaQuestion } from "react-icons/fa6";
 
 const Table = ({
   id,
@@ -11,6 +14,7 @@ const Table = ({
   data,
   columns,
   filteredData,
+  updateStatus,
   setFilteredData,
   paginated = true,
   updateQuantity,
@@ -223,6 +227,31 @@ const Table = ({
 
   const renderCellContent = (column, value, rowData) => {
     const type = column.type || "text";
+
+    if (type === "status") {
+      return (
+        <div className="status-control">
+          <button
+            className="btn btn-outline-success me-2"
+            onClick={() => updateStatus(rowData.id, 1)} // 1 = Accept
+          >
+            <FaCheck />
+          </button>
+          <button
+            className="btn btn-outline-danger me-2"
+            onClick={() => updateStatus(rowData.id, 2)} // 2 = Reject
+          >
+            <RxCross1 />
+          </button>
+          <button
+            className="btn btn-outline-secondary"
+            onClick={() => updateStatus(rowData.id, 0)} // 0 = Not Assigned
+          >
+            <FaQuestion />
+          </button>
+        </div>
+      );
+    }
 
     if (type === "quantity") {
       return (

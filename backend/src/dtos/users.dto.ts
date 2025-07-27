@@ -113,8 +113,8 @@ export class UsersDto {
   tags: any; // JSONB
 
   @IsOptional()
-  @IsBoolean()
-  notes: boolean;
+  @IsArray()
+  notes?: [];
 
   @IsOptional()
   certification: any; // JSONB
@@ -194,20 +194,20 @@ export class UsersDto {
   is_banned: boolean;
 
   @IsOptional()
-  @IsString()
-  created_at: string;
+  @IsInt()
+  created_at:  Number;
 
   @IsOptional()
-  @IsString()
-  updated_at: string;
+  @IsInt()
+  updated_at:  Number;
+
+ @IsOptional()
+  @IsInt()
+  updated_by?: number;
 
   @IsOptional()
-  @IsString()
-  updated_by: string;
-
-  @IsOptional()
-  @IsString()
-  last_login_at: string;
+  @IsInt()
+  last_login_at: number;
 }
 
 export class ArtworkSelectionDto {

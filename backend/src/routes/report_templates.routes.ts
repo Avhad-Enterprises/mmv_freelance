@@ -13,7 +13,6 @@ class report_templatesRoute implements Route {
   public ReportTemplateController = new ReportTemplateController();
 
   constructor() {
-    console.log("Routes");
     this.initializeRoutes();
   }
 

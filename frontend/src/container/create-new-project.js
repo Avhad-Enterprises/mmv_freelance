@@ -9,6 +9,7 @@ import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
 import MultiFileUploaderComponent from "../components/MultiFileUploaderComponent";
 import CheckboxInput from "../components/CheckboxInput";
+import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { makePostRequest, makeGetRequest } from "../utils/api";
@@ -28,14 +29,12 @@ const CreateProject = () => {
     skills_required: [],
     reference_links: "", // Changed to string
     additional_notes: "",
+    audio_description: "",
     projects_type: "",
     project_format: "",
     audio_voiceover: "No",
     video_length: null,
     preferred_video_style: "",
-    sample_project_file: [],
-    project_files: [],
-    show_all_files: false,
     is_active: 0,
     created_by: null,
     updated_by: null,
@@ -48,30 +47,36 @@ const CreateProject = () => {
   const [uploadedShowFiles, setUploadedShowFiles] = useState([]);
   const [showAllFiles, setShowAllFiles] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [availableCategories, setAvailableCategory] = useState([]);
   const [skillsTags, setSkillsTags] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const [availableTags, setAvailableTags] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
   const [clients, setClients] = useState([]); // New state for clients
+  const [projectCategory, setProjectCategory] = useState([]);
 
   const handleInputChange = useCallback((e, customValue = null) => {
     const name = e?.target?.name || e;
-    const value = e?.target?.value ?? customValue;
+    const value = e?.target?.type === "checkbox"
+      ? e.target.checked
+      : (e?.target?.value ?? customValue);
+
     const isNumberField = ["Budget", "video_length", "client_id"].includes(name);
 
     setFormData((prev) => ({
       ...prev,
-      [name]: isNumberField ? (value === "" ? null : parseInt(value, 10)) : value,
+      [name]: isNumberField ? (value === "" ? null : parseFloat(value)) : value,
     }));
   }, []);
 
   const handleCheckboxChange = useCallback((checked) => {
     setShowAudioDescription(checked);
+
     if (!checked) {
       setFormData((prev) => ({
         ...prev,
-        additional_notes: { ...prev.additional_notes, audio_description: "" },
+        audio_description: "", // ✅ Direct field, not nested
       }));
     }
   }, []);
@@ -87,80 +92,11 @@ const CreateProject = () => {
     }
   }, []);
 
-  const handleFileChange = useCallback(
-    (name) => (files) => {
-      console.log(`Files received for ${name}:`, files);
-      const validFiles = files.filter((f) => {
-        if (!f) {
-          console.warn(`Invalid file object for ${name}:`, f);
-          return false;
-        }
-        if (!f.isValid || !f.fileUrl) {
-          console.warn(`File invalid or missing URL for ${name}:`, f);
-          return false;
-        }
-        return true; // Removed URL validation for file URLs
-      });
-
-      console.log(`Valid files for ${name}:`, validFiles);
-      console.log(`Uploading status for ${name}:`, files.some((f) => f?.uploading));
-
-      const hasUploading = files.some((f) => f?.uploading);
-      setIsUploading((prev) => prev || hasUploading);
-
-      const fileObjects = validFiles.map((f) => ({
-        filename: f.fileName || f.fileUrl.split("/").pop(),
-        url: f.fileUrl,
-      }));
-
-      if (name === "sample_project_file") {
-        setUploadedSampleFiles(validFiles);
-        setFormData((prev) => ({
-          ...prev,
-          [name]: fileObjects,
-        }));
-      } else if (name === "project_files") {
-        setUploadedProjectFiles(validFiles);
-        setFormData((prev) => ({
-          ...prev,
-          [name]: fileObjects,
-        }));
-      } else if (name === "show_all_files") {
-        setUploadedShowFiles(validFiles);
-        setFormData((prev) => ({
-          ...prev,
-          [name]: fileObjects,
-        }));
-      }
-
-      if (
-        !hasUploading &&
-        !uploadedSampleFiles.some((f) => f?.uploading) &&
-        !uploadedProjectFiles.some((f) => f?.uploading) &&
-        !uploadedShowFiles.some((f) => f?.uploading)
-      ) {
-        setIsUploading(false);
-      }
-    },
-    [uploadedSampleFiles, uploadedProjectFiles, uploadedShowFiles]
-  );
-
   const handleDateChange = useCallback((date) => {
     setFormData((prev) => ({
       ...prev,
       Deadline: date ? date.toISOString().split("T")[0] : null,
     }));
-  }, []);
-
-  const handleShowAllFilesChange = useCallback((checked) => {
-    setShowAllFiles(checked);
-    if (!checked) {
-      setUploadedShowFiles([]);
-      setFormData((prev) => ({
-        ...prev,
-        show_all_files: [],
-      }));
-    }
   }, []);
 
   const activeOptions = [
@@ -222,9 +158,27 @@ const CreateProject = () => {
         showErrorToast("Failed to load skills.");
       }
     };
+
+    const fetchCategories = async () => {
+      try {
+        // use your existing route
+        const response = await makeGetRequest("category/getallcategorys");
+        const fetchedCategories = response.data?.data || [];
+        const categoryOptions = fetchedCategories.map((cat) => ({
+          value: cat.category_id,
+          label: cat.category_name || `${cat.name}`,
+        }));
+        setAvailableCategory(categoryOptions);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+        showErrorToast("Failed to load categories.");
+      }
+    };
+
     fetchClients();
     fetchTags();
     fetchSkills();
+    fetchCategories();
   }, []);
 
   const resetForm = () => {
@@ -245,20 +199,14 @@ const CreateProject = () => {
       audio_voiceover: "No",
       video_length: null,
       preferred_video_style: "",
-      sample_project_file: [],
-      project_files: [],
-      show_all_files: false,
       is_active: 0,
       created_by: user?.user_id || null,
       updated_by: null,
       is_deleted: false,
       deleted_by: null,
       deleted_at: null,
+
     });
-    setUploadedSampleFiles([]);
-    setUploadedProjectFiles([]);
-    setUploadedShowFiles([]);
-    setShowAllFiles(false);
     setSelectedTags([]);
     setSkillsTags([]);
     setIsUploading(false);
@@ -266,12 +214,6 @@ const CreateProject = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", JSON.stringify(formData, null, 2));
-    console.log("Uploaded Sample Files:", uploadedSampleFiles);
-    console.log("Uploaded Project Files:", uploadedProjectFiles);
-    console.log("Uploaded Show Files:", uploadedShowFiles);
-    console.log("Selected Tags:", selectedTags);
-    console.log("Skills Tags:", skillsTags);
 
     const user = getLoggedInUser();
     if (!user || !user.user_id || !user.token) {
@@ -293,8 +235,6 @@ const CreateProject = () => {
       preferred_video_style: formData.preferred_video_style,
       skills_required: formData.skills_required,
       Deadline: formData.Deadline,
-      project_files: formData.project_files,
-      ...(showAllFiles && { show_all_files: formData.show_all_files }),
     };
 
     const missingFields = Object.entries(requiredFields)
@@ -322,22 +262,20 @@ const CreateProject = () => {
     const payload = {
       client_id: formData.client_id,
       project_title: formData.project_title,
+      // ✅ do not include audio_description
       project_category: formData.project_category,
       Deadline: formData.Deadline,
       project_description: formData.project_description,
       Budget: formData.Budget,
       tags: JSON.stringify(selectedTags),
       skills_required: formData.skills_required,
-      reference_links: formData.reference_links ? [formData.reference_links] : [], // Convert string to array
+      reference_links: formData.reference_links ? [formData.reference_links] : [],
       additional_notes: formData.additional_notes || "",
       projects_type: formData.projects_type,
       project_format: formData.project_format,
       audio_voiceover: formData.audio_voiceover,
       video_length: formData.video_length,
       preferred_video_style: formData.preferred_video_style,
-      sample_project_file: formData.sample_project_file.length > 0 ? formData.sample_project_file : [],
-      project_files: formData.project_files.length > 0 ? formData.project_files : [],
-      show_all_files: formData.show_all_files,
       is_active: formData.is_active,
       created_by: formData.created_by,
       created_at: new Date().toISOString(),
@@ -346,6 +284,7 @@ const CreateProject = () => {
       deleted_by: formData.deleted_by,
       deleted_at: formData.deleted_at,
     };
+
 
     console.log("Submitting payload:", JSON.stringify(payload, null, 2));
 
@@ -440,6 +379,7 @@ const CreateProject = () => {
                   )}
                 </>
               )}
+
               <Aetextarea
                 label="Additional Notes"
                 name="additional_notes"
@@ -448,59 +388,7 @@ const CreateProject = () => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="form_section">
-              <h6 className="card-title">Files</h6>
-              <MultiFileUploaderComponent
-                label="Sample Project File"
-                name="sample_project_file"
-                allowedClasses="pdf image video document zip"
-                info="Supported: JPG, PNG, MP4, PDF (single file)"
-                onChange={handleFileChange("sample_project_file")}
-                multiple={false}
-                folderPath="projects/files"
-                onError={(error) => showErrorToast(`Sample file upload error: ${error.message}`)}
-              />
-              {uploadedSampleFiles.length > 0 && (
-                <div className="mt-2">
-                  {uploadedSampleFiles.some((f) => f.uploading) ? (
-                    <span className="text-warning">Uploading sample file...</span>
-                  ) : uploadedSampleFiles.some((f) => !f.isValid || !f.fileUrl) ? (
-                    <span className="text-danger">Sample file failed to upload. Please try again.</span>
-                  ) : (
-                    <span className="text-success">Sample file uploaded: {uploadedSampleFiles[0].fileName || uploadedSampleFiles[0].fileUrl.split("/").pop()}</span>
-                  )}
-                </div>
-              )}
-              <MultiFileUploaderComponent
-                label="Project Files"
-                name="project_files"
-                allowedClasses="pdf image video document"
-                info="Supported: JPG, PNG, MP4, PDF"
-                onChange={handleFileChange("project_files")}
-                multiple
-                required
-                folderPath="projects/files"
-                onError={(error) => showErrorToast(`Project files upload error: ${error.message}`)}
-              />
-              {uploadedProjectFiles.length > 0 && (
-                <div className="mt-2">
-                  {uploadedProjectFiles.some((f) => f.uploading) ? (
-                    <span className="text-warning">Uploading project files...</span>
-                  ) : uploadedProjectFiles.some((f) => !f.isValid || !f.fileUrl) ? (
-                    <span className="text-danger">Some project files failed to upload. Please try again.</span>
-                  ) : (
-                    <span className="text-success">{uploadedProjectFiles.length} project file(s) uploaded</span>
-                  )}
-                </div>
-              )}
-              <CheckboxInput
-                label="Show All Files"
-                name="show_all_files_checkbox"
-                value={showAllFiles}
-                onChange={handleShowAllFilesChange}
-                info="Check to upload additional files and view sample project images"
-              />
-            </div>
+
           </Col>
           <Col md={5}>
             <div className="form_section">
@@ -548,13 +436,20 @@ const CreateProject = () => {
                 onDateChange={handleDateChange}
                 required
               />
-              <TextInput
-                label="Project Category"
-                name="project_category"
-                placeholder="Type project category"
+              <CategoryInput
                 value={formData.project_category}
-                onChange={handleInputChange}
+                availableCategories={availableCategories}
+                onChange={(val) => handleInputChange("project_category", val)}
+                onCategoryAdded={(newCat) => {
+                  // Add new category to dropdown dynamically:
+                  const newOption = {
+                    value: newCat.category_id,
+                    label: newCat.category_name,
+                  };
+                  setAvailableCategory((prev) => [...prev, newOption]);
+                }}
               />
+
               <TextInput
                 label="Project Type"
                 name="projects_type"

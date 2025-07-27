@@ -13,13 +13,13 @@ export const seed = async (dropFirst = false) => {
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(CATEGORY, table => {
             table.increments('category_id').primary();  //ID
-            table.string('name').notNullable();
-            table.string('value').notNullable();
+            table.string('name').notNullable(); //Video Edit
+            table.string('value').notNullable(); //video-edit
             table.string('slug').notNullable();
-            table.text("types", "jsonb").nullable();
+            table.text("types", "jsonb").nullable(); //projects
             table.text("notes", "jsonb").nullable();
-            table.boolean('is_active').defaultTo(0);
-            table.integer('created_by').notNullable();
+            table.boolean('is_active').defaultTo(0); // 1
+            table.integer('created_by').notNullable(); //logged is user id
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
@@ -43,10 +43,10 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//   exports.seed = seed;
-//   const run = async () => {
-//      //createProcedure();
-//       seed();
-//   };
-//   run();
+//    exports.seed = seed;
+//    const run = async () => {
+//       //createProcedure();
+//        seed();
+//    };
+//    run();
 

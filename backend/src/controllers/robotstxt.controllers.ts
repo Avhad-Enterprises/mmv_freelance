@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import robotsservice from '../services/robots.txt.services';
 import { RequestHandler } from 'express-serve-static-core';
 import HttpException from '../exceptions/HttpException';
-import { ROBOTS_TXT } from '../database/robots.txt.schema';
+import { ROBOTS_TXT } from '../database/robotstxt.schema';
 
 
 class robotscontroller {

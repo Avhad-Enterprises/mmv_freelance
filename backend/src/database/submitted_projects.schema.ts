@@ -58,10 +58,10 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//  exports.seed = seed;
-//  const run = async () => {
-//     //createProcedure();
-//      seed();
-//  };
-//  run();
+//   exports.seed = seed;
+//   const run = async () => {
+//      //createProcedure();
+//       seed();
+//   };
+//   run();
 //comment this out ...............

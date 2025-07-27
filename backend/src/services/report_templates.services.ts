@@ -46,7 +46,7 @@ class ReportTemplateService {
   public async delete(id: number, data: Partial<any> ): Promise<any> {
   
     const deleted_at = new Date();
-
+  
     const result = await DB(T.REPORT_TEMPLATES)
       .where({ id })
       .update({

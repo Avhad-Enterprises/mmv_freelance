@@ -15,8 +15,8 @@ class AppliedProjectsService {
         // Check if already applied
         const existing = await DB(APPLIED_PROJECTS)
             .where({
-                projects_task_id: data.projects_task_id, 
-                user_id: data.user_id, 
+                projects_task_id: data.projects_task_id,
+                user_id: data.user_id,
                 is_deleted: false
             })
             .first();
@@ -43,7 +43,7 @@ class AppliedProjectsService {
     }
 
     public async getProjectApplications(projects_task_id: number): Promise<any[]> {
-        if (!projects_task_id){
+        if (!projects_task_id) {
             throw new HttpException(400, "Project Task ID Required")
         }
         const projects = await DB(T.APPLIED_PROJECTS)
@@ -58,7 +58,8 @@ class AppliedProjectsService {
                 'users.first_name',
                 'users.last_name',
                 'users.profile_picture',
-                'users.skill'
+                'users.skill',
+                'users.experience'
             );
         return projects;
     }
@@ -140,6 +141,15 @@ class AppliedProjectsService {
                 is_deleted: true,
                 updated_at: new Date()
             });
+    }
+
+    public async getApplicationCountByProject(projects_task_id: number): Promise<number> {
+        const result = await DB(T.APPLIED_PROJECTS)
+            .where({ projects_task_id, is_deleted: false })
+            .count("applied_projects_id as count")
+            .first();
+
+        return Number(result?.count || 0);
     }
 
 }

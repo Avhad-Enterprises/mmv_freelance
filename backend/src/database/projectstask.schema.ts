@@ -19,9 +19,9 @@ export const seed = async (dropFirst = false) => {
             table.integer('editor_id').nullable();
             table.string('project_title').notNullable();
             table.text('project_category').notNullable();
-            table.date('Deadline').notNullable();
+            table.date('deadline').notNullable();
             table.text('project_description').notNullable();
-            table.integer('Budget').notNullable();
+            table.integer('budget').notNullable();
             table.jsonb('tags').nullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();
@@ -32,7 +32,7 @@ export const seed = async (dropFirst = false) => {
             table.integer('video_length').notNullable();
             table.text('preferred_video_style').notNullable();
             table.string('sample_project_file').nullable();
-            table.jsonb('project_files').notNullable();
+            table.jsonb('project_files').nullable();
             table.boolean('show_all_files').defaultTo(false);
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();
@@ -43,9 +43,7 @@ export const seed = async (dropFirst = false) => {
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 
-
         });
-
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
@@ -63,12 +61,12 @@ export const seed = async (dropFirst = false) => {
 };
 
 
-//   exports.seed = seed;
-//   const run = async () => {
-//      //createProcedure();
-//       seed();
-//   };
-//   run();
+//    exports.seed = seed;
+//    const run = async () => {
+//       //createProcedure();
+//        seed();
+//    };
+//    run();
 
 
 

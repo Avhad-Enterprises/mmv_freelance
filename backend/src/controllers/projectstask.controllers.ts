@@ -50,7 +50,7 @@ class projectstaskcontroller {
     }
   };
 
-  public update = async (req: Request, res: Response): Promise<void> => {
+  public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
@@ -68,7 +68,7 @@ class projectstaskcontroller {
         return;
       }
 
-      const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
+   const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
       next(error);

@@ -50,7 +50,7 @@ class ProjectstaskService {
     return projects || null;
    }
 
-   public updateProject = async (projects_task_id: number, updateData: any): Promise<any> => {
+   public update = async (projects_task_id: number, updateData: any): Promise<any> => {
     try {
       // 1. check if project exists
       const project = await DB(T.PROJECTS_TASK)

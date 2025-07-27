@@ -17,6 +17,8 @@ class categoryRoute implements Route {
     //users section  , validationMiddleware(usersDto, 'body', false, [])
     //this.router.post(`${this.path}/insertcategory`, validationMiddleware(CategoryDto, 'body', true, []), this.categoryController.addcategory);
     this.router.post(`${this.path}/insertcategory`, validationMiddleware(CategoryDto, 'body', false, []), (req, res, next) => this.categoryController.addcategory(req, res, next));
+    this.router.get(`${this.path}/getallcategorys`, (req, res, next) => this.categoryController.getallcategorysby(req, res, next));
+    this.router.get(`${this.path}/getcategorytypes`, (req, res, next) => this.categoryController.getcategorytypesby(req, res, next));
     this.router.get(`${this.path}/editcategory/:id`, (req, res, next) => this.categoryController.geteditcategory(req, res, next));
     this.router.put(`${this.path}/updatecategory`, validationMiddleware(CategoryDto, 'body', false, []), (req, res, next) => this.categoryController.updatecategory(req, res, next));
     this.router.post(`${this.path}/deletecategory`, validationMiddleware(CategoryDto, 'body', true, []), (req, res, next) => this.categoryController.deletecategory(req, res, next));
@@ -27,3 +29,4 @@ class categoryRoute implements Route {
 }
 
 export default categoryRoute;
+  

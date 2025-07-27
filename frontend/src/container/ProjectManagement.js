@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest } from "../utils/api";
+import { makeGetRequest, makePostRequest } from "../utils/api";
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -59,11 +59,31 @@ const Projects = () => {
   useEffect(() => {
     const fetchprojectData = async () => {
       try {
-        const response = await makeGetRequest("projectsTask/getactivedeletedprojectstask");
+        const response = await makeGetRequest("projectsTask/getallprojects_task"); // Or use "projectsTask/getactivedeletedprojectstask"
         const data = Array.isArray(response.data.data) ? response.data.data : [];
-        console.log("Parsed Project Data:", data); // Debug log
-        setprojectData(data);
-        setAllData(data);
+        
+        // Combine first and last names
+        const formattedData = data.map((item) => ({
+          ...item,
+          client_name: `${item.client_first_name || ''} ${item.client_last_name || ''}`.trim(),
+        }));
+
+        for (const project of formattedData) {
+          try {
+            const countRes = await makePostRequest(
+              "applications/projects/get-application-count",
+              { projects_task_id: project.projects_task_id }
+            );
+            project.count = countRes.data?.count || 0;
+          } catch (err) {
+            console.error(`Failed to get count for project ${project.projects_task_id}`, err);
+            project.count = 0;
+          }
+        }
+
+        console.log("Formatted Project Data:", formattedData); // Debug log
+        setprojectData(formattedData);
+        setAllData(formattedData);
       } catch (error) {
         setprojectData([]);
       } finally {
@@ -88,8 +108,20 @@ const Projects = () => {
       linkParamKey: "projects_task_id",
     },
     { headname: "Title", dbcol: "project_title" },
-    { headname: "Client", dbcol: "client_id", type: "" },
-    { headname: "Editor", dbcol: "editor_id", type: "" },
+    { headname: "Client Name", dbcol: "client_name", type: "" },
+    {
+      headname: "Editor Id", 
+      dbcol: "editor_id", 
+      type: "",
+    },
+    {
+      headname: "Application", 
+      dbcol: "count", 
+      type: "link",
+      linkTemplate: "/projectmanagement/:projects_task_id",
+      linkLabelFromRow: "count",
+      linkParamKey: "projects_task_id",
+    },
     {
       headname: "Status",
       dbcol: "is_active",

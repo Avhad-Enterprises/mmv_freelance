@@ -122,7 +122,7 @@ const Editors = () => {
     {
       headname: "Joined Date",
       dbcol: "created_at",
-      type: "",
+      type: "datetimetime",
     },
   ];
 

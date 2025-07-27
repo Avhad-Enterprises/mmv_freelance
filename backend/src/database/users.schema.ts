@@ -23,7 +23,7 @@ export const seed = async (dropFirst = false) => {
             table.string("email").unique();
             table.string('phone_number').notNullable();
             table.string('profile_picture').nullable();
-            table.string("address_line_first").notNullable();
+            table.string("address_line_first").nullable();
             table.string("address_line_second").defaultTo(null);
             table.string("city").nullable();
             table.string("state").nullable();

@@ -17,7 +17,7 @@ export default class PaymentService {
             DB(T.PROJECTS_TASK)
                 .where({ projects_task_id: payload.project_id })
                 .first(),
-            DB(T.APPLIED_PROJECTS).where({ applied_projects_id: payload.application_id }).first(),
+            DB(T.APPLICATION).where({ id: payload.application_id }).first(),
         ]);
 
         if (!payer) {

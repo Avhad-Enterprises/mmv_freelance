@@ -22,6 +22,32 @@ class CategoryService {
         return category;
     }
 
+    public async getallcategorysbytable(): Promise<any> {
+        try {
+            const result = await DB(T.CATEGORY)
+                .where({ is_active: 1, is_deleted: false })
+                .select("*");
+            return result;
+        } catch (error) {
+            throw new Error('Error fetching category');
+        }
+    }
+
+    public async getcategorytypesbytable(type: string): Promise<any> {
+        if (!type) {
+
+            throw new HttpException(400, "Category name is required");
+
+        }
+        const result = await DB(T.CATEGORY)
+            .where({ is_active: false, is_deleted: true })
+            .select("*");
+        return result;
+    } catch(error) {
+        throw new Error('Error fetching category');
+    }
+
+
     public async updatecategoryid(data: Partial<CategoryDto>): Promise<any> {
 
         if (isEmpty(data)) throw new HttpException(400, "Update data is empty");

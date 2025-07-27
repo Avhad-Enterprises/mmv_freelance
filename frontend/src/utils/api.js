@@ -32,5 +32,9 @@ export async function makePutRequest(endpoint, bodyData) {
   return await apiClient.put(endpoint, bodyData);
 }
 
+export async function makePatchRequest(endpoint, bodyData) {
+  return await apiClient.patch(endpoint, bodyData);
+}
+
 
 export default apiClient;

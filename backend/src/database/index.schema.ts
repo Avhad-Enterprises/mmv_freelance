@@ -53,6 +53,7 @@ import { USER_ROLES } from './user_role.schema';
 import { FAQ } from "../database/faq.schema";
 import { APPLICATION} from "../database/application.schema";
 import {TRANSACTION_TABLE} from "../database/transactions.schema";
+import { SKILLS } from './skill.schema';
 
 export const T = {
   USERS_TABLE,
@@ -83,7 +84,8 @@ export const T = {
   REPORT_SCHEDULES,
   ROLE_PERMISSION,
   APPLICATION,
-  TRANSACTION_TABLE
+  TRANSACTION_TABLE,
+  SKILLS
 };
 
 // Creates the procedure that is then added as a trigger to every table

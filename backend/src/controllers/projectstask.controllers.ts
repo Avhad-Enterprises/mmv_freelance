@@ -117,7 +117,7 @@ class projectstaskcontroller {
 
   public getallprojectstask = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const projects = await this.ProjectstaskService.getallprojectstask();
+      const projects = await this.ProjectstaskService.getAllProjectsTask();
       res.status(200).json({ data: projects, success: true });
     } catch (err) {
       next(err);

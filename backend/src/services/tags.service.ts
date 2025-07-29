@@ -1,4 +1,5 @@
 import { TagsDto } from "../dtos/tags.dto";
+import { SkillsDto } from "../dtos/skill.dto";
 import DB, { T } from "../database/index.schema";
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
@@ -45,6 +46,25 @@ class TagsService {
            }
          } 
 
+
+    public async insertskillsby(data: SkillsDto): Promise<any> {
+        if (isEmpty(data)) {
+            throw new HttpException(400, "skill data is empty");
+        }
+
+        const insertedskill = await DB(T.SKILLS).insert(data).returning("*");
+        return insertedskill[0];
+    }
+
+    public getallskillsby = async (): Promise<SkillsDto[]> => {
+           try {
+             const result = await DB(T.SKILLS)
+               .select("*");
+             return result;
+           } catch (error) {
+             throw new Error('Error fetching SKILL');
+           }
+         } 
 
 }
 

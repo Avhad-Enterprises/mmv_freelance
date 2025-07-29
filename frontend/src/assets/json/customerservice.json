@@ -1,0 +1,43 @@
+[
+    {
+      "col1": "alice@example.com",
+      "col2": ["VIP", "Frequent Buyer"],
+      "col3": "Email",
+      "col4": "₹15,230",
+      "col5": "Anita R.",
+      "col6": ["Active"]
+    },
+    {
+      "col1": "bob.smith@example.com",
+      "col2": ["New", "Promotion"],
+      "col3": "Live Chat",
+      "col4": "₹2,150",
+      "col5": "Rahul K.",
+      "col6": ["Pending"]
+    },
+    {
+      "col1": "carol.jones@example.com",
+      "col2": ["Subscribed"],
+      "col3": "SMS",
+      "col4": "₹9,780",
+      "col5": "Sonal M.",
+      "col6": ["Unsubscribed"]
+    },
+    {
+      "col1": "david@example.com",
+      "col2": ["Loyal", "High AOV"],
+      "col3": "WhatsApp",
+      "col4": "₹22,990",
+      "col5": "Nikhil S.",
+      "col6": ["Active"]
+    },
+    {
+      "col1": "eva@example.com",
+      "col2": ["Churn Risk"],
+      "col3": "Email",
+      "col4": "₹1,450",
+      "col5": "Preeti T.",
+      "col6": ["Inactive"]
+    }
+  ]
+  

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AppliedProjectsDto } from "../dtos/applied_projects.dto";
 import { IAppliedProjects } from "../interfaces/applied_projects.interface";
+import { IAppliedProjects } from "../interfaces/applied_projects.interface";
 import AppliedProjectsService from "../services/applied_projects.services";
 import HttpException from "../exceptions/HttpException";
 
@@ -17,7 +18,17 @@ class AppliedProjectsController {
     if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !user_id || isNaN(parseInt(user_id))) {
       throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
     }
+    const { projects_task_id, user_id } = req.body;
 
+    if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !user_id || isNaN(parseInt(user_id))) {
+      throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
+    }
+
+    const projectData: AppliedProjectsDto = {
+      ...req.body,
+      projects_task_id: parseInt(projects_task_id),
+      user_id: parseInt(user_id),
+    };
     const projectData: AppliedProjectsDto = {
       ...req.body,
       projects_task_id: parseInt(projects_task_id),
@@ -41,7 +52,6 @@ class AppliedProjectsController {
     next: NextFunction
   ): Promise<void> => {
     const projects_task_id = parseInt(req.body.projects_task_id);
-    console.log()
     if (isNaN(projects_task_id)) {
       throw new HttpException(400, "Invalid Project Task ID");
     }
@@ -58,7 +68,6 @@ class AppliedProjectsController {
     next: NextFunction
   ): Promise<void> => {
     const user_id = parseInt(req.body.user_id);
-
     if (isNaN(user_id)) {
       throw new HttpException(400, "Invalid or missing user_id in body");
     }
@@ -85,7 +94,6 @@ class AppliedProjectsController {
     if (!application) {
       throw new HttpException(404, "Application not found");
     }
-   
     res.status(200).json({
       data: application,
       message: `got application for user ${user_id} and project task ${projects_task_id}`
@@ -123,6 +131,21 @@ class AppliedProjectsController {
     res.status(200).json({
       message: "Application withdrawn successfully"
     });
+  };
+
+  public getApplicationCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { projects_task_id } = req.body;
+
+      if (!projects_task_id) {
+        throw new HttpException(400, "Project Task ID is required");
+      }
+
+      const count = await this.AppliedProjectsService.getApplicationCountByProject(Number(projects_task_id));
+      res.status(200).json({ success: true, projects_task_id, count });
+    } catch (error) {
+      next(error);
+    }
   };
 
 }

@@ -15,6 +15,12 @@ import Clients from "./container/client";
 import EditClient from "./container/edit-client";
 import Editors from "./container/editors";
 import EditEditors from "./container/edit-editor";
+import Customer from "./container/customer-service";
+import CreateTicket from "./container/create-ticket";
+import ViewTicket from "./container/view-ticket";
+import FMPayouts from "./container/fm-payout";
+import ViewPayouts from "./container/view-fmpayout";
+import ApplicationData from "./container/application-data";
 
 const App = () => {
   return (
@@ -78,6 +84,15 @@ const App = () => {
         />
 
         <Route
+          path="/projectmanagement/:id"
+          element={
+            <ProtectedRoute>
+              <ApplicationData />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/client"
           element={
             <ProtectedRoute>
@@ -109,6 +124,51 @@ const App = () => {
           element={
             <ProtectedRoute>
               <EditEditors />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customerservice"
+          element={
+            <ProtectedRoute>
+              <Customer />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customerservice/viewticket"
+          element={
+            <ProtectedRoute>
+              <ViewTicket />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/createticket"
+          element={
+            <ProtectedRoute>
+              <CreateTicket />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/fmpayouts"
+          element={
+            <ProtectedRoute>
+              <FMPayouts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/fmpayouts/view/:project_id"
+          element={
+            <ProtectedRoute>
+              <ViewPayouts />
             </ProtectedRoute>
           }
         />

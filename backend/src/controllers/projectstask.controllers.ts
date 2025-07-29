@@ -145,46 +145,46 @@ class projectstaskcontroller {
     }
   };
 
-  public  getAllTasksWithClientInfo = async (req: Request, res: Response, next: NextFunction) => {
+  public getAllTasksWithClientInfo = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tasks = await this.ProjectstaskService.getTasksWithClientInfo();
-      res.status(200).json({data: tasks, success: true });
+      res.status(200).json({ data: tasks, success: true });
     } catch (error) {
       next(error);
     }
   };
-  
+
   public getTaskWithClientById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params;
       const task = await this.ProjectstaskService.getTaskWithClientById(Number(id));
-  
+
       if (!task) {
-         res.status(404).json({ success: false, message: "Task not found" });
+        res.status(404).json({ success: false, message: "Task not found" });
       }
-  
+
       res.status(200).json({ data: task, success: true });
     } catch (error) {
       next(error);
     }
   };
-    
+
   public getprojectstaskbyurl = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const url = req.params.url;
-  
+
       if (!url) {
         res.status(400).json({ message: "URL is required" });
         return;
       }
-  
+
       const projecttask = await this.ProjectstaskService.getByUrl(url);
-  
+
       if (!projecttask) {
         res.status(404).json({ message: "projects task not found" });
         return;
       }
-  
+
       res.status(200).json({ data: projecttask });
     } catch (error) {
       next(error);
@@ -194,33 +194,38 @@ class projectstaskcontroller {
   public checkUrlExists = async (req: Request, res: Response): Promise<void> => {
     try {
       const { url } = req.body;
-  
+
       if (!url) {
         res.status(400).json({ message: 'URL is required' });
         return;
       }
-  
+
       // 🔍 Validate format with specific error
       const { valid, reason } = validateUrlFormatWithReason(url);
-  
+
       if (!valid) {
         res.status(400).json({ message: `Invalid URL format: ${reason}` });
         return;
       }
-  
+
       const exists = await this.ProjectstaskService.checkUrlInprojects(url);
-  
+
       if (exists) {
         res.status(200).json({ message: 'URL exists in projects task table', url });
       } else {
         res.status(404).json({ message: 'URL not found in projects task table', url });
       }
-  
+
     } catch (error: any) {
       console.error("checkUrlExists error:", error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
-  }  
+  }
 }
 
-export default projectstaskcontroller; 
+export default projectstaskcontroller;
+
+function next(error: any) {
+  throw new Error('Function not implemented.');
+}
+

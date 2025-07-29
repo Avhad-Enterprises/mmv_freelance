@@ -52,20 +52,6 @@ class macroController {
             next();
         }
     };
-    public applyMacroToComplaint = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { macro_id, complaint_id } = req.body;
-
-            if (!macro_id || !complaint_id) {
-                throw new HttpException(400, 'macro_id and complaint_id are required');
-            }
-
-            const finalReply = await this.MacroService.generateReplyFromMacro(macro_id, complaint_id);
-            res.status(200).json({ final_reply: finalReply });
-        } catch (error) {
-            next(error);
-        }
-    };
-
+ 
 }
 export default macroController;

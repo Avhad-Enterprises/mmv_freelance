@@ -93,6 +93,33 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
           <ul className="p-0">
 
             <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/projectmanagement") ? "active" : ""}`}>
+                <Link to="/projectmanagement" className="d-flex align-items-center">
+                  <i className="bi bi-menu-button-wide-fill"></i>
+                  <div className="LeftMenuHead ml-2">Project Management</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/client") ? "active" : ""}`}>
+                <Link to="/client" className="d-flex align-items-center">
+                  <i className="bi bi-person-fill"></i>
+                  <div className="LeftMenuHead ml-2">Clients</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/editors") ? "active" : ""}`}>
+                <Link to="/editors" className="d-flex align-items-center">
+                  <i className="bi bi-person-workspace"></i>
+                  <div className="LeftMenuHead ml-2">Editors</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
               <div
                 className={`nav-link d-flex justify-content-between align-items-center ${openDropdowns["resources"] ? "active" : ""}`}
                 onClick={() => handleDropdown("resources")}
@@ -135,6 +162,55 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
                 </Link>
               </div>
             </li>
+
+            <li className="nav-item">
+              <div
+                className={`nav-link d-flex align-items-center ${location.pathname.includes("/customerservice") ? "active" : ""
+                  }`}
+              >
+                <Link to="/customerservice" className="d-flex align-items-center">
+                  <i className="bi bi-person-fill"></i>
+                  <div className="LeftMenuHead ml-2">Customer Service</div>
+                </Link>
+                <i
+                  className="bi bi-chevron-down"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#customerServiceSubmenu"
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </div>
+              <ul className="submenu collapse" id="customerServiceSubmenu">
+                <li>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/createticket" ? "active" : ""
+                      }`}
+                    to="/createticket"
+                  >
+                    <i className="bi bi-dash"></i>
+                    <div className="LeftMenuHead ml-2">Create Ticket</div>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/allconversation" ? "active" : ""
+                      }`}
+                    to="/allconversation"
+                  >
+                    <i className="bi bi-dash"></i>
+                    <div className="LeftMenuHead ml-2">All Conversation</div>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/fmpayouts") ? "active" : ""}`}>
+                <Link to="/fmpayouts" className="d-flex align-items-center">
+                  <i className="bi bi-person-fill"></i>
+                  <div className="LeftMenuHead ml-2">Financial Management & Payouts</div>
+                </Link>
+              </div>
+            </li>
+
 
           </ul>
         </div>

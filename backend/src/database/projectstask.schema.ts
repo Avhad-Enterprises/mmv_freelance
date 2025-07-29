@@ -1,6 +1,8 @@
 import DB from './index.schema';
 
+
 export const PROJECTS_TASK = 'projects_task';
+
 
 export const seed = async (dropFirst = false) => {
     try {
@@ -13,30 +15,31 @@ export const seed = async (dropFirst = false) => {
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(PROJECTS_TASK, table => {
             table.increments('projects_task_id').primary();  //ID
-            table.integer('user_id').notNullable();
+            table.integer('client_id').notNullable();
+            table.integer('editor_id').nullable();
             table.string('project_title').notNullable();
-            table.text('project_category').defaultTo(0);
-            table.date('Deadline').notNullable();
+            table.text('project_category').notNullable();
+            table.date('deadline').notNullable();
             table.text('project_description').notNullable();
-            table.integer('Budget').notNullable();
+            table.integer('budget').notNullable();
+            table.jsonb('tags').nullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();
-            table.string('additional_notes').notNullable();
-            table.jsonb('status').notNullable();
+            table.text('additional_notes').notNullable();
             table.text('projects_type').notNullable();
             table.string('project_format').notNullable();
             table.string('audio_voiceover').notNullable();
             table.integer('video_length').notNullable();
             table.text('preferred_video_style').notNullable();
-            table.jsonb('sample_project_file').notNullable();
-            table.jsonb('project_files').notNullable();
-            table.jsonb('show_all_files').notNullable();
+            table.string('sample_project_file').nullable();
+            table.jsonb('project_files').nullable();
+            table.boolean('show_all_files').defaultTo(false);
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(false);
+            table.boolean('is_deleted').defaultTo(true);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 
@@ -57,9 +60,13 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-//   exports.seed = seed;
-//   const run = async () => {
-//      //createProcedure();
-//       seed();
-//   };
-//   run();
+
+//    exports.seed = seed;
+//    const run = async () => {
+//       //createProcedure();
+//        seed();
+//    };
+//    run();
+
+
+

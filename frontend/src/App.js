@@ -4,9 +4,23 @@ import Homepage from "./container/homepage";
 import Login from "./container/login";
 import Dashboard from "./container/Dashboard";
 import Sample from "./container/Sample";
+import Profile from "./container/profile";
+import ProjectManagemet from "./container/ProjectManagement";
+import CreateNewProject from "./container/create-new-project";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ToastProvider from "./components/ToastProvider";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import EditProject from "./container/edit-project";
+import Clients from "./container/client";
+import EditClient from "./container/edit-client";
+import Editors from "./container/editors";
+import EditEditors from "./container/edit-editor";
+import Customer from "./container/customer-service";
+import CreateTicket from "./container/create-ticket";
+import ViewTicket from "./container/view-ticket";
+import FMPayouts from "./container/fm-payout";
+import ViewPayouts from "./container/view-fmpayout";
+import ApplicationData from "./container/application-data";
 
 const App = () => {
   return (
@@ -25,10 +39,136 @@ const App = () => {
         />
 
         <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/sample"
           element={
             <ProtectedRoute>
               <Sample />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projectmanagement"
+          element={
+            <ProtectedRoute>
+              <ProjectManagemet />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projectmanagement/create-project"
+          element={
+            <ProtectedRoute>
+              <CreateNewProject />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projectmanagement/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditProject />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/projectmanagement/:id"
+          element={
+            <ProtectedRoute>
+              <ApplicationData />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/client"
+          element={
+            <ProtectedRoute>
+              <Clients />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/client/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditClient />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/editors"
+          element={
+            <ProtectedRoute>
+              <Editors />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/editors/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditEditors />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customerservice"
+          element={
+            <ProtectedRoute>
+              <Customer />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customerservice/viewticket"
+          element={
+            <ProtectedRoute>
+              <ViewTicket />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/createticket"
+          element={
+            <ProtectedRoute>
+              <CreateTicket />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/fmpayouts"
+          element={
+            <ProtectedRoute>
+              <FMPayouts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/fmpayouts/view/:project_id"
+          element={
+            <ProtectedRoute>
+              <ViewPayouts />
             </ProtectedRoute>
           }
         />

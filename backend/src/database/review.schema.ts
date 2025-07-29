@@ -45,9 +45,9 @@ export const seed = async (dropFirst = false) => {
     console.error(error);
   }
 };
-//  exports.seed = seed;
-//  const run = async () => {
-//     //createProcedure();
-//      seed(true);
-//  };
-//  run();
+  // exports.seed = seed;
+  // const run = async () => {
+  //    //createProcedure();
+  //     seed(true);
+  // };
+  // run();

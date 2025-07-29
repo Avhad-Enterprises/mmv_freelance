@@ -3,6 +3,7 @@ export interface IAppliedProjects {
     projects_task_id: number;
     user_id: number;
     status: number;
+    description?: string;
     is_active?: boolean;
     is_deleted?: boolean;
     created_at?: Date;

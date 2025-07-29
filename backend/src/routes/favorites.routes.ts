@@ -12,7 +12,6 @@ class favoritesRoute implements Route {
   public favoritescontroller = new favoritescontroller();
 
   constructor() {
-    console.log("Routes");
     this.initializeRoutes();
   }
 

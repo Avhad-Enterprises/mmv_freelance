@@ -20,6 +20,7 @@ const DateInput = ({
   onCheckboxToggle = () => { },
   onDateChange = () => { },
   onTimeChange = () => { },
+  onChange = () => {}, // ✅ ✅ ADD THIS LINE
   value = null,
   timeValue = null,
 }) => {
@@ -99,7 +100,10 @@ const DateInput = ({
                   minDate: minDate || null,
                   maxDate: maxDate || null,
                 }}
-                onChange={(selectedDates) => setDateRange(selectedDates)}
+                onChange={(selectedDates) => {
+                  setDateRange(selectedDates);
+                  onChange(selectedDates); // ✅ Call parent handler here
+                }}                
               />
             </div>
           ) : (

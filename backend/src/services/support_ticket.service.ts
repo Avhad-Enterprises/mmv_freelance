@@ -323,7 +323,34 @@ Message: ${message}
 
   return "Reply added and notification sent";
 }
+public getallticketsid = async (user_id: number, projects_task_id: number): Promise<any[]> => {
+  if (!user_id || !projects_task_id) {
+    throw new HttpException(400, "user_id and project_task_id are required");
+  }
 
+  const result = await DB(T.SUPPORT_TICKETS_TABLE)
+   .leftJoin(`${T.PROJECTS_TASK} as project`, `${T.SUPPORT_TICKETS_TABLE}.project_id`, 'project.projects_task_id')
+    .leftJoin(`${T.USERS_TABLE} as user`, `${T.SUPPORT_TICKETS_TABLE}.user_id`, 'user.user_id')
+    .where(`${T.SUPPORT_TICKETS_TABLE}.is_deleted`, false)
+    .andWhere(`${T.SUPPORT_TICKETS_TABLE}.project_id`, projects_task_id)
+    .andWhere(`${T.SUPPORT_TICKETS_TABLE}.user_id`, user_id)
+    .orderBy(`${T.SUPPORT_TICKETS_TABLE}.created_at`, 'desc')
+    .select(
+      `${T.SUPPORT_TICKETS_TABLE}.*`,
+
+      // PROJECT
+      'project.projects_task_id as project_id',
+      'project.project_title as project_title',
+
+      // USER
+      'user.user_id as user_id',
+      'user.first_name as user_first_name',
+      'user.last_name as user_last_name',
+      'user.profile_picture as user_profile_picture'
+    );
+
+  return result;
+};
 }
 
 export default supportTicketService;

@@ -34,9 +34,9 @@ table
     console.error('Error creating email logs table:', error);
   }
 };
-//  exports.seed = seed;
-//  const run = async () => {
-//     //createProcedure();
-//      seed(true);
-//  };
-//  run();
+  // exports.seed = seed;
+  // const run = async () => {
+  //    //createProcedure();
+  //     seed(true);
+  // };
+  // run();

@@ -5,14 +5,13 @@ import validationMiddleware from '../middlewares/validation.middleware';
 import reportcontroller from '../controllers/report_system.controllers';
 import { ReportDto } from '../dtos/report_system.dto';
 
-class projectstaskRoute implements Route {
+class ReportsRoute implements Route {
 
   public path = '/report';
   public router = Router();
   public reportcontroller = new reportcontroller();
 
   constructor() {
-    console.log("Routes");
     this.initializeRoutes();
   }
 
@@ -28,4 +27,4 @@ class projectstaskRoute implements Route {
   }
 }
 
-export default projectstaskRoute;
+export default ReportsRoute;

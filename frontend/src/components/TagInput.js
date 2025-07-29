@@ -12,7 +12,9 @@ const TagInput = ({
   info,
   initialTags = [],
   tagTypeFieldName = "tag_type",
+  label = "Tags",
   tagTypeValue = "",
+  required="false",
 }) => {
   const [selectedTags, setSelectedTags] = useState(initialTags);
   const [inputValue, setInputValue] = useState("");
@@ -153,7 +155,7 @@ const TagInput = ({
   return (
     <div className="form-group">
       <label className="form-label mt-2">
-        Tags <span className="text-danger">*</span>
+        {label} {required && <span className="text-danger"></span>}
       </label>
       <div className="tag-input-wrapper">
         <div className="input-group">

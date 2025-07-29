@@ -20,7 +20,7 @@ class AppliedProjectsRoute implements Route {
 
     // Post Editor Apply to a project - DONE
     this.router.post(
-      `${this.path}/projects/apply`, 
+      `${this.path}/projects/apply`,
       validationMiddleware(AppliedProjectsDto, 'body', false, ['create']),
       this.appliedProjectsController.applyToProject
     );
@@ -49,13 +49,19 @@ class AppliedProjectsRoute implements Route {
     this.router.post(
       `${this.path}/projects/get-applications`,
       this.appliedProjectsController.getProjectApplications
-    );
+    ); // enter project_task_id here 
 
     // Update application status, HIRE THE EDITOR - DONE 
     this.router.patch(
       `${this.path}/update-status`,
       this.appliedProjectsController.updateApplicationStatus
     );
+
+    // Get application count for a specific project - NEW
+    this.router.post(
+      `${this.path}/projects/get-application-count`,
+      this.appliedProjectsController.getApplicationCount
+    ); // enter project_task_id here
 
   }
 }

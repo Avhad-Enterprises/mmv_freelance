@@ -42,7 +42,10 @@ class supportTicketsRoute implements Route {
       this.supportTicketsController.updateTicketStatus
     );
     this.router.post( `${this.path}/reply`,this.supportTicketsController.replyToTicket );
+   
+    this.router.post( `${this.path}/getall`, this.supportTicketsController.getallticket);
   }
+
 }
 
 export default supportTicketsRoute;

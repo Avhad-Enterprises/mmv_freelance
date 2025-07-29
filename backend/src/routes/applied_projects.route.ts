@@ -3,6 +3,7 @@ import validationMiddleware from '../middlewares/validation.middleware';
 import AppliedProjectsController from '../controllers/applied_projects.controllers'
 import { AppliedProjectsDto } from '../dtos/applied_projects.dto';
 import Route from '../interfaces/routes.interface';
+import { RequestHandler } from 'express';
 
 class AppliedProjectsRoute implements Route {
 
@@ -63,7 +64,9 @@ class AppliedProjectsRoute implements Route {
       this.appliedProjectsController.getApplicationCount
     ); // enter project_task_id here
 
-  }
-}
+   this.router.post(`${this.path}/getStatus`,this.appliedProjectsController.getAppliedStatus.bind(this.appliedProjectsController));
 
+
+    }
+}
 export default AppliedProjectsRoute;

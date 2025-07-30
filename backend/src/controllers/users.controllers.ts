@@ -167,6 +167,7 @@ class UsersController {
 
 
       if (newPassword !== confirmPassword)
+        
         throw new HttpException(400, "Passwords do not match");
 
 
@@ -176,7 +177,7 @@ class UsersController {
       res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
       next(error);
-    }
+    }                                                                                                                                                                   
   };
 
 

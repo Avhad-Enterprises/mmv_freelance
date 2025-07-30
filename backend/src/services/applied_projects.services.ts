@@ -152,6 +152,28 @@ class AppliedProjectsService {
         return Number(result?.count || 0);
     }
 
-}
+    public async getAppliedprojectByStatus(status: number): Promise<any[]> {
+        if (status !== 0 && status !== 1) {
+            throw new HttpException(400, "Status must be 0 or 1");
+        }
 
+        const result = await DB(T.APPLIED_PROJECTS)
+            .leftJoin('projects_task', 'applied_projects.projects_task_id', 'projects_task.projects_task_id')
+            .leftJoin('users', 'applied_projects.user_id', 'users.user_id')
+            .where('applied_projects.status', status)
+            .andWhere('applied_projects.is_deleted', false)
+            .orderBy('applied_projects.created_at', 'desc')
+            .select(
+                'applied_projects.*',
+                'projects_task.*',
+                'users.user_id',
+                'users.first_name',
+                'users.last_name',
+                'users.profile_picture'
+            );
+
+        return result;
+    }
+
+}
 export default AppliedProjectsService;

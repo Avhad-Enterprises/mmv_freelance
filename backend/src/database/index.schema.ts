@@ -91,7 +91,13 @@ export const T = {
   ROLE_PERMISSION,
   APPLICATION,
   TRANSACTION_TABLE,
-  SKILLS
+  SKILLS,
+  CMS,
+  MACRO,
+  SEO,
+  BRANDING_ASSETS,
+  ANALYTICS_SETTINGS,
+  SUBSCRIBED_EMAILS
 };
 
 // Creates the procedure that is then added as a trigger to every table

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { AppliedProjectsDto } from "../dtos/applied_projects.dto";
 import { IAppliedProjects } from "../interfaces/applied_projects.interface";
-import { IAppliedProjects } from "../interfaces/applied_projects.interface";
 import AppliedProjectsService from "../services/applied_projects.services";
 import HttpException from "../exceptions/HttpException";
 
@@ -14,27 +13,14 @@ class AppliedProjectsController {
     next: NextFunction
   ): Promise<void> => {
     const { projects_task_id, user_id } = req.body;
-
     if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !user_id || isNaN(parseInt(user_id))) {
       throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
     }
-    const { projects_task_id, user_id } = req.body;
-
-    if (!projects_task_id || isNaN(parseInt(projects_task_id)) || !user_id || isNaN(parseInt(user_id))) {
-      throw new HttpException(400, "Invalid or missing Project Task ID or User ID");
-    }
-
     const projectData: AppliedProjectsDto = {
       ...req.body,
       projects_task_id: parseInt(projects_task_id),
       user_id: parseInt(user_id),
     };
-    const projectData: AppliedProjectsDto = {
-      ...req.body,
-      projects_task_id: parseInt(projects_task_id),
-      user_id: parseInt(user_id),
-    };
-
     const appliedProject: IAppliedProjects = await this.AppliedProjectsService.apply(
       projectData
     );
@@ -147,7 +133,26 @@ class AppliedProjectsController {
       next(error);
     }
   };
+  public getAppliedStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { status } = req.body;
 
+      if (typeof status !== 'number' || (status !== 0 && status !== 1)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Status must be 0 or 1'
+        });
+      }
+
+      const appliedProjects = await this.AppliedProjectsService.getAppliedprojectByStatus(status);
+      res.status(200).json({
+        success: true,
+        data: appliedProjects
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AppliedProjectsController;

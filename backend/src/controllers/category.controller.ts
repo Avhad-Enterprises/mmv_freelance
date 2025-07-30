@@ -117,19 +117,7 @@ class CategoryController {
             next(error);
         }
     };
-    public getcategorytypesby = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const type = req.body.type as string;
-             if (!type) {
-                throw new HttpException(400, "Category body is required");
-            }
-            const category = await this.CategoryService.getcategorytypesbytable(type);
-            res.status(200).json({ data: category, success: true });
-        } catch (err) {
-            next(err);
-        }
 
-    };
 
     
 };

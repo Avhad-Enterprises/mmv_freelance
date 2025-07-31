@@ -31,6 +31,7 @@ import branding_assetsRoute from './routes/branding_assets.routes';
 import analytics_settingsRoute from './routes/analytics_Settings.routes';
 import subscribed_emailsRoute from './routes/subscribed_emails.routes';
 import robotstxtRoutes from './routes/robotstxt.routes';
+import SavedprojectRoute from './routes/saved_project.route';
 
 
 // Validate .env variables
@@ -65,7 +66,8 @@ const app = new App([
     new subscribed_emailsRoute(),
     new WebhookRoute(),
     new CmsRoute(),
-    new MacroRoute()
+    new MacroRoute(),
+    new SavedprojectRoute()
 ]);
 
 // Start server

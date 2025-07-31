@@ -60,6 +60,7 @@ import { BRANDING_ASSETS } from './branding_assets.schema';
 import { ANALYTICS_SETTINGS } from './analytics_setting.schema';
 import { SUBSCRIBED_EMAILS } from './subscribed_emails.schema';
 import { SKILLS } from './skill.schema';
+import { SAVED_PROJECTS } from './saved_project.schema'
 
 export const T = {
   USERS_TABLE,
@@ -97,7 +98,8 @@ export const T = {
   SEO,
   BRANDING_ASSETS,
   ANALYTICS_SETTINGS,
-  SUBSCRIBED_EMAILS
+  SUBSCRIBED_EMAILS,
+  SAVED_PROJECTS
 };
 
 // Creates the procedure that is then added as a trigger to every table

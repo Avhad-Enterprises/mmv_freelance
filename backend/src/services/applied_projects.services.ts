@@ -11,7 +11,6 @@ class AppliedProjectsService {
         if (!data.projects_task_id || !data.user_id) {
             throw new HttpException(400, "Project Task ID and User ID are required");
         }
-
         // Check if already applied
         const existing = await DB(APPLIED_PROJECTS)
             .where({
@@ -20,12 +19,13 @@ class AppliedProjectsService {
                 is_deleted: false
             })
             .first();
-
         if (existing) {
-            throw new HttpException(409, "Already applied to this project");
+            return {
+                alreadyApplied: true,
+                message: "Already applied to this project",
+                data: existing
+            };
         }
-
-        // Set default values
         const applicationData = {
             ...data,
             status: data.status ?? 0, // 0 = pending
@@ -34,12 +34,15 @@ class AppliedProjectsService {
             created_at: new Date(),
             updated_at: new Date()
         };
-
         const appliedProject = await DB(T.APPLIED_PROJECTS)
             .insert(applicationData)
             .returning("*");
 
-        return appliedProject[0];
+        return {
+            alreadyApplied: false,
+            message: "Applied to project successfully",
+            data: appliedProject[0]
+        };
     }
 
     public async getProjectApplications(projects_task_id: number): Promise<any[]> {
@@ -153,10 +156,9 @@ class AppliedProjectsService {
     }
 
     public async getAppliedprojectByStatus(status: number): Promise<any[]> {
-        if (status !== 0 && status !== 1) {
-            throw new HttpException(400, "Status must be 0 or 1");
+        if (![0, 1, 2].includes(status)) {
+            throw new HttpException(400, "Status must be 0 (pending), 1 (completed), or 2 (rejected)");
         }
-
         const result = await DB(T.APPLIED_PROJECTS)
             .leftJoin('projects_task', 'applied_projects.projects_task_id', 'projects_task.projects_task_id')
             .leftJoin('users', 'applied_projects.user_id', 'users.user_id')
@@ -173,6 +175,25 @@ class AppliedProjectsService {
             );
 
         return result;
+    }
+
+
+    public async getAppliedCount(user_id: number): Promise<number> {
+        if (!user_id) {
+            throw new HttpException(400, "User ID is required");
+        }
+
+        const result = await DB(T.APPLIED_PROJECTS) // replace with your actual table name
+            .count('* as count')
+            .where({ user_id });
+
+        const count = Number(result[0].count);
+
+        if (isNaN(count)) {
+            throw new HttpException(500, "Error converting applied count to number");
+        }
+
+        return count;
     }
 
 }

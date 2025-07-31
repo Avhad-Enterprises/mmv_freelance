@@ -36,7 +36,7 @@ class projectstaskRoute implements Route {
       this.router.get(`${this.path}/getprojectstaskbyurl/:url`, this.projectstaskcontroller.getprojectstaskbyurl);
       //check url in database
       this.router.get(`${this.path}/check-url`, this.projectstaskcontroller.checkUrlExists);
-      
+      this.router.post(`${this.path}/gettaskby`, this.projectstaskcontroller.getbytasksid);
    }
 }
 

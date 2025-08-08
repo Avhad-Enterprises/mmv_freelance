@@ -1,29 +1,25 @@
 import DB from './index.schema';
 
-export const SAVED_PROJECTS = 'saved_projects';
+export const COUNTRY = 'country';
 
 export const seed = async (dropFirst = false) => {
 
     try {
         if (dropFirst) {
             console.log('Dropping Tables');
-            await DB.schema.dropTable(SAVED_PROJECTS);
+            await DB.schema.dropTable(COUNTRY);
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
 
-        await DB.schema.createTable(SAVED_PROJECTS, table => {
-            table.increments('saved_projects_id').primary();
-            table.integer("projects_task_id").notNullable();
-            table.integer("user_id").notNullable();
-            table.boolean("is_active").defaultTo(true);
-            table.boolean("is_deleted").defaultTo(false);
-            table.integer("deleted_by").nullable();
-            table.timestamp("deleted_at").nullable();
-            table.integer("created_by").nullable();
-            table.integer("updated_by").nullable();
-        
+        await DB.schema.createTable(COUNTRY, table => {
+            table.increments('country_id').primary(); 
+            table.string('country_name').notNullable(); 
+            table.string('country_code', 10).notNullable(); 
+            table.timestamp('created_at').defaultTo(DB.fn.now()); 
+            table.timestamp('updated_at').defaultTo(DB.fn.now()); 
         });
+
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
@@ -39,10 +35,10 @@ export const seed = async (dropFirst = false) => {
         `);
 
         await DB.raw(`
-          DROP TRIGGER IF EXISTS update_timestamp ON ${SAVED_PROJECTS};
+          DROP TRIGGER IF EXISTS update_timestamp ON ${COUNTRY};
           CREATE TRIGGER update_timestamp
           BEFORE UPDATE
-          ON ${SAVED_PROJECTS}
+          ON ${COUNTRY}
           FOR EACH ROW
           EXECUTE FUNCTION update_timestamp();
         `);

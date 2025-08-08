@@ -32,8 +32,8 @@ import analytics_settingsRoute from './routes/analytics_Settings.routes';
 import subscribed_emailsRoute from './routes/subscribed_emails.routes';
 import robotstxtRoutes from './routes/robotstxt.routes';
 import SavedprojectRoute from './routes/saved_project.route';
-
-
+import locationRoute from './routes/location.routes';
+import dashboardRoute from './routes/dashboard.routes'
 // Validate .env variables
 validateEnv();
 
@@ -67,7 +67,9 @@ const app = new App([
     new WebhookRoute(),
     new CmsRoute(),
     new MacroRoute(),
-    new SavedprojectRoute()
+    new SavedprojectRoute(),
+    new locationRoute(),
+    new dashboardRoute()
 ]);
 
 // Start server

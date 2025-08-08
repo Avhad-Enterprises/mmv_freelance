@@ -148,17 +148,18 @@ class AppliedProjectsService {
 
     public async getApplicationCountByProject(projects_task_id: number): Promise<number> {
         const result = await DB(T.APPLIED_PROJECTS)
-            .where({ projects_task_id, is_deleted: false })
+            .where({ is_deleted: false })
             .count("applied_projects_id as count")
-            .first();
+            .first(); projects_task_id
 
         return Number(result?.count || 0);
     }
 
     public async getAppliedprojectByStatus(status: number): Promise<any[]> {
-        if (![0, 1, 2].includes(status)) {
-            throw new HttpException(400, "Status must be 0 (pending), 1 (completed), or 2 (rejected)");
+        if (![0, 1, 2, 3].includes(status)) {
+            throw new HttpException(400, "Status must be 0 (pending), 1 (ongoing), 2 (completed), or 3 (rejected)");
         }
+
         const result = await DB(T.APPLIED_PROJECTS)
             .leftJoin('projects_task', 'applied_projects.projects_task_id', 'projects_task.projects_task_id')
             .leftJoin('users', 'applied_projects.user_id', 'users.user_id')
@@ -195,6 +196,65 @@ class AppliedProjectsService {
 
         return count;
     }
+
+    public async ongoingprojects(user_id: number): Promise<any[]> {
+        return await DB(`${T.APPLIED_PROJECTS} as ap`)
+            .join(`${T.PROJECTS_TASK} as pt`, 'pt.projects_task_id', 'ap.projects_task_id')
+            .select(
+                'ap.applied_projects_id',
+                'ap.description',
+                'ap.status',
+                'ap.created_at as applied_at',
+                'pt.project_title',
+                'pt.Deadline',
+                'pt.Budget'
+            )
+            .where({
+                'ap.user_id': user_id,
+                'ap.status': 1, // Approved
+                'ap.is_deleted': false,
+                'ap.is_active': true
+            })
+            .orderBy('ap.created_at', 'desc');
+    }
+    public async getprojectsbyfilter(user_id: number, filter: string): Promise<any[]> {
+        const statusMap: Record<string, number> = {
+            new: 0,
+            ongoing: 1,
+            completed: 2,
+        };
+
+        const status = statusMap[filter];
+
+        return await DB(`${T.APPLIED_PROJECTS} as ap`)
+            .join(`${T.PROJECTS_TASK} as pt`, 'pt.projects_task_id', 'ap.projects_task_id')
+            .select(
+                'ap.applied_projects_id',
+                'ap.description as applied_description',
+                'ap.status as application_status',
+                'ap.created_at as applied_at',
+                'pt.projects_task_id',
+                'pt.project_title',
+                'pt.project_category',
+                'pt.Deadline',
+                'pt.Budget',
+                'pt.project_description',
+                'pt.tags',
+                'pt.skills_required',
+                'pt.projects_type',
+                'pt.project_format',
+                'pt.video_length'
+            )
+            .where({
+                'ap.user_id': user_id,
+                'ap.status': status,
+                'ap.is_deleted': false,
+                'ap.is_active': true,
+                'pt.is_deleted': false,
+            })
+            .orderBy('ap.created_at', 'desc');
+    }
+
 
 }
 export default AppliedProjectsService;

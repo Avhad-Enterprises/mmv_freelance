@@ -19,9 +19,8 @@ class SavedprojectRoute implements Route {
 
         this.router.post(`${this.path}/create`, validationMiddleware(SavedProjectsDto, 'body', false, []), (req, res, next) => this.Savedprojectcontroller.addsave(req, res, next));
         this.router.get(`${this.path}/listsave`, this.Savedprojectcontroller.getAllsaved);
-      this.router.delete(`${this.path}/remove-saved`,validationMiddleware(SavedProjectsDto, 'body', false, []),(req, res, next) => this.Savedprojectcontroller.removeSavedProject(req, res, next)
-);
-
+        this.router.delete(`${this.path}/remove-saved`, validationMiddleware(SavedProjectsDto, 'body', false, []), (req, res, next) => this.Savedprojectcontroller.removeSavedProject(req, res, next));
+        this.router.post(`${this.path}/savedbyuser_id`, this.Savedprojectcontroller.getUserId);
     }
 }
 export default SavedprojectRoute;

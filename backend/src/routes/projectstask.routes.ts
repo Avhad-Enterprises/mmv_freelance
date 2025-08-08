@@ -37,6 +37,8 @@ class projectstaskRoute implements Route {
       //check url in database
       this.router.get(`${this.path}/check-url`, this.projectstaskcontroller.checkUrlExists);
       this.router.post(`${this.path}/gettaskby`, this.projectstaskcontroller.getbytasksid);
+      this.router.get(`${this.path}/count/editor/:editor_id`,(req, res, next) => this.projectstaskcontroller.getCountBy(req, res, next));
+
    }
 }
 

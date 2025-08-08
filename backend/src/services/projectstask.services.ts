@@ -311,6 +311,21 @@ class ProjectstaskService {
     return project || null;
   }
 
+  public async getCountByEditor(editor_id: number): Promise<number> {
+    if (!editor_id) {
+      throw new HttpException(400, "editor_id is required");
+    }
+
+    const result = await DB(T.PROJECTS_TASK)
+      .where({
+        editor_id,
+        is_deleted: false
+      })
+      .count('* as count')
+      .first();
+
+    return Number(result?.count || 0);
+  }
 }
 
 export default ProjectstaskService;

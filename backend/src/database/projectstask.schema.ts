@@ -34,6 +34,9 @@ export const seed = async (dropFirst = false) => {
             table.string('sample_project_file').nullable();
             table.jsonb('project_files').nullable();
             table.boolean('show_all_files').defaultTo(false);
+            table.string('url').notNullable();               
+            table.string('meta_title').notNullable();         
+            table.text('meta_description').notNullable();     
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
@@ -67,6 +70,3 @@ export const seed = async (dropFirst = false) => {
 //        seed();
 //    };
 //    run();
-
-
-

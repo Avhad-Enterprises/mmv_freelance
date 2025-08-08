@@ -42,7 +42,6 @@ import { REVIEWS_TABLE } from './review.schema';
 import { SUPPORT_TICKETS_TABLE } from './support_ticket.schema'
 import { TICKET_REPLY_TABLE } from './support_ticket_reply.schema'
 import { TICKET_NOTE_TABLE } from './support_ticket_note.schema'
-import { EMAIL_LOG_TABLE } from './emai.log.schema'
 import { ROBOTS_TXT } from './robotstxt.schema';
 import { INVITATION_TABLE } from './admin_invites.schema';
 import { REPORT_TEMPLATES } from './report_templates.schema';
@@ -60,7 +59,10 @@ import { BRANDING_ASSETS } from './branding_assets.schema';
 import { ANALYTICS_SETTINGS } from './analytics_setting.schema';
 import { SUBSCRIBED_EMAILS } from './subscribed_emails.schema';
 import { SKILLS } from './skill.schema';
-import { SAVED_PROJECTS } from './saved_project.schema'
+import { SAVED_PROJECTS } from './saved_project.schema';
+import { COUNTRY } from './country.schema';
+import { STATES } from './states.schema';
+import { CITIES } from './city.schema';
 
 export const T = {
   USERS_TABLE,
@@ -81,7 +83,6 @@ export const T = {
   SUPPORT_TICKETS_TABLE,
   TICKET_REPLY_TABLE,
   TICKET_NOTE_TABLE,
-  EMAIL_LOG_TABLE,
   FAQ,
   USER_ROLES,
   SUBMITTED_PROJECTS,
@@ -99,7 +100,11 @@ export const T = {
   BRANDING_ASSETS,
   ANALYTICS_SETTINGS,
   SUBSCRIBED_EMAILS,
-  SAVED_PROJECTS
+  SAVED_PROJECTS,
+  COUNTRY,
+  STATES,
+  CITIES
+
 };
 
 // Creates the procedure that is then added as a trigger to every table

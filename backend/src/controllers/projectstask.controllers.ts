@@ -254,6 +254,22 @@ class projectstaskcontroller {
       next(error);
     }
   };
+  public getCountBy = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { editor_id } = req.params;
+
+    const count = await this.ProjectstaskService.getCountByEditor(Number(editor_id));
+
+    res.status(200).json({
+      success: true,
+      editor_id: Number(editor_id),
+      shortlisted_count: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 }
 

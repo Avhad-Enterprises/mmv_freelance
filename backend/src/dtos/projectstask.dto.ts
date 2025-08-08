@@ -33,9 +33,11 @@ export class ProjectsTaskDto {
   tags?: any;
 
   @IsArray()
+  @IsString({ each: true })
   skills_required: string[];
 
   @IsArray()
+  @IsString({ each: true })
   reference_links: string[];
 
   @IsString()

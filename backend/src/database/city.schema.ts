@@ -1,33 +1,24 @@
 import DB from './index.schema';
-
-export const SAVED_PROJECTS = 'saved_projects';
-
+export const CITIES = 'cities';
 export const seed = async (dropFirst = false) => {
-
     try {
         if (dropFirst) {
             console.log('Dropping Tables');
-            await DB.schema.dropTable(SAVED_PROJECTS);
+            await DB.schema.dropTable(CITIES);
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
-
-        await DB.schema.createTable(SAVED_PROJECTS, table => {
-            table.increments('saved_projects_id').primary();
-            table.integer("projects_task_id").notNullable();
-            table.integer("user_id").notNullable();
-            table.boolean("is_active").defaultTo(true);
-            table.boolean("is_deleted").defaultTo(false);
-            table.integer("deleted_by").nullable();
-            table.timestamp("deleted_at").nullable();
-            table.integer("created_by").nullable();
-            table.integer("updated_by").nullable();
-        
+        await DB.schema.createTable(CITIES, table => {
+            table.increments('city_id').primary(); 
+            table.integer('state_id').notNullable(); 
+            table.string('state_code', 10).notNullable(); 
+            table.string('state_name').notNullable(); 
+            table.string('city_name').notNullable(); 
+            table.timestamp('created_at').defaultTo(DB.fn.now()); 
+            table.timestamp('updated_at').defaultTo(DB.fn.now()); 
         });
-
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');
-
         await DB.raw(`
           CREATE OR REPLACE FUNCTION update_timestamp()
           RETURNS TRIGGER AS $$
@@ -37,12 +28,11 @@ export const seed = async (dropFirst = false) => {
           END;
           $$ LANGUAGE plpgsql;
         `);
-
         await DB.raw(`
-          DROP TRIGGER IF EXISTS update_timestamp ON ${SAVED_PROJECTS};
+          DROP TRIGGER IF EXISTS update_timestamp ON ${CITIES};
           CREATE TRIGGER update_timestamp
           BEFORE UPDATE
-          ON ${SAVED_PROJECTS}
+          ON ${CITIES}
           FOR EACH ROW
           EXECUTE FUNCTION update_timestamp();
         `);

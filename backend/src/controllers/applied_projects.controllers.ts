@@ -128,10 +128,10 @@ class AppliedProjectsController {
       const { status } = req.body;
 
       // Allow status: 0 = pending, 1 = completed, 2 = rejected
-      if (typeof status !== 'number' || ![0, 1, 2].includes(status)) {
+      if (typeof status !== 'number' || ![0, 1, 2, 3].includes(status)) {
         return res.status(400).json({
           success: false,
-          message: 'Status must be 0 (pending), 1 (completed), or 2 (rejected)'
+          message: 'Status must be 0 (pending), 1 (ongoing), 2 (completed), or 3 (rejected)'
         });
       }
 
@@ -145,7 +145,6 @@ class AppliedProjectsController {
       next(error);
     }
   };
-
 
   public appliedcount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const user_id = parseInt(req.params.id);
@@ -165,6 +164,51 @@ class AppliedProjectsController {
       next(error);
     }
   };
+
+  public getongoing = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const user_id = parseInt(req.params.user_id);
+
+      if (isNaN(user_id)) {
+        throw new HttpException(400, "Invalid user ID");
+      }
+
+      const projects = await this.AppliedProjectsService.ongoingprojects(user_id);
+
+      res.status(200).json({
+        message: `Ongoing (Approved) projects fetched for user ID ${user_id}`,
+        data: projects,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getapplied = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const user_id = parseInt(req.params.user_id);
+      const filter = req.query.filter as string;
+
+      if (isNaN(user_id)) {
+        throw new HttpException(400, "Invalid user ID");
+      }
+
+      const allowedFilters = ['new', 'ongoing', 'completed'];
+      if (!allowedFilters.includes(filter)) {
+        throw new HttpException(400, "Invalid filter value. Allowed: new, ongoing, completed");
+      }
+
+      const projects = await this.AppliedProjectsService.getprojectsbyfilter(user_id, filter);
+
+      res.status(200).json({
+        message: `${filter} projects fetched successfully`,
+        data: projects,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
 }
 
 export default AppliedProjectsController;

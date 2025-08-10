@@ -22,6 +22,8 @@ class favoritesRoute implements Route {
     this.router.post(`${this.path}/remove`, validationMiddleware(favoritesDto, 'body', false, []), this.favoritescontroller.removeFavorite);
     this.router.get(`${this.path}/listprojects`, this.favoritescontroller.getAllprojects);
     this.router.get(`${this.path}/listfreelancers`, this.favoritescontroller.listFavoriteFreelancers);
+   
+    this.router.post(`${this.path}/getFavorites`, this.favoritescontroller.getProjectfavorites.bind(this.favoritescontroller));
 
   }
 }

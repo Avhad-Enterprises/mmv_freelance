@@ -35,44 +35,29 @@ class ReviewsService {
     return created[0];
   }
 
-  // Get reviews received by a freelancer
-  public async getReviewsByFreelancer(user_id: number): Promise<any[]> {
-    if (!user_id) {
-      throw new HttpException(400, 'User ID is required');
-    }
-
-    const reviews = await DB(T.REVIEWS_TABLE)
-      .join('clients', 'reviews.client_id', '=', 'clients.client_id')
-      .where({ 'reviews.user_id': user_id, 'reviews.is_deleted': false })
-      .select(
-        'reviews.*',
-        'clients.name as client_name',
-        'clients.profile_picture as client_picture'
-      )
-      .orderBy('reviews.created_at', 'desc');
-
-    return reviews;
+  // Get reviews received 
+ public async getReviews(user_id: number): Promise<any[]> {
+  if (!user_id) {
+    throw new HttpException(400, 'User ID is required');
   }
 
-  // Get reviews written by a client
-  public async getReviewsByClient(client_id: number): Promise<any[]> {
-    if (!client_id) {
-      throw new HttpException(400, 'Client ID is required');
-    }
+  const reviews = await DB(T.REVIEWS_TABLE)
+    .join(`${T.USERS_TABLE}`, `${T.REVIEWS_TABLE}.client_id`, '=', `${T.USERS_TABLE}.user_id`)
+    .where({
+      [`${T.REVIEWS_TABLE}.user_id`]: user_id,
+      [`${T.REVIEWS_TABLE}.is_deleted`]: false
+    })
+    .select(
+      `${T.REVIEWS_TABLE}.*`,
+      `${T.USERS_TABLE}.first_name as client_first_name`,
+      `${T.USERS_TABLE}.last_name as client_last_name`,
+      `${T.USERS_TABLE}.profile_picture as client_picture`
+    )
+    .orderBy(`${T.REVIEWS_TABLE}.created_at`, 'desc');
 
-    const reviews = await DB(T.REVIEWS_TABLE)
-      .join('users', 'reviews.user_id', '=', 'users.user_id')
-      .where({ 'reviews.client_id': client_id, 'reviews.is_deleted': false })
-      .select(
-        'reviews.*',
-        'users.first_name',
-        'users.last_name',
-        'users.profile_picture'
-      )
-      .orderBy('reviews.created_at', 'desc');
+  return reviews;
+}
 
-    return reviews;
-  }
 
   // Soft delete a review
   public async deleteReview(review_id: number): Promise<void> {

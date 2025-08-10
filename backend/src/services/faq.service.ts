@@ -53,7 +53,8 @@ export class FaqService {
 
         return deleted[0];
     }
-public async getallfaqsbytable(): Promise<any> {
+    
+    public async getallfaqsbytable(): Promise<any> {
         try {
             const result = await DB(T.FAQ)
                 .where({ is_active: 1, is_deleted: false })

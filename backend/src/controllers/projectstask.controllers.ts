@@ -50,7 +50,7 @@ class projectstaskcontroller {
     }
   };
 
-  public update = async (req: Request, res: Response): Promise<void> => {
+  public update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const raw = (req.body as any).projects_task_id;
       const idNum: number = typeof raw === 'string' ? parseInt(raw, 10) : raw;
@@ -68,7 +68,7 @@ class projectstaskcontroller {
         return;
       }
 
-      const updated = await this.ProjectstaskService.updateProject(idNum, fieldsToUpdate);
+      const updated = await this.ProjectstaskService.update(idNum, fieldsToUpdate);
       res.status(200).json({ data: updated, message: 'projects_task updated' });
     } catch (error) {
       next(error);
@@ -157,13 +157,9 @@ class projectstaskcontroller {
   public getTaskWithClientById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { id } = req.params;
-      const task = await this.ProjectstaskService.getTaskWithClientById(Number(id));
+      const tasks = await this.ProjectstaskService.getTaskWithClientById(Number(id));
 
-      if (!task) {
-        res.status(404).json({ success: false, message: "Task not found" });
-      }
-
-      res.status(200).json({ data: task, success: true });
+      res.status(200).json({ data: tasks, success: true });
     } catch (error) {
       next(error);
     }
@@ -221,6 +217,60 @@ class projectstaskcontroller {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
+  public getbytasksid = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { client_id, is_active } = req.body;
+
+
+      const idNum: number = typeof client_id === 'string'
+        ? parseInt(client_id, 10)
+        : client_id;
+
+      if (isNaN(idNum)) {
+        res.status(400).json({ error: 'projects_task_id must be a number' });
+        return;
+      }
+
+
+      const activeStatus: number = typeof is_active === 'string'
+        ? parseInt(is_active, 10)
+        : is_active ? 1 : 0;
+
+      if (isNaN(activeStatus) || (activeStatus !== 0 && activeStatus !== 1)) {
+        res.status(400).json({ error: 'is_active must be 1 or 0' });
+        return;
+      }
+
+
+      const project = await this.ProjectstaskService.getBytaskId(idNum, activeStatus);
+
+      if (!project) {
+        res.status(404).json({ error: 'projects_task not found' });
+        return;
+      }
+
+      res.status(200).json({ project, success: true });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public getCountBy = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { editor_id } = req.params;
+
+    const count = await this.ProjectstaskService.getCountByEditor(Number(editor_id));
+
+    res.status(200).json({
+      success: true,
+      editor_id: Number(editor_id),
+      shortlisted_count: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 }
 
 export default projectstaskcontroller;

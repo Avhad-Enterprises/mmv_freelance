@@ -15,7 +15,8 @@ class dashboardRoute implements Route {
 
   private initializeRoutes() {
     //Signup users count last 24 hrs. 
-    this.router.get(`${this.path}/signup-count-last-24hrs`, this.dashboardcontroller.getNewSignupsLast24Hours);
+    // this.router.get(`${this.path}/signup-count-last-24hrs`, this.dashboardcontroller.getNewSignupsLast24Hours);
+     this.router.get(`${this.path}/signup-count-last-24hrs`, (req, res, next) => this.dashboardcontroller.getNewSignupsLast24Hours(req, res));
 
     // signup users details last 24 hrs.
     this.router.get(`${this.path}/signup-detail-last-24hrs`, this.dashboardcontroller.getSignupUsersLast24Hours);

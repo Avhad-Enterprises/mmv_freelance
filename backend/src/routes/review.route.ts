@@ -23,15 +23,11 @@ class ReviewRoute implements Route {
 
     // Get reviews received by a freelancer (POST)
     this.router.post(
-      `${this.path}/freelancer`,
-      this.reviewsController.getReviewsByFreelancer
+      `${this.path}/getreviews`,
+      this.reviewsController.getReviews
     );
 
-    // Get reviews written by a client (POST)
-    this.router.post(
-      `${this.path}/client`,
-      this.reviewsController.getReviewsByClient
-    );
+   
 
     // Soft delete a review (DELETE)
     this.router.delete(
@@ -42,3 +38,11 @@ class ReviewRoute implements Route {
 }
 
 export default ReviewRoute;
+
+// {
+//   "project_id": 101,
+//   "client_id": 5,
+//   "user_id": 12,
+//   "rating": 4,
+//   "review": "Great work delivered on time and with excellent communication."
+// }

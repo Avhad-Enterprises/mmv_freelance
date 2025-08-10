@@ -12,34 +12,34 @@ class ProjectstaskService {
     if (isEmpty(data)) {
       throw new HttpException(400, "Project data is empty");
     }
-  
+
     // Check if URL already exists
     const existingUser = await DB(T.PROJECTS_TASK)
       .where({ url: data.url })
       .first();
-  
+
     if (existingUser) {
       throw new HttpException(409, "URL already registered");
-    } 
-      // ✅ Convert jsonb fields to JSON string
-  const formattedData = {
-    ...data,
-    skills_required: JSON.stringify(data.skills_required),
-    reference_links: JSON.stringify(data.reference_links),
-    status: JSON.stringify(data.status),
-    sample_project_file: JSON.stringify(data.sample_project_file),
-    project_files: JSON.stringify(data.project_files),
-    show_all_files: JSON.stringify(data.show_all_files)
-  };
-  
+    }
+    // ✅ Convert jsonb fields to JSON string
+    const formattedData = {
+      ...data,
+      skills_required: JSON.stringify(data.skills_required),
+      reference_links: JSON.stringify(data.reference_links),
+      status: JSON.stringify(data.status),
+      sample_project_file: JSON.stringify(data.sample_project_file),
+      project_files: JSON.stringify(data.project_files),
+      show_all_files: JSON.stringify(data.show_all_files)
+    };
+
     // ✅ Insert into correct table: projects_task
     const [createdUser] = await DB(T.PROJECTS_TASK)
       .insert(formattedData)
       .returning("*");
-  
+
     return createdUser;
   }
-  
+
   public async getById(projects_task_id: number): Promise<any | null> {
     if (!projects_task_id) {
       throw new HttpException(400, "projects Task ID is required");
@@ -48,31 +48,31 @@ class ProjectstaskService {
       .where({ projects_task_id, is_deleted: false })
       .first();
     return projects || null;
-   }
+  }
 
-   public updateProject = async (projects_task_id: number, updateData: any): Promise<any> => {
+  public update = async (projects_task_id: number, updateData: any): Promise<any> => {
     try {
       // 1. check if project exists
       const project = await DB(T.PROJECTS_TASK)
         .where({ projects_task_id })
         .first();
-  
+
       if (!project) {
         throw new Error('Project not found');
       }
-  
+
       // 2. check if new URL is unique
       if (updateData.url) {
         const existing = await DB(T.PROJECTS_TASK)
           .where('url', updateData.url)
           .andWhereNot('projects_task_id', projects_task_id)
           .first();
-  
+
         if (existing) {
           throw new Error('URL already exists. Please use a unique URL.');
         }
       }
-  
+
       // 3. update project
       await DB(T.PROJECTS_TASK)
         .where({ projects_task_id })
@@ -80,22 +80,22 @@ class ProjectstaskService {
           ...updateData,
           updated_at: new Date()
         });
-  
+
       // 4. return updated project
       const updatedProjecttask = await DB(T.PROJECTS_TASK)
         .where({ projects_task_id })
         .first();
-  
+
       return updatedProjecttask;
-  
+
     } catch (error) {
       console.error("Service error:", error);
       throw error;
     }
   };
 
-  public async softDelete(projects_task_id: number, data: Partial<any> ): Promise<any> {
-  
+  public async softDelete(projects_task_id: number, data: Partial<any>): Promise<any> {
+
     const deleted_at = new Date();
 
     const result = await DB(T.PROJECTS_TASK)
@@ -150,7 +150,7 @@ class ProjectstaskService {
     return result;
   };
 
-  public getactivedeleted = async(): Promise<IProjectTask[]> => {
+  public getactivedeleted = async (): Promise<IProjectTask[]> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ is_deleted: false })
@@ -161,7 +161,7 @@ class ProjectstaskService {
     }
   }
 
-  public getDeletedprojectstask = async(): Promise<IProjectTask[]> => {
+  public getDeletedprojectstask = async (): Promise<IProjectTask[]> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ is_deleted: true })
@@ -254,11 +254,11 @@ class ProjectstaskService {
         `${T.USERS_TABLE}.last_name`,
         `${T.PROJECTS_TASK}.*`
       );
-  
+
     return result;
   }
-  
-  public async getTaskWithClientById(id: number): Promise<any> {
+
+  public async getTaskWithClientById(clientId: number): Promise<any[]> {
     const result = await DB(T.PROJECTS_TASK)
       .innerJoin(T.USERS_TABLE, `${T.PROJECTS_TASK}.client_id`, '=', `${T.USERS_TABLE}.user_id`)
       .select(
@@ -268,32 +268,64 @@ class ProjectstaskService {
         `${T.USERS_TABLE}.last_name`,
         `${T.PROJECTS_TASK}.*`
       )
-      .where(`${T.PROJECTS_TASK}.projects_task_id`, id)
-      .first(); // return only one row
-  
+      .where(`${T.PROJECTS_TASK}.client_id`, clientId)
+      .andWhere(`${T.PROJECTS_TASK}.is_deleted`, false)
+      .orderBy(`${T.PROJECTS_TASK}.created_at`, 'desc');
+
     return result;
   }
-  
+
   public async getByUrl(url: string): Promise<IProjectTask | null> {
     const projectstask = await DB(T.PROJECTS_TASK)
       .where({ url })
       .first();
-  
+
     return projectstask;
   }
-  
+
   public checkUrlInprojects = async (url: string): Promise<boolean> => {
     try {
       const result = await DB(T.PROJECTS_TASK)
         .where({ url })
         .first();
-  
+
       return !!result; // true if found, false if not
     } catch (error) {
       console.error("checkUrlInprojects projects task error:", error);
       throw error;
     }
   };
+  public async getBytaskId(client_id: number, is_active: number): Promise<any | null> {
+    if (!client_id) {
+      throw new HttpException(400, "projects_task_id is required");
+    }
+
+    const project = await DB(T.PROJECTS_TASK)
+      .where({
+        client_id,
+        is_deleted: false,
+        is_active,
+      })
+      .first();
+
+    return project || null;
+  }
+
+  public async getCountByEditor(editor_id: number): Promise<number> {
+    if (!editor_id) {
+      throw new HttpException(400, "editor_id is required");
+    }
+
+    const result = await DB(T.PROJECTS_TASK)
+      .where({
+        editor_id,
+        is_deleted: false
+      })
+      .count('* as count')
+      .first();
+
+    return Number(result?.count || 0);
+  }
 }
 
 export default ProjectstaskService;

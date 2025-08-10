@@ -167,6 +167,7 @@ class UsersController {
 
 
       if (newPassword !== confirmPassword)
+
         throw new HttpException(400, "Passwords do not match");
 
 
@@ -178,7 +179,6 @@ class UsersController {
       next(error);
     }
   };
-
 
   public getFreelancerById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -193,7 +193,6 @@ class UsersController {
     }
   };
 
-
   public getClientById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
@@ -206,7 +205,6 @@ class UsersController {
       next(error);
     }
   };
-
 
   public getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -221,7 +219,6 @@ class UsersController {
     }
   };
 
-
   public getAdminById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
@@ -232,7 +229,6 @@ class UsersController {
       next(error);
     }
   };
-
 
   public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -265,9 +261,6 @@ class UsersController {
     }
   };
 
-
-
-
   public insertEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: UsersDto & { invite_token: string } = req.body;
@@ -282,7 +275,6 @@ class UsersController {
     }
   };
 
-
   public getAllInvitations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const invitations = await this.UsersService.getAllInvitations();
@@ -292,7 +284,6 @@ class UsersController {
     }
   };
 
-
   public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { email, password } = req.body;
@@ -301,17 +292,11 @@ class UsersController {
       if (!email || !password) {
         throw new HttpException(400, "Please provide both email and password");
       }
-
-
       const user = await this.UsersService.login(email, password);
-
-
       // Exclude password from response
       const { password: _pw, ...userData } = user as any;
 
-
       const token = generateToken(userData);
-
 
       res.status(200).json({
         data: { user: userData, token },
@@ -321,11 +306,17 @@ class UsersController {
       next(error);
     }
   };
- 
+
+  public getfreelancer = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { username } = req.body;
+      const freelancer = await this.UsersService.getfreelancerbyusername(username);
+      res.status(200).json({ data: freelancer, message: "Freelancer fetched successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
 }
-
-
 export default UsersController;
-
-
-

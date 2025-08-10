@@ -1,82 +1,87 @@
 import {
-  IsNotEmpty, IsString, IsArray, IsInt, IsDateString, IsBoolean, IsObject
+  IsString, IsNotEmpty, IsDateString,
+  IsInt, IsJSON, IsArray, ArrayNotEmpty, IsUrl, IsObject,
+  IsBoolean, IsOptional, ValidateNested
 } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class ProjectsTaskDto {
-  @IsInt() 
+  @IsInt()
   client_id: number;
-  
-  @IsInt() 
-  editor_id: number;
-  
-  @IsString() 
-  project_title: string;
-  
-  @IsString() 
-  project_category: string;
-  
-    @IsDateString()
-    deadline: string;
-  
-  @IsString() 
-  project_description: string;
-  
-    @Type(() => Number)
-    @IsInt()
-    budget: number;
 
-    @IsOptional()
-    @IsJSON()
-    tags?: any;
-  
-  @IsArray() 
+  @IsInt()
+  editor_id: number;
+
+  @IsString()
+  project_title: string;
+
+  @IsString()
+  project_category: string;
+
+  @IsDateString()
+  deadline: string;
+
+  @IsString()
+  project_description: string;
+
+  @Type(() => Number)
+  @IsInt()
+  budget: number;
+
+  @IsOptional()
+  @IsJSON()
+  tags?: any;
+
+  @IsArray()
+  @IsString({ each: true })
   skills_required: string[];
-  
-  @IsArray() 
+
+  @IsArray()
+  @IsString({ each: true })
   reference_links: string[];
-  
-  @IsString() 
+
+  @IsString()
   additional_notes: string;
-  
-  @IsObject() 
+
+  @IsObject()
   status: object;
-  
-  @IsString() 
+
+  @IsString()
   projects_type: string;
-  
-  @IsString() 
+
+  @IsString()
   project_format: string;
-  
-  @IsString() 
+
+  @IsString()
   audio_voiceover: string;
-  
-  @IsInt() 
+
+  @IsInt()
   video_length: number;
-  
-  @IsString() 
+
+  @IsString()
   preferred_video_style: string;
-  
-  @IsArray() 
+
+  @IsArray()
   sample_project_file: string[];
-  
-  @IsArray() 
+
+  @IsArray()
   project_files: string[];
-  
-  @IsArray() 
+
+  @IsArray()
   show_all_files: string[];
-  
-  @IsString() 
+
+  @IsString()
   url: string;
-  
-  @IsString() 
+
+  @IsString()
   meta_title: string;
-  
-  @IsString() 
+
+  @IsString()
   meta_description: string;
-  
-  @IsInt() 
+
+  @IsInt()
   is_active: number;
-  
-  @IsInt() 
+
+  @IsInt()
   created_by: number;
 }

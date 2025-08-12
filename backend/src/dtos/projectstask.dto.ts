@@ -10,6 +10,7 @@ export class ProjectsTaskDto {
   client_id: number;
 
   @IsInt()
+  @IsOptional()
   editor_id: number;
 
   @IsString()
@@ -43,8 +44,8 @@ export class ProjectsTaskDto {
   @IsString()
   additional_notes: string;
 
-  @IsObject()
-  status: object;
+  // @IsObject()
+  // status: object;
 
   @IsString()
   projects_type: string;
@@ -62,12 +63,15 @@ export class ProjectsTaskDto {
   preferred_video_style: string;
 
   @IsArray()
+  @IsOptional()
   sample_project_file: string[];
 
   @IsArray()
+  @IsOptional()
   project_files: string[];
 
   @IsArray()
+  @IsOptional()
   show_all_files: string[];
 
   @IsString()

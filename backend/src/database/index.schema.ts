@@ -14,7 +14,9 @@ const awsConf = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     port: 5432,
-
+    ssl: {
+      rejectUnauthorized: false
+    }
   },
   searchPath: 'public'
 };
@@ -63,6 +65,7 @@ import { SAVED_PROJECTS } from './saved_project.schema';
 import { COUNTRY } from './country.schema';
 import { STATES } from './states.schema';
 import { CITIES } from './city.schema';
+import { EMAIL_LOG_TABLE } from './emailog.schema';
 
 export const T = {
   USERS_TABLE,
@@ -103,7 +106,8 @@ export const T = {
   SAVED_PROJECTS,
   COUNTRY,
   STATES,
-  CITIES
+  CITIES,
+  EMAIL_LOG_TABLE
 
 };
 

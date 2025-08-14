@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Dropdown, DropdownButton } from "react-bootstrap";
 
 const Filter = ({ columns, data, onFilter }) => {
-  const [filterText, setFilterText] = useState("");
+  const [filterText] = useState("");
   const [selectedColumn, setSelectedColumn] = useState(columns[0].dbcol);
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,11 +48,7 @@ const Filter = ({ columns, data, onFilter }) => {
   };
 
   // Handle text input filter
-  const handleFilterChange = (e) => {
-    const text = e.target.value;
-    setFilterText(text);
-    applyFilter(text, selectedColumn, selectedSubCategory);
-  };
+  
 
   // Handle column selection
   const handleColumnChange = (dbcol) => {

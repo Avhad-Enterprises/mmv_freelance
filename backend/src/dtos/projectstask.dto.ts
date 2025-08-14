@@ -7,7 +7,7 @@ import { Type } from 'class-transformer';
 
 export class ProjectsTaskDto {
   @IsInt()
-  client_id: number;
+  client_id: number;gi
 
   @IsInt()
   editor_id: number;

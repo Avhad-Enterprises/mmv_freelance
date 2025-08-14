@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest, makePostRequest } from "../utils/api"; // Changed to makePostRequest
+import { makeGetRequest } from "../utils/api"; // Changed to makePostRequest
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -20,7 +20,7 @@ const Editors = () => {
   const [loading, setLoading] = useState(true);
   const tableRef = useRef();
   const navigate = useNavigate();
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [setSelectedDates] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [allData, setAllData] = useState([]); // assume this is your full dataset
   const [isFiltered, setIsFiltered] = useState(false);

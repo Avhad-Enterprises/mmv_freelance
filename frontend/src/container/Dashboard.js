@@ -100,7 +100,7 @@ const Dashboard = () => {
             <div className="section_card">
               <div className="d-flex justify-content-between">
                 <h6 className="p-2">Announcements</h6>
-                <a>see all</a>
+                <a href="/announcements">see all</a>
               </div>
               <div className="home_table">
                 {notifications.map((notification, index) => (
@@ -120,7 +120,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-2 home_act">
-                      <a href="#">
+                      <a href="#0">
                         <i className="bi p-1 bi-three-dots"></i>
                       </a>
                       <p>1 hour ago</p>
@@ -136,7 +136,7 @@ const Dashboard = () => {
             <div className="section_card">
               <div className="d-flex justify-content-between">
                 <h6 className="p-2">Store Optimisation</h6>
-                <a href="#">see all</a>
+                <a href="#0">see all</a>
               </div>
               <div className="home_table">
                 {campaigns.map((campaign, index) => (
@@ -156,7 +156,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                     <div className="col-2 home_act">
-                      <a href="#">
+                      <a href="#0">
                         <i className="bi p-1 bi-three-dots"></i>
                       </a>
                       <p>1 hour ago</p>

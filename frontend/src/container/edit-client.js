@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
-import SelectComponent from "../components/SelectComponent";
 import TagInput from "../components/TagInput";
 import Aetextarea from "../components/Aetextarea";
 import CheckboxInput from "../components/CheckboxInput";
@@ -198,21 +197,6 @@ const EditClient = () => {
     [canEdit]
   );
 
-
-  const handleCheckboxChange = useCallback(
-    (checked) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this client.");
-        return;
-      }
-      setFormData((prev) => ({
-        ...prev,
-        is_active: checked,
-      }));
-    },
-    [canEdit]
-  );
-
   const [availableTags, setAvailableTags] = useState([]);
   useEffect(() => {
     const fetchTags = async () => {
@@ -318,12 +302,6 @@ const EditClient = () => {
       navigate("/client");
     }
   };
-
-  const accountStatusOptions = [
-    { value: "Active", label: "Active" },
-    { value: "Inactive", label: "Inactive" },
-    { value: "Banned", label: "Banned" },
-  ];
 
   if (loading) {
     return (

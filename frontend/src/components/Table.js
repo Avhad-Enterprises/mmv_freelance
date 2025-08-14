@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import RowsPerPageSelector from "./RowsPerPageSelector";
 import moment from "moment";
 import Button from "../components/Button";
@@ -32,11 +32,15 @@ const Table = ({
   const { showAlert } = useSweetAlert();
 
   // Ensure filteredData is an array
-  const safeFilteredData = Array.isArray(filteredData) ? filteredData : [];
+  // Memoize safeFilteredData to stabilize it
+  const safeFilteredData = useMemo(
+    () => (Array.isArray(filteredData) ? filteredData : []),
+    [filteredData]
+  );
 
   const startIndex = paginated ? (currentPage - 1) * rowsPerPage : 0;
   const endIndex = paginated ? startIndex + rowsPerPage : safeFilteredData.length;
-  const currentData = safeFilteredData.slice(startIndex, endIndex);
+  const currentData = sortedData.slice(startIndex, endIndex);
   const totalPages = Math.ceil(safeFilteredData.length / rowsPerPage) || 1;
 
   const handleEditClick = (rowData) => {
@@ -66,7 +70,7 @@ const Table = ({
 
   useEffect(() => {
     setSortedData(safeFilteredData);
-  }, [filteredData]);
+  }, [filteredData, safeFilteredData, setSortedData]);
 
   useEffect(() => {
     setQuantities(
@@ -97,7 +101,7 @@ const Table = ({
     } else {
       setSortedData(data || []);
     }
-  }, [data, sortColumn, sortOrder]);
+  }, [data, sortColumn, sortOrder, setSortedData]);
 
   const sortData = (data, column, order) => {
     return [...data].sort((a, b) => {
@@ -372,7 +376,7 @@ const Table = ({
       return (
         <img
           src={value || ""}
-          alt="Image"
+          alt={value ? "Table image" : ""}
           style={{ width: "100%", height: "40px", borderRadius: "5px" }}
         />
       );

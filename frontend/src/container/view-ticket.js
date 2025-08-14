@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button, Card, InputGroup } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import Layout from "./layout";
-import FormHeader from "../components/FormHeader";
-import TextInput from "../components/TextInput";
-import Aetextarea from "../components/Aetextarea";
-import axios from "axios";
 import { makePostRequest } from "../utils/api";
+import FormHeader from "../components/FormHeader";
 
 const ViewTicket = () => {
     const [formData, setFormData] = useState({
@@ -59,6 +56,7 @@ const ViewTicket = () => {
 
         try {
             const res = await makePostRequest("support_ticket/reply", payload);
+            console.log(res);
             alert("Reply sent successfully!");
             setReplyMessage("");
         } catch (err) {
@@ -162,9 +160,9 @@ const ViewTicket = () => {
         };
 
         fetchTicketDetails();
-    }, []);
+    }, [formData]);
 
-    const [customerData, setCustomerData] = useState({
+    const [customerData] = useState({
         name: "Alex",
 
         phone: "N/A",
@@ -172,7 +170,7 @@ const ViewTicket = () => {
         billing: "N/A",
     });
 
-    const [paymentSummary, setPaymentSummary] = useState({
+    const [paymentSummary] = useState({
         subtotal: 1125,
         discount: 0,
         delivery: "Free",
@@ -180,7 +178,7 @@ const ViewTicket = () => {
         total: 1237.5,
     });
 
-    const [timeline, setTimeline] = useState([
+    const [timeline] = useState([
         { completed: false, heading: "Heading", details: "Details", date: "Date & Time" },
         { completed: true, heading: "Heading", details: "Details", date: "Date & Time" },
         { completed: true, heading: "Heading", details: "Details", date: "Date & Time" },
@@ -396,7 +394,7 @@ const ViewTicket = () => {
                         <div className="form_section">
                             <div className="d-flex justify-content-between align-items-center mb-3">
                                 <h6 className="fw-bold mb-0">Timeline</h6>
-                                <a href="#" className="small" style={{color: "#089CFF"}}>View All</a>
+                                <a href="#0" className="small" style={{color: "#089CFF"}}>View All</a>
                             </div>
                             <div>
                                 {timeline.map((item, idx) => (

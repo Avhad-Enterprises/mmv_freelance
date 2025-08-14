@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { makePostRequest } from "../utils/api";
-import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { showSuccessToast } from "../utils/toastUtils";
+import "../login-page.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -18,10 +19,11 @@ const LoginPage = () => {
     }
 
     try {
-      const response = await makePostRequest("users/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://13.235.113.131:8000/api/v1/users/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
       const { data } = response.data;
 
@@ -29,6 +31,7 @@ const LoginPage = () => {
         localStorage.setItem("jwtToken", data.token);
         const decoded = jwtDecode(data.token);
         const fullName = `${decoded.first_name} ${decoded.last_name}`;
+
         showSuccessToast(`🎉 Welcome, ${fullName}!`);
         navigate("/dashboard");
       } else {
@@ -46,35 +49,28 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
-      <div className="card p-4" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4">Login</h3>
-        {errorMessage && (
-          <div className="alert alert-danger">{errorMessage}</div>
-        )}
+    <div className="login-container">
+      <div className="login-card">
+        <h3 className="login-title">Login</h3>
+        {errorMessage && <div className="error">{errorMessage}</div>}
         <form onSubmit={handleLogin}>
-          <div className="form-group mb-3">
+          <div className="input-group">
             <label>Email address</label>
             <input
               type="email"
-              className="form-control"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="form-group mb-3">
+          <div className="input-group">
             <label>Password</label>
             <input
               type="password"
-              className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+          <button type="submit" className="login-button">
             Login
           </button>
         </form>

@@ -9,10 +9,6 @@ import Aetextarea from "../components/Aetextarea";
 import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
 import DataTable from "../components/DataTable";
-import Modal from "../components/Modal";
-import { Button } from "react-bootstrap";
-import FileUploadComponent from "../components/FileUploadComponent";
-import MultiFileUploaderComponent from "../components/MultiFileUploaderComponent";
 import CheckboxInput from "../components/CheckboxInput";
 import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
@@ -62,7 +58,6 @@ const EditProject = () => {
   const [showAllFiles, setShowAllFiles] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [skillsTags, setSkillsTags] = useState([]);
-  const [isUploading, setIsUploading] = useState(false);
   const [availableCategories, setAvailableCategory] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
@@ -72,7 +67,6 @@ const EditProject = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [clients, setClients] = useState([]);
-  const [isApplicationsModalOpen, setApplicationsModalOpen] = useState(false);
   const [ApplicationaData, setApplicationaData] = useState([]);
   const [viewMode, setViewMode] = useState("form")
 
@@ -369,45 +363,45 @@ const EditProject = () => {
     [canEdit]
   );
 
-  const handleFileChange = useCallback(
-    (name) => (files) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this project.");
-        return;
-      }
-      if (name === "sample_project_file") {
-        const fileData = files.find((f) => f.isValid);
-        setSampleProjectFile(fileData ? { file: fileData.file, fileUrl: fileData.fileUrl } : null);
-        setFormData((prev) => ({
-          ...prev,
-          [name]: fileData ? [{ filename: fileData.fileName, url: fileData.fileUrl }] : [],
-        }));
-      } else {
-        const validFiles = files.filter((f) => f?.isValid && f?.fileUrl);
-        const hasUploading = files.some((f) => f?.uploading);
-        setIsUploading((prev) => prev || hasUploading);
-        const fileObjects = validFiles.map((f) => ({
-          filename: f.fileName || f.fileUrl.split("/").pop(),
-          url: f.fileUrl,
-        }));
-        if (name === "project_files") {
-          setUploadedProjectFiles(validFiles);
-          setFormData((prev) => ({ ...prev, [name]: fileObjects }));
-        } else if (name === "show_all_files") {
-          setUploadedShowFiles(validFiles);
-          setFormData((prev) => ({ ...prev, [name]: fileObjects }));
-        }
-        if (
-          !hasUploading &&
-          !uploadedProjectFiles.some((f) => f?.uploading) &&
-          !uploadedShowFiles.some((f) => f?.uploading)
-        ) {
-          setIsUploading(false);
-        }
-      }
-    },
-    [canEdit, uploadedProjectFiles, uploadedShowFiles]
-  );
+  // const handleFileChange = useCallback(
+  //   (name) => (files) => {
+  //     if (!canEdit) {
+  //       showErrorToast("You are not authorized to edit this project.");
+  //       return;
+  //     }
+  //     if (name === "sample_project_file") {
+  //       const fileData = files.find((f) => f.isValid);
+  //       setSampleProjectFile(fileData ? { file: fileData.file, fileUrl: fileData.fileUrl } : null);
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         [name]: fileData ? [{ filename: fileData.fileName, url: fileData.fileUrl }] : [],
+  //       }));
+  //     } else {
+  //       const validFiles = files.filter((f) => f?.isValid && f?.fileUrl);
+  //       const hasUploading = files.some((f) => f?.uploading);
+  //       setIsUploading((prev) => prev || hasUploading);
+  //       const fileObjects = validFiles.map((f) => ({
+  //         filename: f.fileName || f.fileUrl.split("/").pop(),
+  //         url: f.fileUrl,
+  //       }));
+  //       if (name === "project_files") {
+  //         setUploadedProjectFiles(validFiles);
+  //         setFormData((prev) => ({ ...prev, [name]: fileObjects }));
+  //       } else if (name === "show_all_files") {
+  //         setUploadedShowFiles(validFiles);
+  //         setFormData((prev) => ({ ...prev, [name]: fileObjects }));
+  //       }
+  //       if (
+  //         !hasUploading &&
+  //         !uploadedProjectFiles.some((f) => f?.uploading) &&
+  //         !uploadedShowFiles.some((f) => f?.uploading)
+  //       ) {
+  //         setIsUploading(false);
+  //       }
+  //     }
+  //   },
+  //   [canEdit, uploadedProjectFiles, uploadedShowFiles]
+  // );
 
   const handleDateChange = useCallback(
     (date) => {
@@ -419,21 +413,6 @@ const EditProject = () => {
         ...prev,
         Deadline: date ? date.toISOString().split("T")[0] : null,
       }));
-    },
-    [canEdit]
-  );
-
-  const handleShowAllFilesChange = useCallback(
-    (checked) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this project.");
-        return;
-      }
-      setShowAllFiles(checked);
-      if (!checked) {
-        setUploadedShowFiles([]);
-        setFormData((prev) => ({ ...prev, show_all_files: [] }));
-      }
     },
     [canEdit]
   );
@@ -638,7 +617,7 @@ const EditProject = () => {
       showErrorToast("Please log in to view applications.");
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate,id]);
 
   const Applications = [
     {

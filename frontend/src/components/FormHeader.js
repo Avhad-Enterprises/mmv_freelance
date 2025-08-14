@@ -39,7 +39,7 @@ const FormHeader = ({
 
   return (
     <h3 className="d-flex justify-content-between align-items-center">
-      <a onClick={handleBack} style={{ cursor: "pointer" }}>
+      <a  href={backUrl || "#"} onClick={handleBack} style={{ cursor: "pointer" }}>
         <i className="bi bi-arrow-left m-3"></i>
         {title}
       </a>

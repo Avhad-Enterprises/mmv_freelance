@@ -7,7 +7,6 @@ import NumberInputComponent from "../components/NumberInputComponent";
 import Aetextarea from "../components/Aetextarea";
 import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
-import MultiFileUploaderComponent from "../components/MultiFileUploaderComponent";
 import CheckboxInput from "../components/CheckboxInput";
 import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
@@ -42,19 +41,17 @@ const CreateProject = () => {
     deleted_by: null,
     deleted_at: null,
   });
-  const [uploadedSampleFiles, setUploadedSampleFiles] = useState([]);
-  const [uploadedProjectFiles, setUploadedProjectFiles] = useState([]);
-  const [uploadedShowFiles, setUploadedShowFiles] = useState([]);
-  const [showAllFiles, setShowAllFiles] = useState(false);
+  const [uploadedSampleFiles] = useState([]);
+  const [uploadedProjectFiles] = useState([]);
+  const [uploadedShowFiles] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [availableCategories, setAvailableCategory] = useState([]);
   const [skillsTags, setSkillsTags] = useState([]);
-  const [isUploading, setIsUploading] = useState(false);
+  const [setIsUploading] = useState(false);
   const [availableTags, setAvailableTags] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
   const [clients, setClients] = useState([]); // New state for clients
-  const [projectCategory, setProjectCategory] = useState([]);
 
   const handleInputChange = useCallback((e, customValue = null) => {
     const name = e?.target?.name || e;

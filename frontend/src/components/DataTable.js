@@ -29,11 +29,6 @@ const DataTable = ({
     setView((prevView) => (prevView === "table" ? "grid" : "table"));
   };
 
-  const handleSorting = (column, order) => {
-    setSortColumn(column);
-    setSortOrder(order);
-  };
-
   const handleSearch = (query) => {
     const searchedData = data.filter((item) => {
       return Object.values(item).some((value) =>

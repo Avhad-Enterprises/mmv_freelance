@@ -19,7 +19,7 @@ const FMPayouts = () => {
     const [loading, setLoading] = useState(true);
     const tableRef = useRef();
     const navigate = useNavigate();
-    const [selectedDates, setSelectedDates] = useState([]);
+    const [setSelectedDates] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [allData, setAllData] = useState([]); // assume this is your full dataset
     const [isFiltered, setIsFiltered] = useState(false);

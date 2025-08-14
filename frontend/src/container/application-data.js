@@ -5,9 +5,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import DataTable from "../components/DataTable";
 import { makePostRequest, makePatchRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { FaCheck } from "react-icons/fa";
-import { RxCross1 } from "react-icons/rx";
-import { FaQuestion } from "react-icons/fa6";
 
 const ApplicationData = () => {
     const navigate = useNavigate();
@@ -83,6 +80,7 @@ const ApplicationData = () => {
                 status: newStatus,
             };
             const response = await makePatchRequest("applications/update-status", payload);
+            console.log(response);
             showSuccessToast("Status updated!");
         } catch (error) {
             console.error("Error updating status:", error);
@@ -138,6 +136,7 @@ const ApplicationData = () => {
                     onFilteredDataChange={(data) =>
                         console.log("Filtered Data:", data)
                     }
+                    onStatusChange={updateStatus}
                 />
             )}
         </Layout>

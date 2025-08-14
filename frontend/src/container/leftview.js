@@ -216,7 +216,7 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
         </div>
 
         <p className="logout">
-          <a href="#">
+          <a href="#0">
             Logout <i className="bi mx-1 bi-arrow-right"></i>
           </a>
         </p>

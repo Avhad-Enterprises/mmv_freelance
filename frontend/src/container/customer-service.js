@@ -17,14 +17,14 @@ const Customer = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [customerData, setCustomerData] = useState([]);
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [setSelectedDates] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [error, setError] = useState("");
-  const [selectedPlatforms, setSelectedPlatforms] = useState([]);
-  const [currentPreviewIndex, setCurrentPreviewIndex] = useState(0);
-  const [allData, setAllData] = useState([]);
+  const [setSelectedPlatforms] = useState([]);
+  const [setCurrentPreviewIndex] = useState(0);
+  const [allData] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
-  const [tableKey, setTableKey] = useState(0);
+  const [setTableKey] = useState(0);
   const [filters, setFilters] = useState([
     { field: "Status", operator: "is", value: "open" },
     { field: "Channel", operator: "is", value: "" },
@@ -190,7 +190,7 @@ const Customer = () => {
           <div className="form_section">
             <div className="d-flex justify-content-between">
               <h6 className="p-2">Notifications</h6>
-              <a>See all</a>
+              <a href="/notifications">See all</a>
             </div>
             <div className="home_table">
               {notifications.map((notification, index) => (
@@ -203,7 +203,7 @@ const Customer = () => {
           <div className="form_section">
             <div className="d-flex justify-content-between">
               <h6 className="card-title">Agents</h6>
-              <a>see all</a>
+              <a href="/agents">see all</a>
             </div>
             <div className="d-flex flex-row flex-nowrap gap-4 metrix-container overflow-auto">
               {campaigns.map((campaign, index) => (

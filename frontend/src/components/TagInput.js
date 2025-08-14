@@ -26,7 +26,7 @@ const TagInput = ({
   const [valueSlug, setValueSlug] = useState("");
   useEffect(() => {
     setSelectedTags(initialTags || []);
-  }, []);
+  }, [initialTags]);
 
   useEffect(() => {
     const filtered = availableTags
@@ -97,7 +97,7 @@ const TagInput = ({
       .toLowerCase()
       .trim()
       .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9\-]/g, "");
+      .replace(/[^a-z0-9-]/g, "")
   };
 
   const handleModalSubmit = async (e) => {

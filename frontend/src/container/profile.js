@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { Form, Button } from "react-bootstrap";
 import { makePostRequest, makeGetRequest } from "../utils/api";
-import { getLoggedInUser } from "../utils/auth";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TextInput from "../components/TextInput";

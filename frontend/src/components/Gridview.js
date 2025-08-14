@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import { sortData } from "./SortTable"; // ✅ Import sorting logic
 import moment from "moment"; // ✅ For time formatting
 import ProductDropdown from "../components/ProductDropdown";

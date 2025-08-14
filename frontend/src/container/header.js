@@ -142,6 +142,7 @@ const Header = ({ toggleSidebar }) => {
         <div>
           <i className="bi bi-brightness-low-fill brightness-icon"></i>
           <a
+            href="#0"
             className="hamburger-icon"
             onClick={toggleSidebar}
             aria-label="Toggle hamburger"
@@ -270,6 +271,7 @@ const Header = ({ toggleSidebar }) => {
         <div className="headview-md">
           <div className="d-flex align-items-center">
             <a
+              href="#0"
               className="hamburger-icon"
               onClick={toggleSidebar}
               aria-label="Toggle hamburger"
@@ -283,6 +285,7 @@ const Header = ({ toggleSidebar }) => {
           <Row className="sections">
             <Col>
               <a
+                href="#0"
                 className={isDefaultActive ? "active" : ""}
                 onClick={() => navigate("/gb_canteen")}
               >
@@ -291,6 +294,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/search") ? "active" : ""}
                 onClick={() => navigate("/search")}
               >
@@ -299,6 +303,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/notification") ? "active" : ""}
                 onClick={() => navigate("/notification")}
               >
@@ -307,6 +312,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/profile") ? "active" : ""}
                 onClick={() => navigate("/profile")}
               >

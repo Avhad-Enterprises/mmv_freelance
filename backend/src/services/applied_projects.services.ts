@@ -11,7 +11,6 @@ class AppliedProjectsService {
         if (!data.projects_task_id || !data.user_id) {
             throw new HttpException(400, "Project Task ID and User ID are required");
         }
-
         // Check if already applied
         const existing = await DB(APPLIED_PROJECTS)
             .where({
@@ -20,12 +19,13 @@ class AppliedProjectsService {
                 is_deleted: false
             })
             .first();
-
         if (existing) {
-            throw new HttpException(409, "Already applied to this project");
+            return {
+                alreadyApplied: true,
+                message: "Already applied to this project",
+                data: existing
+            };
         }
-
-        // Set default values
         const applicationData = {
             ...data,
             status: data.status ?? 0, // 0 = pending
@@ -34,12 +34,15 @@ class AppliedProjectsService {
             created_at: new Date(),
             updated_at: new Date()
         };
-
         const appliedProject = await DB(T.APPLIED_PROJECTS)
             .insert(applicationData)
             .returning("*");
 
-        return appliedProject[0];
+        return {
+            alreadyApplied: false,
+            message: "Applied to project successfully",
+            data: appliedProject[0]
+        };
     }
 
     public async getProjectApplications(projects_task_id: number): Promise<any[]> {
@@ -145,16 +148,16 @@ class AppliedProjectsService {
 
     public async getApplicationCountByProject(projects_task_id: number): Promise<number> {
         const result = await DB(T.APPLIED_PROJECTS)
-            .where({ projects_task_id, is_deleted: false })
+            .where({ is_deleted: false })
             .count("applied_projects_id as count")
-            .first();
+            .first(); projects_task_id
 
         return Number(result?.count || 0);
     }
 
     public async getAppliedprojectByStatus(status: number): Promise<any[]> {
-        if (status !== 0 && status !== 1) {
-            throw new HttpException(400, "Status must be 0 or 1");
+        if (![0, 1, 2, 3].includes(status)) {
+            throw new HttpException(400, "Status must be 0 (pending), 1 (ongoing), 2 (completed), or 3 (rejected)");
         }
 
         const result = await DB(T.APPLIED_PROJECTS)
@@ -174,6 +177,84 @@ class AppliedProjectsService {
 
         return result;
     }
+
+
+    public async getAppliedCount(user_id: number): Promise<number> {
+        if (!user_id) {
+            throw new HttpException(400, "User ID is required");
+        }
+
+        const result = await DB(T.APPLIED_PROJECTS) // replace with your actual table name
+            .count('* as count')
+            .where({ user_id });
+
+        const count = Number(result[0].count);
+
+        if (isNaN(count)) {
+            throw new HttpException(500, "Error converting applied count to number");
+        }
+
+        return count;
+    }
+
+    public async ongoingprojects(user_id: number): Promise<any[]> {
+        return await DB(`${T.APPLIED_PROJECTS} as ap`)
+            .join(`${T.PROJECTS_TASK} as pt`, 'pt.projects_task_id', 'ap.projects_task_id')
+            .select(
+                'ap.applied_projects_id',
+                'ap.description',
+                'ap.status',
+                'ap.created_at as applied_at',
+                'pt.project_title',
+                'pt.Deadline',
+                'pt.Budget'
+            )
+            .where({
+                'ap.user_id': user_id,
+                'ap.status': 1, // Approved
+                'ap.is_deleted': false,
+                'ap.is_active': true
+            })
+            .orderBy('ap.created_at', 'desc');
+    }
+    public async getprojectsbyfilter(user_id: number, filter: string): Promise<any[]> {
+        const statusMap: Record<string, number> = {
+            new: 0,
+            ongoing: 1,
+            completed: 2,
+        };
+
+        const status = statusMap[filter];
+
+        return await DB(`${T.APPLIED_PROJECTS} as ap`)
+            .join(`${T.PROJECTS_TASK} as pt`, 'pt.projects_task_id', 'ap.projects_task_id')
+            .select(
+                'ap.applied_projects_id',
+                'ap.description as applied_description',
+                'ap.status as application_status',
+                'ap.created_at as applied_at',
+                'pt.projects_task_id',
+                'pt.project_title',
+                'pt.project_category',
+                'pt.Deadline',
+                'pt.Budget',
+                'pt.project_description',
+                'pt.tags',
+                'pt.skills_required',
+                'pt.projects_type',
+                'pt.project_format',
+                'pt.video_length'
+            )
+            .where({
+                'ap.user_id': user_id,
+                'ap.status': status,
+                'ap.is_deleted': false,
+                'ap.is_active': true,
+                'pt.is_deleted': false,
+            })
+            .orderBy('ap.created_at', 'desc');
+    }
+
 
 }
 export default AppliedProjectsService;

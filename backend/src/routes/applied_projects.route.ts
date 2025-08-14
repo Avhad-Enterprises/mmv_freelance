@@ -64,9 +64,10 @@ class AppliedProjectsRoute implements Route {
       this.appliedProjectsController.getApplicationCount
     ); // enter project_task_id here
 
-   this.router.post(`${this.path}/getStatus`,this.appliedProjectsController.getAppliedStatus.bind(this.appliedProjectsController));
-
-
-    }
+    this.router.post(`${this.path}/getStatus`, this.appliedProjectsController.getAppliedStatus.bind(this.appliedProjectsController));
+    this.router.get(`${this.path}/count/:id`, (req, res, next) => this.appliedProjectsController.appliedcount(req, res, next));
+    this.router.get(`${this.path}/ongoing/:user_id`, (req, res, next) => this.appliedProjectsController.getongoing(req, res, next));
+    this.router.get(`${this.path}/:user_id`, (req, res, next) => this.appliedProjectsController.getapplied(req, res, next));
+  }
 }
 export default AppliedProjectsRoute;

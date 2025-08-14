@@ -347,13 +347,19 @@ class UsersService {
       token,
     };
 
-
   }
 
+  public async getfreelancerbyusername(username: string): Promise<any> {
+    if (!username) throw new HttpException(400, "Username is required");
+
+    const freelancer = await DB(T.USERS_TABLE)
+      .where({ username, account_type: 'freelancer' })
+      .first();
+
+    if (!freelancer) throw new HttpException(404, "Freelancer not found");
+
+    return freelancer;
+  }
 }
 
-
-export default UsersService
-
-
-
+export default UsersService;

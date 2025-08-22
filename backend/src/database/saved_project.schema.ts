@@ -17,12 +17,13 @@ export const seed = async (dropFirst = false) => {
             table.integer("projects_task_id").notNullable();
             table.integer("user_id").notNullable();
             table.boolean("is_active").defaultTo(true);
+            table.integer("created_by").nullable();
+            table.timestamp('created_at').defaultTo(DB.fn.now())
+            table.integer("updated_by").nullable();
+            table.timestamp("updated_at").defaultTo(DB.fn.now());
             table.boolean("is_deleted").defaultTo(false);
             table.integer("deleted_by").nullable();
             table.timestamp("deleted_at").nullable();
-            table.integer("created_by").nullable();
-            table.integer("updated_by").nullable();
-        
         });
 
         console.log('Finished Seeding Tables');

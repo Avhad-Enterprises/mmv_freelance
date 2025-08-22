@@ -19,9 +19,9 @@ export const seed = async (dropFirst = false) => {
             table.integer('editor_id').nullable();
             table.string('project_title').notNullable();
             table.text('project_category').notNullable();
-            table.date('deadline').notNullable();
+            table.date('Deadline').notNullable();
             table.text('project_description').notNullable();
-            table.integer('budget').notNullable();
+            table.integer('Budget').notNullable();
             table.jsonb('tags').nullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();

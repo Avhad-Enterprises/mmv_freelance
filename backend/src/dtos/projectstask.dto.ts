@@ -20,14 +20,14 @@ export class ProjectsTaskDto {
   project_category: string;
 
   @IsDateString()
-  deadline: string;
+  Deadline: string;
 
   @IsString()
   project_description: string;
 
   @Type(() => Number)
   @IsInt()
-  budget: number;
+  Budget: number;
 
   @IsOptional()
   @IsJSON()

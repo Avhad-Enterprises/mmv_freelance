@@ -31,4 +31,12 @@ export class SavedProjectsDto {
   @IsOptional()
   @IsInt()
   updated_by?: number;
+
+    @IsOptional()
+  @IsInt()
+  created_at:  Number;
+
+  @IsOptional()
+  @IsInt()
+  updated_at:  Number;
 }

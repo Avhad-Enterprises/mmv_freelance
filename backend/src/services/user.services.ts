@@ -9,7 +9,6 @@ import jwt from "jsonwebtoken";
 
 class UsersService {
 
-
   public async getAllActiveCustomers(): Promise<Users[]> {
     const users = await DB(T.USERS_TABLE)
       .select("*")
@@ -360,6 +359,195 @@ class UsersService {
 
     return freelancer;
   }
-}
 
+  public async createAdmin(data: UsersDto): Promise<Users> {
+    if (isEmpty(data)) {
+      throw new HttpException(400, "Data Invalid");
+    }
+
+    if (!data.first_name || !data.username || !data.password || !data.phone_number) {
+      throw new HttpException(400, "Missing required fields");
+    }
+
+    const existingEmail = await DB(T.USERS_TABLE)
+      .where({ email: data.email })
+      .first();
+
+    if (existingEmail) {
+      throw new HttpException(409, "Email already registered");
+    }
+
+    const existingUsername = await DB(T.USERS_TABLE)
+      .where({ username: data.username })
+      .first();
+
+    if (existingUsername) {
+      throw new HttpException(409, "Username already taken");
+    }
+
+    const adminData = {
+      first_name: data.first_name,
+      last_name: data.last_name || '',
+      email: data.email || '',
+      phone_number: data.phone_number,
+      username: data.username,
+      password: data.password,
+      account_type: 'admin',
+      account_status: 'inactive',
+      created_at: Date.now(),
+      updated_at: Date.now()
+    } as unknown as UsersDto;
+
+    return await this.Insert(adminData);
+  }
+
+  public async sendinvitation(data: UsersDto): Promise<{ message: string; invitation: any }> {
+    if (isEmpty(data)) {
+      throw new HttpException(400, "Data Invalid");
+    }
+
+    const existingEmployee = await DB(T.USERS_TABLE)
+      .where({ email: data.email })
+      .first();
+
+    if (existingEmployee) {
+      throw new HttpException(409, "Email already registered");
+    }
+
+    const inviteToken = jwt.sign(
+      { email: data.email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "24h" }
+    );
+
+    const invitationData = {
+      full_name: `${data.first_name} ${data.last_name}`.trim(),
+      email: data.email,
+      token_hash: inviteToken,
+      status: 'pending',
+      account_type: data.account_type || 'admin',
+      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      is_used: false,
+      created_at: new Date()
+    };
+
+    const [newInvitation] = await DB(T.INVITATION_TABLE)
+      .insert(invitationData)
+      .returning("*");
+
+    if (!newInvitation) {
+      throw new HttpException(500, "Failed to create invitation");
+    }
+
+    return {
+      message: "Invitation sent successfully",
+      invitation: newInvitation
+    };
+  }
+
+  public async insertAdminUser(userData: UsersDto): Promise<Users> {
+    if (isEmpty(userData)) throw new HttpException(400, 'User data is empty');
+
+    const email = String(userData.email).trim().toLowerCase();
+    const username = String(userData.username).trim();
+
+    const existingByEmail = await DB(T.USERS_TABLE).where({ email }).first();
+    if (existingByEmail) throw new HttpException(409, `Email ${email} already exists`);
+
+    const existingByUsername = await DB(T.USERS_TABLE).where({ username }).first();
+    if (existingByUsername) throw new HttpException(409, `Username ${username} already exists`);
+
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    const insertPayload = {
+      first_name: userData.first_name?.trim(),
+      last_name: userData.last_name?.trim() ?? null,
+      username,
+      email,
+      phone_number: String(userData.phone_number).trim(),
+      password: hashedPassword,
+      account_type: 'admin',
+      account_status: 'inactive',
+    };
+
+    const [newUser] = await DB(T.USERS_TABLE).insert(insertPayload).returning([
+      'user_id',
+      'first_name',
+      'last_name',
+      'username',
+      'email',
+      'phone_number',
+      'account_type',
+      'account_status',
+      'created_at',
+      'updated_at',
+    ]);
+
+    return newUser;
+
+  }
+
+  public async Insertsuser(data: UsersDto): Promise<Users> {
+    if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
+
+    if (!data.first_name || !data.username || !data.password || !data.email || !data.phone_number) {
+      throw new HttpException(400, "Missing required fields");
+    }
+
+    const existingEmployee = await DB(T.USERS_TABLE)
+      .where({ email: data.email })
+      .first();
+
+    if (existingEmployee)
+      throw new HttpException(409, "Email already registered");
+
+    if (data.username) {
+      const existingUsername = await DB(T.USERS_TABLE)
+        .where({ username: data.username })
+        .first();
+
+      if (existingUsername) {
+        throw new HttpException(409, "Username already taken");
+      }
+    }
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    const userData = {
+      first_name: data.first_name.trim(),
+      last_name: data.last_name?.trim() || null,
+      email: data.email.trim().toLowerCase(),
+      phone_number: data.phone_number.trim(),
+      username: data.username.trim(),
+      password: hashedPassword,
+      account_type: 'admin',
+      account_status: 'inactive',
+      address_line_first: data.address_line_first || '',
+      created_at: new Date(),
+      updated_at: new Date()
+    };
+
+    const [newUser] = await DB(T.USERS_TABLE).insert(userData).returning("*");
+
+    return newUser;
+  }
+
+  public async createUsersInvitation(data: { email: string; full_name?: string; invite_token: string; expires_at: Date; invited_by?: number }): Promise<void> {
+    const existingUser = await this.getUserByEmail(data.email);
+    if (existingUser) {
+      throw new HttpException(409, "Email is already registered");
+    }
+
+    await DB(T.USERS_TABLE).insert({
+      email: data.email,
+      first_name: data.full_name,
+      invite_token: data.invite_token,
+      invite_token_expires: data.expires_at,
+      invited_by: data.invited_by,
+      is_active: false,
+      email_verified: false,
+      created_at: new Date(),
+    });
+  }
+}
 export default UsersService;

@@ -246,20 +246,7 @@ class UsersController {
         invite_token: token,
         expires_at: expiresAt,
       });
-      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-      await sendEmail({
-        to: body.email,
-        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
-        html: `
-        <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
-        <p>You’ve been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
-        <p>Please click the link below to register your account:</p>
-        <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
-        <p>This link will expire in 24 hours.</p>
-        <p>If you did not expect this invitation, you can safely ignore this email.</p>
-        <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
-      `,
-      });
+
       res.status(200).json({ message: "Invitation sent" });
     } catch (error) {
       next(error);
@@ -383,44 +370,44 @@ class UsersController {
     }
   };
 
-public inserts = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
-    const userData: UsersDto = req.body;
-    const locationData: Users = await this.UsersService.Insertsuser(
-      userData
-    );
-    res.status(201).json({ data: locationData, message: "Inserted" });
-  } catch (error) {
-    next(error);
-  }
-};
+  public inserts = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const userData: UsersDto = req.body;
+      const locationData: Users = await this.UsersService.Insertsuser(
+        userData
+      );
+      res.status(201).json({ data: locationData, message: "Inserted" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-public inviteUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  try {
-    const body = req.body;
-    if (!body.email) throw new HttpException(400, "Email is required");
+  public inviteUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+      const body = req.body;
+      if (!body.email) throw new HttpException(400, "Email is required");
 
-    const token = crypto.randomBytes(32).toString("hex");
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); 
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    await this.UsersService.createUserInvitation({
-      ...body,
-      invite_token: token,
-      expires_at: expiresAt,
-      invited_by: req.user?.user_id,
-    });
+      await this.UsersService.createUserInvitation({
+        ...body,
+        invite_token: token,
+        expires_at: expiresAt,
+        invited_by: req.user?.user_id,
+      });
 
-    const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-    const EmailService = require('../utils/emailService').default || require('../utils/emailService');
-    const emailServiceInstance = new EmailService();
-    await emailServiceInstance.sendEmail({
-      to: body.email,
-      subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
-      html: `
+      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
+      const EmailService = require('../utils/emailService').default || require('../utils/emailService');
+      const emailServiceInstance = new EmailService();
+      await emailServiceInstance.sendEmail({
+        to: body.email,
+        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
+        html: `
       <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
       <p>You've been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
       <p>Please click the link below to register your account:</p>
@@ -429,12 +416,23 @@ public inviteUsers = async (req: AuthenticatedRequest, res: Response, next: Next
       <p>If you did not expect this invitation, you can safely ignore this email.</p>
       <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
     `,
-    });
+      });
 
-    res.status(200).json({ message: "Invitation sent successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+      res.status(200).json({ message: "Invitation sent successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public emailVerify = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UsersDto = req.body;
+      const locationData: Users = await this.UsersService.emailVerifyToken(
+        userData
+      );
+      res.status(201).json({ data: locationData, message: "Verification successful" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 export default UsersController;

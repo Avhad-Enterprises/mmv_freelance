@@ -335,6 +335,7 @@ class UsersService {
         role: user.role,
         is_banned: user.is_banned,
         is_active: user.is_active,
+        account_type: user.account_type, 
       },
       process.env.JWT_SECRET as string,
       { expiresIn: "24h" }
@@ -624,6 +625,44 @@ class UsersService {
     });
 
     return newUser;
+  }
+  
+   public async saveLoginResetToken(user_id: number, token: string, expires: Date): Promise<void> {
+    await DB(T.USERS_TABLE)
+      .where({ user_id })
+      .update({
+        login_reset_token: token,
+        login_reset_token_expires: expires,
+        updated_at: new Date()
+      });
+  }
+
+  public async validateLoginResetToken(token: string): Promise<Users> {
+    const user = await DB(T.USERS_TABLE)
+      .where({ login_reset_token: token })
+      .andWhere('login_reset_token_expires', '>', new Date())
+      .first();
+
+    if (!user) {
+      throw new HttpException(400, "Invalid or expired reset token");
+    }
+
+    return user;
+  }
+
+  public async resetLoginPassword(token: string, newPassword: string): Promise<void> {
+    const user = await this.validateLoginResetToken(token);
+    
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await DB(T.USERS_TABLE)
+      .where({ user_id: user.user_id })
+      .update({
+        password: hashedPassword,
+        login_reset_token: null,
+        login_reset_token_expires: null,
+        updated_at: new Date()
+      });
   }
 }
 export default UsersService;

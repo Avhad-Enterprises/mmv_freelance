@@ -54,6 +54,8 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/invite`, this.usersController.inviteUsers);
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
 
+    this.router.post(`${this.path}/login-forgot-password`, this.usersController.loginForgotPassword);
+    this.router.post(`${this.path}/reset-login-password`, this.usersController.resetLoginPassword);
   }
 }
 

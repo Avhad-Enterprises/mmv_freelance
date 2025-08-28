@@ -4,9 +4,9 @@ export interface IProjectTask {
     user_id: number;
     project_title: string;
     project_category?: string | null;
-    Deadline: Date;
+    deadline: Date;
     project_description: string;
-    Budget: number;
+    budget: number;
     skills_required: any[];
     reference_links: string[];
     additional_notes: string;

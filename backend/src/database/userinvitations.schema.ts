@@ -12,7 +12,7 @@ export const seed = async (dropFirst = false) => {
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
-        await DB.schema.createTable('user_invitations', table => {
+        await DB.schema.createTable(USERINVITATIONS, table => {
             table.increments('id').primary();
             table.string('full_name').notNullable();
             table.string('email').notNullable().unique();

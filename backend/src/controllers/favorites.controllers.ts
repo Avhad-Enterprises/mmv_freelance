@@ -43,7 +43,7 @@ class favoritescontroller {
         try {
             const favorites = await this.favoritesservices.getFavoriteFreelancers();
 
-            res.status(200).json({ total: favorites.length, data: favorites, message: 'All projecct fetched successfully' });
+            res.status(200).json({ total: favorites.length, data: favorites, message: 'All Freelancers fetched successfully' });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
@@ -64,6 +64,7 @@ class favoritescontroller {
             next(error);
         }
     };
+
 }
 
 export default favoritescontroller; 

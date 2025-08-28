@@ -1,5 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
+
+// Extend Express Request type to include 'user'
+interface AuthenticatedRequest extends Request {
+  user?: { user_id: string };
+}
 import { Users } from "../interfaces/users.interface";
 import UsersService from "../services/user.services";
 import { generateToken } from "../utils/jwt";
@@ -241,20 +246,7 @@ class UsersController {
         invite_token: token,
         expires_at: expiresAt,
       });
-      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-      await sendEmail({
-        to: body.email,
-        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
-        html: `
-        <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
-        <p>You’ve been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
-        <p>Please click the link below to register your account:</p>
-        <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
-        <p>This link will expire in 24 hours.</p>
-        <p>If you did not expect this invitation, you can safely ignore this email.</p>
-        <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
-      `,
-      });
+
       res.status(200).json({ message: "Invitation sent" });
     } catch (error) {
       next(error);
@@ -317,6 +309,183 @@ class UsersController {
     }
   };
 
+  public sendinvite = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UsersDto = req.body;
 
+      const result = await this.UsersService.sendinvitation(userData);
+      if (result.message === "Email already registered") {
+        res.status(200).json({ message: result.message });
+        return;
+      }
+
+      res.status(201).json({
+        data: result.invitation,
+        message: result.message
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public createAdminUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { first_name, last_name, email, phone_number, username, password } = req.body;
+
+      if (!first_name || !username || !password || !phone_number) {
+        throw new HttpException(400, 'Missing required fields');
+      }
+
+      const userData: UsersDto = {
+        first_name,
+        last_name: last_name || '',
+        email: email || '',
+        phone_number,
+        username,
+        account_status: 'inactive',
+        account_type: 'admin'
+      } as UsersDto;
+
+      const createdUser: Users = await this.UsersService.createAdmin(userData);
+      res.status(201).json({ data: createdUser, message: "Admin user created successfully" });
+    } catch (error) {
+      next(error);
+    }
+
+  }
+  public insertAdminUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData = req.body;
+      const created = await this.UsersService.insertAdminUser(userData);
+
+      res.status(201).json({
+        data: created,
+        message: 'User created successfully',
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  public inserts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UsersDto = req.body;
+      const locationData: Users = await this.UsersService.Insertsuser(
+        userData
+      );
+      
+      res.status(201).json({ data: locationData, message: "Inserted" });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public inviteUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+      const body = req.body;
+      if (!body.email) throw new HttpException(400, "Email is required");
+
+      const token = crypto.randomBytes(32).toString("hex");
+      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+      await this.UsersService.createUserInvitation({
+        ...body,
+        invite_token: token,
+        expires_at: expiresAt,
+        invited_by: req.user?.user_id,
+      });
+
+      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
+      const EmailService = require('../utils/emailService').default || require('../utils/emailService');
+      const emailServiceInstance = new EmailService();
+      await emailServiceInstance.sendEmail({
+        to: body.email,
+        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
+        html: `
+      <p>Hi${body.full_name ? ` ${body.full_name}` : ''},</p>
+      <p>You've been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
+      <p>Please click the link below to register your account:</p>
+      <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
+      <p>This link will expire in 24 hours.</p>
+      <p>If you did not expect this invitation, you can safely ignore this email.</p>
+      <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
+    `,
+      });
+
+      res.status(200).json({ message: "Invitation sent successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
+  public emailVerify = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userData: UsersDto = req.body;
+      const locationData: Users = await this.UsersService.emailVerifyToken(
+        userData
+      );
+      res.status(201).json({ data: locationData, message: "Verification successful" });
+    } catch (error) {
+      next(error);
+    }
+  };
+ public loginForgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { email } = req.body;
+    if (!email) throw new HttpException(400, "Email is required");
+
+    const user = await this.UsersService.getUserByEmail(email);
+    if (!user) throw new HttpException(404, "User not found");
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // Token expires in 1 hour
+
+    await this.UsersService.saveLoginResetToken(user.user_id, token, expires);
+
+    // Create reset password link
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const resetLink = `${protocol}://${host}/login/reset-password?token=${token}`;
+
+    // Send email with reset link
+    await sendPasswordResetEmail(
+      email,
+      'Reset Your Login Password',
+      `Click this link to reset your password: ${resetLink}\n\nThis link will expire in 1 hour.`
+    );
+
+    res.status(200).json({ 
+      message: "Password reset link has been sent to your email",
+      success: true 
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+public resetLoginPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { token, newPassword, confirmPassword } = req.body;
+
+    if (!token || !newPassword || !confirmPassword) {
+      throw new HttpException(400, "Token, new password and confirm password are required");
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new HttpException(400, "Passwords do not match");
+    }
+
+    await this.UsersService.resetLoginPassword(token, newPassword);
+
+    res.status(200).json({ 
+      message: "Password has been reset successfully",
+      success: true 
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 }
 export default UsersController;

@@ -18,10 +18,10 @@ class BlogController {
         }
     }
 
-    public geteditblog = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    public getblogby = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
             const blog_id = Number(req.params.id);
-            const blog = await this.BlogService.geteditblogby(blog_id);
+            const blog = await this.BlogService.getblogbyid(blog_id);
             res.status(200).json({ data: blog, message: "Blog fetched" });
         } catch (error) {
             next();

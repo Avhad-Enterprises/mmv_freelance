@@ -32,14 +32,30 @@ class TagsService {
       throw new HttpException(400, "skill data is empty");
     }
 
+    // Check if skill already exists (case insensitive)
+    const existingSkill = await DB(T.SKILLS)
+      .whereRaw('LOWER(skill_name) = ?', [data.skill_name.toLowerCase()])
+      .first();
+
+    if (existingSkill) {
+      throw new HttpException(400, "This skill already exists in the database");
+    }
+
     const insertedskill = await DB(T.SKILLS).insert(data).returning("*");
     return insertedskill[0];
   }
   public getallskillsby = async (): Promise<SkillsDto[]> => {
     try {
       const result = await DB(T.SKILLS)
-        .select("*");
-      return result;
+        .select("*")
+        .distinct(); // This ensures we get unique records
+      
+      // Further ensure uniqueness by skill name if needed
+      const uniqueSkills = result.filter((skill, index, self) =>
+        index === self.findIndex((s) => s.skill_name === skill.skill_name)
+      );
+      
+      return uniqueSkills;
     } catch (error) {
       throw new Error('Error fetching SKILL');
     }

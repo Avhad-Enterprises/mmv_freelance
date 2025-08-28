@@ -1,19 +1,19 @@
 import DB from './index.schema';
 
-export const SAVED_PROJECTS = 'saved_projects';
+export const SAVED_FREELANCERS = 'saved_freelancers';
 
 export const seed = async (dropFirst = false) => {
 
     try {
         if (dropFirst) {
             console.log('Dropping Tables');
-            await DB.schema.dropTable(SAVED_PROJECTS);
+            await DB.schema.dropTable(SAVED_FREELANCERS);
             console.log('Dropped Tables');
         }
         console.log('Seeding Tables');
 
-        await DB.schema.createTable(SAVED_PROJECTS, table => {
-            table.increments('saved_projects_id').primary();
+        await DB.schema.createTable(SAVED_FREELANCERS, table => {
+            table.increments('saved_freelancer_id').primary();
             table.integer("projects_task_id").notNullable();
             table.integer("user_id").notNullable();
             table.boolean("is_active").defaultTo(true);
@@ -40,10 +40,10 @@ export const seed = async (dropFirst = false) => {
         `);
 
         await DB.raw(`
-          DROP TRIGGER IF EXISTS update_timestamp ON ${SAVED_PROJECTS};
+          DROP TRIGGER IF EXISTS update_timestamp ON ${SAVED_FREELANCERS};
           CREATE TRIGGER update_timestamp
           BEFORE UPDATE
-          ON ${SAVED_PROJECTS}
+          ON ${SAVED_FREELANCERS}
           FOR EACH ROW
           EXECUTE FUNCTION update_timestamp();
         `);

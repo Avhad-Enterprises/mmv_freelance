@@ -16,7 +16,7 @@ class BlogService {
         return insertedBlog[0];
     }
 
-    public async geteditblogby(blog_id: number): Promise<any> {
+    public async getblogbyid(blog_id: number): Promise<any> {
         if (!blog_id) throw new HttpException(400, "Blog ID is required");
 
         const blog = await DB(T.BLOG).where({ blog_id }).first();

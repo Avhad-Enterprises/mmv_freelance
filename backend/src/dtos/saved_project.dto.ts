@@ -1,6 +1,9 @@
-import { IsNotEmpty, IsInt, IsOptional, IsBoolean } from 'class-validator';
+import { IsNotEmpty, IsInt, IsOptional, IsBoolean, IsNumber } from 'class-validator';
 
 export class SavedProjectsDto {
+  @IsNumber()
+  @IsOptional()
+  saved_freelancer_id?: number;
   @IsNotEmpty()
   @IsInt()
   projects_task_id: number;
@@ -31,4 +34,12 @@ export class SavedProjectsDto {
   @IsOptional()
   @IsInt()
   updated_by?: number;
+
+  @IsOptional()
+  @IsInt()
+  created_at: Number;
+
+  @IsOptional()
+  @IsInt()
+  updated_at: Number;
 }

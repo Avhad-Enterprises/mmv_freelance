@@ -3,6 +3,7 @@ import DB, { T } from "../database/index.schema";
 import HttpException from "../exceptions/HttpException";
 import { isEmpty } from "../utils/util";
 import { SAVED_PROJECTS } from "../database/saved_project.schema";
+import { SavedFreelancerDto } from "../dtos/saved_freelancer.dto";
 
 class Savedprojectservices {
 
@@ -50,6 +51,34 @@ class Savedprojectservices {
   }
   public async getsavedbyuser_id(user_id: number): Promise<any> {
     const saved = await DB(T.SAVED_PROJECTS)
+      .where({ user_id, is_active: true })
+      .first();
+
+    if (!saved) throw new HttpException(404, "User not found");
+    return saved;
+  }
+  //saved freelancer services
+  public async addsavedFreelancer(data: SavedFreelancerDto): Promise<any> {
+    if (isEmpty(data)) {
+      throw new HttpException(400, "Data Invalid");
+    }
+    const res = await DB(T.SAVED_FREELANCERS)
+      .insert(data)
+      .returning("*");
+    return res[0];
+  }
+  public getAllsavedsFreelancer = async (): Promise<SavedFreelancerDto[]> => {
+    try {
+      const result = await DB(T.SAVED_FREELANCERS)
+        .select("*");
+      return result;
+    } catch (error) {
+      throw new Error('Error fetching saved freelancers');
+    }
+  }
+
+  public async getsaveduser_id(user_id: number): Promise<any> {
+    const saved = await DB(T.SAVED_FREELANCERS)
       .where({ user_id, is_active: true })
       .first();
 

@@ -12,19 +12,25 @@ export const seed = async (dropFirst = false) => {
         console.log('Seeding Tables');
         // await DB.raw("set search_path to public")
         await DB.schema.createTable(INVITATION_TABLE, table => {
-            table.increments('id').primary();
+            table.increments('invitation_id').primary();
             table.string('full_name').notNullable();
             table.string('email').notNullable();
-            table.text('invite_token').nullable();
+            table.text('token_hash').nullable();
+            table.enum('status', ['pending', 'accepted', 'revoked', 'expired'])
+                .notNullable()
+                .defaultTo('pending');
+            table.string('account_type').notNullable().defaultTo('admin');
             table.string('role').nullable();
             table.boolean('is_used').defaultTo(false);
             table.integer('invited_by').nullable();
             table.timestamp('expires_at').notNullable();
             table.timestamp("created_at").defaultTo(DB.fn.now());
             table.timestamp('used_at').nullable();
+            table.jsonb('payload').nullable();
             table.string("password").nullable();
-
+            table.timestamp('updated_at').defaultTo(DB.fn.now());
         });
+
 
         console.log('Finished Seeding Tables');
         console.log('Creating Triggers');

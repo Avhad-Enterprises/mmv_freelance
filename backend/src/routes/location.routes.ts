@@ -20,8 +20,8 @@ class locationRoute implements Route {
         this.router.get(`${this.path}/countries`, (req, res, next) => this.locationController.getAllCountry(req, res, next));
         this.router.get(`${this.path}/states/:country_id`, (req, res, next) => this.locationController.getstatesby(req, res, next));
         this.router.get(`${this.path}/cities/:state_id`, (req, res, next) => this.locationController.getcitiesby(req, res, next));
-        
-
+        this.router.post(`${this.path}/states`, (req, res, next) => this.locationController.getStatesBy(req, res, next));
+        this.router.post(`${this.path}/cities`, (req, res, next) => this.locationController.getCities(req, res, next));
     }
 }
 

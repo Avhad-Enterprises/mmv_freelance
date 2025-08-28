@@ -119,7 +119,7 @@ class ProjectstaskService {
 
   public async countprojectstask(): Promise<number> {
     const result = await DB(T.PROJECTS_TASK)
-      .whereNotNull('Deadline')
+      .whereNotNull('deadline')
       .count('projects_task_id as count');
     return Number(result[0].count);
   }

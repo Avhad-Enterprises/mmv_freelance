@@ -4,6 +4,7 @@ import validationMiddleware from "../middlewares/validation.middleware";
 import UsersController from "../controllers/users.controllers";
 import { UsersDto } from "../dtos/users.dto";
 import { InviteDTO } from '../dtos/admin_invites.dto';
+import authMiddleware from '../middlewares/auth.middleware';
 
 
 class UsersRoute implements Route {
@@ -53,9 +54,10 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/insert`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.inserts);
     this.router.post(`${this.path}/invite`, this.usersController.inviteUsers);
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
+    this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
 
-    this.router.post(`${this.path}/login-forgot-password`, this.usersController.loginForgotPassword);
-    this.router.post(`${this.path}/reset-login-password`, this.usersController.resetLoginPassword);
+
+   
   }
 }
 

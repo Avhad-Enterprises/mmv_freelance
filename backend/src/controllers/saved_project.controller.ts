@@ -63,9 +63,9 @@ class SavedprojectController {
     }
   };
 
-  public getAll = async (req: Request, res: Response, next: NextFunction) => {
+  public getAllfreelancer = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const saved = await this.Savedprojectservices.getAllsaveds();
+      const saved = await this.Savedprojectservices.getAllfreelancers();
       res.status(200).json({ data: saved, success: true });
     } catch (err) {
       next(err);

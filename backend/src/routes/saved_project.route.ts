@@ -26,6 +26,9 @@ class SavedprojectRoute implements Route {
 
         //saved freelancer routes
          this.router.post(`${this.path}/insert`, validationMiddleware(SavedFreelancerDto, 'body', false, []), (req, res, next) => this.Savedprojectcontroller.add(req, res, next));
-    }
+         this.router.get(`${this.path}/listallfreelancer`, this.Savedprojectcontroller.getAllfreelancer);
+         this.router.post(`${this.path}/savedbyid`, this.Savedprojectcontroller.UserId);
+
+        }
 }
 export default SavedprojectRoute;

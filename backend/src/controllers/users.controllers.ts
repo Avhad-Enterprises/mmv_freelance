@@ -431,61 +431,31 @@ class UsersController {
       next(error);
     }
   };
- public loginForgotPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+ public changePassword = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { email } = req.body;
-    if (!email) throw new HttpException(400, "Email is required");
+    if (!req.user || !req.user.user_id) {
+      throw new HttpException(401, "User not logged in");
+    }
 
-    const user = await this.UsersService.getUserByEmail(email);
-    if (!user) throw new HttpException(404, "User not found");
+    const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    const token = crypto.randomBytes(32).toString("hex");
-    const expires = new Date(Date.now() + 60 * 60 * 1000); // Token expires in 1 hour
-
-    await this.UsersService.saveLoginResetToken(user.user_id, token, expires);
-
-    // Create reset password link
-    const protocol = req.protocol;
-    const host = req.get('host');
-    const resetLink = `${protocol}://${host}/login/reset-password?token=${token}`;
-
-    // Send email with reset link
-    await sendPasswordResetEmail(
-      email,
-      'Reset Your Login Password',
-      `Click this link to reset your password: ${resetLink}\n\nThis link will expire in 1 hour.`
-    );
-
-    res.status(200).json({ 
-      message: "Password reset link has been sent to your email",
-      success: true 
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-public resetLoginPassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const { token, newPassword, confirmPassword } = req.body;
-
-    if (!token || !newPassword || !confirmPassword) {
-      throw new HttpException(400, "Token, new password and confirm password are required");
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      throw new HttpException(400, "All fields are required");
     }
 
     if (newPassword !== confirmPassword) {
-      throw new HttpException(400, "Passwords do not match");
+      throw new HttpException(400, "New password and confirm password do not match");
     }
 
-    await this.UsersService.resetLoginPassword(token, newPassword);
+    await this.UsersService.changePassword(Number(req.user.user_id), oldPassword, newPassword);
 
-    res.status(200).json({ 
-      message: "Password has been reset successfully",
-      success: true 
-    });
+    res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
     next(error);
   }
 };
+
+
 }
 export default UsersController;

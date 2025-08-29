@@ -67,7 +67,7 @@ class Savedprojectservices {
       .returning("*");
     return res[0];
   }
-  public getAllsavedsFreelancer = async (): Promise<SavedFreelancerDto[]> => {
+  public getAllfreelancers = async (): Promise<SavedFreelancerDto[]> => {
     try {
       const result = await DB(T.SAVED_FREELANCERS)
         .select("*");

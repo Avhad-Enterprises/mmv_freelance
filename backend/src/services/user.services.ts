@@ -626,43 +626,28 @@ class UsersService {
 
     return newUser;
   }
+
+  public async changePassword(userId: number, oldPassword: string, newPassword: string): Promise<void> {
+  const user = await DB(T.USERS_TABLE).where({ user_id: userId }).first();
+
+  if (!user) {
+    throw new HttpException(404, "User not found");
+  }
+
+  const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+  if (!isPasswordValid) {
+    throw new HttpException(400, "Current password is incorrect");
+  }
+
+  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+  await DB(T.USERS_TABLE)
+    .where({ user_id: userId })
+    .update({ password: hashedNewPassword, updated_at: new Date() });
+}
+
   
-   public async saveLoginResetToken(user_id: number, token: string, expires: Date): Promise<void> {
-    await DB(T.USERS_TABLE)
-      .where({ user_id })
-      .update({
-        login_reset_token: token,
-        login_reset_token_expires: expires,
-        updated_at: new Date()
-      });
-  }
-
-  public async validateLoginResetToken(token: string): Promise<Users> {
-    const user = await DB(T.USERS_TABLE)
-      .where({ login_reset_token: token })
-      .andWhere('login_reset_token_expires', '>', new Date())
-      .first();
-
-    if (!user) {
-      throw new HttpException(400, "Invalid or expired reset token");
-    }
-
-    return user;
-  }
-
-  public async resetLoginPassword(token: string, newPassword: string): Promise<void> {
-    const user = await this.validateLoginResetToken(token);
-    
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    await DB(T.USERS_TABLE)
-      .where({ user_id: user.user_id })
-      .update({
-        password: hashedPassword,
-        login_reset_token: null,
-        login_reset_token_expires: null,
-        updated_at: new Date()
-      });
-  }
+  
 }
 export default UsersService;

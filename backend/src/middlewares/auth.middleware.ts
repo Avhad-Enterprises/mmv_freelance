@@ -11,12 +11,11 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
   try {
 
     if (req.path.includes('/users/login') || req.path.includes('/users/insert_user') || req.path.includes('/users/loginf')) {
-    // if (req.path.includes('/users/login')) {
-      console.log("in if for /user/login");
+      console.log(DB)
       await DB.raw("SET search_path TO public");
       return next();
     }
-  
+
     const bearerHeader = req.headers['authorization'];
 
     if (bearerHeader) {
@@ -24,7 +23,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
       console.log(JSON.stringify(bearer));
       const bearerToken = bearer[1];
       console.log(bearerToken);
-      if (bearerToken != 'null') {        
+      if (bearerToken != 'null') {
         const secret = process.env.JWT_SECRET;
         const verificationResponse = (await jwt.verify(bearerToken, secret)) as DataStoredInToken;
         if (verificationResponse) {
@@ -49,7 +48,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
     }
 
   } catch (error) {
-    next(new HttpException(401, 'Wrong authentication token'));
+    next(new HttpException(401, 'Exception Occured'));
   }
 };
 

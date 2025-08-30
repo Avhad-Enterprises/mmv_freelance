@@ -17,6 +17,7 @@ dotenv.config();
 
 
 class App {
+  
   public app: express.Application;
   public port: string | number;
   public env: string;

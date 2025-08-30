@@ -70,15 +70,15 @@ class UsersService {
 
   public async Login(email: string, password: string): Promise<Users & { token: string }> {
 
-    let user:any;
+    let user: any;
 
     if (validator.isEmail(email)) {
-       user = await DB(T.USERS_TABLE).where({ email }).first();
+      user = await DB(T.USERS_TABLE).where({ email }).first();
     }
     else {
-       user = await DB(T.USERS_TABLE).where({ username:email }).first();
+      user = await DB(T.USERS_TABLE).where({ username: email }).first();
     }
-    
+
     if (!user) {
       throw new HttpException(404, "User not registered");
     }
@@ -335,7 +335,7 @@ class UsersService {
         role: user.role,
         is_banned: user.is_banned,
         is_active: user.is_active,
-        account_type: user.account_type, 
+        account_type: user.account_type,
       },
       process.env.JWT_SECRET as string,
       { expiresIn: "24h" }
@@ -628,26 +628,27 @@ class UsersService {
   }
 
   public async changePassword(userId: number, oldPassword: string, newPassword: string): Promise<void> {
-  const user = await DB(T.USERS_TABLE).where({ user_id: userId }).first();
 
-  if (!user) {
-    throw new HttpException(404, "User not found");
+
+    const user = await DB(T.USERS_TABLE).where({ user_id: userId }).first();
+
+    if (!user) {
+      throw new HttpException(404, "User not found");
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new HttpException(400, "Current password is incorrect");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await DB(T.USERS_TABLE)
+      .where({ user_id: userId })
+      .update({ password: hashedNewPassword, updated_at: new Date() });
   }
 
-  const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
 
-  if (!isPasswordValid) {
-    throw new HttpException(400, "Current password is incorrect");
-  }
-
-  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-  await DB(T.USERS_TABLE)
-    .where({ user_id: userId })
-    .update({ password: hashedNewPassword, updated_at: new Date() });
-}
-
-  
-  
 }
 export default UsersService;

@@ -3,6 +3,7 @@ import {
     IsInt,
     ValidateIf,
     IsOptional,
+    IsNumber,
   } from 'class-validator';
   
   // Enum for favorite types

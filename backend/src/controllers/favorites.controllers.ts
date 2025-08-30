@@ -64,7 +64,17 @@ class favoritescontroller {
             next(error);
         }
     };
+public getfreelance = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { user_id } = req.body;
+      if (!user_id) throw new HttpException(400, "User ID is required");
 
+      const favorites = await this.favoritesservices.getFavoritesByUser(user_id);
+      res.status(200).json({ data: favorites, message: "User fetched successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default favoritescontroller; 

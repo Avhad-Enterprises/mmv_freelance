@@ -27,6 +27,7 @@ class TagsService {
     const tags = await DB(T.TAGS_TABLE).where({ is_deleted: false });
     return tags;
   }
+  
   public async insertskillsby(data: SkillsDto): Promise<any> {
     if (isEmpty(data)) {
       throw new HttpException(400, "skill data is empty");

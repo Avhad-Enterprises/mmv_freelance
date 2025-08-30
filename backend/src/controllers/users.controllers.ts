@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
 
 // Extend Express Request type to include 'user'
-interface AuthenticatedRequest extends Request {
+interface AuthenticatedRequest extends Request {  
   user?: { user_id: string };
 }
+
 import { Users } from "../interfaces/users.interface";
 import UsersService from "../services/user.services";
 import { generateToken } from "../utils/jwt";
@@ -16,6 +17,7 @@ import sendEmail from '../utils/sendemail';
 
 
 class UsersController {
+  
   public UsersService = new UsersService();
 
 
@@ -277,7 +279,9 @@ class UsersController {
   };
 
   public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
     try {
+      
       const { email, password } = req.body;
 
 
@@ -432,13 +436,15 @@ class UsersController {
     }
   };
 
- public changePassword = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    if (!req.user || !req.user.user_id) {
-      throw new HttpException(401, "User not logged in");
-    }
+ public changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-    const { oldPassword, newPassword, confirmPassword } = req.body;
+  try {
+
+    // if (!req.user || !req.user.user_id) {
+    //   throw new HttpException(401, "User not logged in");
+    // }
+
+    const {user_id, oldPassword, newPassword, confirmPassword } = req.body;
 
     if (!oldPassword || !newPassword || !confirmPassword) {
       throw new HttpException(400, "All fields are required");
@@ -448,7 +454,7 @@ class UsersController {
       throw new HttpException(400, "New password and confirm password do not match");
     }
 
-    await this.UsersService.changePassword(Number(req.user.user_id), oldPassword, newPassword);
+    await this.UsersService.changePassword(Number(user_id), oldPassword, newPassword);
 
     res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {

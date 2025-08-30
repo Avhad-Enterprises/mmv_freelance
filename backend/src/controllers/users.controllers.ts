@@ -403,7 +403,7 @@ class UsersController {
       });
 
       const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-      const EmailService = require('../utils/emailService').default || require('../utils/emailService');
+      const EmailService = require('../utils/emailer').default || require('../utils/emailer');
       const emailServiceInstance = new EmailService();
       await emailServiceInstance.sendEmail({
         to: body.email,

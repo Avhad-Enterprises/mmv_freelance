@@ -64,17 +64,57 @@ class favoritescontroller {
             next(error);
         }
     };
-public getfreelance = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { user_id } = req.body;
-      if (!user_id) throw new HttpException(400, "User ID is required");
+    public getfreelance = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { user_id } = req.body;
+            if (!user_id) throw new HttpException(400, "User ID is required");
 
-      const favorites = await this.favoritesservices.getFavoritesByUser(user_id);
-      res.status(200).json({ data: favorites, message: "User fetched successfully" });
-    } catch (error) {
-      next(error);
+            const favorites = await this.favoritesservices.getFavoritesByUser(user_id);
+            res.status(200).json({ data: favorites, message: "User fetched successfully" });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+
+    public getfavfreelanceinfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+        try {
+            const { user_id } = req.body;
+            if (!user_id) throw new HttpException(400, "User ID is required");
+
+            const favorites = await this.favoritesservices.getfreelancefav(user_id);
+            res.status(200).json({ data: favorites, message: "User fetched successfully" });
+        } catch (error) {
+            next(error);
+        }
+    };
+
+  public getfreelanceinfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+  try {
+    
+    const { user_id } = req.body;
+
+    if (isNaN(user_id)) {
+      throw new HttpException(400, "Invalid user_id");
     }
-  };
+
+    const favorites = await this.favoritesservices.getfreelanceinfo(user_id);
+
+    if (!favorites || favorites.length === 0) {
+      throw new HttpException(404, "No favorite freelancers found");
+    }
+
+    res.status(200).json({
+      data: favorites,
+      message: "Favorite freelancers fetched successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 }
 
 export default favoritescontroller; 

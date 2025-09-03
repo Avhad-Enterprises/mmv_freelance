@@ -25,6 +25,9 @@ class favoritesRoute implements Route {
    
     this.router.post(`${this.path}/getFavorites`, this.favoritescontroller.getProjectfavorites.bind(this.favoritescontroller));
     this.router.post(`${this.path}/getfreelancebyid`, this.favoritescontroller.getfreelance);
+
+     this.router.post(`${this.path}/freelanceinfo`, this.favoritescontroller.getfavfreelanceinfo);
+    this.router.post(`${this.path}/freelance-info`, this.favoritescontroller.getfreelanceinfo);
   }
 }
 

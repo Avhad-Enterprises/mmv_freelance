@@ -29,7 +29,7 @@ export const seed = async (dropFirst = false) => {
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 

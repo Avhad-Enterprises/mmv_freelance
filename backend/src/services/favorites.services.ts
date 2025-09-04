@@ -13,9 +13,7 @@ class favoritesservices {
     }
     const existing = await DB(T.FAVORITES_TABLE)
       .where({
-        user_id: data.user_id,
-        favorite_freelancer_id: data.favorite_freelancer_id,
-
+        user_id: data.user_id
       })
       .first();
 
@@ -33,9 +31,7 @@ class favoritesservices {
     const { id } = dto;
 
     const deleted = await DB(T.FAVORITES_TABLE)
-      .where({id: id
-       
-      })
+      .where({ id: id })
       .del();
 
     if (deleted === 0) {
@@ -141,7 +137,7 @@ class favoritesservices {
     //     `${T.USERS_TABLE}.city`,
     //     `${T.USERS_TABLE}.country`,
     //   );
- const results = await DB(T.FAVORITES_TABLE)
+    const results = await DB(T.FAVORITES_TABLE)
       .where({
         [`${T.FAVORITES_TABLE}.user_id`]: user_id,
         // [`${T.USERS_TABLE}.favorite_type`]: 'freelancer',
@@ -151,7 +147,7 @@ class favoritesservices {
         `${T.USERS_TABLE}`,
         `${T.USERS_TABLE}.user_id`,
         '=',
-        `${T.FAVORITES_TABLE}.favorite_freelancer_id`
+        `${T.FAVORITES_TABLE}.id`
       )
       .select(
         `${T.FAVORITES_TABLE}.*`,

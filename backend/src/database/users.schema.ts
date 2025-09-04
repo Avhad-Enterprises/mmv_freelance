@@ -60,7 +60,7 @@ export const seed = async (dropFirst = false) => {
             table.jsonb('payment_method').nullable();
             table.jsonb('payout_method').nullable();
             table.jsonb('bank_account_info').nullable();
-            table.string('account_type').nullable(); // (Freelancer, Client, Customer)
+            table.string('account_type').nullable(); // (Freelancer, Client)
             table.string('availability').nullable();
             table.integer('time_spent').defaultTo(0);
             table.string('account_status').defaultTo(1); // (Active, Inactive, Banned)

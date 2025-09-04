@@ -213,19 +213,6 @@ class UsersController {
     }
   };
 
-  public getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { user_id } = req.body;
-      if (!user_id) throw new HttpException(400, "User ID is required");
-
-
-      const user = await this.UsersService.getCustomerById(user_id);
-      res.status(200).json({ data: user, message: "Customer fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   public getAdminById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;

@@ -14,7 +14,7 @@ class UsersService {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
-        account_type: "customer",
+        account_type: "freelancer",
         is_active: true,
         is_banned: false,
       })
@@ -249,11 +249,6 @@ class UsersService {
   }
 
 
-  public getCustomerById(user_id: number): Promise<Users> {
-    return this.getUserByType(user_id, 'customer');
-  }
-
-
   public getAdminById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'admin');
   }
@@ -392,7 +387,7 @@ class UsersService {
       username: data.username,
       password: data.password,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
       created_at: Date.now(),
       updated_at: Date.now()
     } as unknown as UsersDto;
@@ -466,7 +461,7 @@ class UsersService {
       phone_number: String(userData.phone_number).trim(),
       password: hashedPassword,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
     };
 
     const [newUser] = await DB(T.USERS_TABLE).insert(insertPayload).returning([
@@ -587,7 +582,7 @@ class UsersService {
       username: data.username.trim(),
       password: hashedPassword,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
       address_line_first: data.address_line_first || '',
       reset_token: verificationToken, // Using reset_token for email verification
       reset_token_expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours

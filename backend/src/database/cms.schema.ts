@@ -21,7 +21,7 @@ export const seed = async (dropFirst = false) => {
             table.text('faq', 'jsonb').nullable();
             table.text('blog', 'jsonb').nullable();
             table.string('type').nullable();
-            table.integer('is_active').defaultTo(0);
+            table.boolean("is_active").defaultTo(true);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
@@ -47,10 +47,10 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-    // exports.seed = seed;
-    // const run = async () => {
-    //    //createProcedure();
-    //     seed();
-    // };
-    // run();
+// exports.seed = seed;
+// const run = async () => {
+//    //createProcedure();
+//     seed();
+// };
+// run();
 

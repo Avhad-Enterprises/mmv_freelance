@@ -20,6 +20,10 @@ export class FaqDto {
   answer: string;
 
   @IsOptional()
+  @IsBoolean()
+  is_active: boolean;
+
+  @IsOptional()
   @IsDateString()
   created_at?: string;
 

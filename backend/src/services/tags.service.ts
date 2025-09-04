@@ -45,6 +45,7 @@ class TagsService {
     const insertedskill = await DB(T.SKILLS).insert(data).returning("*");
     return insertedskill[0];
   }
+  
   public getallskillsby = async (): Promise<SkillsDto[]> => {
     try {
       const result = await DB(T.SKILLS)

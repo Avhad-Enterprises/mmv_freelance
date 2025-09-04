@@ -18,8 +18,8 @@ export class BrandingAssetsDto {
   favicon?: string;
 
   @IsOptional()
-  @IsInt()
-  is_active?: number;
+  @IsBoolean()
+  is_active: boolean;
 
   @IsOptional()
   @IsInt()

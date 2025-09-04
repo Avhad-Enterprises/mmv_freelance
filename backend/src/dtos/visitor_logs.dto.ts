@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsNumber, IsIP, IsInt } from 'class-validator';
+import { IsOptional, IsString, IsNumber, IsIP, IsInt, IsBoolean } from 'class-validator';
 
 export class VisitorLogDto {
   @IsString()
@@ -59,6 +59,10 @@ export class VisitorLogDto {
   @IsOptional()
   @IsString()
   exit_page?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  is_active: boolean;
 
   @IsOptional()
   @IsInt()

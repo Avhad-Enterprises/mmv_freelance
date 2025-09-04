@@ -29,7 +29,7 @@ class CategoryService {
                         .where({ category_id: existingCategory.category_id })
                         .update({
                             is_deleted: false,
-                            is_active: 1,
+                            is_active: true,
                             ...data  
                         })
                         .returning("*");
@@ -41,7 +41,7 @@ class CategoryService {
             const insertedCategory = await DB(T.CATEGORY)
                 .insert({
                     ...data,
-                    is_active: 1,
+                    is_active: true,
                     is_deleted: false
                 })
                 .returning("*");
@@ -66,7 +66,7 @@ class CategoryService {
     public async getallcategorysbytable(): Promise<any> {
         try {
             const result = await DB(T.CATEGORY)
-                .where({ is_active: 1, is_deleted: false })
+                .where({ is_active: true, is_deleted: false })
                 .select("*")
                 .distinct();
             const uniqueCategories = result.filter((category, index, self) =>
@@ -148,7 +148,7 @@ class CategoryService {
         const categoryProjects = await DB(T.PROJECTS_TASK)
             .where('project_category', category.value)
             .andWhere('is_deleted', false)
-            .andWhere('is_active', 1)
+            .andWhere('is_active', true)
             .orderBy('created_at', 'desc')
             .select('*');
 
@@ -171,7 +171,7 @@ class CategoryService {
         const categoryProjects = await DB(T.PROJECTS_TASK)
             .where('project_category', category.value)
             .andWhere('is_deleted', false)
-            .andWhere('is_active', 1)
+            .andWhere('is_active', true)
             .orderBy('created_at', 'desc')
             .select('*');
 

@@ -18,8 +18,8 @@ export class TagsDto {
     tag_value: string;
 
     @IsOptional()
-    @IsInt()
-    is_active?: number;
+    @IsBoolean()
+    is_active: boolean;
 
     @IsInt()
     created_by: number;

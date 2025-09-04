@@ -58,7 +58,7 @@ class BlogService {
     public async getallblogsbytable(): Promise<any> {
         try {
             const result = await DB(T.BLOG)
-                .where({ is_active: 1, is_deleted: false })
+                .where({ is_active: true, is_deleted: false })
                 .select("*");
             return result;
         } catch (error) {
@@ -86,7 +86,7 @@ class BlogService {
         const categoryBlogs = await DB(T.BLOG)
             .where('category', categoryname)
             .andWhere('is_deleted', false)
-            .andWhere('is_active', 1)       
+            .andWhere('is_active', true)       
             .orderBy('created_at', 'desc')     
             .select('*');                      
        
@@ -98,7 +98,7 @@ class BlogService {
         }
 
             const result = await DB(T.CATEGORY)
-                .where({ is_active: 1, is_deleted: false, types: 'blog'})
+                .where({ is_active: true, is_deleted: false, types: 'blog'})
                 .select("*");
             return result;
         } catch (error) {

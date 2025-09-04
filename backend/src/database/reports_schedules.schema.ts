@@ -20,7 +20,7 @@ export const seed = async (dropFirst = false) => {
             table.integer('created_by').notNullable();
             table.timestamp('last_run_at').nullable();
             table.timestamp('next_run_at').nullable();
-            table.integer('is_active').defaultTo(0);
+            table.boolean("is_active").defaultTo(true);
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();

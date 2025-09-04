@@ -18,7 +18,7 @@ export const seed = async (dropFirst = false) => {
             table.string('slug').notNullable();
             table.text("types", "jsonb").nullable(); //projects
             table.text("notes", "jsonb").nullable();
-            table.boolean('is_active').defaultTo(0); // 1
+            table.boolean('is_active').defaultTo(true); 
             table.integer('created_by').notNullable(); //logged is user id
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());

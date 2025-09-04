@@ -58,7 +58,7 @@ class reportservices {
                 description: dto.description,
                 email: dto.email,
                 created_by: dto.created_by,
-                is_active: 0,
+                is_active: true,
                 status: 'pending',
                 is_deleted: false,
                 created_at: new Date(),

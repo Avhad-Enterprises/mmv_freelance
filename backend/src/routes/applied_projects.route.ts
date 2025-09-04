@@ -42,7 +42,7 @@ class AppliedProjectsRoute implements Route {
     this.router.delete(
       `${this.path}/my-applications/withdraw`,
       this.appliedProjectsController.withdrawApplication
-    );
+    );  
 
     // CLIENT APIS
 

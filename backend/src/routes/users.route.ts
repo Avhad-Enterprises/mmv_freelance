@@ -34,7 +34,7 @@ class UsersRoute implements Route {
     // Get All types of user By id
     this.router.post(`${this.path}/get_freelancer_by_id`, this.usersController.getFreelancerById);
     this.router.post(`${this.path}/get_client_by_id`, this.usersController.getClientById);
-    this.router.post(`${this.path}/get_customer_by_id`, this.usersController.getCustomerById);
+   
     this.router.post(`${this.path}/get_admin_by_id`, this.usersController.getAdminById);
 
     // Invite user (Admin only)

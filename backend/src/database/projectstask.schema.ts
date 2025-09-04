@@ -1,8 +1,6 @@
 import DB from './index.schema';
 
-
 export const PROJECTS_TASK = 'projects_task';
-
 
 export const seed = async (dropFirst = false) => {
     try {
@@ -19,9 +17,9 @@ export const seed = async (dropFirst = false) => {
             table.integer('editor_id').nullable();
             table.string('project_title').notNullable();
             table.text('project_category').notNullable();
-            table.date('Deadline').notNullable();
+            table.date('deadline').notNullable();
             table.text('project_description').notNullable();
-            table.integer('Budget').notNullable();
+            table.integer('budget').notNullable();
             table.jsonb('tags').nullable();
             table.jsonb('skills_required').notNullable();
             table.jsonb('reference_links').notNullable();
@@ -42,7 +40,7 @@ export const seed = async (dropFirst = false) => {
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
             table.integer('updated_by').nullable();
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
             table.integer('deleted_by').nullable();
             table.timestamp('deleted_at').nullable();
 

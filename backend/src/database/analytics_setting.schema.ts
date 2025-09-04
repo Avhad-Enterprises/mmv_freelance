@@ -17,7 +17,7 @@ export const seed = async (dropFirst = false) => {
             table.string ('tracking_id').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
 
         });
 

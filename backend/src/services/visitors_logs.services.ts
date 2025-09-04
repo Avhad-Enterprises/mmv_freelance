@@ -10,7 +10,7 @@ class VisitorService {
   }
 
   public async getVisitorStats() {
-    const totalVisits = await DB('visitor_logs').count('id as count').first();
+    const totalVisits = await DB(T.VISITOR_LOGS).count('id as count').first();
 
     const topPages = await DB(T.VISITOR_LOGS)
       .select('current_url')
@@ -19,7 +19,7 @@ class VisitorService {
       .orderBy('views', 'desc')
       .limit(5);
 
-    const totalCount = await DB('visitor_logs').count('id as count').first();
+    const totalCount = await DB(T.VISITOR_LOGS).count('id as count').first();
     const bounceRate = totalCount && totalCount.count
 
     const deviceDistribution = await DB(T.VISITOR_LOGS)
@@ -46,7 +46,7 @@ class VisitorService {
         throw new HttpException(400, "visitor_id is required");
       }
       const result = await DB(T.VISITOR_LOGS)
-        .where({ visitor_id, is_active: 1 })
+        .where({ visitor_id, is_active: true })
         .select("*");
       return result;
     } catch (error) {
@@ -57,7 +57,7 @@ class VisitorService {
   public async getallvisitorbytable(): Promise<any> {
     try {
       const result = await DB(T.VISITOR_LOGS)
-        .where({ is_active: 1, is_deleted: false })
+        .where({ is_active: true, is_deleted: false })
         .select("*");
       return result;
     } catch (error) {

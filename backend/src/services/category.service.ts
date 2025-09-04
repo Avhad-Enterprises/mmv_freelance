@@ -10,8 +10,49 @@ class CategoryService {
         if (isEmpty(data)) {
             throw new HttpException(400, "Category data is empty");
         }
-        const insertedCategory = await DB(T.CATEGORY).insert(data).returning("*");
-        return insertedCategory[0];
+        try {
+           
+            if (!data.value) {
+                throw new HttpException(400, "Category value is required");
+            }
+            data.value = data.value.trim();
+            const existingCategory = await DB(T.CATEGORY)
+                .whereRaw('LOWER(TRIM(value)) = ?', [data.value.toLowerCase()])
+                .first();
+
+            if (existingCategory) {
+                if (!existingCategory.is_deleted) {
+                    throw new HttpException(400, "This category already exists in the database");
+                } else {
+                   
+                    const updatedCategory = await DB(T.CATEGORY)
+                        .where({ category_id: existingCategory.category_id })
+                        .update({
+                            is_deleted: false,
+                            is_active: true,
+                            ...data  
+                        })
+                        .returning("*");
+                    return updatedCategory[0];
+                }
+            }
+
+            // If we reach here, it's a new unique category
+            const insertedCategory = await DB(T.CATEGORY)
+                .insert({
+                    ...data,
+                    is_active: true,
+                    is_deleted: false
+                })
+                .returning("*");
+
+            return insertedCategory[0];
+        } catch (error) {
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new HttpException(500, "Error creating category");
+        }
     }
     public async geteditcategorybyid(category_id: number): Promise<any> {
         if (!category_id) throw new HttpException(400, "Category ID is required");
@@ -25,9 +66,16 @@ class CategoryService {
     public async getallcategorysbytable(): Promise<any> {
         try {
             const result = await DB(T.CATEGORY)
-                .where({ is_active: 1, is_deleted: false })
-                .select("*");
-            return result;
+                .where({ is_active: true, is_deleted: false })
+                .select("*")
+                .distinct();
+            const uniqueCategories = result.filter((category, index, self) =>
+                index === self.findIndex((c) => (
+                    c.value.toLowerCase() === category.value.toLowerCase()
+                ))
+            );
+            
+            return uniqueCategories;
         } catch (error) {
             throw new Error('Error fetching category');
         }
@@ -100,7 +148,7 @@ class CategoryService {
         const categoryProjects = await DB(T.PROJECTS_TASK)
             .where('project_category', category.value)
             .andWhere('is_deleted', false)
-            .andWhere('is_active', 1)
+            .andWhere('is_active', true)
             .orderBy('created_at', 'desc')
             .select('*');
 
@@ -123,7 +171,7 @@ class CategoryService {
         const categoryProjects = await DB(T.PROJECTS_TASK)
             .where('project_category', category.value)
             .andWhere('is_deleted', false)
-            .andWhere('is_active', 1)
+            .andWhere('is_active', true)
             .orderBy('created_at', 'desc')
             .select('*');
 

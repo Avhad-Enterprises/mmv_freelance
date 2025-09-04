@@ -4,6 +4,7 @@ import validationMiddleware from "../middlewares/validation.middleware";
 import UsersController from "../controllers/users.controllers";
 import { UsersDto } from "../dtos/users.dto";
 import { InviteDTO } from '../dtos/admin_invites.dto';
+import authMiddleware from '../middlewares/auth.middleware';
 
 
 class UsersRoute implements Route {
@@ -33,7 +34,7 @@ class UsersRoute implements Route {
     // Get All types of user By id
     this.router.post(`${this.path}/get_freelancer_by_id`, this.usersController.getFreelancerById);
     this.router.post(`${this.path}/get_client_by_id`, this.usersController.getClientById);
-    this.router.post(`${this.path}/get_customer_by_id`, this.usersController.getCustomerById);
+   
     this.router.post(`${this.path}/get_admin_by_id`, this.usersController.getAdminById);
 
     // Invite user (Admin only)
@@ -52,8 +53,12 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/insertuser`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertAdminUser);
     this.router.post(`${this.path}/insert`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.inserts);
     this.router.post(`${this.path}/invite`, this.usersController.inviteUsers);
+    
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
+    this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
 
+
+   
   }
 }
 

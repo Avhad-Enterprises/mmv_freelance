@@ -14,7 +14,7 @@ class UsersService {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
-        account_type: "customer",
+        account_type: "freelancer",
         is_active: true,
         is_banned: false,
       })
@@ -70,15 +70,15 @@ class UsersService {
 
   public async Login(email: string, password: string): Promise<Users & { token: string }> {
 
-    let user:any;
+    let user: any;
 
     if (validator.isEmail(email)) {
-       user = await DB(T.USERS_TABLE).where({ email }).first();
+      user = await DB(T.USERS_TABLE).where({ email }).first();
     }
     else {
-       user = await DB(T.USERS_TABLE).where({ username:email }).first();
+      user = await DB(T.USERS_TABLE).where({ username: email }).first();
     }
-    
+
     if (!user) {
       throw new HttpException(404, "User not registered");
     }
@@ -249,11 +249,6 @@ class UsersService {
   }
 
 
-  public getCustomerById(user_id: number): Promise<Users> {
-    return this.getUserByType(user_id, 'customer');
-  }
-
-
   public getAdminById(user_id: number): Promise<Users> {
     return this.getUserByType(user_id, 'admin');
   }
@@ -335,6 +330,7 @@ class UsersService {
         role: user.role,
         is_banned: user.is_banned,
         is_active: user.is_active,
+        account_type: user.account_type,
       },
       process.env.JWT_SECRET as string,
       { expiresIn: "24h" }
@@ -391,7 +387,7 @@ class UsersService {
       username: data.username,
       password: data.password,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
       created_at: Date.now(),
       updated_at: Date.now()
     } as unknown as UsersDto;
@@ -465,7 +461,7 @@ class UsersService {
       phone_number: String(userData.phone_number).trim(),
       password: hashedPassword,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
     };
 
     const [newUser] = await DB(T.USERS_TABLE).insert(insertPayload).returning([
@@ -547,6 +543,7 @@ class UsersService {
       created_at: new Date(),
     });
   }
+  
   public async emailVerifyToken(data: UsersDto): Promise<Users> {
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
 
@@ -586,7 +583,7 @@ class UsersService {
       username: data.username.trim(),
       password: hashedPassword,
       account_type: 'admin',
-      account_status: 'inactive',
+      account_status: '0',
       address_line_first: data.address_line_first || '',
       reset_token: verificationToken, // Using reset_token for email verification
       reset_token_expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
@@ -625,5 +622,29 @@ class UsersService {
 
     return newUser;
   }
+
+  public async changePassword(userId: number, oldPassword: string, newPassword: string): Promise<void> {
+
+
+    const user = await DB(T.USERS_TABLE).where({ user_id: userId }).first();
+
+    if (!user) {
+      throw new HttpException(404, "User not found");
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isPasswordValid) {
+      throw new HttpException(400, "Current password is incorrect");
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    await DB(T.USERS_TABLE)
+      .where({ user_id: userId })
+      .update({ password: hashedNewPassword, updated_at: new Date() });
+  }
+
+
 }
 export default UsersService;

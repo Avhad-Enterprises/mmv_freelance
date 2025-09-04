@@ -82,9 +82,8 @@ export class BlogDto {
   notes?: [];
 
   @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  is_active?: number;
+  @IsBoolean()
+  is_active: boolean;
 
   @IsOptional()
   @IsInt()

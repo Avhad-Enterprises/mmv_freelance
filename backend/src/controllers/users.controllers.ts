@@ -2,9 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
 
 // Extend Express Request type to include 'user'
-interface AuthenticatedRequest extends Request {
+interface AuthenticatedRequest extends Request {  
   user?: { user_id: string };
 }
+
 import { Users } from "../interfaces/users.interface";
 import UsersService from "../services/user.services";
 import { generateToken } from "../utils/jwt";
@@ -16,6 +17,7 @@ import sendEmail from '../utils/sendemail';
 
 
 class UsersController {
+  
   public UsersService = new UsersService();
 
 
@@ -211,19 +213,6 @@ class UsersController {
     }
   };
 
-  public getCustomerById = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { user_id } = req.body;
-      if (!user_id) throw new HttpException(400, "User ID is required");
-
-
-      const user = await this.UsersService.getCustomerById(user_id);
-      res.status(200).json({ data: user, message: "Customer fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   public getAdminById = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { user_id } = req.body;
@@ -277,7 +266,9 @@ class UsersController {
   };
 
   public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
     try {
+      
       const { email, password } = req.body;
 
 
@@ -370,16 +361,13 @@ class UsersController {
     }
   };
 
-  public inserts = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
+  public inserts = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const userData: UsersDto = req.body;
       const locationData: Users = await this.UsersService.Insertsuser(
         userData
       );
+      
       res.status(201).json({ data: locationData, message: "Inserted" });
     } catch (error) {
       next(error);
@@ -402,7 +390,7 @@ class UsersController {
       });
 
       const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
-      const EmailService = require('../utils/emailService').default || require('../utils/emailService');
+      const EmailService = require('../utils/emailer').default || require('../utils/emailer');
       const emailServiceInstance = new EmailService();
       await emailServiceInstance.sendEmail({
         to: body.email,
@@ -434,5 +422,33 @@ class UsersController {
       next(error);
     }
   };
+
+ public changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+
+  try {
+
+    // if (!req.user || !req.user.user_id) {
+    //   throw new HttpException(401, "User not logged in");
+    // }
+
+    const {user_id, oldPassword, newPassword, confirmPassword } = req.body;
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      throw new HttpException(400, "All fields are required");
+    }
+
+    if (newPassword !== confirmPassword) {
+      throw new HttpException(400, "New password and confirm password do not match");
+    }
+
+    await this.UsersService.changePassword(Number(user_id), oldPassword, newPassword);
+
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 }
 export default UsersController;

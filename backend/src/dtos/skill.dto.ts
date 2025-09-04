@@ -5,9 +5,9 @@ export class SkillsDto {
   @IsString()
   skill_name: string;
 
-  @IsOptional()
-  @IsInt()
-  is_active?: number; // 0 = inactive, 1 = active
+@IsOptional()
+  @IsBoolean()
+  is_active: boolean;
 
   @IsNotEmpty()
   @IsInt()

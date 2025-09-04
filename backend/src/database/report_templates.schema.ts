@@ -23,7 +23,7 @@ export const seed = async (dropFirst = false) => {
             table.boolean('is_active').defaultTo(true);
             table.timestamp("created_at").defaultTo(DB.fn.now());
             table.timestamp("updated_at").defaultTo(DB.fn.now());
-            table.boolean('is_deleted').defaultTo(true);
+            table.boolean('is_deleted').defaultTo(false);
             table.string("email").unique();
 
         });

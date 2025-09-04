@@ -19,7 +19,7 @@ export const seed = async (dropFirst = false) => {
             table.string('tag_type').notNullable();
 
             // Status and Soft Delete fields
-            table.integer('is_active').defaultTo(0);
+            table.boolean("is_active").defaultTo(true);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now())
             table.timestamp('updated_at').defaultTo(DB.fn.now());

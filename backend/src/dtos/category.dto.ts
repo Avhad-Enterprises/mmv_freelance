@@ -32,9 +32,8 @@ export class CategoryDto {
   notes?: string[];
 
   @IsOptional()
-  @Type(() => Number)
-  @IsInt()
-  is_active?: number;
+  @IsBoolean()
+  is_active: boolean;
 
   @IsOptional()
   @Type(() => Number)

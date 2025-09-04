@@ -57,7 +57,7 @@ export class FaqService {
     public async getallfaqsbytable(): Promise<any> {
         try {
             const result = await DB(T.FAQ)
-                .where({ is_active: 1, is_deleted: false })
+                .where({ is_active: true, is_deleted: false })
                 .select("*");
             return result;
         } catch (error) {

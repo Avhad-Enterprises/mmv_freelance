@@ -91,7 +91,7 @@ class favoritesservices {
 
   public async getFavoritesByUser(user_id: number): Promise<any> {
     const favorites = await DB(T.FAVORITES_TABLE)
-      .where({ user_id, is_active: 0 })
+      .where({ user_id, is_active: true })
       .select("*");
 
     if (!favorites) throw new HttpException(404, "User not found");

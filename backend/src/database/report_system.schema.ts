@@ -20,11 +20,11 @@ export const seed = async (dropFirst = false) => {
             table.text('notes').notNullable();
             table.string('reason').notNullable();
             table.text('description').notNullable();
-            table.enu('status',['pending', 'reviewed', 'resolved', 'rejected']).defaultTo('pending');
+            table.enu('status', ['pending', 'reviewed', 'resolved', 'rejected']).defaultTo('pending');
             table.text('admin_remarks').nullable();
             table.integer('reviewed_by').nullable();
             table.string('email').notNullable();
-            table.integer('is_active').defaultTo(0);
+            table.boolean("is_active").defaultTo(true);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());
             table.timestamp('updated_at').defaultTo(DB.fn.now());
@@ -50,10 +50,9 @@ export const seed = async (dropFirst = false) => {
     }
 };
 
-    // exports.seed = seed;
-    // const run = async () => {
-    //    //createProcedure();
-    //     seed();
-    // };
-    // run();
- 
+// exports.seed = seed;
+// const run = async () => {
+//    //createProcedure();
+//     seed();
+// };
+// run();

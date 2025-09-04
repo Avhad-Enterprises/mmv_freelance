@@ -46,7 +46,7 @@ class VisitorService {
         throw new HttpException(400, "visitor_id is required");
       }
       const result = await DB(T.VISITOR_LOGS)
-        .where({ visitor_id, is_active: 1 })
+        .where({ visitor_id, is_active: true })
         .select("*");
       return result;
     } catch (error) {
@@ -57,7 +57,7 @@ class VisitorService {
   public async getallvisitorbytable(): Promise<any> {
     try {
       const result = await DB(T.VISITOR_LOGS)
-        .where({ is_active: 1, is_deleted: false })
+        .where({ is_active: true, is_deleted: false })
         .select("*");
       return result;
     } catch (error) {

@@ -4,6 +4,7 @@ import {
   ValidateIf,
   IsOptional,
   IsNumber,
+  IsBoolean
 } from 'class-validator';
 
 // Enum for favorite types
@@ -37,8 +38,8 @@ export class favoritesDto {
   created_by: number;
 
   @IsOptional()
-  @IsInt()
-  is_active?: number;
+  @IsBoolean()
+  is_active: boolean;
 
   @IsOptional()
   @IsInt()

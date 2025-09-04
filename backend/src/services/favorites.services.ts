@@ -120,8 +120,7 @@ class favoritesservices {
     // const results = await DB(T.USERS_TABLE)
     //   .where({
     //     [`${T.USERS_TABLE}.user_id`]: user_id,
-    //     // [`${T.USERS_TABLE}.favorite_type`]: 'freelancer',
-    //     // [`${T.USERS_TABLE}.is_deleted`]: false,
+   
     //   })
     //   .join(
     //     `${T.FAVORITES_TABLE}`,

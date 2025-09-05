@@ -15,11 +15,14 @@ export enum FavoriteType {
 
 export class favoritesDto {
   @IsInt()
-  @IsOptional()
+  @IsOptional({ groups: ['create'] })
   id?: number;
 
   @IsInt()
-  user_id: number;s
+  user_id: number;
+
+  @IsInt()
+  freelancer_id: number;
 
   @IsInt()
   @IsOptional()

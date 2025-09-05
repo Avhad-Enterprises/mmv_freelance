@@ -14,6 +14,7 @@ export const seed = async (dropFirst = false) => {
         await DB.schema.createTable(FAVORITES_TABLE, table => {
             table.increments('id').primary();  //ID
             table.integer('user_id').notNullable();
+            table.integer('freelancer_id').notNullable();
             table.boolean("is_active").defaultTo(true);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());

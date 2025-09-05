@@ -99,6 +99,7 @@ class favoritescontroller {
       throw new HttpException(400, "Invalid user_id");
     }
 
+
     const favorites = await this.favoritesservices.getfreelanceinfo(user_id);
 
     if (!favorites || favorites.length === 0) {

@@ -543,7 +543,7 @@ class UsersService {
       created_at: new Date(),
     });
   }
-  
+
   public async emailVerifyToken(data: UsersDto): Promise<Users> {
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
 

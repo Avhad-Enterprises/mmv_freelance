@@ -326,6 +326,22 @@ class ProjectstaskService {
 
     return Number(result?.count || 0);
   }
+
+   public async getCountByClient(client_id: number): Promise<number> {
+    if (!client_id) {
+      throw new HttpException(400, "client_id is required");
+    }
+
+    const result = await DB(T.PROJECTS_TASK)
+      .where({
+        client_id,
+        is_deleted: false
+      })
+      .count('* as count')
+      .first();
+
+    return Number(result?.count || 0);
+  }
 }
 
 export default ProjectstaskService;

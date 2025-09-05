@@ -269,6 +269,22 @@ class projectstaskcontroller {
     next(error);
   }
 };
+public getClientcount = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { client_id } = req.params;
+
+    const count = await this.ProjectstaskService.getCountByClient(Number(client_id));
+
+    res.status(200).json({
+      success: true,
+      client_id: Number(client_id),
+      projects_count: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 }

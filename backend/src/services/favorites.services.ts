@@ -14,6 +14,7 @@ class favoritesservices {
     const existing = await DB(T.FAVORITES_TABLE)
       .where({
         user_id: data.user_id
+        , freelancer_id: data.freelancer_id
       })
       .first();
 
@@ -117,10 +118,13 @@ class favoritesservices {
     if (!user_id) {
       throw new HttpException(400, "User ID is required");
     }
+
+    
+
     // const results = await DB(T.USERS_TABLE)
     //   .where({
     //     [`${T.USERS_TABLE}.user_id`]: user_id,
-   
+
     //   })
     //   .join(
     //     `${T.FAVORITES_TABLE}`,
@@ -136,13 +140,15 @@ class favoritesservices {
     //     `${T.USERS_TABLE}.city`,
     //     `${T.USERS_TABLE}.country`,
     //   );
+    console.log("User ID:", user_id); // Debugging line
     const results = await DB(T.FAVORITES_TABLE)
       .where({
         [`${T.FAVORITES_TABLE}.user_id`]: user_id,
+       
         // [`${T.USERS_TABLE}.favorite_type`]: 'freelancer',
         // [`${T.USERS_TABLE}.is_deleted`]: false,
       })
-      .join(
+      .leftJoin(
         `${T.USERS_TABLE}`,
         `${T.USERS_TABLE}.user_id`,
         '=',

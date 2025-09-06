@@ -20,22 +20,12 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
 
     if (bearerHeader) {
       const bearer = bearerHeader.split(' ');
-      console.log(JSON.stringify(bearer));
       const bearerToken = bearer[1];
-      console.log(bearerToken);
       if (bearerToken != 'null') {
+        
         const secret = process.env.JWT_SECRET;
         const verificationResponse = (await jwt.verify(bearerToken, secret)) as DataStoredInToken;
         if (verificationResponse) {
-          // console.log(bearer[2])
-          // if (bearer[2] != null || bearer[2] != undefined) {
-          //   console.log(DB.raw("Hii SET search_path TO " + bearer[2]).toString())
-          //   await DB.raw("SET search_path TO " + bearer[2]);
-          // }
-          // else {
-          //   console.log("in public")
-          //   await DB.raw("SET search_path TO public");
-          // }
           await DB.raw("SET search_path TO public");
           next();
         }

@@ -21,10 +21,13 @@ class favoritescontroller {
         }
     };
 
-    public removeFavorite = async (req: Request, res: Response) => {
-        try {
-            const result = await this.favoritesservices.removeFavorite(req.body);
-            res.status(200).json({ message: result });
+    public removeFavorite = async (req: Request, res: Response, next: NextFunction) => {
+
+        try {            
+            console.log("inside a function");
+            console.log(req.body);
+            // const result = await this.favoritesservices.removeFavorite(req.body);
+            // res.status(200).json({ message: result });
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
@@ -89,31 +92,31 @@ class favoritescontroller {
         }
     };
 
-  public getfreelanceinfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    public getfreelanceinfo = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  try {
-    
-    const { user_id } = req.body;
+        try {
 
-    if (isNaN(user_id)) {
-      throw new HttpException(400, "Invalid user_id");
-    }
+            const { user_id } = req.body;
+
+            if (isNaN(user_id)) {
+                throw new HttpException(400, "Invalid user_id");
+            }
 
 
-    const favorites = await this.favoritesservices.getfreelanceinfo(user_id);
+            const favorites = await this.favoritesservices.getfreelanceinfo(user_id);
 
-    if (!favorites || favorites.length === 0) {
-      throw new HttpException(404, "No favorite freelancers found");
-    }
+            if (!favorites || favorites.length === 0) {
+                throw new HttpException(404, "No favorite freelancers found");
+            }
 
-    res.status(200).json({
-      data: favorites,
-      message: "Favorite freelancers fetched successfully",
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+            res.status(200).json({
+                data: favorites,
+                message: "Favorite freelancers fetched successfully",
+            });
+        } catch (error) {
+            next(error);
+        }
+    };
 
 
 }

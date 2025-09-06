@@ -19,7 +19,8 @@ class favoritesRoute implements Route {
 
     //favorites_system section  , validationMiddleware(reportDto, 'body', false, [])
     this.router.post(`${this.path}/add`, validationMiddleware(favoritesDto, 'body', false, []), this.favoritescontroller.addFavorite);
-    this.router.post(`${this.path}/remove`, validationMiddleware(favoritesDto, 'body', false, []), this.favoritescontroller.removeFavorite);
+    this.router.post(`${this.path}/remove`, this.favoritescontroller.removeFavorite);
+    
     this.router.get(`${this.path}/listprojects`, this.favoritescontroller.getAllprojects);
     this.router.get(`${this.path}/listfreelancers`, this.favoritescontroller.listFavoriteFreelancers);
    

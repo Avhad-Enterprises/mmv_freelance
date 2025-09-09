@@ -52,6 +52,6 @@ class macroController {
             next();
         }
     };
- 
+
 }
 export default macroController;

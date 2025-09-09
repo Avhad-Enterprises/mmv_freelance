@@ -17,14 +17,16 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
     }
 
     const bearerHeader = req.headers['authorization'];
-
     if (bearerHeader) {
       const bearer = bearerHeader.split(' ');
+      
       const bearerToken = bearer[1];
       if (bearerToken != 'null') {
         
         const secret = process.env.JWT_SECRET;
+        
         const verificationResponse = (await jwt.verify(bearerToken, secret)) as DataStoredInToken;
+       
         if (verificationResponse) {
           await DB.raw("SET search_path TO public");
           next();
@@ -38,7 +40,7 @@ const authMiddleware = async (req: RequestWithUser, res: Response, next: NextFun
     }
 
   } catch (error) {
-    next(new HttpException(401, 'Exception Occured'));
+    next(new HttpException(401, 'Auth Middleware Exception Occured'));
   }
 };
 

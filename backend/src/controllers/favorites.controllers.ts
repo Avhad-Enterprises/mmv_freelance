@@ -26,8 +26,8 @@ class favoritescontroller {
         try {            
             console.log("inside a function");
             console.log(req.body);
-            // const result = await this.favoritesservices.removeFavorite(req.body);
-            // res.status(200).json({ message: result });
+            const result = await this.favoritesservices.removeFavorite(req.body);
+            res.status(200).json({ message: result });
         } catch (error) {
             res.status(400).json({ error: error.message });
         }

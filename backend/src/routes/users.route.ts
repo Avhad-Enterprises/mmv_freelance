@@ -19,7 +19,7 @@ class UsersRoute implements Route {
 
 
   private initializeRoutes() {
-    this.router.get(`${this.path}/customers/active`, this.usersController.getAllActiveCustomers);
+    this.router.get(`${this.path}/client/active`, this.usersController.getAllActiveClient);
     this.router.get(`${this.path}/freelancers/active`, this.usersController.getAllActiveFreelance);
     this.router.post(`${this.path}/insert_user`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertUser);
     //backend login
@@ -34,7 +34,7 @@ class UsersRoute implements Route {
     // Get All types of user By id
     this.router.post(`${this.path}/get_freelancer_by_id`, this.usersController.getFreelancerById);
     this.router.post(`${this.path}/get_client_by_id`, this.usersController.getClientById);
-   
+
     this.router.post(`${this.path}/get_admin_by_id`, this.usersController.getAdminById);
 
     // Invite user (Admin only)
@@ -53,12 +53,15 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/insertuser`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertAdminUser);
     this.router.post(`${this.path}/insert`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.inserts);
     this.router.post(`${this.path}/invite`, this.usersController.inviteUsers);
-    
+
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
     this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
 
+    this.router.post(`${this.path}/add-client`, this.usersController.insertClient);
+   this.router.post(`${this.path}/add-editor`, this.usersController.insertEditor);
 
-   
+
+
   }
 }
 

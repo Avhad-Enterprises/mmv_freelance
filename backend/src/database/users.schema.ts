@@ -63,7 +63,7 @@ export const seed = async (dropFirst = false) => {
             table.string('account_type').nullable(); // (Freelancer, Client)
             table.string('availability').nullable();
             table.integer('time_spent').defaultTo(0);
-            table.string('account_status').defaultTo(1); // (Active, Inactive, Banned)
+            table.string('account_status').defaultTo('1'); // (Active, Inactive, Banned)
             table.boolean('is_active').defaultTo(true); // is_active is used to check if the user is active or not
             table.boolean('is_banned').defaultTo(false); // is_banned is used to check if the user is banned or not
             table.timestamp("created_at").defaultTo(DB.fn.now());

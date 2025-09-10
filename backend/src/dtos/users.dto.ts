@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber, IsInt } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber, IsInt, IsObject } from 'class-validator';
 
 
 export class UsersDto {
@@ -101,9 +101,10 @@ export class UsersDto {
   @IsOptional()
   @IsString()
   timezone: string;
-
-  @IsOptional()
-  skill: any; // JSONB
+  
+@IsOptional()
+@IsObject()
+skill?: Record<string, any>;
 
   @IsOptional()
   @IsBoolean()

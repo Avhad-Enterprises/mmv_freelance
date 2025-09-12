@@ -35,10 +35,15 @@ class projectstaskRoute implements Route {
       //url by get all data
       this.router.get(`${this.path}/getprojectstaskbyurl/:url`, this.projectstaskcontroller.getprojectstaskbyurl);
       //check url in database
-      this.router.get(`${this.path}/check-url`, this.projectstaskcontroller.checkUrlExists);
+      // this.router.get(`${this.path}/check-url`, this.projectstaskcontroller.checkUrlExists);
       this.router.post(`${this.path}/gettaskby`, this.projectstaskcontroller.getbytasksid);
-      this.router.get(`${this.path}/count/editor/:editor_id`,(req, res, next) => this.projectstaskcontroller.getCountBy(req, res, next));
-      this.router.get(`${this.path}/count/client/:client_id`,(req, res, next) => this.projectstaskcontroller.getClientcount(req, res, next));
+      this.router.get(`${this.path}/count/editor/:editor_id`, (req, res, next) => this.projectstaskcontroller.getCountBy(req, res, next))
+      this.router.get(`${this.path}/count/client/:client_id`, (req, res, next) => this.projectstaskcontroller.getClientcount(req, res, next));
+
+      // Active Clients Count
+      this.router.get(`${this.path}/count/active-clients`, (req, res, next) => this.projectstaskcontroller.getActiveclientsCount(req, res, next));
+      // Active Editors Count
+      this.router.get(`${this.path}/count/active-editors`, (req, res, next) => this.projectstaskcontroller.getActiveEditorsCount(req, res, next));
 
    }
 }

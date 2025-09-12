@@ -449,36 +449,36 @@ class UsersController {
     }
   };
 
-public insertClient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userData = { ...req.body, account_type: "client", account_status: "inactive" };
+// public insertClient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const userData = { ...req.body, account_type: "client", account_status: "inactive" };
 
-    if (!userData.first_name || !userData.username || !userData.phone_number) {
-      throw new HttpException(400, 'Missing required fields');
-    }
-    delete userData.skill;
+//     if (!userData.first_name || !userData.username || !userData.phone_number) {
+//       throw new HttpException(400, 'Missing required fields');
+//     }
+//     delete userData.skill;
 
-    const newUser = await this.UsersService.insertClient(userData);
-    res.status(201).json({ data: newUser, message: "Client added successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     const newUser = await this.UsersService.insertClient(userData);
+//     res.status(201).json({ data: newUser, message: "Client added successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
-public insertEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const userData = { ...req.body, account_type: "freelancer", account_status: "inactive" };
+// public insertEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const userData = { ...req.body, account_type: "freelancer", account_status: "inactive" };
 
-    if (!userData.skill || Object.keys(userData.skill).length === 0) {
-      throw new HttpException(400, "Skill data is required for editor");
-    }
+//     if (!userData.skill || Object.keys(userData.skill).length === 0) {
+//       throw new HttpException(400, "Skill data is required for editor");
+//     }
 
-    const newUser = await this.UsersService.insertEditor(userData);
-    res.status(201).json({ data: newUser, message: "Editor (freelancer) added successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     const newUser = await this.UsersService.insertEditor(userData);
+//     res.status(201).json({ data: newUser, message: "Editor (freelancer) added successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 }
 export default UsersController;

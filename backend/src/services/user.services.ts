@@ -646,73 +646,73 @@ class UsersService {
       .update({ password: hashedNewPassword, updated_at: new Date() });
   }
 
-public async insertClient(userData: UsersDto): Promise<Users> {
-  if (isEmpty(userData)) {
-    throw new HttpException(400, "Client data is empty");
-  }
+// public async insertClient(userData: UsersDto): Promise<Users> {
+//   if (isEmpty(userData)) {
+//     throw new HttpException(400, "Client data is empty");
+//   }
 
-  const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
-  if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
+//   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
+//   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
 
-  const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
-  if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
+//   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
+//   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
 
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
+//   const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-  const [client] = await DB(T.USERS_TABLE)
-    .insert({
-      first_name: userData.first_name,
-      last_name: userData.last_name || null,
-      username: userData.username,
-      email: userData.email,
-      phone_number: userData.phone_number,
-      password: hashedPassword,
-      account_type: "client",
-      skill: null,
-      address_line_first: userData.address_line_first
-    })
-    .returning("*");
+//   const [client] = await DB(T.USERS_TABLE)
+//     .insert({
+//       first_name: userData.first_name,
+//       last_name: userData.last_name || null,
+//       username: userData.username,
+//       email: userData.email,
+//       phone_number: userData.phone_number,
+//       password: hashedPassword,
+//       account_type: "client",
+//       skill: null,
+//       address_line_first: userData.address_line_first
+//     })
+//     .returning("*");
 
-  return client;
-}
+//   return client;
+// }
 
-public async insertEditor(userData: UsersDto): Promise<Users> {
-  if (isEmpty(userData)) {
-    throw new HttpException(400, "Editor data is empty");
-  }
-  const { skill } = userData;
+// public async insertEditor(userData: UsersDto): Promise<Users> {
+//   if (isEmpty(userData)) {
+//     throw new HttpException(400, "Editor data is empty");
+//   }
+//   const { skill } = userData;
 
-  if (!skill || Object.keys(skill).length === 0) {
-    throw new HttpException(400, "Skill is required for editors/freelancers");
-  }
-
-
-  const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
-  if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
+//   if (!skill || Object.keys(skill).length === 0) {
+//     throw new HttpException(400, "Skill is required for editors/freelancers");
+//   }
 
 
-  const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
-  if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
+//   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
+//   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
 
 
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
+//   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
+//   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
 
-  const [editor] = await DB(T.USERS_TABLE)
-    .insert({
-      first_name: userData.first_name,
-      last_name: userData.last_name || null,
-      username: userData.username,
-      email: userData.email,
-      phone_number: userData.phone_number,
-      password: hashedPassword,
-      account_type: "freelancer",
-      skill: JSON.stringify(skill),
-      address_line_first: userData.address_line_first
-    })
-    .returning("*");
 
-  return editor;
-}
+//   const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+//   const [editor] = await DB(T.USERS_TABLE)
+//     .insert({
+//       first_name: userData.first_name,
+//       last_name: userData.last_name || null,
+//       username: userData.username,
+//       email: userData.email,
+//       phone_number: userData.phone_number,
+//       password: hashedPassword,
+//       account_type: "freelancer",
+//       skill: JSON.stringify(skill),
+//       address_line_first: userData.address_line_first
+//     })
+//     .returning("*");
+
+//   return editor;
+// }
 
 
 }

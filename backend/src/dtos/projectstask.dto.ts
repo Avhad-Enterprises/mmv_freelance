@@ -25,6 +25,7 @@ export class ProjectsTaskDto {
   @IsString()
   project_description: string;
 
+  @IsOptional()
   @Type(() => Number)
   @IsInt()
   budget: number;

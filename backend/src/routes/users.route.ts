@@ -48,17 +48,17 @@ class UsersRoute implements Route {
 
     this.router.post(`${this.path}/getfreelaner`, (req, res, next) => this.usersController.getfreelancer(req, res, next));
 
-    this.router.post(`${this.path}/send_invite`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.sendinvite);
-    this.router.post(`${this.path}/create-admin`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.createAdminUser);
-    this.router.post(`${this.path}/insertuser`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertAdminUser);
+    // this.router.post(`${this.path}/send_invite`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.sendinvite);
+    // this.router.post(`${this.path}/create-admin`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.createAdminUser);
+    // this.router.post(`${this.path}/insertuser`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertAdminUser);
     this.router.post(`${this.path}/insert`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.inserts);
     this.router.post(`${this.path}/invite`, this.usersController.inviteUsers);
 
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
     this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
 
-    this.router.post(`${this.path}/add-client`, this.usersController.insertClient);
-   this.router.post(`${this.path}/add-editor`, this.usersController.insertEditor);
+  //   this.router.post(`${this.path}/add-client`, this.usersController.insertClient);
+  //  this.router.post(`${this.path}/add-editor`, this.usersController.insertEditor);
 
 
 

@@ -148,9 +148,9 @@ class AppliedProjectsService {
 
     public async getApplicationCountByProject(projects_task_id: number): Promise<number> {
         const result = await DB(T.APPLIED_PROJECTS)
-            .where({ is_deleted: false })
+            .where({ is_deleted: false , projects_task_id: projects_task_id})
             .count("applied_projects_id as count")
-            .first(); projects_task_id
+            .first(); 
 
         return Number(result?.count || 0);
     }

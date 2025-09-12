@@ -285,10 +285,32 @@ public getClientcount = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
+public getActiveclientsCount = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const count = await this.ProjectstaskService.getActiveclientsCount();
 
+    res.status(200).json({
+      success: true,
+      active_clients_count: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
+public getActiveEditorsCount = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const count = await this.ProjectstaskService.getActiveEditorsCount();
+
+    res.status(200).json({
+      success: true,
+      active_editors_count: count
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 }
-
 export default projectstaskcontroller;
 
 function next(error: any) {

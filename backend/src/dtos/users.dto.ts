@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber, IsInt } from 'class-validator';
+import { IsEmail, IsOptional, IsString, IsBoolean, IsArray, IsNumber, IsInt, IsObject } from 'class-validator';
 
 
 export class UsersDto {
@@ -30,11 +30,11 @@ export class UsersDto {
   @IsString()
   profile_picture: string;
 
-  @IsOptional()
+  @IsOptional({ groups: ['update', 'create'] })
   @IsString()
   address_line_first: string;
 
-  @IsOptional()
+  @IsOptional({ groups: ['update', 'create'] })
   @IsString()
   address_line_second: string;
 
@@ -103,7 +103,7 @@ export class UsersDto {
   timezone: string;
 
   @IsOptional()
-  skill: any; // JSONB
+  skill?: JSON;
 
   @IsOptional()
   @IsBoolean()
@@ -195,13 +195,13 @@ export class UsersDto {
 
   @IsOptional()
   @IsInt()
-  created_at:  Number;
+  created_at: Number;
 
   @IsOptional()
   @IsInt()
-  updated_at:  Number;
+  updated_at: Number;
 
- @IsOptional()
+  @IsOptional()
   @IsInt()
   updated_by?: number;
 

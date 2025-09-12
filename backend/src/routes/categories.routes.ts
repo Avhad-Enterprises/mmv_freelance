@@ -21,9 +21,9 @@ class categoryRoute implements Route {
     this.router.get(`${this.path}/getcategorytypes`, (req, res, next) => this.categoryController.getcategorytypesby(req, res, next));
     this.router.get(`${this.path}/editcategory/:id`, (req, res, next) => this.categoryController.geteditcategory(req, res, next));
     this.router.put(`${this.path}/updatecategory`, validationMiddleware(CategoryDto, 'body', false, []), (req, res, next) => this.categoryController.updatecategory(req, res, next));
-    this.router.post(`${this.path}/deletecategory`, validationMiddleware(CategoryDto, 'body', true, []), (req, res, next) => this.categoryController.deletecategory(req, res, next));
-    this.router.post(`${this.path}/getprojectcategory/:id`, (req, res, next) => this.categoryController.getprojectbycategory(req, res, next));
-    this.router.get(`${this.path}/projects`, (req, res, next) => this.categoryController.getprojectbyitscategory(req, res, next));
+    // this.router.post(`${this.path}/deletecategory`, validationMiddleware(CategoryDto, 'body', true, []), (req, res, next) => this.categoryController.deletecategory(req, res, next));
+    // this.router.post(`${this.path}/getprojectcategory/:id`, (req, res, next) => this.categoryController.getprojectbycategory(req, res, next));
+    // this.router.get(`${this.path}/projects`, (req, res, next) => this.categoryController.getprojectbyitscategory(req, res, next));
   
 
   }

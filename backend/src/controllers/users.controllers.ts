@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { UsersDto } from "../dtos/users.dto";
 
 // Extend Express Request type to include 'user'
-interface AuthenticatedRequest extends Request {  
+interface AuthenticatedRequest extends Request {
   user?: { user_id: string };
 }
 
@@ -17,14 +17,14 @@ import sendEmail from '../utils/sendemail';
 
 
 class UsersController {
-  
+
   public UsersService = new UsersService();
 
 
-  public getAllActiveCustomers = async (req: Request, res: Response, next: NextFunction) => {
+  public getAllActiveClient = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const users = await this.UsersService.getAllActiveCustomers();
-      res.status(200).json({ data: users, message: "Active customers fetched successfully" });
+      const users = await this.UsersService.getAllActiveClients();
+      res.status(200).json({ data: users, message: "Active clients fetched successfully" });
     } catch (error) {
       next(error);
     }
@@ -268,7 +268,7 @@ class UsersController {
   public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     try {
-      
+
       const { email, password } = req.body;
 
 
@@ -367,7 +367,7 @@ class UsersController {
       const locationData: Users = await this.UsersService.Insertsuser(
         userData
       );
-      
+
       res.status(201).json({ data: locationData, message: "Inserted" });
     } catch (error) {
       next(error);
@@ -423,32 +423,62 @@ class UsersController {
     }
   };
 
- public changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public changePassword = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
-  try {
+    try {
 
-    // if (!req.user || !req.user.user_id) {
-    //   throw new HttpException(401, "User not logged in");
-    // }
+      // if (!req.user || !req.user.user_id) {
+      //   throw new HttpException(401, "User not logged in");
+      // }
 
-    const {user_id, oldPassword, newPassword, confirmPassword } = req.body;
+      const { user_id, oldPassword, newPassword, confirmPassword } = req.body;
 
-    if (!oldPassword || !newPassword || !confirmPassword) {
-      throw new HttpException(400, "All fields are required");
+      if (!oldPassword || !newPassword || !confirmPassword) {
+        throw new HttpException(400, "All fields are required");
+      }
+
+      if (newPassword !== confirmPassword) {
+        throw new HttpException(400, "New password and confirm password do not match");
+      }
+
+      await this.UsersService.changePassword(Number(user_id), oldPassword, newPassword);
+
+      res.status(200).json({ message: "Password changed successfully" });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    if (newPassword !== confirmPassword) {
-      throw new HttpException(400, "New password and confirm password do not match");
-    }
+// public insertClient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const userData = { ...req.body, account_type: "client", account_status: "inactive" };
 
-    await this.UsersService.changePassword(Number(user_id), oldPassword, newPassword);
+//     if (!userData.first_name || !userData.username || !userData.phone_number) {
+//       throw new HttpException(400, 'Missing required fields');
+//     }
+//     delete userData.skill;
 
-    res.status(200).json({ message: "Password changed successfully" });
-  } catch (error) {
-    next(error);
-  }
-};
+//     const newUser = await this.UsersService.insertClient(userData);
+//     res.status(201).json({ data: newUser, message: "Client added successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
+// public insertEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const userData = { ...req.body, account_type: "freelancer", account_status: "inactive" };
+
+//     if (!userData.skill || Object.keys(userData.skill).length === 0) {
+//       throw new HttpException(400, "Skill data is required for editor");
+//     }
+
+//     const newUser = await this.UsersService.insertEditor(userData);
+//     res.status(201).json({ data: newUser, message: "Editor (freelancer) added successfully" });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 }
 export default UsersController;

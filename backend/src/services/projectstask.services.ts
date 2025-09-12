@@ -342,6 +342,27 @@ class ProjectstaskService {
 
     return Number(result?.count || 0);
   }
-}
+  public async getActiveclientsCount(): Promise<number> {
+  const result = await DB(T.PROJECTS_TASK)
+    .where({
+      is_deleted: false,
+      is_active: 1
+    })
+    .whereNotNull("client_id")       
+    .countDistinct("client_id as count")  
+    .first();
 
+  return Number(result?.count || 0);
+}
+  public async getActiveEditorsCount(): Promise<any> {
+  const result = await DB(T.PROJECTS_TASK)
+    .where({
+      is_deleted: false,
+      is_active: 1
+    })
+    .whereNotNull("editor_id")       
+    .countDistinct("editor_id as count")  
+    .first();
+}
+}
 export default ProjectstaskService;

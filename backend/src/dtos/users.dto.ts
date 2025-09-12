@@ -30,11 +30,11 @@ export class UsersDto {
   @IsString()
   profile_picture: string;
 
-  @IsOptional()
+  @IsOptional({ groups: ['update', 'create'] })
   @IsString()
   address_line_first: string;
 
-  @IsOptional()
+  @IsOptional({ groups: ['update', 'create'] })
   @IsString()
   address_line_second: string;
 
@@ -101,10 +101,9 @@ export class UsersDto {
   @IsOptional()
   @IsString()
   timezone: string;
-  
-@IsOptional()
-@IsObject()
-skill?: Record<string, any>;
+
+  @IsOptional()
+  skill?: JSON;
 
   @IsOptional()
   @IsBoolean()
@@ -196,13 +195,13 @@ skill?: Record<string, any>;
 
   @IsOptional()
   @IsInt()
-  created_at:  Number;
+  created_at: Number;
 
   @IsOptional()
   @IsInt()
-  updated_at:  Number;
+  updated_at: Number;
 
- @IsOptional()
+  @IsOptional()
   @IsInt()
   updated_by?: number;
 

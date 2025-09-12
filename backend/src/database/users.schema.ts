@@ -23,7 +23,7 @@ export const seed = async (dropFirst = false) => {
             table.string('email').unique();
             table.string('phone_number').notNullable();
             table.string('profile_picture').nullable();
-            table.string('address_line_first').notNullable();
+            table.string('address_line_first').defaultTo(null);
             table.string('address_line_second').defaultTo(null);
             table.string('city').nullable();
             table.string('state').nullable();
@@ -88,9 +88,9 @@ export const seed = async (dropFirst = false) => {
 };
 
 
-// exports.seed = seed;
-// const run = async () => {
-//     //createProcedure();
-//     seed(true);
-// };
-// run();
+//   exports.seed = seed;
+//   const run = async () => {
+//      //createProcedure();
+//       seed();
+//   };
+//   run();

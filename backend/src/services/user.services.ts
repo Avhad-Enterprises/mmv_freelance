@@ -23,7 +23,7 @@ class UsersService {
 
     return users;
   }
- public async getAllActiveFreelancers(): Promise<Users[]> {
+  public async getAllActiveFreelancers(): Promise<Users[]> {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
@@ -32,21 +32,21 @@ class UsersService {
         is_banned: false,
       })
       .orderBy("created_at", "desc");
-     return users;
+    return users;
   }
 
-public async getactiveeditorcount(): Promise<Users[]> {
+  public async getactiveeditorcount(): Promise<Users[]> {
 
-   const users = await DB("users as u")
-  .leftJoin("projects_task as t", "u.user_id", "t.editor_id")
-  .select(
-    "u.user_id as editor_id",
-    "u.*",
-    DB.raw("COALESCE(COUNT(t.projects_task_id), 0) as task_count")
-  )
-  .where("u.account_type", "freelancer") // ✅ condition on users table
-  .groupBy("u.user_id", "u.*")
-  .orderBy("task_count", "desc");
+    const users = await DB("users as u")
+      .leftJoin("projects_task as t", "u.user_id", "t.editor_id")
+      .select(
+        "u.user_id as editor_id",
+        "u.*",
+        DB.raw("COALESCE(COUNT(t.projects_task_id), 0) as task_count")
+      )
+      .where("u.account_type", "freelancer") // ✅ condition on users table
+      .groupBy("u.user_id", "u.*")
+      .orderBy("task_count", "desc");
 
     return users;
   }
@@ -266,18 +266,24 @@ public async getactiveeditorcount(): Promise<Users[]> {
   }
 
 
-  public async createUserInvitation(data: Record<string, any>): Promise<void> {
-    const { email } = data;
-
+  public async createUserInvitations(data: Record<string, any>,): Promise<void> {
+    const { email, username, password } = data;
 
     if (!email) throw new HttpException(400, "Email is required");
 
+    if (!username) throw new HttpException(400, "Username is required");
+
+    if (!password) throw new HttpException(400, "Password is required");
 
     const exists = await DB(T.USERS_TABLE).where({ email }).first();
     if (exists) throw new HttpException(409, "User already invited");
 
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    data.password = hashedPassword;
+    const res = await DB(T.USERS_TABLE).insert(data).returning("*");
+    return res[0];
 
-    await DB(T.USERS_TABLE).insert(data);
+    // await DB(T.USERS_TABLE).insert(data);
 
   }
 
@@ -724,6 +730,67 @@ public async getactiveeditorcount(): Promise<Users[]> {
 
   //   return editor;
   // }
+
+//   public async createuserInvitation(data: Record<string, any>): Promise<any> {
+//   const { email, username, password } = data;
+
+//   if (!email || !username || !password) {
+//     throw new HttpException(400, "Email, username, and password are required");
+//   }
+
+//   const existingUser = await DB(T.USERS_TABLE).where({ email }).first();
+//   if (existingUser) {
+//     throw new HttpException(409, "User with this email already exists");
+//   }
+
+//   const hashedPassword = await bcrypt.hash(password, 10);
+
+//   const insertPayload = {
+//     ...data,
+//     password: hashedPassword,
+//     created_at: new Date(),
+//     updated_at: new Date(),
+//   };
+
+//   const inserted = await DB(T.USERS_TABLE)
+//     .insert(insertPayload)
+//     .returning("*");
+
+//   return inserted[0];
+// }
+
+
+  public async createuserInvitation(data: UsersDto): Promise<Users> {
+ 
+    if (!data.first_name || !data.last_name|| !data.username || !data.password || !data.email || !data.phone_number) {
+      throw new HttpException(400, "Missing required fields");
+    }
+    if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
+
+    const existingEmployee = await DB(T.USERS_TABLE)
+      .where({ email: data.email })
+      .first();
+
+    if (existingEmployee)
+      throw new HttpException(409, "Email already registered");
+
+    if (data.username) {
+      const existingUsername = await DB(T.USERS_TABLE)
+        .where({ username: data.username })
+        .first();
+
+
+      if (existingUsername) {
+        throw new HttpException(409, "Username already taken");
+      }
+    }
+
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    data.password = hashedPassword;
+    const res = await DB(T.USERS_TABLE).insert(data).returning("*");
+    return res[0];
+  }
 
 
 }

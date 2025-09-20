@@ -40,7 +40,7 @@ class UsersController {
     }
   };
 
-   public geteditorcount = async (req: Request, res: Response, next: NextFunction) => {
+  public geteditorcount = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const freelancers = await this.UsersService.getactiveeditorcount();
       res.status(200).json({ data: freelancers, message: "Active freelancers fetched successfully" });
@@ -232,23 +232,23 @@ class UsersController {
     }
   };
 
-  public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const body = req.body;
-      if (!body.email) throw new HttpException(400, "Email is required");
-      const token = crypto.randomBytes(32).toString("hex");
-      const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-      await this.UsersService.createUserInvitation({
-        ...body,
-        invite_token: token,
-        expires_at: expiresAt,
-      });
+  // public inviteUser = async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const body = req.body;
+  //     if (!body.email) throw new HttpException(400, "Email is required");
+  //     const token = crypto.randomBytes(32).toString("hex");
+  //     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  //     await this.UsersService.createUserInvitation({
+  //       ...body,
+  //       invite_token: token,
+  //       expires_at: expiresAt,
+  //     });
 
-      res.status(200).json({ message: "Invitation sent" });
-    } catch (error) {
-      next(error);
-    }
-  };
+  //     res.status(200).json({ message: "Invitation sent" });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
   public insertEmployee = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -390,10 +390,12 @@ class UsersController {
       const token = crypto.randomBytes(32).toString("hex");
       const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-      await this.UsersService.createUserInvitation({
+      await this.UsersService.createUserInvitations({
         ...body,
-        invite_token: token,
-        expires_at: expiresAt,
+        username: body.username,
+        password: body.password,
+        // invite_token: token,
+        // expires_at: expiresAt,
         invited_by: req.user?.user_id,
       });
 
@@ -457,36 +459,129 @@ class UsersController {
     }
   };
 
-// public insertClient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     const userData = { ...req.body, account_type: "client", account_status: "inactive" };
+  // public insertClient = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  //   try {
+  //     const userData = { ...req.body, account_type: "client", account_status: "inactive" };
 
-//     if (!userData.first_name || !userData.username || !userData.phone_number) {
-//       throw new HttpException(400, 'Missing required fields');
-//     }
-//     delete userData.skill;
+  //     if (!userData.first_name || !userData.username || !userData.phone_number) {
+  //       throw new HttpException(400, 'Missing required fields');
+  //     }
+  //     delete userData.skill;
 
-//     const newUser = await this.UsersService.insertClient(userData);
-//     res.status(201).json({ data: newUser, message: "Client added successfully" });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  //     const newUser = await this.UsersService.insertClient(userData);
+  //     res.status(201).json({ data: newUser, message: "Client added successfully" });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
 
-// public insertEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-//   try {
-//     const userData = { ...req.body, account_type: "freelancer", account_status: "inactive" };
+  // public insertEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  //   try {
+  //     const userData = { ...req.body, account_type: "freelancer", account_status: "inactive" };
 
-//     if (!userData.skill || Object.keys(userData.skill).length === 0) {
-//       throw new HttpException(400, "Skill data is required for editor");
-//     }
+  //     if (!userData.skill || Object.keys(userData.skill).length === 0) {
+  //       throw new HttpException(400, "Skill data is required for editor");
+  //     }
 
-//     const newUser = await this.UsersService.insertEditor(userData);
-//     res.status(201).json({ data: newUser, message: "Editor (freelancer) added successfully" });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  //     const newUser = await this.UsersService.insertEditor(userData);
+  //     res.status(201).json({ data: newUser, message: "Editor (freelancer) added successfully" });
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
+  // public sendInvitation = async (req: Request, res: Response, next: NextFunction) => {
+  //   try {
+  //     const {
+  //       first_name,
+  //       last_name,
+  //       username,
+  //       email,
+  //       phone_number,
+  //       password
+  //     } = req.body;
+
+  //     if (!first_name || !last_name || !username || !email || !phone_number || !password) {
+  //       throw new HttpException(400, "All fields are required");
+  //     }
+
+  //     const token = crypto.randomBytes(32).toString("hex");
+  //     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+  //     const user = await this.UsersService.createuserInvitation({
+  //       first_name,
+  //       last_name,
+  //       username,
+  //       email,
+  //       phone_number,
+  //       password
+  //     });
+
+  //     const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
+
+  //     const EmailService = require('../utils/emailer').default || require('../utils/emailer');
+  //     const emailServiceInstance = new EmailService();
+
+  //     await emailServiceInstance.sendEmail({
+  //       to: email,
+  //       subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
+  //       html: `
+  //         <p>Hi ${first_name},</p>
+  //         <p>You've been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
+  //         <p>Please click the link below to register your account:</p>
+  //         <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
+  //         <p>This link will expire in 24 hours.</p>
+  //         <p>If you did not expect this invitation, you can safely ignore this email.</p>
+  //         <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
+  //       `,
+  //     });
+
+  //     res.status(200).json({
+  //       message: "Invitation sent successfully",
+
+  //     });
+
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // };
+
+  public sendInvitation = async (req: Request,res: Response,next: NextFunction): Promise<void> => {
+    try {
+      const {
+        first_name,
+        last_name,
+        username,
+        email,
+        phone_number,
+        password
+      } = req.body;
+      console.log(req.body);
+      const locationData: Users = await this.UsersService.createuserInvitation(req.body);
+      const token = crypto.randomBytes(32).toString("hex");
+      const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
+
+      // const EmailService = require('../utils/emailer').default || require('../utils/emailer');
+      // const emailServiceInstance = new EmailService();
+
+      await sendEmail({
+        to: email,
+        subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,
+        html: `
+        <p>Hi ${first_name},</p>
+        <p>You've been invited to join <strong>${process.env.FRONTEND_APPNAME}</strong>.</p>
+        <p>Please click the link below to register your account:</p>
+        <p><a href="${inviteLink}" target="_blank" style="color: #1a73e8; text-decoration: underline;">Click here to register</a></p>
+        <p>This link will expire in 24 hours.</p>
+        <p>If you did not expect this invitation, you can safely ignore this email.</p>
+        <p>Thanks,<br>${process.env.FRONTEND_APPNAME} Team</p>
+      `,
+      });
+      res.status(201).json({ data: locationData, message: "Inserted" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 }
 export default UsersController;

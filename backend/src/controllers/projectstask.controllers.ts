@@ -217,6 +217,7 @@ class projectstaskcontroller {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
+
   public getbytasksid = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { client_id, is_active } = req.body;
@@ -254,66 +255,98 @@ class projectstaskcontroller {
       next(error);
     }
   };
+
   public getCountBy = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { editor_id } = req.params;
+    try {
+      const { editor_id } = req.params;
 
-    const count = await this.ProjectstaskService.getCountByEditor(Number(editor_id));
+      const count = await this.ProjectstaskService.getCountByEditor(Number(editor_id));
 
-    res.status(200).json({
-      success: true,
-      editor_id: Number(editor_id),
-      shortlisted_count: count
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-public getClientcount = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { client_id } = req.params;
+      res.status(200).json({
+        success: true,
+        editor_id: Number(editor_id),
+        shortlisted_count: count
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-    const count = await this.ProjectstaskService.getCountByClient(Number(client_id));
+  public getClientcount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { client_id } = req.params;
 
-    res.status(200).json({
-      success: true,
-      client_id: Number(client_id),
-      projects_count: count
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+      const count = await this.ProjectstaskService.getCountByClient(Number(client_id));
 
-public getActiveclientsCount = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const count = await this.ProjectstaskService.getActiveclientsCount();
+      res.status(200).json({
+        success: true,
+        client_id: Number(client_id),
+        projects_count: count
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-    res.status(200).json({
-      success: true,
-      active_clients_count: count
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  public getActiveclientsCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const count = await this.ProjectstaskService.getActiveclientsCount();
 
-public getActiveEditorsCount = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const count = await this.ProjectstaskService.getActiveEditorsCount();
+      res.status(200).json({
+        success: true,
+        active_clients_count: count
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 
-    res.status(200).json({
-      success: true,
-      active_editors_count: count
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+  public getActiveEditorsCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const count = await this.ProjectstaskService.getActiveEditorsCount();
+
+      res.status(200).json({
+        success: true,
+        active_editors_count: count
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getCompletedProjectCount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const count = await this.ProjectstaskService.getCompletedProjectCount();
+      res.status(200).json({ count, message: 'Completed projects count fetched successfully' });
+    } catch (error) {
+      next(error);
+    }
+  };
+  
+  public updateProjectTaskStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const { projects_task_id, status, user_id } = req.body;
+
+      if (!projects_task_id || typeof status === 'undefined') {
+        throw new HttpException(400, "projects_task_id and status are required");
+      }
+
+      const updated = await this.ProjectstaskService.updateProjectTaskStatus(
+        projects_task_id,
+        status,
+        user_id
+      );
+
+      res.status(200).json({
+        data: updated,
+        message: "Project task status updated successfully",
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
 }
+
 export default projectstaskcontroller;
-
-function next(error: any) {
-  throw new Error('Function not implemented.');
-}
-

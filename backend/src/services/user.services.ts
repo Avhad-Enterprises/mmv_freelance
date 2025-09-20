@@ -23,9 +23,7 @@ class UsersService {
 
     return users;
   }
-
-
-  public async getAllActiveFreelancers(): Promise<Users[]> {
+ public async getAllActiveFreelancers(): Promise<Users[]> {
     const users = await DB(T.USERS_TABLE)
       .select("*")
       .where({
@@ -34,11 +32,24 @@ class UsersService {
         is_banned: false,
       })
       .orderBy("created_at", "desc");
+     return users;
+  }
 
+public async getactiveeditorcount(): Promise<Users[]> {
+
+   const users = await DB("users as u")
+  .leftJoin("projects_task as t", "u.user_id", "t.editor_id")
+  .select(
+    "u.user_id as editor_id",
+    "u.*",
+    DB.raw("COALESCE(COUNT(t.projects_task_id), 0) as task_count")
+  )
+  .where("u.account_type", "freelancer") // ✅ condition on users table
+  .groupBy("u.user_id", "u.*")
+  .orderBy("task_count", "desc");
 
     return users;
   }
-
 
   public async Insert(data: UsersDto): Promise<Users> {
 
@@ -646,73 +657,73 @@ class UsersService {
       .update({ password: hashedNewPassword, updated_at: new Date() });
   }
 
-// public async insertClient(userData: UsersDto): Promise<Users> {
-//   if (isEmpty(userData)) {
-//     throw new HttpException(400, "Client data is empty");
-//   }
+  // public async insertClient(userData: UsersDto): Promise<Users> {
+  //   if (isEmpty(userData)) {
+  //     throw new HttpException(400, "Client data is empty");
+  //   }
 
-//   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
-//   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
+  //   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
+  //   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
 
-//   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
-//   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
+  //   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
+  //   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
 
-//   const hashedPassword = await bcrypt.hash(userData.password, 10);
+  //   const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-//   const [client] = await DB(T.USERS_TABLE)
-//     .insert({
-//       first_name: userData.first_name,
-//       last_name: userData.last_name || null,
-//       username: userData.username,
-//       email: userData.email,
-//       phone_number: userData.phone_number,
-//       password: hashedPassword,
-//       account_type: "client",
-//       skill: null,
-//       address_line_first: userData.address_line_first
-//     })
-//     .returning("*");
+  //   const [client] = await DB(T.USERS_TABLE)
+  //     .insert({
+  //       first_name: userData.first_name,
+  //       last_name: userData.last_name || null,
+  //       username: userData.username,
+  //       email: userData.email,
+  //       phone_number: userData.phone_number,
+  //       password: hashedPassword,
+  //       account_type: "client",
+  //       skill: null,
+  //       address_line_first: userData.address_line_first
+  //     })
+  //     .returning("*");
 
-//   return client;
-// }
+  //   return client;
+  // }
 
-// public async insertEditor(userData: UsersDto): Promise<Users> {
-//   if (isEmpty(userData)) {
-//     throw new HttpException(400, "Editor data is empty");
-//   }
-//   const { skill } = userData;
+  // public async insertEditor(userData: UsersDto): Promise<Users> {
+  //   if (isEmpty(userData)) {
+  //     throw new HttpException(400, "Editor data is empty");
+  //   }
+  //   const { skill } = userData;
 
-//   if (!skill || Object.keys(skill).length === 0) {
-//     throw new HttpException(400, "Skill is required for editors/freelancers");
-//   }
-
-
-//   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
-//   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
+  //   if (!skill || Object.keys(skill).length === 0) {
+  //     throw new HttpException(400, "Skill is required for editors/freelancers");
+  //   }
 
 
-//   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
-//   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
+  //   const existingEmail = await DB(T.USERS_TABLE).where({ email: userData.email }).first();
+  //   if (existingEmail) throw new HttpException(409, `Email ${userData.email} already exists`);
 
 
-//   const hashedPassword = await bcrypt.hash(userData.password, 10);
+  //   const existingUsername = await DB(T.USERS_TABLE).where({ username: userData.username }).first();
+  //   if (existingUsername) throw new HttpException(409, `Username ${userData.username} already exists`);
 
-//   const [editor] = await DB(T.USERS_TABLE)
-//     .insert({
-//       first_name: userData.first_name,
-//       last_name: userData.last_name || null,
-//       username: userData.username,
-//       email: userData.email,
-//       phone_number: userData.phone_number,
-//       password: hashedPassword,
-//       account_type: "freelancer",
-//       skill: JSON.stringify(skill),
-//       address_line_first: userData.address_line_first
-//     })
-//     .returning("*");
 
-//   return editor;
-// }
+  //   const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+  //   const [editor] = await DB(T.USERS_TABLE)
+  //     .insert({
+  //       first_name: userData.first_name,
+  //       last_name: userData.last_name || null,
+  //       username: userData.username,
+  //       email: userData.email,
+  //       phone_number: userData.phone_number,
+  //       password: hashedPassword,
+  //       account_type: "freelancer",
+  //       skill: JSON.stringify(skill),
+  //       address_line_first: userData.address_line_first
+  //     })
+  //     .returning("*");
+
+  //   return editor;
+  // }
 
 
 }

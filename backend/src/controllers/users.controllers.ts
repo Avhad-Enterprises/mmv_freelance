@@ -34,12 +34,20 @@ class UsersController {
   public getAllActiveFreelance = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const freelancers = await this.UsersService.getAllActiveFreelancers();
-      res.status(200).json({ data: freelancers, message: "Active customers fetched successfully" });
+      res.status(200).json({ data: freelancers, message: "Active freelancers fetched successfully" });
     } catch (error) {
       next(error);
     }
   };
 
+   public geteditorcount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const freelancers = await this.UsersService.getactiveeditorcount();
+      res.status(200).json({ data: freelancers, message: "Active freelancers fetched successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
   public insertUser = async (
     req: Request,

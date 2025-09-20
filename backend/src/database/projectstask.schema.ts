@@ -18,6 +18,7 @@ export const seed = async (dropFirst = false) => {
             table.string('project_title').notNullable();
             table.text('project_category').notNullable();
             table.date('deadline').notNullable();
+            table.integer("status").notNullable().defaultTo(0);   // 0: pending, 1: assigned, 2: completed
             table.text('project_description').notNullable();
             table.integer('budget').notNullable();
             table.jsonb('tags').nullable();
@@ -27,14 +28,15 @@ export const seed = async (dropFirst = false) => {
             table.text('projects_type').notNullable();
             table.string('project_format').notNullable();
             table.string('audio_voiceover').notNullable();
+            table.text('audio_description').notNullable();
             table.integer('video_length').notNullable();
             table.text('preferred_video_style').notNullable();
             table.string('sample_project_file').nullable();
             table.jsonb('project_files').nullable();
             table.boolean('show_all_files').defaultTo(false);
-            table.string('url').notNullable();               
-            table.string('meta_title').notNullable();         
-            table.text('meta_description').notNullable();     
+            table.string('url').notNullable();
+            table.string('meta_title').notNullable();
+            table.text('meta_description').notNullable();
             table.integer('is_active').defaultTo(0);
             table.integer('created_by').notNullable();
             table.timestamp('created_at').defaultTo(DB.fn.now());

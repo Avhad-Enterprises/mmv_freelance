@@ -20,7 +20,9 @@ class UsersRoute implements Route {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/client/active`, this.usersController.getAllActiveClient);
-    this.router.get(`${this.path}/freelancers/active`, this.usersController.getAllActiveFreelance);
+    this.router.get(`${this.path}/freelancers/active`, this.usersController.getAllActiveFreelance);    //active freelancers
+    this.router.get(`${this.path}/geteditorcount/active`, this.usersController.geteditorcount);
+
     this.router.post(`${this.path}/insert_user`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertUser);
     //backend login
     this.router.post(`${this.path}/login`, this.usersController.loginEmployee);
@@ -57,8 +59,8 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/email-verify`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.emailVerify);
     this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
 
-  //   this.router.post(`${this.path}/add-client`, this.usersController.insertClient);
-  //  this.router.post(`${this.path}/add-editor`, this.usersController.insertEditor);
+    //   this.router.post(`${this.path}/add-client`, this.usersController.insertClient);
+    //  this.router.post(`${this.path}/add-editor`, this.usersController.insertEditor);
 
 
 

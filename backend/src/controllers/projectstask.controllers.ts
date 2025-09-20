@@ -322,7 +322,7 @@ class projectstaskcontroller {
       next(error);
     }
   };
-  
+
   public updateProjectTaskStatus = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { projects_task_id, status, user_id } = req.body;
@@ -346,6 +346,14 @@ class projectstaskcontroller {
     }
   };
 
+  public getallprojectlisting = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const projects = await this.ProjectstaskService.getAllProjectslisting();
+      res.status(200).json({ data: projects, success: true });
+    } catch (err) {
+      next(err);
+    }
+  };
 
 }
 

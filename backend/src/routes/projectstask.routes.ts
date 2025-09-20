@@ -49,6 +49,8 @@ class projectstaskRoute implements Route {
       this.router.get(`${this.path}/completed-projects-count`, this.projectstaskcontroller.getCompletedProjectCount);
 
       this.router.patch(`${this.path}/updatestatus`, this.projectstaskcontroller.updateProjectTaskStatus);
+
+      this.router.get(`${this.path}/getallprojectlisting`, this.projectstaskcontroller.getallprojectlisting);
    }
 }
 

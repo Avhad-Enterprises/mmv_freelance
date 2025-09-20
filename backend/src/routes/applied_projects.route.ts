@@ -68,6 +68,12 @@ class AppliedProjectsRoute implements Route {
     this.router.get(`${this.path}/count/:id`, (req, res, next) => this.appliedProjectsController.appliedcount(req, res, next));
     this.router.get(`${this.path}/ongoing/:user_id`, (req, res, next) => this.appliedProjectsController.getongoing(req, res, next));
     this.router.get(`${this.path}/:user_id`, (req, res, next) => this.appliedProjectsController.getapplied(req, res, next));
+
+    this.router.get(`${this.path}/projects/completed-count`, this.appliedProjectsController.getCompletedProjectsCount);
+
+    this.router.get(`${this.path}/editor/assign-projects/:editorId`, this.appliedProjectsController.getProjectsHandledByEditor);
+    this.router.get(`${this.path}/editor/projects-handled/:editorId`, this.appliedProjectsController.getProjectsHandled);
+
   }
 }
 export default AppliedProjectsRoute;

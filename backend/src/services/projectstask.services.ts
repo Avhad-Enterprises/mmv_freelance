@@ -327,7 +327,7 @@ class ProjectstaskService {
     return Number(result?.count || 0);
   }
 
-   public async getCountByClient(client_id: number): Promise<number> {
+  public async getCountByClient(client_id: number): Promise<number> {
     if (!client_id) {
       throw new HttpException(400, "client_id is required");
     }
@@ -343,26 +343,59 @@ class ProjectstaskService {
     return Number(result?.count || 0);
   }
   public async getActiveclientsCount(): Promise<number> {
-  const result = await DB(T.PROJECTS_TASK)
-    .where({
-      is_deleted: false,
-      is_active: 1
-    })
-    .whereNotNull("client_id")       
-    .countDistinct("client_id as count")  
-    .first();
+    const result = await DB(T.PROJECTS_TASK)
+      .where({
+        is_deleted: false,
+        is_active: 1
+      })
+      .whereNotNull("client_id")
+      .countDistinct("client_id as count")
+      .first();
 
-  return Number(result?.count || 0);
-}
+    return Number(result?.count || 0);
+  }
   public async getActiveEditorsCount(): Promise<any> {
-  const result = await DB(T.PROJECTS_TASK)
-    .where({
-      is_deleted: false,
-      is_active: 1
-    })
-    .whereNotNull("editor_id")       
-    .countDistinct("editor_id as count")  
-    .first();
-}
+    const result = await DB(T.PROJECTS_TASK)
+      .where({
+        is_deleted: false,
+        is_active: 1
+      })
+      .whereNotNull("editor_id")
+      .countDistinct("editor_id as count")
+      .first();
+  }
+
+  public async getCompletedProjectCount(): Promise<number> {
+    const result = await DB(PROJECTS_TASK)
+      .where({ is_active: 1, is_deleted: false })
+      .count('projects_task_id as count')
+      .first();
+
+    return Number(result?.count || 0);
+  }
+
+  public async updateProjectTaskStatus(projects_task_id: number, status: number, user_id?: number): Promise<any> {
+
+    if (!projects_task_id) {
+      throw new HttpException(400, "projects_task_id is required");
+    }
+
+    const updated = await DB(T.PROJECTS_TASK)
+      .where({ projects_task_id })
+      .update({
+        status,
+        editor_id: user_id,
+        updated_at: new Date()
+      })
+      .returning("*");
+
+    if (!updated[0]) {
+      throw new HttpException(404, "Project not found");
+    }
+
+    return updated[0];
+  }
+
+
 }
 export default ProjectstaskService;

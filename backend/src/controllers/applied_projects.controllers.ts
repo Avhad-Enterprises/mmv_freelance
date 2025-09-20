@@ -209,6 +209,60 @@ class AppliedProjectsController {
     }
   };
 
+  public getCompletedProjectsCount = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const count = await this.AppliedProjectsService.getCompletedProjectCount();
+      res.status(200).json({
+        data: { completed_projects: count },
+        message: "Completed project count fetched successfully"
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getProjectsHandledByEditor = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const editorId = parseInt(req.params.editorId);
+      if (isNaN(editorId)) {
+        throw new HttpException(400, "Invalid editor ID");
+      }
+
+      const count = await this.AppliedProjectsService.getProjectsHandledCount(editorId);
+
+      res.status(200).json({
+        data: { count },
+        message: `Total projects handled by editor ${editorId}`
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getProjectsHandled = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const editorId = parseInt(req.params.editorId);
+    if (isNaN(editorId)) {
+      throw new HttpException(400, "Invalid editor ID");
+    }
+
+    const projects = await this.AppliedProjectsService.listProjectsHandled(editorId);
+    res.status(200).json({
+      data: projects,
+      message: `Projects handled by editor ${editorId}`
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
 }
 
 export default AppliedProjectsController;

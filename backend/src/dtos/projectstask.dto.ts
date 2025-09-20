@@ -45,8 +45,9 @@ export class ProjectsTaskDto {
   @IsString()
   additional_notes: string;
 
-  // @IsObject()
-  // status: object;
+  @IsOptional({ groups: ['create', 'update'] })
+  @IsInt({ groups: ['create', 'update'] })
+  status?: number;
 
   @IsString()
   projects_type: string;
@@ -56,6 +57,9 @@ export class ProjectsTaskDto {
 
   @IsString()
   audio_voiceover: string;
+
+  @IsString()
+  audio_description: string;
 
   @IsInt()
   video_length: number;

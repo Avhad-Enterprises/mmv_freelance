@@ -45,6 +45,10 @@ class projectstaskRoute implements Route {
       // Active Editors Count
       this.router.get(`${this.path}/count/active-editors`, (req, res, next) => this.projectstaskcontroller.getActiveEditorsCount(req, res, next));
 
+      // Project Management Dashboard counts
+      this.router.get(`${this.path}/completed-projects-count`, this.projectstaskcontroller.getCompletedProjectCount);
+
+      this.router.patch(`${this.path}/updatestatus`, this.projectstaskcontroller.updateProjectTaskStatus);
    }
 }
 

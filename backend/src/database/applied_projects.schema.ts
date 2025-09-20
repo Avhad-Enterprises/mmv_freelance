@@ -16,7 +16,7 @@ export const seed = async (dropFirst = false) => {
             table.increments('applied_projects_id').primary();
             table.integer("projects_task_id").notNullable();
             table.integer("user_id").notNullable();
-            table.integer("status").notNullable().defaultTo(0); // 0: pending, 1: completed, 2: reject
+            table.integer("status").notNullable().defaultTo(0); // 0: pending, 1: ongoing, 2: completed
             table.text('description');
             // compulsory columns
             table.boolean("is_active").defaultTo(true);

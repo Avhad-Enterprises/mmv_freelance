@@ -311,10 +311,15 @@ class UsersService {
 
 
   public async login(email: string, password: string): Promise<Users & { token: string }> {
-    if (!email || !password) {
-      throw new HttpException(400, "Email and password are required");
+
+    let user: any;
+
+    if (validator.isEmail(email)) {
+      user = await DB(T.USERS_TABLE).where({ email }).first();
     }
-    const user = await DB(T.USERS_TABLE).where({ email }).first();
+    else {
+      user = await DB(T.USERS_TABLE).where({ username: email }).first();
+    }
     if (!user) {
       throw new HttpException(404, "Email not registered");
     }
@@ -413,233 +418,233 @@ class UsersService {
     return await this.Insert(adminData);
   }
 
-  public async sendinvitation(data: UsersDto): Promise<{ message: string; invitation: any }> {
-    if (isEmpty(data)) {
-      throw new HttpException(400, "Data Invalid");
-    }
+  // public async sendinvitation(data: UsersDto): Promise<{ message: string; invitation: any }> {
+  //   if (isEmpty(data)) {
+  //     throw new HttpException(400, "Data Invalid");
+  //   }
 
-    const existingEmployee = await DB(T.USERS_TABLE)
-      .where({ email: data.email })
-      .first();
+  //   const existingEmployee = await DB(T.USERS_TABLE)
+  //     .where({ email: data.email })
+  //     .first();
 
-    if (existingEmployee) {
-      throw new HttpException(409, "Email already registered");
-    }
+  //   if (existingEmployee) {
+  //     throw new HttpException(409, "Email already registered");
+  //   }
 
-    const inviteToken = jwt.sign(
-      { email: data.email },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "24h" }
-    );
+  //   const inviteToken = jwt.sign(
+  //     { email: data.email },
+  //     process.env.JWT_SECRET as string,
+  //     { expiresIn: "24h" }
+  //   );
 
-    const invitationData = {
-      full_name: `${data.first_name} ${data.last_name}`.trim(),
-      email: data.email,
-      token_hash: inviteToken,
-      status: 'pending',
-      account_type: data.account_type || 'admin',
-      expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000),
-      is_used: false,
-      created_at: new Date()
-    };
+  //   const invitationData = {
+  //     full_name: `${data.first_name} ${data.last_name}`.trim(),
+  //     email: data.email,
+  //     token_hash: inviteToken,
+  //     status: 'pending',
+  //     account_type: data.account_type || 'admin',
+  //     expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000),
+  //     is_used: false,
+  //     created_at: new Date()
+  //   };
 
-    const [newInvitation] = await DB(T.INVITATION_TABLE)
-      .insert(invitationData)
-      .returning("*");
+  //   const [newInvitation] = await DB(T.INVITATION_TABLE)
+  //     .insert(invitationData)
+  //     .returning("*");
 
-    if (!newInvitation) {
-      throw new HttpException(500, "Failed to create invitation");
-    }
+  //   if (!newInvitation) {
+  //     throw new HttpException(500, "Failed to create invitation");
+  //   }
 
-    return {
-      message: "Invitation sent successfully",
-      invitation: newInvitation
-    };
-  }
+  //   return {
+  //     message: "Invitation sent successfully",
+  //     invitation: newInvitation
+  //   };
+  // }
 
-  public async insertAdminUser(userData: UsersDto): Promise<Users> {
-    if (isEmpty(userData)) throw new HttpException(400, 'User data is empty');
+  // public async insertAdminUser(userData: UsersDto): Promise<Users> {
+  //   if (isEmpty(userData)) throw new HttpException(400, 'User data is empty');
 
-    const email = String(userData.email).trim().toLowerCase();
-    const username = String(userData.username).trim();
+  //   const email = String(userData.email).trim().toLowerCase();
+  //   const username = String(userData.username).trim();
 
-    const existingByEmail = await DB(T.USERS_TABLE).where({ email }).first();
-    if (existingByEmail) throw new HttpException(409, `Email ${email} already exists`);
+  //   const existingByEmail = await DB(T.USERS_TABLE).where({ email }).first();
+  //   if (existingByEmail) throw new HttpException(409, `Email ${email} already exists`);
 
-    const existingByUsername = await DB(T.USERS_TABLE).where({ username }).first();
-    if (existingByUsername) throw new HttpException(409, `Username ${username} already exists`);
+  //   const existingByUsername = await DB(T.USERS_TABLE).where({ username }).first();
+  //   if (existingByUsername) throw new HttpException(409, `Username ${username} already exists`);
 
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
+  //   const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    const insertPayload = {
-      first_name: userData.first_name?.trim(),
-      last_name: userData.last_name?.trim() ?? null,
-      username,
-      email,
-      phone_number: String(userData.phone_number).trim(),
-      password: hashedPassword,
-      account_type: 'admin',
-      account_status: '0',
-    };
+  //   const insertPayload = {
+  //     first_name: userData.first_name?.trim(),
+  //     last_name: userData.last_name?.trim() ?? null,
+  //     username,
+  //     email,
+  //     phone_number: String(userData.phone_number).trim(),
+  //     password: hashedPassword,
+  //     account_type: 'admin',
+  //     account_status: '0',
+  //   };
 
-    const [newUser] = await DB(T.USERS_TABLE).insert(insertPayload).returning([
-      'user_id',
-      'first_name',
-      'last_name',
-      'username',
-      'email',
-      'phone_number',
-      'account_type',
-      'account_status',
-      'created_at',
-      'updated_at',
-    ]);
+  //   const [newUser] = await DB(T.USERS_TABLE).insert(insertPayload).returning([
+  //     'user_id',
+  //     'first_name',
+  //     'last_name',
+  //     'username',
+  //     'email',
+  //     'phone_number',
+  //     'account_type',
+  //     'account_status',
+  //     'created_at',
+  //     'updated_at',
+  //   ]);
 
-    return newUser;
+  //   return newUser;
 
-  }
+  // }
 
-  public async Insertsuser(data: UsersDto): Promise<Users> {
-    if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
+  // public async Insertsuser(data: UsersDto): Promise<Users> {
+  //   if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
 
-    if (!data.first_name || !data.username || !data.password || !data.email || !data.phone_number) {
-      throw new HttpException(400, "Missing required fields");
-    }
+  //   if (!data.first_name || !data.username || !data.password || !data.email || !data.phone_number) {
+  //     throw new HttpException(400, "Missing required fields");
+  //   }
 
-    const existingEmployee = await DB(T.USERS_TABLE)
-      .where({ email: data.email })
-      .first();
+  //   const existingEmployee = await DB(T.USERS_TABLE)
+  //     .where({ email: data.email })
+  //     .first();
 
-    if (existingEmployee)
-      throw new HttpException(409, "Email already registered");
+  //   if (existingEmployee)
+  //     throw new HttpException(409, "Email already registered");
 
-    if (data.username) {
-      const existingUsername = await DB(T.USERS_TABLE)
-        .where({ username: data.username })
-        .first();
+  //   if (data.username) {
+  //     const existingUsername = await DB(T.USERS_TABLE)
+  //       .where({ username: data.username })
+  //       .first();
 
-      if (existingUsername) {
-        throw new HttpException(409, "Username already taken");
-      }
-    }
+  //     if (existingUsername) {
+  //       throw new HttpException(409, "Username already taken");
+  //     }
+  //   }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+  //   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-    const userData = {
-      first_name: data.first_name.trim(),
-      last_name: data.last_name?.trim() || null,
-      email: data.email.trim().toLowerCase(),
-      phone_number: data.phone_number.trim(),
-      username: data.username.trim(),
-      password: hashedPassword,
-      account_type: 'admin',
-      account_status: 'inactive',
-      address_line_first: data.address_line_first || '',
-      created_at: new Date(),
-      updated_at: new Date()
-    };
+  //   const userData = {
+  //     first_name: data.first_name.trim(),
+  //     last_name: data.last_name?.trim() || null,
+  //     email: data.email.trim().toLowerCase(),
+  //     phone_number: data.phone_number.trim(),
+  //     username: data.username.trim(),
+  //     password: hashedPassword,
+  //     account_type: 'admin',
+  //     account_status: 'inactive',
+  //     address_line_first: data.address_line_first || '',
+  //     created_at: new Date(),
+  //     updated_at: new Date()
+  //   };
 
-    const [newUser] = await DB(T.USERS_TABLE).insert(userData).returning("*");
+  //   const [newUser] = await DB(T.USERS_TABLE).insert(userData).returning("*");
 
-    return newUser;
-  }
+  //   return newUser;
+  // }
 
-  public async createUsersInvitation(data: { email: string; full_name?: string; invite_token: string; expires_at: Date; invited_by?: number }): Promise<void> {
-    const existingUser = await this.getUserByEmail(data.email);
-    if (existingUser) {
-      throw new HttpException(409, "Email is already registered");
-    }
+  // public async createUsersInvitation(data: { email: string; full_name?: string; invite_token: string; expires_at: Date; invited_by?: number }): Promise<void> {
+  //   const existingUser = await this.getUserByEmail(data.email);
+  //   if (existingUser) {
+  //     throw new HttpException(409, "Email is already registered");
+  //   }
 
-    await DB(T.USERS_TABLE).insert({
-      email: data.email,
-      first_name: data.full_name,
-      invite_token: data.invite_token,
-      invite_token_expires: data.expires_at,
-      invited_by: data.invited_by,
-      is_active: false,
-      email_verified: false,
-      created_at: new Date(),
-    });
-  }
+  //   await DB(T.USERS_TABLE).insert({
+  //     email: data.email,
+  //     first_name: data.full_name,
+  //     invite_token: data.invite_token,
+  //     invite_token_expires: data.expires_at,
+  //     invited_by: data.invited_by,
+  //     is_active: false,
+  //     email_verified: false,
+  //     created_at: new Date(),
+  //   });
+  // }
 
-  public async emailVerifyToken(data: UsersDto): Promise<Users> {
-    if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
+  // public async emailVerifyToken(data: UsersDto): Promise<Users> {
+  //   if (isEmpty(data)) throw new HttpException(400, "Data Invalid");
 
-    if (!data.first_name || !data.username || !data.password || !data.email || !data.phone_number) {
-      throw new HttpException(400, "Missing required fields");
-    }
+  //   if (!data.first_name || !data.username || !data.password || !data.email || !data.phone_number) {
+  //     throw new HttpException(400, "Missing required fields");
+  //   }
 
-    const existingEmployee = await DB(T.USERS_TABLE)
-      .where({ email: data.email })
-      .first();
+  //   const existingEmployee = await DB(T.USERS_TABLE)
+  //     .where({ email: data.email })
+  //     .first();
 
-    if (existingEmployee)
-      throw new HttpException(409, "Email already registered");
+  //   if (existingEmployee)
+  //     throw new HttpException(409, "Email already registered");
 
-    if (data.username) {
-      const existingUsername = await DB(T.USERS_TABLE)
-        .where({ username: data.username })
-        .first();
+  //   if (data.username) {
+  //     const existingUsername = await DB(T.USERS_TABLE)
+  //       .where({ username: data.username })
+  //       .first();
 
-      if (existingUsername) {
-        throw new HttpException(409, "Username already taken");
-      }
-    }
+  //     if (existingUsername) {
+  //       throw new HttpException(409, "Username already taken");
+  //     }
+  //   }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-    const verificationToken = jwt.sign(
-      { email: data.email },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "24h" }
-    );
+  //   const hashedPassword = await bcrypt.hash(data.password, 10);
+  //   const verificationToken = jwt.sign(
+  //     { email: data.email },
+  //     process.env.JWT_SECRET as string,
+  //     { expiresIn: "24h" }
+  //   );
 
-    const userData = {
-      first_name: data.first_name.trim(),
-      last_name: data.last_name?.trim() || null,
-      email: data.email.trim().toLowerCase(),
-      phone_number: data.phone_number.trim(),
-      username: data.username.trim(),
-      password: hashedPassword,
-      account_type: 'admin',
-      account_status: '0',
-      address_line_first: data.address_line_first || '',
-      reset_token: verificationToken, // Using reset_token for email verification
-      reset_token_expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-      created_at: new Date(),
-      updated_at: new Date()
-    };
+  //   const userData = {
+  //     first_name: data.first_name.trim(),
+  //     last_name: data.last_name?.trim() || null,
+  //     email: data.email.trim().toLowerCase(),
+  //     phone_number: data.phone_number.trim(),
+  //     username: data.username.trim(),
+  //     password: hashedPassword,
+  //     account_type: 'admin',
+  //     account_status: '0',
+  //     address_line_first: data.address_line_first || '',
+  //     reset_token: verificationToken, // Using reset_token for email verification
+  //     reset_token_expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+  //     created_at: new Date(),
+  //     updated_at: new Date()
+  //   };
 
-    const [newUser] = await DB(T.USERS_TABLE).insert(userData).returning("*");
+  //   const [newUser] = await DB(T.USERS_TABLE).insert(userData).returning("*");
 
-    // Send welcome email with verification link
-    const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
-    const emailHtml = `
-      <h1>Welcome to Freelyancer!</h1>
-      <p>Dear ${data.first_name},</p>
-      <p>Your account has been created successfully. Here are your login credentials:</p>
-      <p><strong>Username:</strong> ${data.username}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p>Please click the button below to verify your email address:</p>
-      <p>
-        <a href="${verificationLink}" style="background-color: #4CAF50; color: white; padding: 14px 25px; text-align: center; text-decoration: none; display: inline-block; border-radius: 4px;">
-          Verify Email
-        </a>
-      </p>
-      <p>Or copy and paste this link in your browser:</p>
-      <p>${verificationLink}</p>
-      <p>This verification link will expire in 24 hours.</p>
-      <p>If you did not create this account, please ignore this email.</p>
-      <p>Best regards,<br>The Freelyancer Team</p>
-    `;
+  //   // Send welcome email with verification link
+  //   const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${verificationToken}`;
+  //   const emailHtml = `
+  //     <h1>Welcome to Freelyancer!</h1>
+  //     <p>Dear ${data.first_name},</p>
+  //     <p>Your account has been created successfully. Here are your login credentials:</p>
+  //     <p><strong>Username:</strong> ${data.username}</p>
+  //     <p><strong>Email:</strong> ${data.email}</p>
+  //     <p>Please click the button below to verify your email address:</p>
+  //     <p>
+  //       <a href="${verificationLink}" style="background-color: #4CAF50; color: white; padding: 14px 25px; text-align: center; text-decoration: none; display: inline-block; border-radius: 4px;">
+  //         Verify Email
+  //       </a>
+  //     </p>
+  //     <p>Or copy and paste this link in your browser:</p>
+  //     <p>${verificationLink}</p>
+  //     <p>This verification link will expire in 24 hours.</p>
+  //     <p>If you did not create this account, please ignore this email.</p>
+  //     <p>Best regards,<br>The Freelyancer Team</p>
+  //   `;
 
-    await sendEmail({
-      to: data.email,
-      subject: "Welcome to Freelyancer - Verify Your Email",
-      html: emailHtml
-    });
+  //   await sendEmail({
+  //     to: data.email,
+  //     subject: "Welcome to Freelyancer - Verify Your Email",
+  //     html: emailHtml
+  //   });
 
-    return newUser;
-  }
+  //   return newUser;
+  // }
 
   public async changePassword(userId: number, oldPassword: string, newPassword: string): Promise<void> {
 
@@ -731,38 +736,38 @@ class UsersService {
   //   return editor;
   // }
 
-//   public async createuserInvitation(data: Record<string, any>): Promise<any> {
-//   const { email, username, password } = data;
+  //   public async createuserInvitation(data: Record<string, any>): Promise<any> {
+  //   const { email, username, password } = data;
 
-//   if (!email || !username || !password) {
-//     throw new HttpException(400, "Email, username, and password are required");
-//   }
+  //   if (!email || !username || !password) {
+  //     throw new HttpException(400, "Email, username, and password are required");
+  //   }
 
-//   const existingUser = await DB(T.USERS_TABLE).where({ email }).first();
-//   if (existingUser) {
-//     throw new HttpException(409, "User with this email already exists");
-//   }
+  //   const existingUser = await DB(T.USERS_TABLE).where({ email }).first();
+  //   if (existingUser) {
+  //     throw new HttpException(409, "User with this email already exists");
+  //   }
 
-//   const hashedPassword = await bcrypt.hash(password, 10);
+  //   const hashedPassword = await bcrypt.hash(password, 10);
 
-//   const insertPayload = {
-//     ...data,
-//     password: hashedPassword,
-//     created_at: new Date(),
-//     updated_at: new Date(),
-//   };
+  //   const insertPayload = {
+  //     ...data,
+  //     password: hashedPassword,
+  //     created_at: new Date(),
+  //     updated_at: new Date(),
+  //   };
 
-//   const inserted = await DB(T.USERS_TABLE)
-//     .insert(insertPayload)
-//     .returning("*");
+  //   const inserted = await DB(T.USERS_TABLE)
+  //     .insert(insertPayload)
+  //     .returning("*");
 
-//   return inserted[0];
-// }
+  //   return inserted[0];
+  // }
 
 
   public async createuserInvitation(data: UsersDto): Promise<Users> {
- 
-    if (!data.first_name || !data.last_name|| !data.username || !data.password || !data.email || !data.phone_number) {
+
+    if (!data.first_name || !data.last_name || !data.username || !data.password || !data.email || !data.phone_number) {
       throw new HttpException(400, "Missing required fields");
     }
     if (isEmpty(data)) throw new HttpException(400, "Data Invalid");

@@ -299,17 +299,6 @@ class UsersService {
     }
   }
 
-
-  public async getAllInvitations(): Promise<any[]> {
-    const invitations = await DB(T.USERS_TABLE)
-      .select('*')
-      .orderBy('created_at', 'desc');
-
-
-    return invitations;
-  }
-
-
   public async login(email: string, password: string): Promise<Users & { token: string }> {
 
     let user: any;

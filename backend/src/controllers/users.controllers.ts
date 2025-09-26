@@ -264,15 +264,6 @@ class UsersController {
     }
   };
 
-  public getAllInvitations = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const invitations = await this.UsersService.getAllInvitations();
-      res.status(200).json({ data: invitations, message: "Invitations fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  };
-
   public Login = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
     try {

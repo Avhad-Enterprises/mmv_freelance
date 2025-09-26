@@ -42,7 +42,7 @@ class AppliedProjectsRoute implements Route {
     this.router.delete(
       `${this.path}/my-applications/withdraw`,
       this.appliedProjectsController.withdrawApplication
-    );  
+    );
 
     // CLIENT APIS
 
@@ -71,8 +71,6 @@ class AppliedProjectsRoute implements Route {
 
     this.router.get(`${this.path}/projects/completed-count`, this.appliedProjectsController.getCompletedProjectsCount);
 
-    this.router.get(`${this.path}/editor/assign-projects/:editorId`, this.appliedProjectsController.getProjectsHandledByEditor);
-    this.router.get(`${this.path}/editor/projects-handled/:editorId`, this.appliedProjectsController.getProjectsHandled);
 
   }
 }

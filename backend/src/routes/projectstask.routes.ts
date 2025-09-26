@@ -30,8 +30,10 @@ class projectstaskRoute implements Route {
 
       //getall task with client info
       this.router.get(`${this.path}/tasks-with-client`, this.projectstaskcontroller.getAllTasksWithClientInfo);
+
       //getbyid task with client info
       this.router.get(`${this.path}/tasks-with-client/:id`, this.projectstaskcontroller.getTaskWithClientById);
+
       //url by get all data
       this.router.get(`${this.path}/getprojectstaskbyurl/:url`, this.projectstaskcontroller.getprojectstaskbyurl);
       //check url in database

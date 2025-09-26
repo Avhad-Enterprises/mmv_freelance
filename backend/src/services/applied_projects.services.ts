@@ -266,51 +266,6 @@ class AppliedProjectsService {
         return parseInt(String(result?.count || '0'), 10);
     }
 
-    public async getProjectsHandledCount(editorId: number): Promise<number> {
-        if (!editorId) throw new HttpException(400, "Editor ID is required");
-
-        const result = await DB(T.APPLIED_PROJECTS)
-            .join('projects_task', 'applied_projects.projects_task_id', '=', 'projects_task.projects_task_id')
-            .where('projects_task.editor_id', editorId)
-            .andWhere('applied_projects.is_deleted', false)
-            .andWhere('projects_task.is_deleted', false)
-            .whereIn('applied_projects.status', [1, 2])
-            .countDistinct('applied_projects.projects_task_id as count')
-            .first();
-
-        console.log("Raw DB result =>", result);
-
-        const countValue = result?.count ?? 0;
-        return typeof countValue === 'string' ? parseInt(countValue, 10) : countValue;
-    }
-
-    public async listProjectsHandled(editorId: number): Promise<any[]> {
-        if (!editorId) throw new HttpException(400, "Editor ID is required");
-       
-        const projects = await DB('projects_task as pt')
-            .leftJoin('applied_projects as ap', 'pt.projects_task_id', 'ap.projects_task_id')
-            .where('pt.editor_id', editorId)
-            .where('pt.is_deleted', false)
-            .whereIn('ap.status', [1, 2])
-            .select(
-                'pt.projects_task_id',
-                'pt.project_title',
-                'pt.project_category',
-                'pt.deadline',
-                'pt.budget',
-                'pt.project_format',
-                'pt.audio_voiceover',
-                'pt.video_length',
-                'pt.preferred_video_style',
-                'pt.created_at',
-                'ap.status as application_status'
-            )
-            .orderBy('pt.created_at', 'desc');
-        return projects;
-    }
-
-
-
 
 }
 export default AppliedProjectsService;

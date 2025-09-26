@@ -16,11 +16,15 @@ class TagsRoute implements Route {
     }
 
     private initializeRoutes() {
+
         this.router.post(`${this.path}/insertetag`, validationMiddleware(TagsDto, 'body', false, []), this.tagsController.insertTag);
+
         this.router.get(`${this.path}/geteventtags`, (req, res, next) => this.tagsController.getTagsByType(req, res, next));
-       
+
         this.router.post(`${this.path}/insertskill`, validationMiddleware(SkillsDto, 'body', false, []), this.tagsController.insertskills);
+
         this.router.get(`${this.path}/getallskill`, (req, res, next) => this.tagsController.getallskills(req, res, next));
+
     }
 }
 

@@ -16,10 +16,15 @@ class faqRoute implements Route {
     private initializeRoutes() {
 
         this.router.get(`${this.path}/getfaq/:id`, (req, res, next) => this.faqController.faq(req, res, next));
+
         this.router.post(`${this.path}/insertfaqs`, (req, res, next) => this.faqController.insertfaqin(req, res, next));
+
         this.router.put(`${this.path}/updatefaq`, validationMiddleware(FaqDto, 'body', false, []), (req, res, next) => this.faqController.faqs(req, res, next));
+
         this.router.post(`${this.path}/deletefaq`, validationMiddleware(FaqDto, 'body', true, []), (req, res, next) => this.faqController.deletefaqs(req, res, next));
-         this.router.get(`${this.path}/getallfaq`, (req, res, next) => this.faqController.getallfaqsby(req, res, next));
+
+        this.router.get(`${this.path}/getallfaq`, (req, res, next) => this.faqController.getallfaqsby(req, res, next));
+
     }
 }
 

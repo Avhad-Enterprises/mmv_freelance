@@ -24,7 +24,6 @@ import faqRoute from './routes/faq.routes';
 import PaymentRoute from './routes/payment.route';
 import WebhookRoute from './routes/webhook.route';
 import CmsRoute from './routes/cms.routes';
-import MacroRoute from './routes/macro.routes'
 import validateEnv from './utils/validateEnv';
 import SEORoute from './routes/SEO.routes';
 import branding_assetsRoute from './routes/branding_assets.routes';
@@ -66,7 +65,6 @@ const app = new App([
     new subscribed_emailsRoute(),
     new WebhookRoute(),
     new CmsRoute(),
-    new MacroRoute(),
     new SavedprojectRoute(),
     new locationRoute(),
     new dashboardRoute()

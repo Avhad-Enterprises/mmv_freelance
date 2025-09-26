@@ -27,14 +27,16 @@ class dashboardservice {
     return users;
   }
 
-  // active projects
-  public async getActiveProjectTasks(): Promise<any[]> {
-    const tasks = await DB('projects_task')
-      .select('*')
-      .where('is_active', 1); // ✅ Only active projects
+  // active projects count
+  public async getActiveProjectTasks(): Promise<number> {
+    const result = await DB('projects_task')
+      .count('* as count')
+      .where('is_active', 1)
+      .first();
 
-    return tasks;
+    return parseInt(String(result?.count ?? '0'), 10);
   }
+
 
   // total projects count
   public async countAllProjectTasks(): Promise<number> {

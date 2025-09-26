@@ -11,7 +11,7 @@ class CategoryService {
             throw new HttpException(400, "Category data is empty");
         }
         try {
-           
+
             if (!data.value) {
                 throw new HttpException(400, "Category value is required");
             }
@@ -24,13 +24,13 @@ class CategoryService {
                 if (!existingCategory.is_deleted) {
                     throw new HttpException(400, "This category already exists in the database");
                 } else {
-                   
+
                     const updatedCategory = await DB(T.CATEGORY)
                         .where({ category_id: existingCategory.category_id })
                         .update({
                             is_deleted: false,
                             is_active: true,
-                            ...data  
+                            ...data
                         })
                         .returning("*");
                     return updatedCategory[0];
@@ -74,7 +74,7 @@ class CategoryService {
                     c.value.toLowerCase() === category.value.toLowerCase()
                 ))
             );
-            
+
             return uniqueCategories;
         } catch (error) {
             throw new Error('Error fetching category');
@@ -129,53 +129,6 @@ class CategoryService {
         if (!category) throw new HttpException(404, "category not found");
 
         return category;
-    }
-
-    public async getprojectbycategoryid(categoryname: string): Promise<any> {
-        if (!categoryname) {
-            throw new HttpException(400, "Category name is required");
-        }
-
-        const category = await DB(T.CATEGORY)
-            .select('value')
-            .where('value', categoryname)
-            .first();
-
-        if (!category) {
-            return [];
-        }
-
-        const categoryProjects = await DB(T.PROJECTS_TASK)
-            .where('project_category', category.value)
-            .andWhere('is_deleted', false)
-            .andWhere('is_active', true)
-            .orderBy('created_at', 'desc')
-            .select('*');
-
-        return categoryProjects;
-    }
-    public async getprojectbyitscategoryidwith(categoryname: string): Promise<any[]> {
-        if (!categoryname) {
-            throw new HttpException(400, "Category name is required");
-        }
-
-        const category = await DB(T.CATEGORY)
-            .select('value')
-            .where('value', categoryname)
-            .first();
-
-        if (!category) {
-            return [];
-        }
-
-        const categoryProjects = await DB(T.PROJECTS_TASK)
-            .where('project_category', category.value)
-            .andWhere('is_deleted', false)
-            .andWhere('is_active', true)
-            .orderBy('created_at', 'desc')
-            .select('*');
-
-        return categoryProjects;
     }
 
 

@@ -3,7 +3,6 @@ import { SavedProjectsDto } from '../dtos/saved_project.dto';
 import Savedprojectservices from '../services/saved_project.services';
 import DB, { T } from '../database/index.schema';
 import HttpException from '../exceptions/HttpException';
-import { SavedFreelancerDto } from '../dtos/saved_freelancer.dto';
 
 
 class SavedprojectController {
@@ -40,7 +39,7 @@ class SavedprojectController {
       next(error);
     }
   };
-   public getUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  public getUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { user_id } = req.body;
       if (!user_id) throw new HttpException(400, "User ID is required");
@@ -52,36 +51,7 @@ class SavedprojectController {
     }
   };
 
-  //saved freelancer routes
-  public add = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const saveData: SavedFreelancerDto = req.body;
-      const inserteddata = await this.Savedprojectservices.addsavedFreelancer(saveData);
-      res.status(201).json({ data: inserteddata, message: "Inserted" });
-    } catch (error) {
-      next(error);
-    }
-  };
 
-  public getAllfreelancer = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const saved = await this.Savedprojectservices.getAllfreelancers();
-      res.status(200).json({ data: saved, success: true });
-    } catch (err) {
-      next(err);
-    }
-  };
-  public UserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const { user_id } = req.body;
-      if (!user_id) throw new HttpException(400, "User ID is required");
-
-      const saved = await this.Savedprojectservices.getsaveduser_id(user_id);
-      res.status(200).json({ data: saved, message: "User fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  };
 }
 
 export default SavedprojectController; 

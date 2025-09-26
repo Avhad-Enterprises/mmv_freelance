@@ -14,7 +14,7 @@ const awsConf = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     port: 5432,
-  ssl: {
+    ssl: {
       rejectUnauthorized: false
     },
   },
@@ -55,7 +55,6 @@ import { FAQ } from "../database/faq.schema";
 import { APPLICATION } from "../database/application.schema";
 import { TRANSACTION_TABLE } from "../database/transactions.schema";
 import { CMS } from "../database/cms.schema";
-import { MACRO } from "../database/macro.schema";
 import { SEO } from './SEO.schema';
 import { BRANDING_ASSETS } from './branding_assets.schema';
 import { ANALYTICS_SETTINGS } from './analytics_setting.schema';
@@ -66,7 +65,7 @@ import { COUNTRY } from './country.schema';
 import { STATES } from './states.schema';
 import { CITIES } from './city.schema';
 import { EMAIL_LOG_TABLE } from './emailog.schema';
-import { SAVED_FREELANCERS } from './saved_freelancer.schema';
+
 
 export const T = {
   USERS_TABLE,
@@ -99,7 +98,6 @@ export const T = {
   TRANSACTION_TABLE,
   SKILLS,
   CMS,
-  MACRO,
   SEO,
   BRANDING_ASSETS,
   ANALYTICS_SETTINGS,
@@ -109,7 +107,7 @@ export const T = {
   STATES,
   CITIES,
   EMAIL_LOG_TABLE,
-  SAVED_FREELANCERS
+
 
 };
 

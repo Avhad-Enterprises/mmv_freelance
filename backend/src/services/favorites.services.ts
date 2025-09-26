@@ -42,15 +42,6 @@ class favoritesservices {
     return 'Removed from favorites';
   }
 
-  public getAllprojects = async (): Promise<favoritesDto[]> => {
-    try {
-      const result = await DB(T.FAVORITES_TABLE)
-        .select("*");
-      return result;
-    } catch (error) {
-      throw new Error('Error fetching blogs');
-    }
-  }
 
   public async getFavoriteFreelancers(): Promise<any[]> {
     const result = await DB(T.FAVORITES_TABLE)
@@ -61,30 +52,6 @@ class favoritesservices {
   }
 
 
-  public async getProjectfavoritesby(userId: number): Promise<any[]> {
-    if (!userId || isNaN(userId)) {
-      throw new HttpException(400, "Invalid or missing user ID");
-    }
-
-    const result = await DB(T.FAVORITES_TABLE)
-      .join('projects_task', 'favorites.favorite_project_id', 'projects_task.projects_task_id')
-      .join('users', 'favorites.user_id', 'users.user_id')
-      .where('favorites.user_id', userId)
-      .andWhere('favorites.favorite_type', 'project')
-      .andWhere('favorites.is_deleted', false)
-      .andWhere('projects_task.is_deleted', false)
-      .orderBy('favorites.created_at', 'desc')
-      .select(
-        'favorites.*',
-        'projects_task.*',
-        'users.user_id',
-        'users.first_name',
-        'users.last_name',
-        'users.profile_picture'
-      );
-
-    return result;
-  }
 
   public async getFavoritesByUser(user_id: number): Promise<any> {
     const favorites = await DB(T.FAVORITES_TABLE)
@@ -95,58 +62,18 @@ class favoritesservices {
     return favorites;
   }
 
-  public async getfreelancefav(user_id: number): Promise<any[]> {
-    if (!user_id || isNaN(user_id)) {
-      throw new HttpException(400, "Invalid or missing user ID");
-    }
-    const result = await DB(T.USERS_TABLE)
-      .join(T.FAVORITES_TABLE, `${T.USERS_TABLE}.user_id`, '=', `${T.FAVORITES_TABLE}.favorite_freelancer_id`)
-      .select(
-        `${T.USERS_TABLE}.username`,
-        `${T.USERS_TABLE}.email`,
-        `${T.USERS_TABLE}.skill`,
-        `${T.USERS_TABLE}.city`,
-        `${T.USERS_TABLE}.country`,
-        `${T.FAVORITES_TABLE}.*`
-      );
-
-    return result;
-  }
 
   public async getfreelanceinfo(user_id: number): Promise<any[]> {
 
     if (!user_id) {
       throw new HttpException(400, "User ID is required");
     }
-
-    
-
-    // const results = await DB(T.USERS_TABLE)
-    //   .where({
-    //     [`${T.USERS_TABLE}.user_id`]: user_id,
-
-    //   })
-    //   .join(
-    //     `${T.FAVORITES_TABLE}`,
-    //     `${T.USERS_TABLE}.user_id`,
-    //     '=',
-    //     `${T.FAVORITES_TABLE}.favorite_freelancer_id`
-    //   )
-    //   .select(
-    //     `${T.FAVORITES_TABLE}.*`,
-    //     `${T.USERS_TABLE}.username`,
-    //     `${T.USERS_TABLE}.email`,
-    //     `${T.USERS_TABLE}.skill`,
-    //     `${T.USERS_TABLE}.city`,
-    //     `${T.USERS_TABLE}.country`,
-    //   );
     console.log("User ID:", user_id); // Debugging line
     const results = await DB(T.FAVORITES_TABLE)
       .where({
         [`${T.FAVORITES_TABLE}.user_id`]: user_id,
-       
-        // [`${T.USERS_TABLE}.favorite_type`]: 'freelancer',
-        // [`${T.USERS_TABLE}.is_deleted`]: false,
+
+
       })
       .leftJoin(
         `${T.USERS_TABLE}`,

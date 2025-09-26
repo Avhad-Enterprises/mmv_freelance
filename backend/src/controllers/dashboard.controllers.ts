@@ -26,16 +26,16 @@ class dashboardcontroller {
     }
   }
 
-  // active projects
+  // active projects count
   public getActiveProjectTasks = async (req: Request, res: Response): Promise<void> => {
     try {
-      const activeTasks = await this.dashboardservice.getActiveProjectTasks();
-      res.status(200).json(activeTasks);
+      const activeProjectCount = await this.dashboardservice.getActiveProjectTasks();
+      res.status(200).json({ count: activeProjectCount });
     } catch (error) {
-      console.error('Error fetching active project tasks:', error);
+      console.error('Error fetching active project count:', error);
       res.status(500).json({ message: 'Internal server error' });
     }
-  }
+  };
 
   // total projects count
   public countAllProjectTasks = async (req: Request, res: Response): Promise<void> => {

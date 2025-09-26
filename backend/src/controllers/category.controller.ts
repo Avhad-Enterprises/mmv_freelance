@@ -23,11 +23,11 @@ class CategoryController {
             next(err);
         }
     };
-    
+
     public getcategorytypesby = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const type = req.body.type as string;
-             if (!type) {
+            if (!type) {
                 throw new HttpException(400, "Category body is required");
             }
             const category = await this.CategoryService.getcategorytypesbytable(type);
@@ -66,58 +66,5 @@ class CategoryController {
         }
     };
 
-    public getprojectbycategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        const categoryname = req.params.id;
-
-        if (!categoryname) {
-            throw new HttpException(400, "Invalid Category");
-        }
-
-        try {
-            const categoryProjects = await this.CategoryService.getprojectbycategoryid(categoryname);
-
-            if (categoryProjects.length === 0) {
-                res.status(200).json({
-                    data: [],
-                    message: `No projects found in the category "${categoryname}"`,
-                });
-                return;
-            }
-
-            res.status(200).json({
-                data: categoryProjects,
-                message: `Found projects in the category "${categoryname}"`,
-            });
-        } catch (error) {
-            next(error);
-        }
-    };
-    public getprojectbyitscategory = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        try {
-            const categoryname = req.query.category as string;
-
-            if (!categoryname) {
-                throw new HttpException(400, "Category query param is required");
-            }
-            const categoryProjects = await this.CategoryService.getprojectbyitscategoryidwith(categoryname);
-
-            if (categoryProjects.length === 0) {
-                res.status(200).json({
-                    data: [],
-                    message: `No projects found in the category "${categoryname}"`,
-                });
-                return;
-            }
-            res.status(200).json({
-                data: categoryProjects,
-                message: `Found projects in the category "${categoryname}"`,
-            });
-        } catch (error) {
-            next(error);
-        }
-    };
-
-
-    
 };
 export default CategoryController;

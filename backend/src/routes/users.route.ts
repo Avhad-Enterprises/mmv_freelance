@@ -39,10 +39,6 @@ class UsersRoute implements Route {
 
     this.router.post(`${this.path}/get_admin_by_id`, this.usersController.getAdminById);
 
-    // Invite user (Admin only)
-    this.router.get(`${this.path}/invitations`, this.usersController.getAllInvitations);
-    // this.router.post(`${this.path}/invite`, this.usersController.inviteUser);
-
     // Register invited user
     this.router.post(`${this.path}/register`, validationMiddleware(UsersDto, 'body', false, []), this.usersController.insertEmployee);
     // frontend login user
@@ -51,7 +47,8 @@ class UsersRoute implements Route {
     this.router.post(`${this.path}/getfreelaner`, (req, res, next) => this.usersController.getfreelancer(req, res, next));
 
     this.router.post(`${this.path}/change-password`, authMiddleware, this.usersController.changePassword);
-
+    
+    // Invite user (Admin only)
     this.router.post(`${this.path}/send-invitation`, this.usersController.sendInvitation);
 
 

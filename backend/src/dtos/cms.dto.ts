@@ -13,7 +13,11 @@ export class CmsDto {
 
   @IsOptional()
   @IsString()
-  image?: string;
+  image?: string; // comma-separated: "img1.jpg,img2.jpg"
+
+  @IsOptional()
+  @IsString()
+  carousel?: string; // comma-separated: "slide1.jpg,slide2.jpg"
 
   @IsString()
   @IsNotEmpty()
@@ -37,11 +41,15 @@ export class CmsDto {
 
   @IsOptional()
   @IsArray()
-  faq?: [];
+  category?: any[]; // stored as JSONB array
 
   @IsOptional()
-  @IsObject()
-  blog?: [];
+  @IsArray()
+  faq?: any[]; // stored as JSONB array
+
+  @IsOptional()
+  @IsArray()
+  blog?: any[]; // stored as JSONB array
 
   @IsOptional()
   @IsString()

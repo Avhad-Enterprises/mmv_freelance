@@ -343,9 +343,6 @@ class UsersController {
       const token = crypto.randomBytes(32).toString("hex");
       const inviteLink = `${process.env.FRONTEND_URL}/register?token=${token}`;
 
-      // const EmailService = require('../utils/emailer').default || require('../utils/emailer');
-      // const emailServiceInstance = new EmailService();
-
       await sendEmail({
         to: email,
         subject: `You're Invited to Register - ${process.env.FRONTEND_APPNAME}`,

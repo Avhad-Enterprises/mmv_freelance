@@ -17,6 +17,8 @@ const TextInput = forwardRef(
       required = false,
       onChange,
       placeholderColor = "#e7e7e7ab",
+      minLength,
+      maxLength
     },
     ref
   ) => {
@@ -46,12 +48,32 @@ const TextInput = forwardRef(
           return false;
         }
 
+        if (type === "number" && value && !validateNumeric(value)) {
+          setError("Only numeric values are allowed.");
+          // scrollAndFocus();
+          inputRef.current?.focus();
+          return false;
+        }
+
+        if (minLength && value.length < minLength) {
+          setError(`Minimum length is ${minLength} digits.`);
+          // scrollAndFocus();
+          return false;
+        }
+
+        if (maxLength && value.length > maxLength) {
+          setError(`Maximum length is ${maxLength} digits.`);
+          // scrollAndFocus();
+          return false;
+        }
+
         setError("");
         return true;
       },
     }));
 
     const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validateNumeric = (val) => /^[0-9]+$/.test(val);
 
     const handleChange = (e) => {
       let inputValue = e.target.value;

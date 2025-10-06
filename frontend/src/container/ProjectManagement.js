@@ -6,7 +6,6 @@ import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
-import DateInput from "../components/DateInput";
 import Button from "../components/Button";
 
 import wallet from "../assets/svg/wallet.svg";
@@ -19,53 +18,22 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const tableRef = useRef();
   const navigate = useNavigate();
-  const [setSelectedDates] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [allData, setAllData] = useState([]); // assume this is your full dataset
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [tableKey, setTableKey] = useState(0);
-
-  const handleDateChange = (range) => {
-    if (!range || range.length === 0 || !range[0]) {
-      setSelectedDates([]);
-      setFilteredData([]);
-      setIsFiltered(false); // No filter
-      return;
-    }
-
-    setSelectedDates(range);
-
-    const normalizeToLocalMidnight = (date) => {
-      const d = new Date(date);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime();
-    };
-
-    const start = normalizeToLocalMidnight(range[0]);
-    const end = range.length === 2 ? normalizeToLocalMidnight(range[1]) : start;
-
-    const filtered = allData.filter((item) => {
-      if (!item.created_at) return false;
-
-      const itemDate = normalizeToLocalMidnight(new Date(item.created_at));
-      return itemDate >= start && itemDate <= end;
-    });
-
-    setFilteredData(filtered);
-    setIsFiltered(true);
-    setTableKey(prev => prev + 1); // 👈 Force remount
-  };
+  const [filteredData] = useState([]);
+  const [isFiltered] = useState(false);
+  const [tableKey] = useState(0);
+  const [completedCount, setCompletedCount] = useState(0);
 
   useEffect(() => {
     const fetchprojectData = async () => {
       try {
-        const response = await makeGetRequest("projectsTask/getallprojects_task"); // Or use "projectsTask/getactivedeletedprojectstask"
+        const response = await makeGetRequest("projectsTask/getallprojects_task");
         const data = Array.isArray(response.data.data) ? response.data.data : [];
-        
+
         // Combine first and last names
         const formattedData = data.map((item) => ({
           ...item,
           client_name: `${item.client_first_name || ''} ${item.client_last_name || ''}`.trim(),
+          editor_name: `${item.editor_first_name || ''} ${item.editor_last_name || ''}`.trim(),
         }));
 
         for (const project of formattedData) {
@@ -83,7 +51,6 @@ const Projects = () => {
 
         console.log("Formatted Project Data:", formattedData); // Debug log
         setprojectData(formattedData);
-        setAllData(formattedData);
       } catch (error) {
         setprojectData([]);
       } finally {
@@ -94,29 +61,48 @@ const Projects = () => {
     if (localStorage.getItem("jwtToken")) fetchprojectData();
   }, []);
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
+  useEffect(() => {
+    const fetchCompletedProjects = async () => {
+      try {
+        const response = await makeGetRequest("applications/projects/completed-count");
+        console.log("Completed Projects Count: ",response);
+        setCompletedCount(response.data?.count || 0);
+      } catch (error) {
+        console.error("Failed to fetch completed projects count", error);
+        setCompletedCount(0);
+      }
+    };
+
+    if (localStorage.getItem("jwtToken")) fetchCompletedProjects();
+  }, []);
+
 
   const columns = [
+    // {
+    //   headname: "Project Id",
+    //   dbcol: "projects_task_id",
+    //   type: "link",
+    //   linkTemplate: "/projectmanagement/edit/:projects_task_id",
+    //   linkLabelFromRow: "project_title",
+    //   linkParamKey: "projects_task_id",
+    // },
     {
-      headname: "Project Id",
-      dbcol: "projects_task_id",
+      headname: "Title",
+      dbcol: "project_title",
       type: "link",
       linkTemplate: "/projectmanagement/edit/:projects_task_id",
       linkLabelFromRow: "project_title",
       linkParamKey: "projects_task_id",
     },
-    { headname: "Title", dbcol: "project_title" },
     { headname: "Client Name", dbcol: "client_name", type: "" },
     {
-      headname: "Editor Id", 
-      dbcol: "editor_id", 
+      headname: "Editor Name",
+      dbcol: "editor_name",
       type: "",
     },
     {
-      headname: "Application", 
-      dbcol: "count", 
+      headname: "Application",
+      dbcol: "count",
       type: "link",
       linkTemplate: "/projectmanagement/:projects_task_id",
       linkLabelFromRow: "count",
@@ -129,12 +115,12 @@ const Projects = () => {
     },
     {
       headname: "Deadline",
-      dbcol: "Deadline",
-      type: "datetimetime",
+      dbcol: "deadline",
+      type: "date",
     },
     {
       headname: "Budget",
-      dbcol: "Budget",
+      dbcol: "budget",
       type: "badge",
     },
   ];
@@ -143,15 +129,6 @@ const Projects = () => {
     <Layout>
       <div className="d-flex justify-content-between">
         <div className="mt-3 d-flex align-items-center">
-          <div className="d-flex gap-5 md-date">
-            <DateInput label="" type="range" includeTime={false} onChange={handleDateChange} />
-          </div>
-          <div className="mb-2 ps-3 md-refresh">
-            <i
-              className="bi bi-arrow-repeat icon-refresh"
-              onClick={handleRefresh}
-            ></i>
-          </div>
         </div>
         <div className="text-right gap-3 mt-3 ie-btn d-flex">
           {/* <Button buttonType="import" label="Import" />
@@ -168,28 +145,30 @@ const Projects = () => {
 
       <div className="card-container gap-4 flex-wrap">
         <Row className="metrix-container">
-          <Col xs={4} md={3}>
+          <Col xs={4} md={4}>
             <MetricCard
               title="Projects in Progress"
               operation="count"
-              column="project_title"
+              column="is_active"
               jsonData={projectData}
+              customFilter={(item) => item.is_active === 1}
               icon={calender}
               tooltipText="This shows the count of live blogs"
             />
           </Col>
-          <Col xs={4} md={3}>
+          <Col xs={4} md={4}>
             <MetricCard
               title="Completed Projects"
-              operation="count"
-              column="status"
-              jsonData={projectData}
+              operation="total"
+              column="count"
+              jsonData={[{ count: completedCount }]}
+              // customFilter={(row) => row.status === "completed"}
               icon={wallet}
               tooltipText="This shows the count of completed projects"
             />
 
           </Col>
-          <Col xs={4} md={3}>
+          <Col xs={4} md={4}>
             <MetricCard
               title="Disputed Projects"
               operation="count"
@@ -201,7 +180,7 @@ const Projects = () => {
             />
 
           </Col>
-          <Col xs={4} md={3}>
+          {/* <Col xs={4} md={3}>
             <MetricCard
               title="Milestones Completed"
               operation="total"
@@ -210,7 +189,7 @@ const Projects = () => {
               icon={group}
               tooltipText="This shows total completed milestones"
             />
-          </Col>
+          </Col> */}
         </Row>
       </div>
 

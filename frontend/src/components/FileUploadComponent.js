@@ -133,7 +133,7 @@ const FileUploadComponent = ({
           onBlur={handleBlur}
         >
           <label className="form-label">
-            Drag & drop files
+            Upload New Image
           </label>
           <input
             type="file"

@@ -20,7 +20,7 @@ const DateInput = ({
   onCheckboxToggle = () => { },
   onDateChange = () => { },
   onTimeChange = () => { },
-  onChange = () => {}, // ✅ ✅ ADD THIS LINE
+  onChange = () => { }, // ✅ ✅ ADD THIS LINE
   value = null,
   timeValue = null,
 }) => {
@@ -32,7 +32,7 @@ const DateInput = ({
   const [checkboxChecked, setCheckboxChecked] = useState(checkboxDefault);
 
   useEffect(() => {
-    const today = new Date();
+    const today = new Date().getDate();
     if (type === "past") setMaxDate(today);
     else if (type === "future") setMinDate(today);
   }, [type]);
@@ -48,8 +48,13 @@ const DateInput = ({
   };
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
-    onDateChange(date);
+    if (!date) return;
+    // Convert to "yyyy-MM-dd" string without timezone shift
+    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    const formattedDate = localDate.toISOString().split("T")[0];
+    
+    setSelectedDate(localDate);
+    onDateChange(formattedDate);
   };
 
   const handleTimeChange = (time) => {
@@ -103,7 +108,7 @@ const DateInput = ({
                 onChange={(selectedDates) => {
                   setDateRange(selectedDates);
                   onChange(selectedDates); // ✅ Call parent handler here
-                }}                
+                }}
               />
             </div>
           ) : (

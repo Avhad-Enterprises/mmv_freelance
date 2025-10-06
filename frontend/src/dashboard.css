@@ -396,11 +396,11 @@ input::placeholder {
   border-radius: 50%;
 }
 
-.custom-toggle-switch input:checked + .slider {
+.custom-toggle-switch input:checked+.slider {
   background-color: #0d6efd;
 }
 
-.custom-toggle-switch input:checked + .slider:before {
+.custom-toggle-switch input:checked+.slider:before {
   transform: translateX(20px);
 }
 
@@ -485,7 +485,7 @@ input::placeholder {
   margin-right: 8px;
 }
 
-.home-text {
+/* .home-text {
   font-family: "Outfit", sans-serif;
   font-size: 16px;
   font-weight: 400;
@@ -493,7 +493,7 @@ input::placeholder {
   text-align: left;
   color: #ffffff;
   padding-left: 5px;
-}
+} */
 
 .sec li {
   list-style: none;
@@ -613,7 +613,7 @@ input::placeholder {
 .dropdown-item:hover,
 .LeftMenuHead:hover {
   /* background-color: #495057; */
-  color: white !important;
+  color: rgb(76, 156, 199) !important;
 }
 
 .card {
@@ -1412,6 +1412,29 @@ a.search-input-wrapper .ae-search-container {
   overflow-y: auto;
 }
 
+.suggestion, .suggestion-add-new {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.suggestion:hover, .suggestion-add-new:hover {
+  background-color: #f0f0f0;
+}
+
+.suggestions-list-1 {
+  position: absolute;
+  /* top: 63%; */
+  bottom: 64%;
+  left: 22px;
+  right: 0;
+  border: 1px solid #0e032f;
+  border-radius: 5px;
+  background: #fff;
+  z-index: 10;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
 .suggestions-list.show {
   display: block;
 }
@@ -1452,6 +1475,44 @@ a.search-input-wrapper .ae-search-container {
 .tag .remove-tag:hover {
   color: #0e032f;
 }
+
+/* Skills Base Styles */
+.skill-input-wrapper .input-group {
+  display: flex;
+  gap: 0;
+}
+
+.skill-input-wrapper .form-control {
+  flex: 1;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-top: 12px;
+  margin-bottom: 20px;
+}
+
+.skill-input-wrapper .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  background-color: #f0f0f5;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+}
+
+.remove-tag {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
 
 /* Modal Base Styles */
 
@@ -1854,9 +1915,9 @@ select.form-control {
 }
 
 /* Form section spacing */
-.section_card + .section_card,
-.post_card + .post_card,
-.form_section + .form_section {
+.section_card+.section_card,
+.post_card+.post_card,
+.form_section+.form_section {
   margin-top: 40px;
 }
 
@@ -2182,12 +2243,10 @@ select.form-control {
   margin: 0;
   display: flex;
   gap: 15px;
-  background-image: linear-gradient(
-    204deg,
-    #f4f4f4 0%,
-    #f6f6f6 50%,
-    #e8e8e8 100%
-  );
+  background-image: linear-gradient(204deg,
+      #f4f4f4 0%,
+      #f6f6f6 50%,
+      #e8e8e8 100%);
   padding: 10px 0px 0px 10px;
   border-top: 1px solid #ecf0f1;
   border-left: 1px solid #ecf0f1;
@@ -2374,6 +2433,15 @@ select.form-control {
 }
 
 .suggestions-list {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.suggestions-list-1 {
   position: absolute;
   background-color: white;
   border: 1px solid #ccc;
@@ -2605,12 +2673,16 @@ li a {
 } */
 
 .nav-link.active,
-.nav-link.active a,
+/* .nav-link.active a, */
 .home-text.active,
 .home-text.active a,
 .dropdown-item.active,
 .dropdown-item.active a {
   color: white !important;
+  background: #b4ae9d8a; /* light background */
+  /* color: #0d6efd !important;  */
+  font-weight: 600;
+  border-radius: 6px;
 }
 
 .submenu {
@@ -4594,6 +4666,7 @@ canvas {
 
 /* Extra Small Devices (Portrait Phones) */
 @media only screen and (max-width: 576px) {
+
   /* Styles for devices with max width of 576px */
   h4 {
     font-size: 16px;
@@ -4948,11 +5021,8 @@ canvas {
 }
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi) {
-}
+(min-resolution: 192dpi) {}
 
-@media only screen and (orientation: landscape) {
-}
+@media only screen and (orientation: landscape) {}
 
-@media only screen and (orientation: portrait) {
-}
+@media only screen and (orientation: portrait) {}

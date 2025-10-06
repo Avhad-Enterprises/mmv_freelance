@@ -6,7 +6,6 @@ import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
-import DateInput from "../components/DateInput";
 import Button from "../components/Button";
 import { showErrorToast } from "../utils/toastUtils"; // Added for error handling
 
@@ -20,52 +19,18 @@ const Editors = () => {
   const [loading, setLoading] = useState(true);
   const tableRef = useRef();
   const navigate = useNavigate();
-  const [setSelectedDates] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [allData, setAllData] = useState([]); // assume this is your full dataset
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [tableKey, setTableKey] = useState(0);
-
-  const handleDateChange = (range) => {
-    if (!range || range.length === 0 || !range[0]) {
-      setSelectedDates([]);
-      setFilteredData([]);
-      setIsFiltered(false); // No filter
-      return;
-    }
-
-    setSelectedDates(range);
-
-    const normalizeToLocalMidnight = (date) => {
-      const d = new Date(date);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime();
-    };
-
-    const start = normalizeToLocalMidnight(range[0]);
-    const end = range.length === 2 ? normalizeToLocalMidnight(range[1]) : start;
-
-    const filtered = allData.filter((item) => {
-      if (!item.created_at) return false;
-
-      const itemDate = normalizeToLocalMidnight(new Date(item.created_at));
-      return itemDate >= start && itemDate <= end;
-    });
-
-    setFilteredData(filtered);
-    setIsFiltered(true);
-    setTableKey(prev => prev + 1); // 👈 Force remount
-  };
-
+  const [filteredData] = useState([]);
+  const [allData, setAllData] = useState([]);
+  const [isFiltered] = useState(false);
+  const [tableKey] = useState(0);
 
   useEffect(() => {
     const fetcheditorData = async () => {
       try {
-        // Use makePostRequest to match backend route
         const response = await makeGetRequest("users/freelancers/active");
-        console.log("Editors API Response:", response); // Debug log
+        console.log("Editors API Response:", response);
         const data = Array.isArray(response.data?.data) ? response.data.data : [];
-        console.log("Parsed Editor Data:", data); // Debug log
+        console.log("Parsed Editor Data:", data);
         setEditorsData(data);
         setAllData(data);
       } catch (error) {
@@ -77,43 +42,82 @@ const Editors = () => {
       }
     };
 
+    const fetchEditorCounts = async () => {
+      try {
+        const response = await makeGetRequest("users/geteditorcount/active");
+        const counts = Array.isArray(response.data?.data) ? response.data.data : [];
+
+        // Merge counts into editorsData
+        setEditorsData((prevEditors) =>
+          prevEditors.map((editor) => {
+            const match = counts.find((c) => c.editor_id === editor.user_id);
+            return { ...editor, task_count: match?.task_count ?? 0 };
+          })
+        );
+      } catch (error) {
+        console.error("Error fetching editor project counts:", error);
+        showErrorToast("Failed to load editor project counts.");
+      }
+    };
+
     if (localStorage.getItem("jwtToken")) {
       fetcheditorData();
+      fetchEditorCounts();
     } else {
       showErrorToast("Please log in to view editors.");
       navigate("/login");
     }
   }, [navigate]);
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
+  // useEffect(() => {
+  //   const fetchEditorCounts = async () => {
+  //     try {
+  //       const response = await makeGetRequest("users/geteditorcount/active");
+  //       const counts = Array.isArray(response.data?.data) ? response.data.data : [];
 
-  // Updated columns to match expected API response fields
+  //       // Merge counts into editorsData
+  //       setEditorsData((prevEditors) =>
+  //         prevEditors.map((editor) => {
+  //           const match = counts.find((c) => c.editor_id === editor.user_id);
+  //           return { ...editor, task_count: match?.task_count ?? 0 };
+  //         })
+  //       );
+  //     } catch (error) {
+  //       console.error("Error fetching editor project counts:", error);
+  //       showErrorToast("Failed to load editor project counts.");
+  //     }
+  //   };
+
+  //   if (localStorage.getItem("jwtToken")) {
+  //     fetchEditorCounts();
+  //   }
+  // }, []);
+
+
   const columns = [
     {
       headname: "Editor ID",
       dbcol: "user_id",
       type: "link",
       linkTemplate: "/editors/edit/:user_id",
-      linkLabelFromRow: "first_name", // Changed to use name for link label
+      linkLabelFromRow: "full_name", // Changed to use name for link label
       linkParamKey: "user_id",
     },
     {
       headname: "Name",
-      dbcol: "first_name", // Updated to match API response
+      dbcol: "full_name", // Updated to match API response
       type: "",
     },
     {
       headname: "Projects Handled",
-      dbcol: "projects_completed", // Updated to match a likely field name
+      dbcol: "task_count", // Updated to match a likely field name
       type: "",
     },
-    {
-      headname: "Rating",
-      dbcol: "review_id", // Updated to match a likely field name
-      type: "",
-    },
+    // {
+    //   headname: "Rating",
+    //   dbcol: "review_id", // Updated to match a likely field name
+    //   type: "",
+    // },
     {
       headname: "Status",
       dbcol: "is_active",
@@ -122,7 +126,7 @@ const Editors = () => {
     {
       headname: "Joined Date",
       dbcol: "created_at",
-      type: "datetimetime",
+      type: "date",
     },
   ];
 
@@ -131,21 +135,12 @@ const Editors = () => {
     <Layout>
       <div className="d-flex justify-content-between">
         <div className="mt-3 d-flex align-items-center">
-          <div className="d-flex gap-5 md-date">
-            <DateInput label="" type="range" includeTime={false} onChange={handleDateChange} />
-          </div>
-          <div className="mb-2 ps-3 md-refresh">
-            <i
-              className="bi bi-arrow-repeat icon-refresh"
-              onClick={handleRefresh}
-            ></i>
-          </div>
         </div>
         <div className="text-right gap-3 mt-3 ie-btn d-flex">
           <div className="dropdown">
             <Button
               buttonType="add"
-              onClick={() => navigate("/editor/create-project")}
+              onClick={() => navigate("/editor/add-new-editors")}
               label="Add New"
             />
           </div>
@@ -160,7 +155,7 @@ const Editors = () => {
               operation="count"
               column="is_active"
               jsonData={editorsData}
-              customFilter={(item) => item.is_active === 1} // Filter active editors
+              customFilter={(item) => item.is_active === true} // Filter active editors
               icon={calender}
               tooltipText="This shows the count of active editors"
             />
@@ -168,8 +163,8 @@ const Editors = () => {
           <Col xs={4} md={3}>
             <MetricCard
               title="Assign Projects"
-              operation="sum"
-              column="projects_posted"
+              operation="total"
+              column="task_count"
               jsonData={editorsData}
               icon={wallet}
               tooltipText="This shows the total number of projects posted"
@@ -177,7 +172,7 @@ const Editors = () => {
           </Col>
           <Col xs={4} md={3}>
             <MetricCard
-              title="Pending Reviews"
+              title="Total Spend"
               operation="sum"
               column="total_spend" // Updated to match a likely field name
               jsonData={editorsData}
@@ -187,7 +182,7 @@ const Editors = () => {
           </Col>
           <Col xs={4} md={3}>
             <MetricCard
-              title="Editor Ratings"
+              title="Client Ratings"
               operation="average"
               column="average_rating" // Updated to match a likely field name
               jsonData={editorsData}
@@ -204,7 +199,7 @@ const Editors = () => {
         <div>No Editors found.</div>
       ) : (
         <DataTable
-          key={tableKey} // 👈 This forces re-render
+          key={tableKey}
           id="table1"
           tableRef={tableRef}
           columns={columns}

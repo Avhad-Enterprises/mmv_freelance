@@ -10,6 +10,7 @@ import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
 import DataTable from "../components/DataTable";
 import CheckboxInput from "../components/CheckboxInput";
+import SkillInput from "../components/SkillInput";
 import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
@@ -27,10 +28,10 @@ const EditProject = () => {
   const [formData, setFormData] = useState({
     client_id: null,
     project_title: "",
-    project_category: "",
-    Deadline: null,
+    project_category: null,
+    deadline: null,
     project_description: "",
-    Budget: null,
+    budget: null,
     tags: [],
     skills_required: [],
     reference_links: "",
@@ -38,6 +39,7 @@ const EditProject = () => {
     projects_type: "",
     project_format: "",
     audio_voiceover: "No",
+    audio_description: "",
     video_length: null,
     preferred_video_style: "",
     sample_project_file: [],
@@ -50,6 +52,9 @@ const EditProject = () => {
     deleted_by: null,
     deleted_at: null,
     status: {},
+    url: "",
+    meta_title: "",
+    meta_description: "",
   });
   const [sampleProjectFile, setSampleProjectFile] = useState(null);
   const [uploadedProjectFiles, setUploadedProjectFiles] = useState([]);
@@ -74,6 +79,21 @@ const EditProject = () => {
     return _.isEqual(obj1, obj2);
   };
 
+  const slugify = (s) =>
+    (s || "")
+      .toString()
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+
+  const [touched, setTouched] = useState({
+    url: false,
+    meta_title: false,
+    meta_description: false,
+  });
+  const markTouched = (name) => () => setTouched((t) => ({ ...t, [name]: true }));
+
   useEffect(() => {
     const fetchProjectData = async () => {
       try {
@@ -86,7 +106,7 @@ const EditProject = () => {
 
         const fetchClients = async () => {
           try {
-            const response = await makeGetRequest("users/customers/active", {});
+            const response = await makeGetRequest("users/client/active", {});
             const fetchedClients = response.data?.data || [];
             const clientOptions = fetchedClients.map((client) => ({
               value: client.user_id,
@@ -106,9 +126,10 @@ const EditProject = () => {
             const fetchedCategories = response.data?.data || [];
             const categoryOptions = fetchedCategories.map((cat) => ({
               value: cat.category_id,
-              label: cat.category_name || `${cat.name}`,
+              label: cat.category_name || cat.name,
             }));
             setAvailableCategory(categoryOptions);
+            return categoryOptions;
           } catch (error) {
             console.error("Failed to fetch categories:", error);
             showErrorToast("Failed to load categories.");
@@ -117,9 +138,16 @@ const EditProject = () => {
 
         const payload = { projects_task_id: parseInt(id, 10) };
         const response = await makePostRequest("projectsTask/getprojects_taskbyid", payload);
+        console.log("Project Data: ", response);
         const project = response.data.projects;
 
         setCanEdit(user.user_id === project.created_by);
+        const categoryOptions = await fetchCategories();
+        const projectCategoryName = project.project_category || "";
+        const selectedCategory = categoryOptions.find(
+          (opt) => opt.label.toLowerCase() === projectCategoryName.toLowerCase() // Case-insensitive match
+        );
+        const categoryId = selectedCategory ? selectedCategory.value : null;
 
         let parsedTags = [];
         if (Array.isArray(project.tags)) {
@@ -136,24 +164,32 @@ const EditProject = () => {
 
         let parsedSkills = [];
         if (Array.isArray(project.skills_required)) {
-          parsedSkills = project.skills_required;
+          parsedSkills = project.skills_required.map(skill => {
+            if (typeof skill === "string") return { skill_id: skill, skill_name: skill };
+            if (skill?.skill_name) return skill;
+            return null;
+          }).filter(Boolean);
         } else if (typeof project.skills_required === "string") {
           try {
-            parsedSkills = JSON.parse(project.skills_required);
+            parsedSkills = JSON.parse(project.skills_required).map(skill => {
+              if (typeof skill === "string") return { skill_id: skill, skill_name: skill };
+              if (skill?.skill_name) return skill;
+              return null;
+            }).filter(Boolean);
           } catch (e) {
-            console.error("Error parsing skills_required:", e);
             parsedSkills = [];
           }
         }
         setSkillsTags(parsedSkills);
 
+
         const newFormData = {
           client_id: project.client_id ? parseInt(project.client_id, 10) : null,
           project_title: project.project_title || "",
-          project_category: project.project_category || "",
-          Deadline: project.Deadline || null,
+          project_category: categoryId,
+          deadline: project.deadline || null,
           project_description: project.project_description || "",
-          Budget: project.Budget || null,
+          budget: project.budget || null,
           tags: parsedTags,
           skills_required: parsedSkills,
           reference_links: Array.isArray(project.reference_links)
@@ -163,6 +199,7 @@ const EditProject = () => {
           projects_type: project.projects_type || "",
           project_format: project.project_format || "",
           audio_voiceover: project.audio_voiceover || "No",
+          audio_description: project.audio_description || "",
           video_length: project.video_length || null,
           preferred_video_style: project.preferred_video_style || "",
           sample_project_file:
@@ -185,9 +222,16 @@ const EditProject = () => {
           deleted_by: project.deleted_by || null,
           deleted_at: project.deleted_at || null,
           status: project.status || {},
+          url: project.url || slugify(project.project_title || ""),
+          meta_title: project.meta_title || project.project_title || "",
+          meta_description: project.meta_description || (project.project_description || "").toLowerCase(),
         };
 
         setFormData(newFormData);
+
+        setShowAudioDescription(
+          Boolean(newFormData.audio_description && newFormData.audio_description.trim())
+        );
 
         const sampleFile =
           Array.isArray(newFormData.sample_project_file) &&
@@ -230,7 +274,7 @@ const EditProject = () => {
         setSelectedTags(parsedTags);
         setSkillsTags(parsedSkills);
         setShowAudioDescription(
-          newFormData.audio_voiceover === "Yes" && newFormData.additional_notes?.audio_description
+          newFormData.audio_voiceover === "Yes" && newFormData.audio_description
         );
 
         setInitialState({
@@ -244,7 +288,7 @@ const EditProject = () => {
           selectedTags: [...parsedTags],
           skillsTags: [...parsedSkills],
           showAudioDescription:
-            newFormData.audio_voiceover === "Yes" && newFormData.additional_notes?.audio_description,
+            newFormData.audio_voiceover === "Yes" && newFormData.audio_description,
         });
 
         setLoading(false);
@@ -264,6 +308,33 @@ const EditProject = () => {
       navigate("/login");
     }
   }, [id, navigate]);
+
+  useEffect(() => {
+    setFormData((prev) => {
+      const next = { ...prev };
+      let changed = false;
+
+      const slug = slugify(prev.project_title || "");
+      if (!touched.url && slug && prev.url !== slug) {
+        next.url = slug;
+        changed = true;
+      }
+
+      if (!touched.meta_title && prev.meta_title !== (prev.project_title || "")) {
+        next.meta_title = prev.project_title || "";
+        changed = true;
+      }
+
+      const lowerDesc = (prev.project_description || "").toLowerCase();
+      if (!touched.meta_description && prev.meta_description !== lowerDesc) {
+        next.meta_description = lowerDesc;
+        changed = true;
+      }
+
+      return changed ? next : prev;
+    });
+  }, [formData.project_title, formData.project_description, touched]);
+
 
   useEffect(() => {
     if (initialState) {
@@ -311,7 +382,7 @@ const EditProject = () => {
       }
       if (e?.target) {
         const { name, value } = e.target;
-        const isNumberField = ["Budget", "video_length", "client_id"].includes(name);
+        const isNumberField = ["budget", "video_length", "client_id"].includes(name);
         setFormData((prev) => ({
           ...prev,
           [name]: isNumberField ? (value === "" ? null : parseInt(value, 10)) : value,
@@ -319,7 +390,7 @@ const EditProject = () => {
       } else if (typeof e === "string" && customValue !== null) {
         const name = e;
         const value = customValue;
-        const isNumberField = ["Budget", "video_length", "client_id"].includes(name);
+        const isNumberField = ["budget", "video_length", "client_id"].includes(name);
         setFormData((prev) => ({
           ...prev,
           [name]: isNumberField ? (value === "" ? null : parseInt(value, 10)) : value,
@@ -329,6 +400,10 @@ const EditProject = () => {
     [canEdit]
   );
 
+  useEffect(() => {
+    setShowAudioDescription(Boolean(formData.audio_description && formData.audio_description.trim()));
+  }, [formData.audio_description]);
+
   const handleCheckboxChange = useCallback(
     (checked) => {
       if (!canEdit) {
@@ -336,15 +411,18 @@ const EditProject = () => {
         return;
       }
       setShowAudioDescription(checked);
+
+      // Clear audio description if checkbox is unchecked
       if (!checked) {
         setFormData((prev) => ({
           ...prev,
-          additional_notes: { ...prev.additional_notes, audio_description: "" },
+          audio_description: "",
         }));
       }
     },
     [canEdit]
   );
+
 
   const handleTagsChange = useCallback(
     (newTags, type) => {
@@ -411,7 +489,7 @@ const EditProject = () => {
       }
       setFormData((prev) => ({
         ...prev,
-        Deadline: date ? date.toISOString().split("T")[0] : null,
+        deadline: date ? date.toISOString().split("T")[0] : null,
       }));
     },
     [canEdit]
@@ -432,9 +510,12 @@ const EditProject = () => {
 
     const fetchSkills = async () => {
       try {
-        const response = await makeGetRequest("tags/getskilltags");
+        const response = await makeGetRequest("tags/getallskill");
         const fetchedSkills = response.data?.data || [];
-        const skillNames = fetchedSkills.map((tag) => tag.tag_name) || ["default-skill"];
+        const skillNames =
+          Array.isArray(fetchedSkills) && fetchedSkills.length > 0
+            ? fetchedSkills.map((tag) => tag.tag_name || tag.name || tag.toString())
+            : ["default-skill"];
         setAvailableSkills(skillNames);
       } catch (error) {
         console.error("Failed to fetch skills:", error);
@@ -465,24 +546,32 @@ const EditProject = () => {
       return;
     }
 
+    const selectedCategoryOpt = availableCategories.find(
+      (opt) => opt.value === formData.project_category
+    );
+    const projectCategoryName = selectedCategoryOpt ? selectedCategoryOpt.label : "";
+
     const payload = {
       projects_task_id: parseInt(id, 10),
       client_id: formData.client_id,
       project_title: formData.project_title,
-      project_category: formData.project_category,
-      Deadline: formData.Deadline,
+      project_category: projectCategoryName,
+      deadline: formData.deadline,
       project_description: formData.project_description,
-      Budget: formData.Budget,
+      budget: formData.budget,
       tags: JSON.stringify(selectedTags),
-      skills_required: JSON.stringify(skillsTags),
-      reference_links: formData.reference_links ? [formData.reference_links] : [],
-      additional_notes: formData.additional_notes || "",
+      skills_required: JSON.stringify(
+        skillsTags.map(s => (typeof s === "string" ? s : s.skill_name))
+      ),
+      reference_links: JSON.stringify(formData.reference_links ? [formData.reference_links] : []),
+      additional_notes: formData.additional_notes,
       projects_type: formData.projects_type,
       project_format: formData.project_format,
       audio_voiceover: formData.audio_voiceover,
+      audio_description: formData.audio_description,
       video_length: formData.video_length,
       preferred_video_style: formData.preferred_video_style,
-      sample_project_file: JSON.stringify(formData.sample_project_file),
+      sample_project_file: JSON.stringify(formData.sample_project_file || []),
       project_files: JSON.stringify(
         uploadedProjectFiles.map((file) => ({
           filename: file.file.name,
@@ -493,10 +582,13 @@ const EditProject = () => {
       is_active: parseInt(formData.is_active, 10),
       created_by: parseInt(formData.created_by || user.user_id, 10),
       updated_by: parseInt(user.user_id, 10),
+      url: formData.url,
+      meta_title: formData.meta_title,
+      meta_description: formData.meta_description,
     };
 
     try {
-      await makePutRequest(`projectsTask/updateprojects_taskbyid/${id}`, payload);
+      await makePutRequest(`projectsTask/updateprojects_taskbyid`, payload);
       showSuccessToast("🎉 Project updated successfully!");
       setHasChanges(false);
       navigate("/projectmanagement");
@@ -598,7 +690,8 @@ const EditProject = () => {
     const fetchApplicationData = async () => {
       try {
         const payload = {
-          projects_task_id: parseInt(id, 10)};
+          projects_task_id: parseInt(id, 10)
+        };
         const response = await makePostRequest("applications/projects/get-applications", payload);
         const data = Array.isArray(response.data?.data) ? response.data.data : [];
         setApplicationaData(data);
@@ -617,7 +710,7 @@ const EditProject = () => {
       showErrorToast("Please log in to view applications.");
       navigate("/login");
     }
-  }, [navigate,id]);
+  }, [navigate, id]);
 
   const Applications = [
     {
@@ -642,40 +735,40 @@ const EditProject = () => {
     },
   ];
 
-  const handleViewChange = () => {
-    if (viewMode === "form" && hasChanges && canEdit) {
-      showAlert({
-        title: "Unsaved Changes",
-        text: "You have unsaved changes. Do you want to save them before viewing applications?",
-        icon: "warning",
-        confirmButton: {
-          text: "Save & View",
-          backgroundColor: "#372d80",
-          textColor: "#fff",
-        },
-        cancelButton: {
-          text: "Discard",
-          backgroundColor: "#c0392b",
-          textColor: "#fff",
-        },
-        denyButton: {
-          text: "Cancel",
-          backgroundColor: "#2c333a",
-          textColor: "#fff",
-        },
-        onConfirm: async () => {
-          await handleSubmit(new Event("submit"));
-          setViewMode("table");
-        },
-        onCancel: () => {
-          setHasChanges(false);
-          setViewMode("table");
-        },
-      });
-    } else {
-      setViewMode(viewMode === "form" ? "table" : "form");
-    }
-  };
+  // const handleViewChange = () => {
+  //   if (viewMode === "form" && hasChanges && canEdit) {
+  //     showAlert({
+  //       title: "Unsaved Changes",
+  //       text: "You have unsaved changes. Do you want to save them before viewing applications?",
+  //       icon: "warning",
+  //       confirmButton: {
+  //         text: "Save & View",
+  //         backgroundColor: "#372d80",
+  //         textColor: "#fff",
+  //       },
+  //       cancelButton: {
+  //         text: "Discard",
+  //         backgroundColor: "#c0392b",
+  //         textColor: "#fff",
+  //       },
+  //       denyButton: {
+  //         text: "Cancel",
+  //         backgroundColor: "#2c333a",
+  //         textColor: "#fff",
+  //       },
+  //       onConfirm: async () => {
+  //         await handleSubmit(new Event("submit"));
+  //         setViewMode("table");
+  //       },
+  //       onCancel: () => {
+  //         setHasChanges(false);
+  //         setViewMode("table");
+  //       },
+  //     });
+  //   } else {
+  //     setViewMode(viewMode === "form" ? "table" : "form");
+  //   }
+  // };
 
   const handleBackNavigation = () => {
     if (hasChanges && canEdit) {
@@ -736,9 +829,9 @@ const EditProject = () => {
         <FormHeader
           title={viewMode === "form" ? "Edit Project" : "Applications"}
           showUpdate={hasChanges && canEdit && viewMode === "form"}
-          onApplications={handleViewChange}
-          applicationsBtnStyle="col col-md-3"
-          applicationsClassName="a-btn-primary"
+          // onApplications={handleViewChange}
+          // applicationsBtnStyle="col col-md-3"
+          // applicationsClassName="a-btn-primary"
           showDelete={canEdit && viewMode === "form"}
           backUrl="/projectmanagement"
           onBack={handleBackNavigation}
@@ -773,7 +866,8 @@ const EditProject = () => {
                   name="client_id"
                   options={clients}
                   value={formData.client_id}
-                  onChange={(value) => handleInputChange("client_id", value)}
+                  onChange={() => { }}
+                  readOnly
                   placeholder="Select a client"
                   required
                   disabled={!canEdit}
@@ -814,28 +908,46 @@ const EditProject = () => {
                   required
                   disabled={!canEdit}
                 />
-                {formData.audio_voiceover === "Yes" && (
+
+                {formData.audio_voiceover === "Yes" || formData.audio_description ? (
                   <>
                     <CheckboxInput
                       label="Add Audio Description"
                       name="audio_description_checkbox"
-                      value={showAudioDescription}
-                      onChange={handleCheckboxChange}
+                      checked={!!formData.audio_description} // checked if description exists
+                      onChange={(isChecked) => {
+                        if (!canEdit) return;
+
+                        setFormData((prev) => ({
+                          ...prev,
+                          audio_description: isChecked ? prev.audio_description || "" : "", // clear description if unchecked
+                          audio_voiceover: isChecked ? "Yes" : "No", // update voiceover status automatically
+                        }));
+                      }}
                       disabled={!canEdit}
                     />
-                    {showAudioDescription && (
+
+                    {formData.audio_description && (
                       <TextInput
                         label="Audio Description"
                         name="audio_description"
                         placeholder="Type audio description"
-                        value={formData.audio_description || ""}
-                        onChange={handleInputChange}
-                        required
+                        value={formData.audio_description}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            audio_description: e.target.value,
+                            audio_voiceover: e.target.value ? "Yes" : "No", // keep sync
+                          }))
+                        }
+                        required={!!formData.audio_description}
                         disabled={!canEdit}
                       />
                     )}
                   </>
-                )}
+                ) : null}
+
+
                 <Aetextarea
                   label="Additional Notes"
                   name="additional_notes"
@@ -845,7 +957,38 @@ const EditProject = () => {
                   disabled={!canEdit}
                 />
               </div>
+              <div className="form_section">
+                <h6 className="card-title">SEO</h6>
+                <TextInput
+                  label="Project URL"
+                  name="url"
+                  placeholder="Auto-generated from title"
+                  value={formData.url || ""}
+                  onChange={handleInputChange}
+                  onFocus={markTouched("url")}
+                  disabled={!canEdit}
+                />
 
+                <TextInput
+                  label="Meta Title"
+                  name="meta_title"
+                  placeholder="Auto-generated from title"
+                  value={formData.meta_title || ""}
+                  onChange={handleInputChange}
+                  onFocus={markTouched("meta_title")}
+                  disabled={!canEdit}
+                />
+
+                <Aetextarea
+                  label="Meta Description"
+                  name="meta_description"
+                  placeholder="Auto-generated from description"
+                  value={formData.meta_description || ""}
+                  onChange={handleInputChange}
+                  onFocus={markTouched("meta_description")}
+                  disabled={!canEdit}
+                />
+              </div>
             </Col>
             <Col md={5}>
               <div className="form_section">
@@ -872,18 +1015,11 @@ const EditProject = () => {
                   required
                   disabled={!canEdit}
                 />
-                <TagInput
-                  label="Skills Required"
-                  name="skills_required"
-                  availableTags={availableSkills}
-                  initialTags={skillsTags}
-                  onTagsChange={(skills) => handleTagsChange(skills, "skills_required")}
-                  info="Add skills (e.g., Video Editing, Animation)"
-                  tagTypeFieldName="tag_type"
-                  tagTypeValue="skills"
-                  required
-                  disabled={!canEdit}
+                <SkillInput
+                  selectedSkills={skillsTags}
+                  setSelectedSkills={(skills) => handleTagsChange(skills, "skills_required")}
                 />
+
                 <Aetextarea
                   label="Reference Links"
                   name="reference_links"
@@ -893,30 +1029,31 @@ const EditProject = () => {
                   disabled={!canEdit}
                 />
                 <DateInput
-                  label="Deadline"
-                  name="Deadline"
+                  label="deadline"
+                  name="deadline"
                   type="future"
-                  value={formData.Deadline}
+                  value={formData.deadline}
                   includeTime={false}
                   onDateChange={handleDateChange}
-                  initialDate={formData.Deadline ? new Date(formData.Deadline) : null}
+                  initialDate={formData.deadline ? new Date(formData.deadline) : null}
                   required
                   disabled={!canEdit}
                 />
                 <CategoryInput
                   value={formData.project_category}
-                  availableCategories={availableCategories}
                   onChange={(val) => handleInputChange("project_category", val)}
-                  onCategoryAdded={(newCat) => {
-                    // Add new category to dropdown dynamically:
+                  availableCategories={availableCategories}
+                  label="Project Category"
+                  placeholder="Select a category"
+                  onCategoryAdded={(newCategory) => {
                     const newOption = {
-                      value: newCat.category_id,
-                      label: newCat.category_name,
+                      value: newCategory.category_id,
+                      label: newCategory.name || newCategory.category_name,
                     };
                     setAvailableCategory((prev) => [...prev, newOption]);
                   }}
-                  disabled={!canEdit}
                 />
+
                 <TextInput
                   label="Project Type"
                   name="projects_type"
@@ -936,10 +1073,10 @@ const EditProject = () => {
                   disabled={!canEdit}
                 />
                 <NumberInputComponent
-                  label="Budget"
-                  name="Budget"
+                  label="budget"
+                  name="budget"
                   placeholder="Type budget"
-                  value={formData.Budget || ""}
+                  value={formData.budget || ""}
                   onChange={handleInputChange}
                   min={1}
                   required

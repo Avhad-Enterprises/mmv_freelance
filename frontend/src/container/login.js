@@ -13,14 +13,19 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setErrorMessage("Email and password are required.");
+    if (!email) {
+      setErrorMessage("Email are required.");
+      return;
+    }
+    if (!password) {
+      setErrorMessage("password are required.");
       return;
     }
 
     try {
       const response = await axios.post(
-        "http://13.235.113.131:8000/api/v1/users/login",
+        // "http://13.235.113.131:8000/api/v1/users/login",
+        "http://localhost:8000/api/v1/auth/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );

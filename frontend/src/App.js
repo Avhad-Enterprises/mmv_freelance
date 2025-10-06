@@ -21,6 +21,17 @@ import ViewTicket from "./container/view-ticket";
 import FMPayouts from "./container/fm-payout";
 import ViewPayouts from "./container/view-fmpayout";
 import ApplicationData from "./container/application-data";
+import OnlineStore from "./container/online-store";
+import CustomizePage from "./container/os-customizepage";
+import Preferences from "./container/preference";
+import Home from "./container/cms-home";
+import AddNewClient from "./container/add-new-client";
+import AddNewEditor from "./container/add-new-editor";
+import SendInvitation from "./container/SendInvitation";
+import Settings from "./container/Settings";
+import AddNewAdmin from "./container/new-admin-register";
+import VideoEditors from "./container/video-editors";
+import VideoGrapher from "./container/videographer";
 
 const App = () => {
   return (
@@ -28,6 +39,33 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/register"
+          element={
+            <ProtectedRoute>
+              <AddNewAdmin />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/sendinvitation"
+          element={
+            <ProtectedRoute>
+              <SendInvitation />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/dashboard"
@@ -172,6 +210,78 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/onlinestore"
+          element={
+            <ProtectedRoute>
+              <OnlineStore />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/customize"
+          element={
+            <ProtectedRoute>
+              <CustomizePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/preferences"
+          element={
+            <ProtectedRoute>
+              <Preferences />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/cmshome"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/client/add-new-client"
+          element={
+            <ProtectedRoute>
+              <AddNewClient />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/editor/add-new-editors"
+          element={
+            <ProtectedRoute>
+              <AddNewEditor />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/editors/video"
+          element={
+            <ProtectedRoute>
+              <VideoEditors />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/editors/videographers"
+          element={
+            <ProtectedRoute>
+              <VideoGrapher />
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
       <ToastProvider />
     </BrowserRouter>

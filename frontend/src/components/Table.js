@@ -14,7 +14,7 @@ const Table = ({
   data,
   columns,
   filteredData,
-  updateStatus,
+  onStatusChange,
   setFilteredData,
   paginated = true,
   updateQuantity,
@@ -234,26 +234,45 @@ const Table = ({
 
     if (type === "status") {
       return (
-        <div className="status-control">
-          <button
-            className="btn btn-outline-success me-2"
-            onClick={() => updateStatus(rowData.id, 1)} // 1 = Accept
-          >
-            <FaCheck />
-          </button>
-          <button
-            className="btn btn-outline-danger me-2"
-            onClick={() => updateStatus(rowData.id, 2)} // 2 = Reject
-          >
-            <RxCross1 />
-          </button>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => updateStatus(rowData.id, 0)} // 0 = Not Assigned
-          >
-            <FaQuestion />
-          </button>
-        </div>
+        <>
+          {rowData.status === 0 ? (
+            <div className="status-control d-flex align-items-center">
+              <button
+                className="btn btn-outline-success me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 1, rowData.user_id)} // Accept
+                title="Accept"
+              >
+                <FaCheck />
+              </button>
+              <button
+                className="btn btn-outline-danger me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 2, rowData.user_id)} // Reject
+                title="Reject"
+              >
+                <RxCross1 />
+              </button>
+              <button
+                className="btn btn-outline-secondary me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 0, rowData.user_id)} // Pending
+                title="Pending"
+              >
+                <FaQuestion />
+              </button>
+            </div>
+          ) : (
+            <>
+              {rowData.status === 1 && (
+                <span className="text-success fw-bold">Accepted</span>
+              )}
+              {rowData.status === 2 && (
+                <span className="text-danger fw-bold">Rejected</span>
+              )}
+              {rowData.status === 0 && (
+                <span className="text-secondary fw-bold">Pending</span>
+              )}
+            </>
+          )}
+        </>
       );
     }
 

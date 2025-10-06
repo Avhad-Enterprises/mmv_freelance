@@ -23,6 +23,7 @@ const ApplicationData = () => {
                     "projectsTask/getprojects_taskbyid",
                     payload
                 );
+                console.log("API Response: ",response);
 
                 const project = response?.data?.projects;
                 if (project?.project_title) {
@@ -43,6 +44,7 @@ const ApplicationData = () => {
                     "applications/projects/get-applications",
                     payload
                 );
+                console.log("Application Response: ",response);
 
                 const applications = response?.data?.data;
                 if (Array.isArray(applications)) {
@@ -50,6 +52,14 @@ const ApplicationData = () => {
                     const formattedData = applications.map((item) => ({
                         ...item,
                         name: `${item.first_name || ''} ${item.last_name || ''}`.trim(),
+                        experience: Array.isArray(item.experience)
+                            ? item.experience
+                                .map(
+                                    (exp) =>
+                                        `${exp.role || "N/A"} at ${exp.company || "N/A"} (${exp.duration || "N/A"})`
+                                )
+                                .join(", ")
+                            : "0",
                     }));
                     setApplicationsData(formattedData);
                 } else {
@@ -73,13 +83,14 @@ const ApplicationData = () => {
         }
     }, [navigate, id]);
 
-    const updateStatus = async (applied_projects_id, newStatus) => {
+    const updateStatus = async (projects_task_id, newStatus, user_id) => {
         try {
             const payload = {
-                applied_projects_id,
+                projects_task_id,
                 status: newStatus,
+                user_id: user_id
             };
-            const response = await makePatchRequest("applications/update-status", payload);
+            const response = await makePatchRequest("projectsTask/updatestatus", payload);
             console.log(response);
             showSuccessToast("Status updated!");
         } catch (error) {
@@ -97,7 +108,7 @@ const ApplicationData = () => {
         {
             headname: "Experience",
             dbcol: "experience",
-            type: "text",
+            type: "",
         },
         {
             headname: "Skills",

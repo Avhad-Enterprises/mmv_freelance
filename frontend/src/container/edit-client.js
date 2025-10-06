@@ -7,7 +7,7 @@ import TagInput from "../components/TagInput";
 import Aetextarea from "../components/Aetextarea";
 import CheckboxInput from "../components/CheckboxInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePostRequest, makePutRequest, makeGetRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -30,11 +30,8 @@ const EditClient = () => {
     state: "",
     country: "",
     pincode: "",
-    notes: "",
+    // notes: "",
     tags: [],
-    role: "Client",
-    account_type: "Client",
-    account_status: "Active",
     is_active: true,
     bio: "",
     projects_created: 0,
@@ -72,7 +69,7 @@ const EditClient = () => {
         }
 
         // Set canEdit based on permissions (e.g., only admins can edit)
-        setCanEdit(user.role === "admin"); // Adjust based on your permission logic
+        setCanEdit(true); // Adjust based on your permission logic
 
         let parsedTags = [];
         if (Array.isArray(client.tags)) {
@@ -99,12 +96,9 @@ const EditClient = () => {
           state: client.state || "",
           country: client.country || "",
           pincode: client.pincode || "",
-          notes: client.notes || "",
+          // notes: client.notes || "",
           tags: parsedTags,
-          role: client.role || "Client",
-          account_type: client.account_type || "Client",
-          account_status: client.account_status || "Active",
-          is_active: client.is_active?.toString() || "0",
+          is_active: !!client.is_active,
           bio: client.bio || "",
           projects_created: client.projects_created || 0,
           total_spent: client.total_spent || 0,
@@ -245,17 +239,15 @@ const EditClient = () => {
       state: formData.state,
       country: formData.country,
       pincode: formData.pincode,
-      notes: formData.notes,
+      // notes: formData.notes,
       tags: JSON.stringify(selectedTags),
       role: formData.role,
-      account_type: formData.account_type,
-      account_status: formData.account_status,
       is_active: formData.is_active,
       bio: formData.bio,
     };
 
     try {
-      await makePutRequest(`users/updateuserbyid`, payload);
+      await makePostRequest(`users/update_user_by_id`, payload);
       showSuccessToast("🎉 Client updated successfully!");
       setHasChanges(false);
       navigate("/client");
@@ -303,6 +295,39 @@ const EditClient = () => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!canEdit) {
+      showErrorToast("You are not authorized to delete this client.");
+      return;
+    }
+
+    showAlert({
+      title: "Are you sure?",
+      text: "Are you sure you want to delete this client? This action cannot be undone.",
+      icon: "warning",
+      confirmButton: {
+        text: "Yes, Delete",
+        backgroundColor: "#c0392b",
+        textColor: "#fff",
+      },
+      cancelButton: {
+        text: "Cancel",
+        backgroundColor: "#2c333a",
+        textColor: "#fff",
+      },
+      onConfirm: async () => {
+        try {
+          await makePostRequest("users/soft_delete_user", { user_id: parseInt(id, 10) });
+          showSuccessToast("Client deleted successfully!");
+          navigate("/client");
+        } catch (error) {
+          console.error("Delete error:", error);
+          showErrorToast(error.response?.data?.message || "Failed to delete client.");
+        }
+      },
+    });
+  };
+
   if (loading) {
     return (
       <Layout>
@@ -317,7 +342,8 @@ const EditClient = () => {
         <FormHeader
           title="Edit Client"
           showUpdate={hasChanges && canEdit}
-          showDelete={false} // Add delete functionality if needed
+          showDelete
+          onDelete={handleDelete}
           backUrl="/client"
           onBack={handleBackNavigation}
         />
@@ -392,11 +418,11 @@ const EditClient = () => {
                 </Col>
               </Row>
 
-              <Row className="mb-3">
+              {/* <Row className="mb-3">
                 <Col md={12}>
                   <CheckboxInput
                     label="Clients agreed to receive emails"
-                    name="agreed_to_emails"
+                    name="email_verified"
                     checked={formData.agreed_to_emails || false}
                     onChange={handleInputChange}
                     disabled={!canEdit}
@@ -405,19 +431,19 @@ const EditClient = () => {
                 <Col md={12}>
                   <CheckboxInput
                     label="Clients agreed to receive text/SMS"
-                    name="agreed_to_sms"
+                    name="phone_verified"
                     checked={formData.agreed_to_sms || false}
                     onChange={handleInputChange}
                     disabled={!canEdit}
                   />
                 </Col>
-              </Row>
+              </Row> */}
 
             </div>
-            <div className="form_section">
+            {/* <div className="form_section">
               <h6 className="card-title">Project Details</h6>
 
-            </div>
+            </div> */}
           </Col>
 
           <Col md={5}>
@@ -446,10 +472,10 @@ const EditClient = () => {
               <Row className="mb-3">
                 <Col md={6}>
                   <TextInput
-                    label="City"
-                    name="city"
-                    placeholder="Type city"
-                    value={formData.city || ""}
+                    label="Country"
+                    name="country"
+                    placeholder="Type country"
+                    value={formData.country || ""}
                     onChange={handleInputChange}
                     disabled={!canEdit}
                   />
@@ -464,10 +490,16 @@ const EditClient = () => {
                     disabled={!canEdit}
                   />
                 </Col>
-              </Row>
-
-              {/* Row: Pincode & Country */}
-              <Row className="mb-3">
+                <Col md={6}>
+                  <TextInput
+                    label="City"
+                    name="city"
+                    placeholder="Type city"
+                    value={formData.city || ""}
+                    onChange={handleInputChange}
+                    disabled={!canEdit}
+                  />
+                </Col>
                 <Col md={6}>
                   <TextInput
                     label="Pincode"
@@ -478,20 +510,10 @@ const EditClient = () => {
                     disabled={!canEdit}
                   />
                 </Col>
-                <Col md={6}>
-                  <TextInput
-                    label="Country"
-                    name="country"
-                    placeholder="Type country"
-                    value={formData.country || ""}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
               </Row>
             </div>
 
-            <div className="form_section">
+            {/* <div className="form_section">
               <Aetextarea
                 label="Notes"
                 name="notes"
@@ -499,7 +521,7 @@ const EditClient = () => {
                 value={formData.notes}
                 onChange={handleInputChange}
               />
-            </div>
+            </div> */}
 
             <Col>
               <div className="form_section">

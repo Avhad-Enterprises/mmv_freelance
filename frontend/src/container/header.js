@@ -5,7 +5,7 @@ import "../App.css";
 import "../dashboard.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { makePostRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest } from "../utils/api";
 import { getLoggedInUser } from "../utils/auth";
 import { showErrorToast } from "../utils/toastUtils";
 import Settings from "./Settings";
@@ -13,7 +13,7 @@ import Settings from "./Settings";
 const Header = ({ toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({ full_name: ""});
+  const [userData, setUserData] = useState({ full_name: "" });
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,6 @@ const Header = ({ toggleSidebar }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -33,21 +32,27 @@ const Header = ({ toggleSidebar }) => {
           return;
         }
 
-        const payload = { user_id: parseInt(user.user_id, 10) };
-        const response = await makePostRequest(`users/${user.user_id}`, payload);
+        // ✅ Corrected: Use GET instead of POST
+        const response = await makeGetRequest(`users/${user.user_id}`);
+
         const userDetails = response.data?.data;
 
         if (!userDetails) {
           showErrorToast("User not found.");
-          setUserData({ full_name: ""});
+          setUserData({ full_name: "" });
           setLoading(false);
           return;
         }
 
+        // ✅ Updated to match backend field names
         setUserData({
-          full_name: userDetails.full_name || "",
-          profile_picture: userDetails.profile_picture || "https://ae-event-management-bucket.s3.ap-south-1.amazonaws.com/uploads/usericon.jpeg",
+          full_name:
+            `${userDetails.first_name || ""} ${userDetails.last_name || ""}`.trim(),
+          profile_picture:
+            userDetails.profile_picture ||
+            "https://ae-event-management-bucket.s3.ap-south-1.amazonaws.com/uploads/usericon.jpeg",
         });
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -64,6 +69,7 @@ const Header = ({ toggleSidebar }) => {
       navigate("/login");
     }
   }, [navigate]);
+
 
   useEffect(() => {
     const fetchNotifications = async () => {

@@ -126,8 +126,13 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
                 style={{ cursor: "pointer" }}
               >
                 <span className="d-flex align-items-center">
-                  <i className="bi bi-person-workspace"></i>
-                  <div className="LeftMenuHead ml-2">Editors</div>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/editors" ? "active" : ""}`}
+                    to="/editors"
+                  >
+                    <i className="bi bi-person-workspace"></i>
+                    <div className="LeftMenuHead ml-2">Freelancers</div>
+                  </Link>
                 </span>
                 <i
                   className={`bi ${openDropdowns["editors"] ? "bi-chevron-down" : "bi-chevron-right"}`}
@@ -138,8 +143,8 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
               <ul className={`submenu collapse ${openDropdowns["editors"] ? "show" : ""}`}>
                 <li>
                   <Link
-                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/editors/video" ? "active" : ""}`}
-                    to="/editors/video"
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/videoeditorhomepage" ? "active" : ""}`}
+                    to="/videoeditorhomepage"
                   >
                     <i className="bi bi-dash"></i>
                     <div className="LeftMenuHead ml-2">Video Editors</div>
@@ -147,8 +152,8 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
                 </li>
                 <li>
                   <Link
-                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/editors/videographers" ? "active" : ""}`}
-                    to="/editors/videographers"
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/videographerhomepage" ? "active" : ""}`}
+                    to="/videographerhomepage"
                   >
                     <i className="bi bi-dash"></i>
                     <div className="LeftMenuHead ml-2">Videographers</div>

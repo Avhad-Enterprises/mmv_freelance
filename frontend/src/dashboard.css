@@ -2622,7 +2622,7 @@ html {
 .dropdown-item {
   padding: 5px;
   cursor: pointer;
-  color: #181818;
+  /* color: #181818; */
 }
 
 .dropdown-item:hover {

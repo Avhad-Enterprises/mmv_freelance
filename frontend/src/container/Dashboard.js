@@ -53,7 +53,7 @@ const Dashboard = () => {
 
     const fetchClients = async () => {
       try {
-        const response = await makeGetRequest("users/client/active");
+        const response = await makeGetRequest("clients/getallclient");
         const clientData = response.data?.data || [];
         setClients(clientData); // store array for profile pics
         setClientCount(clientData.length); // store count

@@ -34,8 +34,8 @@ const LoginPage = () => {
 
       if (data?.token) {
         localStorage.setItem("jwtToken", data.token);
-        const decoded = jwtDecode(data.token);
-        const fullName = `${decoded.first_name} ${decoded.last_name}`;
+        // const decoded = jwtDecode(data.token);
+        const fullName = `${data.user.first_name} ${data.user.last_name}`;
 
         showSuccessToast(`🎉 Welcome, ${fullName}!`);
         navigate("/dashboard");

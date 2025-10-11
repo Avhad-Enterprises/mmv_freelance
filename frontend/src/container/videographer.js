@@ -1,31 +1,27 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "react-select";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
-import SelectComponent from "../components/SelectComponent";
-import { languages } from "../data/languages";
 import { videoProductionSkills } from "../data/skilllist";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePostRequest, makeGetRequest } from "../utils/api";
+import { makeGetRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { getLoggedInUser } from "../utils/auth";
 import { Country, State, City } from "country-state-city";
-import Aetextarea from "../components/Aetextarea";
 
 const CreateEditor = () => {
     const navigate = useNavigate();
     const inputRefs = useRef({});
 
     const [formData, setFormData] = useState({
-        first_name: "",
-        last_name: "",
+        full_name: "",
         username: "",
         password: "",
-        profilePhoto: "",
+        profile_photo: "",
         email: "",
         phone_number: "",
         street_address: "",
@@ -36,7 +32,6 @@ const CreateEditor = () => {
         profile_title: "",
         short_description: "",
         experience_level: "",
-        skills: [],
         superpowers: [],
         skill_tags: [],
         portfolio_links: [],
@@ -50,14 +45,11 @@ const CreateEditor = () => {
         work_type: "",
         hours_per_week: "",
         id_type: "",
-        id_document_url: "",
+        id_document: "",
         languages: [],
-        account_type: "videoEditor",
+        account_type: "videographer",
     });
 
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedSkillTags, setSelectedSkillTags] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [availableSkills, setAvailableSkills] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
@@ -69,8 +61,6 @@ const CreateEditor = () => {
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
     const [isReviewMode, setIsReviewMode] = useState(false);
-    const [categories, setCategories] = useState([]); // all available categories
-    const [selectedCategories, setSelectedCategories] = useState([]); // selected categories
     const [links, setLinks] = useState(["", "", ""]);
     const [profilePhoto, setProfilePhoto] = useState(null);
     const [showErrors, setShowErrors] = useState(false);
@@ -79,7 +69,7 @@ const CreateEditor = () => {
 
     const skillOptions = videoProductionSkills.map(skill => ({ value: skill, label: skill }));
 
-    const { first_name, last_name } = formData;
+    const { full_name } = formData;
 
     // ✅ Load countries once
     useEffect(() => {
@@ -162,11 +152,15 @@ const CreateEditor = () => {
             try {
                 const response = await makeGetRequest("category/getallcategorys");
                 const fetched = response.data?.data || [];
-                const options = fetched.map(cat => ({
-                    value: cat.id,
-                    label: cat.category_name,
-                }));
-                setSuperpowersOptions(options);
+
+                const editorCategories = fetched
+                    .filter(cat => cat.category_type === "videographer" && cat.is_active)
+                    .map(cat => ({
+                        value: cat.category_name,
+                        label: cat.category_name,
+                    }));
+
+                setSuperpowersOptions(editorCategories);
             } catch (error) {
                 console.error("Failed to fetch superpowers:", error);
                 setSuperpowersOptions([]);
@@ -179,7 +173,7 @@ const CreateEditor = () => {
 
     const handleInputChange = (e, customValue = null) => {
         if (e?.target) {
-            const { name, type, value } = e.target;
+            const { name, value } = e.target;
             setFormData(prev => ({ ...prev, [name]: value }));
         } else if (customValue !== null) {
             setFormData(prev => ({ ...prev, [e]: customValue }));
@@ -207,13 +201,6 @@ const CreateEditor = () => {
         setLinks([...links, ""]);
     };
 
-    const hoursMap = {
-        "less-20": 15,
-        "20-30": 25,
-        "30-40": 35,
-        "more-40": 45
-    };
-
     const handlePhotoChange = (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -239,67 +226,69 @@ const CreateEditor = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const user = getLoggedInUser();
-        if (!user?.user_id) {
-            showErrorToast("User not authenticated.");
-            return;
-        }
         if (!profilePhoto) {
             showErrorToast("Profile photo is required.");
             return;
         }
 
-        const payload = {
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            username: formData.username,
-            profile_picture: formData.profilePhoto,
-            password: formData.password || "Test@1234",
-            email: formData.email,
-            phone_number: formData.phone_number,
-
-            profile_title: formData.profile_title,
-            short_description: formData.short_description,
-            experience_level: formData.experience_level || undefined,
-
-            skills: selectedSkills,
-            superpowers: formData.superpowers,
-            skill_tags: formData.skill_tags,
-
-            portfolio_links: links.filter((l) => l.trim() !== ""),
-            certification: formData.certification,
-            education: formData.education,
-            previous_works: formData.previous_works,
-            services: formData.services,
-
-            rate_amount: Number(formData.rate_amount) || 0,
-            availability: formData.availability,
-            work_type: formData.work_type,
-            hours_per_week: formData.hours_per_week,
-
-            id_type: formData.id_type,
-            id_document_url: formData.id_document_url,
-
-            languages: formData.languages,
-
-            account_type: formData.account_type || "videoEditor",
-        };
-
+        const user = getLoggedInUser();
+        if (!user?.user_id) {
+            showErrorToast("User not authenticated.");
+            return;
+        }
 
         try {
-            const response = await makePostRequest("auth/register/videographer", payload);
-            console.log("API Response :", response);
-            showSuccessToast("🎉 Video Editor added successfully!");
-            // navigate("/editors");
+            const fd = new FormData();
+
+            fd.append("full_name", formData.full_name);
+            fd.append("username", formData.username);
+            fd.append("email", formData.email);
+            fd.append("password", formData.password || "Test@1234");
+            fd.append("profile_photo", profilePhoto); // File
+            fd.append("phone_number", formData.phone_number);
+            fd.append("country", formData.country);
+            fd.append("state", formData.state);
+            fd.append("city", formData.city);
+            fd.append("short_description", formData.short_description);
+            fd.append("rate_amount", formData.rate_amount || 0);
+            fd.append("rate_currency", formData.rate_currency || "INR");
+            fd.append("availability", formData.availability);
+            fd.append("id_type", formData.id_type);
+            if (formData.id_document) {
+                fd.append("id_document", formData.id_document); // if using File object
+            }
+            fd.append("languages", JSON.stringify(formData.languages || []));
+            fd.append("superpowers", JSON.stringify(formData.superpowers || []));
+            fd.append("skill_tags", JSON.stringify(formData.skill_tags || []));
+            fd.append("portfolio_links", JSON.stringify(links.filter((l) => l.trim() !== "")));
+            fd.append("account_type", formData.account_type || "videographer");
+
+            // Send request
+            const response = await fetch(
+                "http://localhost:8000/api/v1/auth/register/videographer",
+                {
+                    method: "POST",
+                    body: fd, // FormData
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed");
+            }
+
+            showSuccessToast("🎉 Video Grapher added successfully!");
+            console.log("API Response:", data);
+
+            navigate("/videographerhomepage");
+
         } catch (err) {
-            console.error("Insert error:", {
-                message: err.message,
-                response: err.response?.data,
-                status: err.response?.status,
-            });
-            showErrorToast(err.response?.data?.message || "Failed to add Editor.");
+            console.error("Insert error:", err);
+            showErrorToast(err.message || "Failed to add Video Grapher.");
         }
     };
+
 
     const availableLanguages = [
         "English", "Hindi", "Marathi", "Gujarati", "Bengali", "Telugu", "Tamil",
@@ -311,8 +300,8 @@ const CreateEditor = () => {
         <Layout>
             <form onSubmit={handleSubmit}>
                 <FormHeader
-                    title="Add New Editor"
-                    showAdd
+                    title="Add New VideoGrapher"
+                    // showAdd
                     backUrl="/editors"
                     onBack={() => navigate("/editors")}
                 />
@@ -323,22 +312,11 @@ const CreateEditor = () => {
                             <Row className="mb-3">
                                 <Col md={6}>
                                     <TextInput
-                                        ref={(el) => (inputRefs.current.first_name = el)}
-                                        label="First Name"
-                                        name="first_name"
-                                        placeholder="Type First Name"
-                                        value={formData.first_name}
-                                        onChange={handleInputChange}
-                                        required={true}
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <TextInput
-                                        ref={(el) => (inputRefs.current.last_name = el)}
-                                        label="Last Name"
-                                        name="last_name"
-                                        placeholder="Type Last Name"
-                                        value={formData.last_name}
+                                        ref={(el) => (inputRefs.current.full_name = el)}
+                                        label="Full Name"
+                                        name="full_name"
+                                        placeholder="Type Full Name"
+                                        value={formData.full_name}
                                         onChange={handleInputChange}
                                         required={true}
                                     />
@@ -423,7 +401,7 @@ const CreateEditor = () => {
                             />
 
                             <Row className="mb-3">
-                                <label>Upload Profile Photo*</label>
+                                <label className="form-label">Upload Profile Photo <span className="text-danger"> *</span></label>
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -439,7 +417,7 @@ const CreateEditor = () => {
                             </Row>
                             <Row className="mb-3">
                                 <Col md={6}>
-                                    <label className="form-label">ID Verification*</label>
+                                    <label className="form-label">ID Verification <span className="text-danger"> *</span></label>
                                     <select
                                         className="form-control"
                                         value={formData.id_type}
@@ -451,11 +429,13 @@ const CreateEditor = () => {
                                         <option value="passport">Passport</option>
                                         <option value="driving_license">Driving License</option>
                                         <option value="national_id">National ID</option>
-                                        <option value="aadhaar">Aadhaar</option>
                                     </select>
+                                    {showErrors && !formData.id_type && (
+                                        <small className="text-danger">ID Verification is required.</small>
+                                    )}
                                 </Col>
                                 <Col md={6}>
-                                    <label className="form-label">Upload ID Document*</label>
+                                    <label className="form-label">Upload ID Document <span className="text-danger"> *</span></label>
                                     <input
                                         type="file"
                                         accept="image/*,application/pdf"
@@ -463,10 +443,81 @@ const CreateEditor = () => {
                                         onChange={(e) =>
                                             setFormData((prev) => ({
                                                 ...prev,
-                                                id_document_url: e.target.files[0]?.name || "",
+                                                id_document: e.target.files[0] || null,
                                             }))
                                         }
                                     />
+                                    {showErrors && !formData.id_document && (
+                                        <small className="text-danger">ID Document is required.</small>
+                                    )}
+                                </Col>
+                            </Row>
+
+                            <TextInput
+                                ref={(el) => (inputRefs.current.address = el)}
+                                label="Address"
+                                name="address"
+                                placeholder="Type address line 1"
+                                value={formData.address}
+                                onChange={handleInputChange}
+                                required={true}
+                            />
+                            {showErrors && !formData.address && (
+                                <small className="text-danger">Address is required.</small>
+                            )}
+
+                            <Row className="mb-3">
+                                <Col md={6}>
+                                    <label className="form-label">Country <span className="text-danger"> *</span></label>
+                                    <Select
+                                        options={countries}
+                                        value={countries.find(c => c.value === selectedCountry)}
+                                        onChange={opt => {
+                                            setSelectedCountry(opt.value);
+                                            handleInputChange("country", opt.label); // update formData.country for review
+                                        }}
+                                        placeholder="Select Country"
+                                        required={true}
+                                    />
+                                    {showErrors && !formData.country && (
+                                        <small className="text-danger">Country is required.</small>
+                                    )}
+                                </Col>
+
+                                <Col md={6}>
+                                    <label className="form-label">State <span className="text-danger"> *</span></label>
+                                    <Select
+                                        options={states}
+                                        value={states.find(s => s.value === selectedState)}
+                                        onChange={opt => {
+                                            setSelectedState(opt.value);
+                                            handleInputChange("state", opt.label); // update formData.state
+                                        }}
+                                        placeholder="Select State"
+                                        isDisabled={!selectedCountry}
+                                        required={true}
+                                    />
+                                    {showErrors && !formData.state && (
+                                        <small className="text-danger">State is required.</small>
+                                    )}
+                                </Col>
+
+                                <Col md={6}>
+                                    <label className="form-label">City <span className="text-danger"> *</span></label>
+                                    <Select
+                                        options={cities}
+                                        value={cities.find(c => c.value === selectedCity)}
+                                        onChange={opt => {
+                                            setSelectedCity(opt.value);
+                                            handleInputChange("city", opt.label); // update formData.city
+                                        }}
+                                        placeholder="Select City"
+                                        isDisabled={!selectedState}
+                                        required={true}
+                                    />
+                                    {showErrors && !formData.city && (
+                                        <small className="text-danger">City is required.</small>
+                                    )}
                                 </Col>
                             </Row>
 
@@ -478,10 +529,10 @@ const CreateEditor = () => {
                         <div className="form_section">
                             <h6 className="card-title">Professional Details</h6>
                             <h5 className="mb-2">
-                                Hi, I am {first_name || last_name ? `${first_name} ${last_name}`.trim() : "[Your Name]"}
+                                Hi, I am {full_name}
                             </h5>
 
-                            <label className="form-label">Skills</label>
+                            <label className="form-label">Skills <span className="text-danger"> *</span></label>
                             <Select
                                 isMulti
                                 options={skillOptions}
@@ -489,12 +540,15 @@ const CreateEditor = () => {
                                 onChange={(selected) => {
                                     const skillsArray = selected.map(opt => opt.value);
                                     setSelectedSkills(skillsArray);
-                                    setFormData(prev => ({ ...prev, skill: skillsArray }));
+                                    setFormData(prev => ({ ...prev, skill_tags: skillsArray }));
                                 }}
                                 placeholder="Select Skills"
                             />
+                            {showErrors && !formData.skill_tags && (
+                                <small className="text-danger">Skills are required.</small>
+                            )}
 
-                            <label className="form-label">My Superpowers are</label>
+                            <label className="form-label">My Superpowers are <span className="text-danger"> *</span></label>
                             <small>(Select up to 3 categories that best describe you)</small>
                             <Select
                                 isMulti
@@ -513,13 +567,16 @@ const CreateEditor = () => {
                                 required
                             />
                             {selectedSuperpowers.length === 0 && (
-                                <small style={{ color: "red" }}>Please select at least 1 superpower.</small>
+                                <small>Please select at least 1 superpower.</small>
                             )}
                             {selectedSuperpowers.length > 3 && (
                                 <small style={{ color: "red" }}>You can select up to 3 superpowers only.</small>
                             )}
+                            {showErrors && !formData.superpowers && (
+                                <small className="text-danger">Superpowers are required.</small>
+                            )}
 
-                            <label className="form-label">Portfolio Links (YouTube only)</label>
+                            <label className="form-label">Portfolio Links (YouTube only)<span className="text-danger"> *</span></label>
                             <small className="d-block mb-2">
                                 Minimum one valid YouTube link is mandatory.
                             </small>
@@ -558,7 +615,7 @@ const CreateEditor = () => {
                             )}
                             <Row>
                                 <Col md={6}>
-                                    <label className="form-label">Rate Amount*</label>
+                                    <label className="form-label">Rate Amount <span className="text-danger"> *</span></label>
                                     <input
                                         type="number"
                                         className="form-control"
@@ -587,7 +644,7 @@ const CreateEditor = () => {
                                     )}
                                 </Col>
                                 <Col md={6}>
-                                    <label className="form-label">Currency*</label>
+                                    <label className="form-label">Currency <span className="text-danger"> *</span></label>
                                     <select
                                         className="form-control"
                                         value={formData.rate_currency}
@@ -599,6 +656,9 @@ const CreateEditor = () => {
                                         <option value="USD">USD</option>
                                         <option value="EUR">EUR</option>
                                     </select>
+                                    {showErrors && !formData.rate_currency && (
+                                        <small className="text-danger">Rate Currency is required.</small>
+                                    )}
                                 </Col>
                             </Row>
                         </div>
@@ -606,7 +666,7 @@ const CreateEditor = () => {
                         <div className="form_section">
                             <h6 className="card-title">Work Preferences</h6>
                             {/* Short Description */}
-                            <label className="form-label">Short Description about yourself*</label>
+                            <label className="form-label">Short Description about yourself<span className="text-danger"> *</span></label>
                             <small>Short description (minimum 10 characters)</small>
                             <textarea
                                 className="form-control"
@@ -625,7 +685,7 @@ const CreateEditor = () => {
                             <Row>
                                 <Col md={6}>
                                     {/* Availability */}
-                                    <label className="form-label">Availability*</label>
+                                    <label className="form-label">Availability <span className="text-danger"> *</span></label>
                                     <select
                                         className="form-control"
                                         value={formData.availability}
@@ -645,7 +705,7 @@ const CreateEditor = () => {
                                 </Col>
                                 <Col md={6}>
                                     {/* Languages */}
-                                    <label className="form-label">Languages Spoken*</label>
+                                    <label className="form-label">Languages Spoken <span className="text-danger"> *</span></label>
                                     <Select
                                         isMulti
                                         options={availableLanguages.map((lang) => ({ value: lang, label: lang }))}
@@ -686,8 +746,7 @@ const CreateEditor = () => {
                                 <div className="card mb-3 shadow-sm">
                                     <div className="card-body">
                                         <h6 className="card-title">Basic Information</h6>
-                                        <p><strong>First Name:</strong> {formData.first_name}</p>
-                                        <p><strong>Last Name:</strong> {formData.last_name}</p>
+                                        <p><strong>Full Name:</strong> {formData.full_name}</p>
                                         <p><strong>Username:</strong> {formData.username}</p>
                                         <p><strong>Email:</strong> {formData.email}</p>
                                     </div>
@@ -699,7 +758,10 @@ const CreateEditor = () => {
                                         <h6 className="card-title">Contact Details</h6>
                                         <p><strong>Phone:</strong> {formData.phone_number}</p>
                                         <p><strong>ID Type:</strong> {formData.id_type}</p>
-                                        <p><strong>ID Document:</strong> {formData.id_document_url}</p>
+                                        <p>
+                                            <strong>ID Document:</strong>{" "}
+                                            {formData.id_document ? formData.id_document.name : "Not uploaded"}
+                                        </p>
                                         <p><strong>Profile Photo:</strong> {profilePhoto ? profilePhoto.name : "Not uploaded"}</p>
                                     </div>
                                 </div>

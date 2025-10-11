@@ -32,6 +32,8 @@ import Settings from "./container/Settings";
 import AddNewAdmin from "./container/new-admin-register";
 import VideoEditors from "./container/video-editors";
 import VideoGrapher from "./container/videographer";
+import VideoEditorHomePage from "./container/videoeditorhomepage";
+import VideoGrapherHomePage from "./container/videographerhomepage";
 
 const App = () => {
   return (
@@ -273,11 +275,30 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+
         <Route
           path="/editors/videographers"
           element={
             <ProtectedRoute>
               <VideoGrapher />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/videoeditorhomepage"
+          element={
+            <ProtectedRoute>
+              <VideoEditorHomePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/videographerhomepage"
+          element={
+            <ProtectedRoute>
+              <VideoGrapherHomePage />
             </ProtectedRoute>
           }
         />

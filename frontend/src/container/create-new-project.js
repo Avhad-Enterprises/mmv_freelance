@@ -158,7 +158,7 @@ const CreateProject = () => {
     }
     const fetchClients = async () => {
       try {
-        const response = await makeGetRequest("users/client/active", {});
+        const response = await makeGetRequest("clients/getallclient", {});
         const fetchedClients = response.data?.data || [];
         const clientOptions = fetchedClients.map((client) => ({
           value: client.user_id,
@@ -252,10 +252,8 @@ const CreateProject = () => {
     e.preventDefault();
 
     const user = getLoggedInUser();
-    if (!user || !user.user_id || !user.token) {
-      console.log("Authentication failed");
-      showErrorToast("User not authenticated. Please log in again.");
-      navigate("/login");
+    if (!user?.user_id) {
+      showErrorToast("User not authenticated.");
       return;
     }
 

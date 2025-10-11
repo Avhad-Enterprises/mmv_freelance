@@ -27,12 +27,16 @@ const Editors = () => {
   useEffect(() => {
     const fetcheditorData = async () => {
       try {
-        const response = await makeGetRequest("users/freelancers/active");
+        const response = await makeGetRequest("freelancers/getfreelancers");
         console.log("Editors API Response:", response);
         const data = Array.isArray(response.data?.data) ? response.data.data : [];
         console.log("Parsed Editor Data:", data);
-        setEditorsData(data);
-        setAllData(data);
+        const formattedData = data.map((item) => ({
+          ...item,
+          full_name: `${item.first_name || ""} ${item.last_name || ""}`.trim(),
+        }));
+        setEditorsData(formattedData);
+        setAllData(formattedData);
       } catch (error) {
         console.error("Error fetching editors:", error);
         showErrorToast("Failed to load editor data.");
@@ -44,7 +48,7 @@ const Editors = () => {
 
     const fetchEditorCounts = async () => {
       try {
-        const response = await makeGetRequest("users/geteditorcount/active");
+        const response = await makeGetRequest("videoeditors/available");
         const counts = Array.isArray(response.data?.data) ? response.data.data : [];
 
         // Merge counts into editorsData
@@ -95,18 +99,21 @@ const Editors = () => {
 
 
   const columns = [
-    {
-      headname: "Editor ID",
-      dbcol: "user_id",
-      type: "link",
-      linkTemplate: "/editors/edit/:user_id",
-      linkLabelFromRow: "full_name", // Changed to use name for link label
-      linkParamKey: "user_id",
-    },
+    // {
+    //   headname: "Editor ID",
+    //   dbcol: "user_id",
+    //   type: "link",
+    //   linkTemplate: "/editors/edit/:user_id",
+    //   linkLabelFromRow: "full_name", // Changed to use name for link label
+    //   linkParamKey: "user_id",
+    // },
     {
       headname: "Name",
       dbcol: "full_name", // Updated to match API response
-      type: "",
+      type: "link",
+      linkTemplate: "/editors/edit/:user_id",
+      linkLabelFromRow: "full_name",
+      linkParamKey: "user_id",
     },
     {
       headname: "Projects Handled",
@@ -136,7 +143,7 @@ const Editors = () => {
       <div className="d-flex justify-content-between">
         <div className="mt-3 d-flex align-items-center">
         </div>
-        <div className="text-right gap-3 mt-3 ie-btn d-flex">
+        {/* <div className="text-right gap-3 mt-3 ie-btn d-flex">
           <div className="dropdown">
             <Button
               buttonType="add"
@@ -144,14 +151,14 @@ const Editors = () => {
               label="Add New"
             />
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="card-container gap-4 flex-wrap">
         <Row className="metrix-container">
           <Col xs={4} md={3}>
             <MetricCard
-              title="Active Editors"
+              title="Active Freelancers"
               operation="count"
               column="is_active"
               jsonData={editorsData}

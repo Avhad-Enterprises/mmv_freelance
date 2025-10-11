@@ -14,7 +14,7 @@ import SkillInput from "../components/SkillInput";
 import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePutRequest, makeGetRequest, makePostRequest } from "../utils/api";
+import { makePutRequest, makeGetRequest, makePostRequest, makeDeleteRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -106,7 +106,7 @@ const EditProject = () => {
 
         const fetchClients = async () => {
           try {
-            const response = await makeGetRequest("users/client/active", {});
+            const response = await makeGetRequest("clients/getallclient", {});
             const fetchedClients = response.data?.data || [];
             const clientOptions = fetchedClients.map((client) => ({
               value: client.user_id,
@@ -136,8 +136,8 @@ const EditProject = () => {
           }
         };
 
-        const payload = { projects_task_id: parseInt(id, 10) };
-        const response = await makePostRequest("projectsTask/getprojects_taskbyid", payload);
+        const response = await makeGetRequest(`projectsTask/getprojects_taskbyid/${id}`);
+
         console.log("Project Data: ", response);
         const project = response.data.projects;
 
@@ -638,13 +638,13 @@ const EditProject = () => {
       return;
     }
 
-    const payload = {
-      projects_task_id: projectId,
-      is_active: 0,
-      is_deleted: true,
-      deleted_by: userId,
-      deleted_at: new Date().toISOString(),
-    };
+    // const payload = {
+    //   projects_task_id: projectId,
+    //   is_active: 0,
+    //   is_deleted: true,
+    //   deleted_by: userId,
+    //   deleted_at: new Date().toISOString(),
+    // };
 
     showAlert({
       title: "Are you sure?",
@@ -662,7 +662,8 @@ const EditProject = () => {
       },
       onConfirm: async () => {
         try {
-          await makePostRequest(`projectsTask/deleteprojects_taskbyid`, payload);
+          const response = await makeDeleteRequest(`projectsTask/delete/${projectId}`);
+          console.log("Delete Response:", response);
           showSuccessToast("Project deleted successfully!");
           navigate("/projectmanagement");
         } catch (error) {
@@ -686,54 +687,54 @@ const EditProject = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchApplicationData = async () => {
-      try {
-        const payload = {
-          projects_task_id: parseInt(id, 10)
-        };
-        const response = await makePostRequest("applications/projects/get-applications", payload);
-        const data = Array.isArray(response.data?.data) ? response.data.data : [];
-        setApplicationaData(data);
-      } catch (error) {
-        console.error("Error fetching applications:", error);
-        showErrorToast("Failed to load application data.");
-        setApplicationaData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchApplicationData = async () => {
+  //     try {
+  //       const payload = {
+  //         projects_task_id: parseInt(id, 10)
+  //       };
+  //       const response = await makePostRequest("applications/projects/get-applications", payload);
+  //       const data = Array.isArray(response.data?.data) ? response.data.data : [];
+  //       setApplicationaData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching applications:", error);
+  //       showErrorToast("Failed to load application data.");
+  //       setApplicationaData([]);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    if (localStorage.getItem("jwtToken")) {
-      fetchApplicationData();
-    } else {
-      showErrorToast("Please log in to view applications.");
-      navigate("/login");
-    }
-  }, [navigate, id]);
+  //   if (localStorage.getItem("jwtToken")) {
+  //     fetchApplicationData();
+  //   } else {
+  //     showErrorToast("Please log in to view applications.");
+  //     navigate("/login");
+  //   }
+  // }, [navigate, id]);
 
-  const Applications = [
-    {
-      headname: "Application ID",
-      dbcol: "applied_projects_id",
-      type: "",
-    },
-    {
-      headname: "Name",
-      dbcol: "first_name",
-      type: "",
-    },
-    {
-      headname: "Status",
-      dbcol: "status",
-      type: "badge",
-    },
-    {
-      headname: "Skills",
-      dbcol: "skill",
-      type: "tags",
-    },
-  ];
+  // const Applications = [
+  //   {
+  //     headname: "Application ID",
+  //     dbcol: "applied_projects_id",
+  //     type: "",
+  //   },
+  //   {
+  //     headname: "Name",
+  //     dbcol: "first_name",
+  //     type: "",
+  //   },
+  //   {
+  //     headname: "Status",
+  //     dbcol: "status",
+  //     type: "badge",
+  //   },
+  //   {
+  //     headname: "Skills",
+  //     dbcol: "skill",
+  //     type: "tags",
+  //   },
+  // ];
 
   // const handleViewChange = () => {
   //   if (viewMode === "form" && hasChanges && canEdit) {
@@ -841,7 +842,7 @@ const EditProject = () => {
 
         {viewMode === "table" ? (
           <div className="mt-4">
-            <DataTable
+            {/* <DataTable
               id="applications-table"
               columns={Applications}
               tableRef={tableRef}
@@ -854,7 +855,7 @@ const EditProject = () => {
               paginated={true}
               showCheckbox={false}
               grid={false}
-            />
+            /> */}
           </div>
         ) : (
           <Row>

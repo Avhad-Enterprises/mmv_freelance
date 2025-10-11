@@ -38,13 +38,17 @@ const Projects = () => {
 
         for (const project of formattedData) {
           try {
-            const countRes = await makePostRequest(
-              "applications/projects/get-application-count",
-              { projects_task_id: project.projects_task_id }
+            // Use GET with project_id in URL
+            const countRes = await makeGetRequest(
+              `applications/projects/${project.projects_task_id}/application-count`
             );
+            console.log("Fetching count for project:", project.projects_task_id);
             project.count = countRes.data?.count || 0;
           } catch (err) {
-            console.error(`Failed to get count for project ${project.projects_task_id}`, err);
+            console.error(
+              `Failed to get count for project ${project.projects_task_id}`,
+              err
+            );
             project.count = 0;
           }
         }
@@ -65,7 +69,7 @@ const Projects = () => {
     const fetchCompletedProjects = async () => {
       try {
         const response = await makeGetRequest("applications/projects/completed-count");
-        console.log("Completed Projects Count: ",response);
+        console.log("Completed Projects Count: ", response);
         setCompletedCount(response.data?.count || 0);
       } catch (error) {
         console.error("Failed to fetch completed projects count", error);

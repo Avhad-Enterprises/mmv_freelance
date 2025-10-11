@@ -5,8 +5,6 @@ import Select from "react-select";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
-import SelectComponent from "../components/SelectComponent";
-import { languages } from "../data/languages";
 import { videoProductionSkills } from "../data/skilllist";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { makePostRequest, makeGetRequest } from "../utils/api";
@@ -14,7 +12,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { getLoggedInUser } from "../utils/auth";
 import { Country, State, City } from "country-state-city";
-import Aetextarea from "../components/Aetextarea";
 
 const CreateEditor = () => {
     const navigate = useNavigate();
@@ -25,6 +22,7 @@ const CreateEditor = () => {
         username: "",
         password: "",
         email: "",
+        profile_photo: "",
         phone_number: "",
         address: "",
         city: "",
@@ -46,14 +44,11 @@ const CreateEditor = () => {
         work_type: "",
         hours_per_week: "",
         id_type: "",
-        id_document_url: "",
+        id_document: "",
         languages: [],
         account_type: "videoEditor",
     });
 
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedSkillTags, setSelectedSkillTags] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [availableSkills, setAvailableSkills] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
@@ -65,8 +60,6 @@ const CreateEditor = () => {
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
     const [isReviewMode, setIsReviewMode] = useState(false);
-    const [categories, setCategories] = useState([]); // all available categories
-    const [selectedCategories, setSelectedCategories] = useState([]); // selected categories
     const [links, setLinks] = useState(["", "", ""]);
     const [showErrors, setShowErrors] = useState(false);
     const [superpowersOptions, setSuperpowersOptions] = useState([]);
@@ -208,24 +201,16 @@ const CreateEditor = () => {
         setLinks([...links, ""]);
     };
 
-    const handleFileChange = (e) => {
-        if (e.target.files.length > 0) {
-            const file = e.target.files[0];
+    const handlePhotoChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            // Optional: validate file type
+            if (!file.type.startsWith("image/")) {
+                alert("Only image files are allowed!");
+                return;
+            }
             setProfilePhoto(file);
-
-            setFormData((prev) => ({
-                ...prev,
-                profile_picture: file,        // optional
-                profile_photo_url: file.name, // for review display
-            }));
         }
-    };
-
-    const hoursMap = {
-        "less-20": 15,
-        "20-30": 25,
-        "30-40": 35,
-        "more-40": 45
     };
 
     // const handleTagsChange = useCallback((newTags, type) => {
@@ -252,47 +237,59 @@ const CreateEditor = () => {
             return;
         }
 
-        // ✅ Build multipart/form-data
-        const fd = new FormData();
-        fd.append("full_name", formData.full_name);
-        fd.append("username", formData.username);
-        fd.append("password", formData.password || "Test@1234");
-        fd.append("email", formData.email);
-        fd.append("phone_number", formData.phone_number);
-        fd.append("address", formData.address);
-        fd.append("country", formData.country);
-        fd.append("city", formData.city);
-        fd.append("short_description", formData.short_description);
-        console.log("Uploading photo:", profilePhoto);
-        fd.append("profile_photo", profilePhoto);
-        fd.append("skill_tags", JSON.stringify(selectedSkills));
-        fd.append("superpowers", JSON.stringify(formData.superpowers));
-
-        fd.append("portfolio_links", JSON.stringify(links.filter((l) => l.trim() !== "")));
-
-        fd.append("rate_amount", Number(formData.rate_amount) || 0);
-        fd.append("availability", formData.availability);
-
-        fd.append("id_type", formData.id_type);
-        fd.append("id_document_url", formData.id_document_url);
-
-        fd.append("languages", JSON.stringify(formData.languages));
-
-        fd.append("account_type", formData.account_type || "videoEditor");
-
-
         try {
-            const response = await makePostRequest("auth/register/videoeditor", fd);
-            console.log("API Response :", response);
+            // ✅ Build multipart/form-data
+            const fd = new FormData();
+            fd.append("full_name", formData.full_name);
+            fd.append("username", formData.username);
+            fd.append("password", formData.password || "Test@1234");
+            fd.append("email", formData.email);
+            fd.append("phone_number", formData.phone_number);
+            fd.append("address", formData.address);
+            fd.append("country", formData.country);
+            fd.append("city", formData.city);
+            fd.append("short_description", formData.short_description);
+            console.log("Uploading photo:", profilePhoto);
+            fd.append("profile_photo", profilePhoto);
+            fd.append("skill_tags", JSON.stringify(selectedSkills));
+            fd.append("superpowers", JSON.stringify(formData.superpowers));
+
+            fd.append("portfolio_links", JSON.stringify(links.filter((l) => l.trim() !== "")));
+
+            fd.append("rate_amount", Number(formData.rate_amount) || 0);
+            fd.append("availability", formData.availability);
+
+            fd.append("id_type", formData.id_type);
+            if (formData.id_document) {
+                fd.append("id_document", formData.id_document); // if using File object
+            }
+
+            fd.append("languages", JSON.stringify(formData.languages));
+
+            fd.append("account_type", formData.account_type || "videoEditor");
+
+
+            // Send request
+            const response = await fetch(
+                "http://localhost:8000/api/v1/auth/register/videoeditor",
+                {
+                    method: "POST",
+                    body: fd, // FormData
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed");
+            }
+
             showSuccessToast("🎉 Video Editor added successfully!");
-            // navigate("/editors");
+            console.log("API Response:", data);
+            navigate("/videoeditorhomepage");
         } catch (err) {
-            console.error("Insert error:", {
-                message: err.message,
-                response: err.response?.data,
-                status: err.response?.status,
-            });
-            showErrorToast(err.response?.data?.message || "Failed to add Editor.");
+            console.error("Insert error:", err);
+            showErrorToast(err.message || "Failed to add Video Editor.");
         }
     };
 
@@ -306,8 +303,8 @@ const CreateEditor = () => {
         <Layout>
             <form onSubmit={handleSubmit}>
                 <FormHeader
-                    title="Add New Editor"
-                    showAdd
+                    title="Add New Video Editor"
+                    // showAdd
                     backUrl="/editors"
                     onBack={() => navigate("/editors")}
                 />
@@ -415,6 +412,9 @@ const CreateEditor = () => {
                                 onChange={handleInputChange}
                                 required={true}
                             />
+                            {showErrors && !formData.address && (
+                                <small className="text-danger">Address is required.</small>
+                            )}
                             <Row className="mb-3">
                                 <Col md={6}>
                                     <label className="form-label">Country</label>
@@ -428,6 +428,9 @@ const CreateEditor = () => {
                                         placeholder="Select Country"
                                         required={true}
                                     />
+                                    {showErrors && !formData.country && (
+                                        <small className="text-danger">Country is required.</small>
+                                    )}
                                 </Col>
 
                                 <Col md={6}>
@@ -443,6 +446,9 @@ const CreateEditor = () => {
                                         isDisabled={!selectedCountry}
                                         required={true}
                                     />
+                                    {showErrors && !formData.state && (
+                                        <small className="text-danger">State is required.</small>
+                                    )}
                                 </Col>
 
                                 <Col md={6}>
@@ -458,24 +464,25 @@ const CreateEditor = () => {
                                         isDisabled={!selectedState}
                                         required={true}
                                     />
+                                    {showErrors && !formData.city && (
+                                        <small className="text-danger">City is required.</small>
+                                    )}
                                 </Col>
                             </Row>
                             <Row className="mb-3">
-                                <label className="form-label">Upload Profile Photo</label>
-                                <p style={{ fontSize: "0.85rem", color: "#555" }}>
-                                    Upload your original profile photo only.
-                                    <br />
-                                    <strong >
-                                        If fake images are detected, your profile will be de-activated immediately.
-                                    </strong>
-                                </p>
+                                <label>Upload Profile Photo*</label>
                                 <input
                                     type="file"
-                                    name="profile_picture"
-                                    className="form-control"
                                     accept="image/*"
-                                    onChange={handleFileChange}
+                                    className="form-control"
+                                    onChange={handlePhotoChange}
                                 />
+                                <small className="text-muted d-block mb-2">
+                                    Please upload your original photo. If found that you are uploading fake, AI-generated or pseudo photos, your profile will be de-activated immediately.
+                                </small>
+                                {showErrors && !profilePhoto && (
+                                    <small className="text-danger">Profile photo is required.</small>
+                                )}
                             </Row>
                             <Row className="mb-3">
                                 <Col md={6}>
@@ -493,6 +500,9 @@ const CreateEditor = () => {
                                         <option value="national_id">National ID</option>
                                         <option value="aadhaar">Aadhaar</option>
                                     </select>
+                                    {showErrors && !formData.id_type && (
+                                        <small className="text-danger">ID Type is required.</small>
+                                    )}
                                 </Col>
                                 <Col md={6}>
                                     <label className="form-label">Upload ID Document*</label>
@@ -503,11 +513,13 @@ const CreateEditor = () => {
                                         onChange={(e) =>
                                             setFormData((prev) => ({
                                                 ...prev,
-                                                id_document_file: e.target.files[0] || null, // store actual file
-                                                id_document_url: e.target.files[0]?.name || "",
+                                                id_document: e.target.files[0] || null,
                                             }))
                                         }
                                     />
+                                    {showErrors && !formData.id_document && (
+                                        <small className="text-danger">ID Document is required.</small>
+                                    )}
                                 </Col>
                             </Row>
 
@@ -534,6 +546,9 @@ const CreateEditor = () => {
                                 }}
                                 placeholder="Select Skills"
                             />
+                            {showErrors && !formData.skill_tags && (
+                                <small className="text-danger">Skills are required.</small>
+                            )}
 
                             <label className="form-label">My Superpowers are</label>
                             <small>(Select up to 3 categories that best describe you)</small>
@@ -559,6 +574,9 @@ const CreateEditor = () => {
                             )}
                             {showErrors && selectedSuperpowers.length > 3 && (
                                 <small className="text-danger d-block mt-1">You cannot select more than 3 categories.</small>
+                            )}
+                            {showErrors && !formData.superpowers && (
+                                <small className="text-danger">Superpowers are required.</small>
                             )}
 
 
@@ -642,6 +660,9 @@ const CreateEditor = () => {
                                         <option value="USD">USD</option>
                                         <option value="EUR">EUR</option>
                                     </select>
+                                    {showErrors && !formData.rate_currency && (
+                                        <small className="text-danger">Rate Currency is required.</small>
+                                    )}
                                 </Col>
                             </Row>
                         </div>
@@ -743,7 +764,10 @@ const CreateEditor = () => {
                                         <p><strong>Profile Photo:</strong> {formData.profile_photo}
                                         </p>
                                         <p><strong>ID Type:</strong> {formData.id_type}</p>
-                                        <p><strong>ID Document:</strong> {formData.id_document_url}</p>
+                                        <p>
+                                            <strong>ID Document:</strong>{" "}
+                                            {formData.id_document ? formData.id_document.name : "Not uploaded"}
+                                        </p>
                                     </div>
                                 </div>
                             </Col>

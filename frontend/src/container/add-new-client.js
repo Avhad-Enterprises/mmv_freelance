@@ -19,20 +19,20 @@ const CreateClient = () => {
     const navigate = useNavigate();
     const inputRefs = useRef({});
     const [formData, setFormData] = useState({
-        first_name: "",
-        last_name: "",
+        full_name: "",
         username: "",
         password: "",
         email: "",
         phone_number: "",
+        profile_picture: null,
         address: "",
         city: "",
         state: "",
         country: "",
         pincode: "",
         account_type: "client",
-        id_type: "",
-        id_document_url: null, // for file
+        tax_id: "",
+        business_document_url: null, // for file
         company_name: "",
         industry: "",
         website: "",
@@ -54,7 +54,7 @@ const CreateClient = () => {
     const [selectedState, setSelectedState] = useState("");
     const [selectedCity, setSelectedCity] = useState("");
     const [isReviewMode, setIsReviewMode] = useState(false);
-
+    const [showErrors, setShowErrors] = useState(false);
 
     // ✅ Load countries once
     useEffect(() => {
@@ -148,48 +148,52 @@ const CreateClient = () => {
             return;
         }
 
-        const payload = {
-            first_name: formData.first_name,
-            last_name: formData.first_name,
-            username: formData.username,
-            password: formData.password,
-            email: formData.email,
-            phone_number: formData.phone_number,
-            address: formData.address_line_first,
-            city: formData.city,
-            state: formData.state,
-            country: formData.country,
-            pincode: formData.pincode,
-            account_type: "client",
-            id_type: formData.id_type,
-            id_document_url: formData.id_document_url,
-            company_name: formData.company_name,
-            industry: formData.industry,
-            website: formData.website,
-            social_links: formData.social_links,
-            company_size: formData.company_size,
-            services_required: JSON.stringify(formData.services_required),
-            work_arrangement: formData.work_arrangement?.value,
-            project_frequency: formData.project_frequency?.value,
-            hiring_preferences: formData.hiring_preferences?.value,
-        };
+        const payload = new FormData(); // ✅ use FormData for file upload
+        payload.append("full_name", formData.full_name);
+        payload.append("username", formData.username);
+        payload.append("password", formData.password);
+        payload.append("email", formData.email);
+        payload.append("phone_number", formData.phone_number);
+        payload.append("address", formData.address);
+        payload.append("city", formData.city);
+        payload.append("state", formData.state);
+        payload.append("country", formData.country);
+        payload.append("pincode", formData.pincode);
+        payload.append("account_type", "client");
+        payload.append("tax_id", formData.tax_id || "");
+        if (formData.profile_picture instanceof File) {
+            payload.append("profile_picture", formData.profile_picture);
+        }
 
-        console.log("Submitting Payload", payload);
+        if (formData.business_document_url instanceof File) {
+            payload.append("business_document_url", formData.business_document_url);
+        }
+        payload.append("company_name", formData.company_name);
+        payload.append("industry", formData.industry || "");
+        payload.append("website", formData.website || "");
+        payload.append("social_links", formData.social_links || "");
+        payload.append("company_size", formData.company_size || "");
+        payload.append("services_required", JSON.stringify(formData.services_required));
+        payload.append("work_arrangement", formData.work_arrangement || "");
+        payload.append("project_frequency", formData.project_frequency || "");
+        payload.append("hiring_preferences", formData.hiring_preferences || "");
+
+        console.log("Submitting FormData", payload);
 
         try {
-            const response = await makePostRequest("auth/register/client", payload);
-            console.log("API Response", response);
+            const response = await makePostRequest("auth/register/client", payload, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
             showSuccessToast("🎉 Client added successfully!");
             navigate("/client");
         } catch (err) {
-            console.error("Insert error:", {
-                message: err.message,
-                response: err.response?.data,
-                status: err.response?.status,
-            });
+            console.error("Insert error:", err.response?.data || err.message);
             showErrorToast(err.response?.data?.message || "Failed to add client.");
         }
     };
+
 
     // Company Size options
     const companySizeOptions = [
@@ -202,12 +206,17 @@ const CreateClient = () => {
 
     // Services Required options
     const servicesOptions = [
-        { value: "", label: "Select required services" },
-        { value: "videography", label: "Videography" },
-        { value: "editing", label: "Editing" },
-        { value: "motion_graphics", label: "Motion Graphics" },
+        { value: "video_production", label: "Video Production" },
         { value: "photography", label: "Photography" },
-        { value: "other", label: "Other" },
+        { value: "animation", label: "Animation" },
+        { value: "motion_graphics", label: "Motion Graphics" },
+        { value: "video_editing", label: "Video Editing" },
+        { value: "sound_design", label: "Sound Design" },
+        { value: "color_grading", label: "Color Grading" },
+        { value: "vfx", label: "VFX" },
+        { value: "live_streaming", label: "Live Streaming" },
+        { value: "360_video", label: "360° Video" },
+        { value: "drone_videography", label: "Drone Videography" },
     ];
 
     return (
@@ -228,22 +237,11 @@ const CreateClient = () => {
                             <Row className="mb-3">
                                 <Col md={6}>
                                     <TextInput
-                                        ref={(el) => (inputRefs.current.first_name = el)}
-                                        label="First Name"
-                                        name="first_name"
-                                        placeholder="Type first name"
-                                        value={formData.first_name}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </Col>
-                                <Col md={6}>
-                                    <TextInput
-                                        ref={(el) => (inputRefs.current.last_name = el)}
-                                        label="Last Name"
-                                        name="last_name"
-                                        placeholder="Type last name"
-                                        value={formData.last_name}
+                                        ref={(el) => (inputRefs.current.full_name = el)}
+                                        label="Full Name"
+                                        name="full_name"
+                                        placeholder="Type full name"
+                                        value={formData.full_name}
                                         onChange={handleInputChange}
                                         required
                                     />
@@ -320,6 +318,42 @@ const CreateClient = () => {
                                 maxLength={10}
                                 minLength={10}
                             />
+                            <label className="form-label">
+                                Profile Photo (Optional)
+                            </label>
+                            <input
+                                type="file"
+                                name="profile_picture"
+                                className="form-control"
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files[0] || null;
+                                    if (!file) return;
+
+                                    if (!file.type.startsWith("image/")) {
+                                        alert("Only image files are allowed.");
+                                        e.target.value = "";
+                                        return;
+                                    }
+
+                                    if (file.size > 5 * 1024 * 1024) {
+                                        alert("File size must be less than 5MB.");
+                                        e.target.value = "";
+                                        return;
+                                    }
+
+                                    // ✅ Directly set the File object
+                                    setFormData(prev => ({ ...prev, profile_picture: file }));
+                                }}
+                            />
+
+                            <small className="text-muted">
+                                Upload your profile photo. Max 5MB.
+                            </small>
+                            {showErrors && !formData.profile_picture && (
+                                <small className="text-danger">Profile Photo is required.</small>
+                            )}
+
                             <TextInput
                                 ref={(el) => (inputRefs.current.address = el)}
                                 label="Address"
@@ -329,6 +363,10 @@ const CreateClient = () => {
                                 onChange={handleInputChange}
                                 required={true}
                             />
+                            {showErrors && !formData.address && (
+                                <small className="text-danger">Address is required.</small>
+                            )}
+
                             <Row className="mb-3">
                                 <Col md={6}>
                                     <label className="form-label">Country</label>
@@ -341,6 +379,9 @@ const CreateClient = () => {
                                         }}
                                         placeholder="Select Country"
                                     />
+                                    {showErrors && !formData.country && (
+                                        <small className="text-danger">Country is required.</small>
+                                    )}
                                 </Col>
 
                                 <Col md={6}>
@@ -355,6 +396,9 @@ const CreateClient = () => {
                                         placeholder="Select State"
                                         isDisabled={!selectedCountry}
                                     />
+                                    {showErrors && !formData.state && (
+                                        <small className="text-danger">State is required.</small>
+                                    )}
                                 </Col>
                             </Row>
 
@@ -371,6 +415,9 @@ const CreateClient = () => {
                                         placeholder="Select City"
                                         isDisabled={!selectedState}
                                     />
+                                    {showErrors && !formData.city && (
+                                        <small className="text-danger">City is required.</small>
+                                    )}
                                 </Col>
 
                                 <Col md={6}>
@@ -383,6 +430,9 @@ const CreateClient = () => {
                                         onChange={handleInputChange}
                                         required
                                     />
+                                    {showErrors && !formData.pincode && (
+                                        <small className="text-danger">Pincode is required.</small>
+                                    )}
                                 </Col>
                             </Row>
                             {/* <Row className="mb-3">
@@ -401,28 +451,60 @@ const CreateClient = () => {
                                 />
                             </Row> */}
                             <Row className="mb-3">
-                                <label className="form-label">Business Registration Documents (Optional)</label>
+                                <label className="form-label">
+                                    Business Registration Documents (Optional)
+                                    <span className="text-danger"> *</span>
+                                </label>
                                 <input
                                     type="file"
-                                    name="id_document_url"
+                                    name="business_document_url"
                                     className="form-control"
+                                    accept=".pdf"
                                     onChange={(e) => {
-                                        handleInputChange({ target: { name: "id_document_url", value: e.target.files[0] } });
+                                        const file = e.target.files[0];
+                                        if (!file) return;
+
+                                        if (file.type !== "application/pdf") {
+                                            alert("Only PDF files are allowed.");
+                                            e.target.value = "";
+                                            return;
+                                        }
+
+                                        if (file.size > 10 * 1024 * 1024) {
+                                            alert("File size must be less than 10MB.");
+                                            e.target.value = "";
+                                            return;
+                                        }
+
+                                        setFormData(prev => ({ ...prev, business_document_url: file }));
+                                        setShowErrors(false);
                                     }}
-                                    accept=".jpg,.jpeg,.png,.pdf" // accept only images & pdf
                                 />
+
+                                <small style={{ color: "blue" }}>
+                                    Upload business registration documents. This will be mandatory before your first payout.
+                                    Accepted format: PDF (Max 10MB)
+                                </small>
+                                {showErrors && (
+                                    <small className="text-danger">
+                                        Business Registration Document is required
+                                    </small>
+                                )}
                             </Row>
+
                             <Row className="mb-3">
                                 <TextInput
-                                    ref={(el) => (inputRefs.current.phone_number = el)}
+                                    ref={(el) => (inputRefs.current.tax_id = el)}
                                     label="Tax ID / Business Number (Optional)"
-                                    name="phone_number"
-                                    type="number"
-                                    placeholder="Type phone number"
-                                    value={formData.phone_number}
+                                    name="tax_id"
+                                    placeholder="Enter your tax ID or business number"
+                                    value={formData.tax_id}
                                     onChange={handleInputChange}
                                     required={true}
                                 />
+                                {showErrors && !formData.tax_id && (
+                                    <small className="text-danger">Tax ID is required.</small>
+                                )}
                             </Row>
                         </div>
                     </Col>
@@ -437,7 +519,11 @@ const CreateClient = () => {
                                 placeholder="e.g., Avhad Enterprise"
                                 value={formData.company_name}
                                 onChange={handleInputChange}
+                                required
                             />
+                            {showErrors && !formData.company_name && (
+                                <small className="text-danger">Company Name is required.</small>
+                            )}
                             <SelectComponent
                                 label="Industry"
                                 name="industry"
@@ -446,13 +532,18 @@ const CreateClient = () => {
                                 options={[
                                     { value: "", label: "Select Industry Type" },
                                     { value: "film", label: "Film" },
-                                    { value: "egencies", label: "Ad Agency" },
-                                    { value: "event", label: "Event" },
+                                    { value: "ad_agency", label: "Ad Agency" },
+                                    { value: "events", label: "Events" },
                                     { value: "youtube", label: "Youtube" },
                                     { value: "corporate", label: "Corporate" },
+                                    { value: "other", label: "Other" },
                                 ]}
                                 required
                             />
+                            {showErrors && !formData.industry && (
+                                <small className="text-danger">Industry is required.</small>
+                            )}
+
                             <TextInput
                                 ref={(el) => (inputRefs.current.website = el)}
                                 label="Website"
@@ -462,6 +553,10 @@ const CreateClient = () => {
                                 onChange={handleInputChange}
                                 required={true}
                             />
+                            {showErrors && !formData.website && (
+                                <small className="text-danger">Website is required.</small>
+                            )}
+
                             <TextInput
                                 ref={(el) => (inputRefs.current.social_links = el)}
                                 label="Social Links"
@@ -471,14 +566,22 @@ const CreateClient = () => {
                                 onChange={handleInputChange}
                                 required={true}
                             />
-                            <label className="form-label">Company Size</label>
+                            {showErrors && !formData.social_links && (
+                                <small className="text-danger">Social Link is required.</small>
+                            )}
+
+                            <label className="form-label">Company Size <span className="text-danger"> *</span></label>
                             <Select
                                 options={companySizeOptions}
                                 value={companySizeOptions.find(c => c.value === formData.company_size)}
                                 onChange={opt => handleInputChange("company_size", opt.value)}
                                 placeholder="Select Company Size"
                             />
-                            <label className="form-label">Services Required</label>
+                            {showErrors && !formData.company_size && (
+                                <small className="text-danger">Company Size is required.</small>
+                            )}
+
+                            <label className="form-label">Services Required <span className="text-danger"> *</span></label>
                             <Select
                                 options={servicesOptions}
                                 value={servicesOptions.filter(s =>
@@ -487,77 +590,16 @@ const CreateClient = () => {
                                         : formData.services_required === s.value
                                 )}
                                 onChange={(opts) => {
-                                    // If multi-select, opts is an array; store values as array
                                     const values = opts ? opts.map(o => o.value) : [];
                                     handleInputChange("services_required", values);
                                 }}
                                 placeholder="Select Type of Service"
                                 isMulti
+                                required
                             />
-
-                            <label className="form-label">Required Skills</label>
-                            <Select
-                                options={servicesOptions}
-                                value={servicesOptions.filter(s =>
-                                    Array.isArray(formData.services_required)
-                                        ? formData.services_required.includes(s.value)
-                                        : formData.services_required === s.value
-                                )}
-                                onChange={(opts) => {
-                                    // If multi-select, opts is an array; store values as array
-                                    const values = opts ? opts.map(o => o.value) : [];
-                                    handleInputChange("services_required", values);
-                                }}
-                                placeholder="Select Type of Service"
-                                isMulti
-                            />
-
-                            <label className="form-label">Required Editor Proficiencies</label>
-                            <Select
-                                options={servicesOptions}
-                                value={servicesOptions.filter(s =>
-                                    Array.isArray(formData.services_required)
-                                        ? formData.services_required.includes(s.value)
-                                        : formData.services_required === s.value
-                                )}
-                                onChange={(opts) => {
-                                    // If multi-select, opts is an array; store values as array
-                                    const values = opts ? opts.map(o => o.value) : [];
-                                    handleInputChange("services_required", values);
-                                }}
-                                placeholder="Select Type of Service"
-                                isMulti
-                            />
-
-                            <label className="form-label">Required Videographer Proficiencies</label>
-                            <Select
-                                options={servicesOptions}
-                                value={servicesOptions.filter(s =>
-                                    Array.isArray(formData.services_required)
-                                        ? formData.services_required.includes(s.value)
-                                        : formData.services_required === s.value
-                                )}
-                                onChange={(opts) => {
-                                    // If multi-select, opts is an array; store values as array
-                                    const values = opts ? opts.map(o => o.value) : [];
-                                    handleInputChange("services_required", values);
-                                }}
-                                placeholder="Select Type of Service"
-                                isMulti
-                            />
-
-                            <TextInput
-                                ref={(el) => (inputRefs.current.phone_number = el)}
-                                label="Project Budget Range"
-                                name="phone_number"
-                                type="number"
-                                placeholder="Type phone number"
-                                value={formData.phone_number}
-                                onChange={handleInputChange}
-                                required={true}
-                                maxLength={10}
-                                minLength={10}
-                            />
+                            {showErrors && !formData.services_required && (
+                                <small className="text-danger">Services are required.</small>
+                            )}
                         </div>
 
 
@@ -570,12 +612,16 @@ const CreateClient = () => {
                                 onChange={(val) => handleInputChange("work_arrangement", val)}
                                 options={[
                                     { value: "", label: "Select Work Arrangement" },
-                                    { value: "remote-only", label: "Remote Only" },
+                                    { value: "remote", label: "Remote Only" },
                                     { value: "hybrid", label: "Hybrid" },
-                                    { value: "on-site", label: "On Site" },
+                                    { value: "on_site", label: "On Site" },
                                 ]}
                                 required
                             />
+                            {showErrors && !formData.work_arrangement && (
+                                <small className="text-danger">Work Arrangement is required.</small>
+                            )}
+
                             <SelectComponent
                                 label="Project Frequency"
                                 name="project_frequency"
@@ -583,12 +629,16 @@ const CreateClient = () => {
                                 onChange={(val) => handleInputChange("project_frequency", val)}
                                 options={[
                                     { value: "", label: "Select Project Frequency" },
-                                    { value: "full-time", label: "One Time" },
+                                    { value: "one_time", label: "One Time" },
                                     { value: "occasional", label: "Occasional" },
-                                    { value: "on-going", label: "On Going" },
+                                    { value: "ongoing", label: "On Going" },
                                 ]}
                                 required
                             />
+                            {showErrors && !formData.project_frequency && (
+                                <small className="text-danger">Project Currency is required.</small>
+                            )}
+
                             <SelectComponent
                                 label="Hiring Preferences"
                                 name="hiring_preferences"
@@ -596,35 +646,15 @@ const CreateClient = () => {
                                 onChange={(val) => handleInputChange("hiring_preferences", val)}
                                 options={[
                                     { value: "", label: "Select Hiring Preferences" },
-                                    { value: "freelancers", label: "Freelancers" },
-                                    { value: "agencies", label: "Agencies" },
-                                    { value: "both", label: "Both" },
+                                    { value: "individuals", label: "Individual Freelancers" },
+                                    { value: "agencies", label: "Agencies Only" },
+                                    { value: "both", label: "Both Individuals and Agencies" },
                                 ]}
                                 required
                             />
-                            <label className="form-label">Expected Project Start Date</label>
-                            <input
-                                type="date"
-                                name="expected_start_date"
-                                className="form-control"
-                                value={formData.expected_start_date}
-                                onChange={handleInputChange}
-                            />
-                            <SelectComponent
-                                label="Typical Project Duration"
-                                name="hiring_preferences"
-                                value={formData.hiring_preferences}
-                                onChange={(val) => handleInputChange("hiring_preferences", val)}
-                                options={[
-                                    { value: "", label: "Select Project Duration" },
-                                    { value: "less_than_week", label: "Less than a week" },
-                                    { value: "1_2_weeks", label: "1-2 week" },
-                                    { value: "2_4_weeks", label: "2-4 week" },
-                                    { value: "1_3_months", label: "1-3 months" },
-                                    { value: "3_plus_months", label: "3+ months" },
-                                ]}
-                                required
-                            />
+                            {showErrors && !formData.hiring_preferences && (
+                                <small className="text-danger">Hiring Preferences is required.</small>
+                            )}
                         </div>
                     </Col>
                 </Row>
@@ -646,19 +676,26 @@ const CreateClient = () => {
                             {/* Left Column: Basic & Contact Details */}
                             <Col md={6}>
                                 <h6 className="card-title">Basic Information</h6>
-                                <p><strong>First Name:</strong> {formData.first_name}</p>
-                                <p><strong>Last Name:</strong> {formData.last_name}</p>
+                                <p><strong>Full Name:</strong> {formData.full_name}</p>
                                 <p><strong>Username:</strong> {formData.username}</p>
                                 <p><strong>Email:</strong> {formData.email}</p>
-                                <p><strong>Password:</strong> *******</p>
 
                                 <h6 className="card-title mt-3">Contact Details</h6>
                                 <p><strong>Phone:</strong> {formData.phone_number}</p>
+                                <p><strong>Profile Photo:</strong> {formData.profile_picture ? formData.profile_picture.name : "Not provided"}</p>
                                 <p><strong>Country:</strong> {formData.country}</p>
                                 <p><strong>State:</strong> {formData.state}</p>
                                 <p><strong>City:</strong> {formData.city}</p>
                                 <p><strong>Pincode:</strong> {formData.pincode}</p>
-                                <p><strong>ID Type:</strong> {formData.id_type?.label || formData.id_type || ""}</p>
+                                <h6 className="card-title mt-3">Verification Details</h6>
+                                <p>
+                                    <strong>Business Registration Document:</strong>{" "}
+                                    {formData.business_document_url
+                                        ? formData.business_document_url.name
+                                        : "Not provided"}
+                                </p>
+
+                                <p><strong>Tax ID / Business Number:</strong> {formData.tax_id || "Not provided"}</p>
                             </Col>
 
                             {/* Right Column: Professional & Work Details */}
@@ -673,9 +710,9 @@ const CreateClient = () => {
                                 <p><strong>Social Links:</strong> {formData.social_links}</p>
 
                                 <h6 className="card-title mt-3">Work Preferences</h6>
-                                <p><strong>Preferred Work Arrangement:</strong> {formData.work_arrangement?.label}</p>
-                                <p><strong>Project Frequency:</strong> {formData.project_frequency?.label}</p>
-                                <p><strong>Hiring Preferences:</strong> {formData.hiring_preferences?.label}</p>
+                                <p><strong>Preferred Work Arrangement:</strong> {formData.work_arrangement}</p>
+                                <p><strong>Project Frequency:</strong> {formData.project_frequency}</p>
+                                <p><strong>Hiring Preferences:</strong> {formData.hiring_preferences}</p>
                             </Col>
                         </Row>
 

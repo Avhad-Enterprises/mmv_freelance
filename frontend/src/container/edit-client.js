@@ -58,7 +58,7 @@ const EditClient = () => {
         }
 
         const payload = { user_id: parseInt(id, 10) };
-        const response = await makePostRequest("users/get_client_by_id", payload);
+        const response = await makeGetRequest(`clients/${id}`);
         console.log("Client API Response:", response); // Debug log
         const client = response.data?.data;
 

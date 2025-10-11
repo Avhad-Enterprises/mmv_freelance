@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { Form, Button } from "react-bootstrap";
-import { makePostRequest, makeGetRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest, makePutRequest } from "../utils/api";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TextInput from "../components/TextInput";
@@ -222,11 +222,11 @@ const Profile = () => {
         profile_picture: userForm.profile_picture,
       };
 
-      const response = await makePostRequest("users/update_user_by_id", payload);
+      const response = await makePutRequest(`users/${user_id}`, payload);
 
       if (response.data?.success || response.status === 200) {
         showSuccessToast("🎉 Profile updated successfully!");
-        window.location.reload();
+        setInitialUserForm(userForm);
       } else {
         showErrorToast("Something went wrong while updating the profile.");
       }
@@ -248,10 +248,7 @@ const Profile = () => {
       const user_id = decoded.user_id;
 
       // Call API to delete profile picture (set it to null or empty string)
-      const response = await makePostRequest("users/update_user_by_id", {
-        user_id,
-        profile_picture: ""
-      });
+      const response = await makePutRequest(`users/${user_id}`, { profile_picture: "" });
 
       if (response.data?.success || response.status === 200) {
         showSuccessToast("Profile picture deleted successfully!");

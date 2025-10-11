@@ -118,7 +118,7 @@ const TagInput = ({
       tag_name: pendingTag.trim(),
       tag_value: valueSlug.trim(),
       tag_type: tagTypeValue,
-      is_active: 1,
+      is_active: true,
       created_by: user.user_id,
       is_deleted: false
     };

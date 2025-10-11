@@ -27,16 +27,22 @@ const Clients = () => {
     const fetchClientData = async () => {
       try {
         // Use makePostRequest to match backend route
-        const response = await makeGetRequest("users/client/active");
+        const response = await makeGetRequest("clients/getallclient");
         console.log("Clients API Response:", response); // Debug log
-        const data = Array.isArray(response.data?.data) ? response.data.data : [];
-        console.log("Parsed Client Data:", data); // Debug log
+        const data = Array.isArray(response.data?.data)
+          ? response.data.data.map(client => ({
+            ...client,
+            full_name: `${client.first_name || ""} ${client.last_name || ""}`.trim(),
+          }))
+          : [];
+
+        console.log("Parsed Client Data:", data);
 
         const clientsWithCounts = await Promise.all(
           data.map(async (client) => {
             try {
               const res = await makeGetRequest(`projectsTask/count/client/${client.user_id}`);
-              console.log("Client:",client.user_id, "API Response:", res.data);
+              console.log("Client:", client.user_id, "API Response:", res.data);
               return { ...client, projects_posted: res.data?.projects_count || 0 };
             } catch (err) {
               console.error(`Error fetching project count for client ${client.user_id}`, err);
@@ -79,18 +85,22 @@ const Clients = () => {
 
 
   const columns = [
-    {
-      headname: "Client ID",
-      dbcol: "user_id",
-      type: "link",
-      linkTemplate: "/client/edit/:user_id",
-      linkLabelFromRow: "first_name", // Changed to use name for link label
-      linkParamKey: "user_id",
-    },
+    // {
+    //   headname: "Client ID",
+    //   dbcol: "user_id",
+    //   type: "link",
+    //   linkTemplate: "/client/edit/:user_id",
+    //   linkLabelFromRow: "first_name", // Changed to use name for link label
+    //   linkParamKey: "user_id",
+    // },
     {
       headname: "Name",
       dbcol: "full_name", // Updated to match API response
-      type: "",
+      type: "link",
+      linkTemplate: "/client/edit/:user_id",
+      linkLabelFromRow: "full_name", // Changed to use name for link label
+      linkParamKey: "user_id",
+
     },
     {
       headname: "Projects Posted",
@@ -182,7 +192,7 @@ const Clients = () => {
         <div>No clients found.</div>
       ) : (
         <DataTable
-          key={tableKey} 
+          key={tableKey}
           id="table1"
           tableRef={tableRef}
           columns={columns}

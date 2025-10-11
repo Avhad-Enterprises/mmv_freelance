@@ -3,7 +3,7 @@ import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import DataTable from "../components/DataTable";
-import { makePostRequest, makePatchRequest } from "../utils/api";
+import { makePostRequest, makePatchRequest, makeGetRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 
 const ApplicationData = () => {
@@ -19,11 +19,9 @@ const ApplicationData = () => {
         const fetchProjectTitle = async () => {
             try {
                 const payload = { projects_task_id: id };
-                const response = await makePostRequest(
-                    "projectsTask/getprojects_taskbyid",
-                    payload
-                );
-                console.log("API Response: ",response);
+                const response = await makeGetRequest(`projectsTask/getprojects_taskbyid/${id}`);
+
+                console.log("API Response: ", response);
 
                 const project = response?.data?.projects;
                 if (project?.project_title) {
@@ -39,12 +37,8 @@ const ApplicationData = () => {
 
         const fetchApplications = async () => {
             try {
-                const payload = { projects_task_id: id };
-                const response = await makePostRequest(
-                    "applications/projects/get-applications",
-                    payload
-                );
-                console.log("Application Response: ",response);
+                const response = await makeGetRequest("applications/my-applications");
+                console.log("Application Response: ", response);
 
                 const applications = response?.data?.data;
                 if (Array.isArray(applications)) {
@@ -102,18 +96,39 @@ const ApplicationData = () => {
 
     const applicationsColumns = [
         {
+            headname: "Profile Picture",
+            dbcol: "profile_picture",
+            type: "custom", // Mark as custom
+            render: (row) => (
+                row.profile_picture ? (
+                    <img
+                        src={row.profile_picture}
+                        alt={row.name || "Profile"}
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: "50%",
+                            objectFit: "cover"
+                        }}
+                    />
+                ) : (
+                    <span>No Image</span>
+                )
+            ),
+        },
+        {
             headname: "Name",
             dbcol: "name",
         },
         {
-            headname: "Experience",
-            dbcol: "experience",
+            headname: "Email",
+            dbcol: "email",
             type: "",
         },
         {
-            headname: "Skills",
-            dbcol: "skill",
-            type: "tags",
+            headname: "Bio",
+            dbcol: "bio",
+            type: "",
         },
         {
             headname: "Status",

@@ -37,5 +37,9 @@ export async function makePatchRequest(endpoint, bodyData) {
   return await apiClient.patch(endpoint, bodyData);
 }
 
+export async function makeDeleteRequest(endpoint, data = {}) {
+  return await apiClient.delete(endpoint, { data });
+}
+
 
 export default apiClient;

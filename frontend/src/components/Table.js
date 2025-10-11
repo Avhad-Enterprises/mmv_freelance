@@ -660,7 +660,9 @@ const Table = ({
                   )}
                   {columns.map((column) => (
                     <td key={column.dbcol} style={{ whiteSpace: "nowrap" }}>
-                      {renderCellContent(column, row[column.dbcol], row)}
+                      {column.render
+                        ? column.render(row) // if you have a custom render function
+                        : renderCellContent(column, row[column.dbcol], row)}
                     </td>
                   ))}
                 </tr>

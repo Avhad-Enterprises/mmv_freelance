@@ -1,25 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 import "../dashboard.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { makePostRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest } from "../utils/api";
 import { getLoggedInUser } from "../utils/auth";
 import { showErrorToast } from "../utils/toastUtils";
+import Settings from "./Settings";
 
 const Header = ({ toggleSidebar }) => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState({ first_name: "", last_name: "" });
+  const [userData, setUserData] = useState({ full_name: "" });
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef();
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotificationDropdown, setShowNotificationDropdown] = useState(false);
-
+  const [showSettings, setShowSettings] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,27 +32,32 @@ const Header = ({ toggleSidebar }) => {
           return;
         }
 
-        const payload = { user_id: parseInt(user.user_id, 10) };
-        const response = await makePostRequest("users/get_user_by_id", payload);
+        // ✅ Corrected: Use GET instead of POST
+        const response = await makeGetRequest(`users/${user.user_id}`);
+
         const userDetails = response.data?.data;
 
         if (!userDetails) {
           showErrorToast("User not found.");
-          setUserData({ first_name: "", last_name: "" });
+          setUserData({ full_name: "" });
           setLoading(false);
           return;
         }
 
+        // ✅ Updated to match backend field names
         setUserData({
-          first_name: userDetails.first_name || "",
-          last_name: userDetails.last_name || "",
-          profile_picture: userDetails.profile_picture || "https://img.freepik.com/free-photo/one-beautiful-woman-smiling-looking-camera-exuding-confidence-generated-by-artificial-intelligence_188544-126053.jpg?t=st=1735450234~exp=1735453834~hmac=a300e3ba21a31cb8631eab23d0b36d09d351e20f240756dc296bd090ab1259b7&w=1380",
+          full_name:
+            `${userDetails.first_name || ""} ${userDetails.last_name || ""}`.trim(),
+          profile_picture:
+            userDetails.profile_picture ||
+            "https://ae-event-management-bucket.s3.ap-south-1.amazonaws.com/uploads/usericon.jpeg",
         });
+
         setLoading(false);
       } catch (error) {
         console.error("Error fetching user data:", error);
         showErrorToast("Failed to load user data.");
-        setUserData({ first_name: "", last_name: "" });
+        setUserData({ full_name: "" });
         setLoading(false);
       }
     };
@@ -63,6 +69,7 @@ const Header = ({ toggleSidebar }) => {
       navigate("/login");
     }
   }, [navigate]);
+
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -142,6 +149,7 @@ const Header = ({ toggleSidebar }) => {
         <div>
           <i className="bi bi-brightness-low-fill brightness-icon"></i>
           <a
+            href="#0"
             className="hamburger-icon"
             onClick={toggleSidebar}
             aria-label="Toggle hamburger"
@@ -159,7 +167,7 @@ const Header = ({ toggleSidebar }) => {
 
         <div className="d-flex">
           <div className="d-flex align-items-center position-relative">
-            <div className="position-relative me-3">
+            {/* <div className="position-relative me-3">
               <div
                 className="notification-icon d-flex"
                 style={{ cursor: "pointer", position: "relative" }}
@@ -217,7 +225,7 @@ const Header = ({ toggleSidebar }) => {
                 </ul>
               )}
 
-            </div>
+            </div> */}
             <div
               className="down-icon d-flex align-items-center"
               onClick={() => setShowDropdown((prev) => !prev)}
@@ -226,7 +234,7 @@ const Header = ({ toggleSidebar }) => {
               <i className="bi bi-chevron-down me-2"></i>
             </div>
             <div className="daisy-text">
-              {loading ? "Loading..." : `${userData.first_name} ${userData.last_name}`}
+              {loading ? "Loading..." : userData.full_name}
             </div>
             <img
               className="img-thumbnail profile-pic"
@@ -250,15 +258,33 @@ const Header = ({ toggleSidebar }) => {
               >
                 <button
                   className="dropdown-item"
+                  onClick={() => navigate("/register")}
+                >
+                  New Registration
+                </button>
+                <button
+                  className="dropdown-item"
                   onClick={() => navigate("/profile")}
                 >
                   My Profile
                 </button>
                 <button
                   className="dropdown-item"
-                  onClick={() => navigate("/settings")}
+                  onClick={() => setShowSettings(true)}
                 >
-                  Settings
+                  Change Password
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => navigate("/team-membersr")}
+                >
+                  Team Member
+                </button>
+                <button
+                  className="dropdown-item"
+                  onClick={() => navigate("/sendinvitation")}
+                >
+                  Invitation
                 </button>
                 <button className="dropdown-item" onClick={handleLogout}>
                   Logout
@@ -266,10 +292,12 @@ const Header = ({ toggleSidebar }) => {
               </div>
             )}
           </div>
+          <Settings show={showSettings} onClose={() => setShowSettings(false)} />
         </div>
         <div className="headview-md">
           <div className="d-flex align-items-center">
             <a
+              href="#0"
               className="hamburger-icon"
               onClick={toggleSidebar}
               aria-label="Toggle hamburger"
@@ -277,12 +305,13 @@ const Header = ({ toggleSidebar }) => {
               <i className="bi bi-list"></i>
             </a>
             <h4 className="card-title p-3">
-              Hey {loading ? "User" : userData.first_name}, Welcome Back!
+              Hey {loading ? "User" : userData.full_name}, Welcome Back!
             </h4>
           </div>
           <Row className="sections">
             <Col>
               <a
+                href="#0"
                 className={isDefaultActive ? "active" : ""}
                 onClick={() => navigate("/gb_canteen")}
               >
@@ -291,6 +320,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/search") ? "active" : ""}
                 onClick={() => navigate("/search")}
               >
@@ -299,6 +329,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/notification") ? "active" : ""}
                 onClick={() => navigate("/notification")}
               >
@@ -307,6 +338,7 @@ const Header = ({ toggleSidebar }) => {
             </Col>
             <Col>
               <a
+                href="#0"
                 className={isActive("/profile") ? "active" : ""}
                 onClick={() => navigate("/profile")}
               >

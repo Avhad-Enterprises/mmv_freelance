@@ -19,7 +19,7 @@ const Aetextarea = ({
             const words = value.trim().split(/\s+/).filter(Boolean);
             setWordCount(words.length);
         }
-    }, [value]);
+    }, [value, isWordCount]);
 
     const handleTextChange = (e) => {
         const inputText = e.target.value;

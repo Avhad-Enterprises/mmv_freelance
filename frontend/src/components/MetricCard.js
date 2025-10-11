@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Tooltip, OverlayTrigger } from "react-bootstrap";
 
 const formatCount = (count) => {
@@ -23,20 +23,31 @@ const MetricCard = ({
   const [borderColor, setBorderColor] = useState("#ccc");
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 1137);
 
-  const isValidImage = (url) => {
+  const isValidImage = useCallback((url) => {
     return (
       url &&
       (url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".svg"))
     );
-  };
+  }, []);
 
-  const getDominantColor = (imageUrl) => {
+  const getRandomColor = useCallback(() => {
+    const colors = [
+      "#007aff",
+      "#11AF22",
+      "#ED231C",
+      "#1e293b",
+      "#6366f1",
+      "#FF870F",
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }, []);
+
+  const getDominantColor = useCallback((imageUrl) => {
     return new Promise((resolve) => {
       if (!isValidImage(imageUrl)) {
         resolve(getRandomColor());
         return;
       }
-
       const img = new Image();
       img.crossOrigin = "Anonymous";
       img.src = imageUrl;
@@ -52,23 +63,17 @@ const MetricCard = ({
         resolve(color);
       };
 
-      img.onerror = () => {
-        resolve(getRandomColor());
-      };
+      img.onerror = () => resolve(getRandomColor());
     });
-  };
+  }, [isValidImage, getRandomColor]);
 
-  const getRandomColor = () => {
-    const colors = [
-      "#007aff",
-      "#11AF22",
-      "#ED231C",
-      "#1e293b",
-      "#6366f1",
-      "#FF870F",
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
+  useEffect(() => {
+    if (icon) {
+      getDominantColor(icon).then((color) => setBorderColor(color));
+    } else {
+      setBorderColor(getRandomColor());
+    }
+  }, [icon, getDominantColor, getRandomColor]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -79,15 +84,7 @@ const MetricCard = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  useEffect(() => {
-    if (icon) {
-      getDominantColor(icon).then((color) => setBorderColor(color));
-    } else {
-      setBorderColor(getRandomColor());
-    }
-  }, [icon]);
-
-  const extractTableData = () => {
+  const extractTableData = useCallback(() => {
     const table = tableRef?.current;
     if (!table) return [];
 
@@ -100,143 +97,145 @@ const MetricCard = ({
       });
       return rowData;
     });
-  };
+  }, [tableRef, column]);
 
-  const processMetrics = (data) => {
-    if (!Array.isArray(data)) return;
+  const processMetrics = useCallback(
+    (data) => {
+      if (!Array.isArray(data)) return;
 
-    const filteredData = customFilter ? data.filter(customFilter) : data;
+      const filteredData = customFilter ? data.filter(customFilter) : data;
 
-    let result = 0,
-      count = 0,
-      positiveCount = 0,
-      negativeCount = 0,
-      sum = 0,
-      totalEntries = 0;
-    let totalDays = 0,
-      ratioNumerator = 0,
-      ratioDenominator = 0;
+      let result = 0,
+        count = 0,
+        positiveCount = 0,
+        negativeCount = 0,
+        sum = 0,
+        totalEntries = 0;
+      let totalDays = 0,
+        ratioNumerator = 0,
+        ratioDenominator = 0;
 
-    filteredData.forEach((row) => {
-      const columnsArray = column?.split(",");
+      filteredData.forEach((row) => {
+        const columnsArray = column?.split(",");
 
-      switch (operation) {
-        case "total":
-          columnsArray.forEach((col) => {
-            if (Array.isArray(row[col])) {
-              result += row[col].length;
-            } else if (!isNaN(row[col])) {
-              result += parseFloat(row[col]);
+        switch (operation) {
+          case "total":
+            columnsArray.forEach((col) => {
+              if (Array.isArray(row[col])) {
+                result += row[col].length;
+              } else if (!isNaN(row[col])) {
+                result += parseFloat(row[col]);
+              }
+            });
+            break;
+
+          case "count":
+            count += 1;
+            break;
+
+          case "positiveCount":
+            columnsArray.forEach((col) => {
+              if (row[col] === "true" || row[col] === "Active")
+                positiveCount += 1;
+            });
+            break;
+
+          case "negativeCount":
+            columnsArray.forEach((col) => {
+              if (row[col] === "false" || row[col] === "Inactive")
+                negativeCount += 1;
+            });
+            break;
+
+          case "mean":
+            columnsArray.forEach((col) => {
+              if (Array.isArray(row[col])) {
+                sum += row[col].length;
+                totalEntries += 1;
+              } else if (!isNaN(row[col])) {
+                sum += parseFloat(row[col]);
+                totalEntries += 1;
+              }
+            });
+            break;
+
+          case "average":
+            if (columnsArray.length === 2) {
+              const startDate = new Date(row[columnsArray[0]]);
+              const endDate = new Date(row[columnsArray[1]]);
+              if (!isNaN(startDate) && !isNaN(endDate)) {
+                totalDays += (endDate - startDate) / (1000 * 60 * 60 * 24);
+                totalEntries += 1;
+              }
             }
-          });
-          break;
+            break;
 
-        case "count":
-          count += 1;
-          break;
+          case "percentage":
+            columnsArray.forEach((col) => {
+              if (!isNaN(row[col])) result += parseFloat(row[col]);
+            });
+            break;
 
-        case "positiveCount":
-          columnsArray.forEach((col) => {
-            if (row[col] === "true" || row[col] === "Active") positiveCount += 1;
-          });
-          break;
+          case "1000+":
+            columnsArray.forEach((col) => {
+              if (!isNaN(row[col]) && parseFloat(row[col]) >= 1000) result += 1;
+            });
+            break;
 
-        case "negativeCount":
-          columnsArray.forEach((col) => {
-            if (row[col] === "false" || row[col] === "Inactive")
-              negativeCount += 1;
-          });
-          break;
-
-        case "mean":
-          columnsArray.forEach((col) => {
-            if (Array.isArray(row[col])) {
-              sum += row[col].length;
-              totalEntries += 1;
-            } else if (!isNaN(row[col])) {
-              sum += parseFloat(row[col]);
-              totalEntries += 1;
+          case "ratio":
+            if (columnsArray.length === 2) {
+              const numerator = parseFloat(row[columnsArray[0]]);
+              const denominator = parseFloat(row[columnsArray[1]]);
+              if (!isNaN(numerator) && !isNaN(denominator) && denominator !== 0) {
+                ratioNumerator += numerator;
+                ratioDenominator += denominator;
+              }
             }
-          });
-          break;
+            break;
 
-        case "average":
-          if (columnsArray.length === 2) {
-            const startDate = new Date(row[columnsArray[0]]);
-            const endDate = new Date(row[columnsArray[1]]);
-            if (!isNaN(startDate) && !isNaN(endDate)) {
-              totalDays += (endDate - startDate) / (1000 * 60 * 60 * 24);
-              totalEntries += 1;
-            }
-          }
-          break;
+          default:
+            break;
+        }
+      });
 
-        case "percentage":
-          columnsArray.forEach((col) => {
-            if (!isNaN(row[col])) result += parseFloat(row[col]);
-          });
-          break;
+      const mean =
+        operation === "mean" && totalEntries > 0
+          ? (sum / totalEntries).toFixed(2)
+          : 0;
 
-        case "1000+":
-          columnsArray.forEach((col) => {
-            if (!isNaN(row[col]) && parseFloat(row[col]) >= 1000) result += 1;
-          });
-          break;
+      const average =
+        operation === "average" && totalEntries > 0
+          ? (totalDays / totalEntries).toFixed(2)
+          : 0;
 
-        case "ratio":
-          if (columnsArray.length === 2) {
-            const numerator = parseFloat(row[columnsArray[0]]);
-            const denominator = parseFloat(row[columnsArray[1]]);
-            if (!isNaN(numerator) && !isNaN(denominator) && denominator !== 0) {
-              ratioNumerator += numerator;
-              ratioDenominator += denominator;
-            }
-          }
-          break;
+      const percentage =
+        operation === "percentage" && filteredData.length > 0
+          ? ((result / (filteredData.length * 100)) * 100).toFixed(2)
+          : "0.00%";
 
-        default:
-          break;
-      }
-    });
+      const ratio =
+        operation === "ratio" && ratioDenominator > 0
+          ? (ratioNumerator / ratioDenominator).toFixed(2)
+          : "0.00";
 
-    const mean =
-      operation === "mean" && totalEntries > 0
-        ? (sum / totalEntries).toFixed(2)
-        : 0;
-
-    const average =
-      operation === "average" && totalEntries > 0
-        ? (totalDays / totalEntries).toFixed(2)
-        : 0;
-
-    const percentage =
-      operation === "percentage" && filteredData.length > 0
-        ? ((result / (filteredData.length * 100)) * 100).toFixed(2)
-        : "0.00%";
-
-    const ratio =
-      operation === "ratio" && ratioDenominator > 0
-        ? (ratioNumerator / ratioDenominator).toFixed(2)
-        : "0.00";
-
-    // Final metric value
-    if (operation === "total") setMetricValue(result);
-    else if (operation === "count") setMetricValue(count);
-    else if (operation === "positiveCount") setMetricValue(positiveCount);
-    else if (operation === "negativeCount") setMetricValue(negativeCount);
-    else if (operation === "mean") setMetricValue(mean);
-    else if (operation === "average") setMetricValue(average);
-    else if (operation === "percentage") setMetricValue(`${percentage}%`);
-    else if (operation === "1000+") setMetricValue(formatCount(result));
-    else if (operation === "ratio") setMetricValue(ratio);
-  };
-
+      if (operation === "total") setMetricValue(result);
+      else if (operation === "count") setMetricValue(count);
+      else if (operation === "positiveCount") setMetricValue(positiveCount);
+      else if (operation === "negativeCount") setMetricValue(negativeCount);
+      else if (operation === "mean") setMetricValue(mean);
+      else if (operation === "average") setMetricValue(average);
+      else if (operation === "percentage") setMetricValue(`${percentage}%`);
+      else if (operation === "1000+") setMetricValue(formatCount(result));
+      else if (operation === "ratio") setMetricValue(ratio);
+    },
+    [operation, column, customFilter]
+  );
 
   useEffect(() => {
     if (!operation && !children) return;
     const data = jsonData || extractTableData();
     processMetrics(data);
-  }, [operation, column, tableRef, jsonData]);
+  }, [operation, column, tableRef, jsonData, children, extractTableData, processMetrics]);
 
   return (
     <div
@@ -259,7 +258,7 @@ const MetricCard = ({
             />
           </div>
         )}
-        <div className="d-flex  mt-2 justify-content-between">
+        <div className="d-flex mt-2 justify-content-between">
           {title && <h6 style={{ margin: 0 }}>{title}</h6>}
           {tooltipText && (
             <OverlayTrigger
@@ -273,7 +272,7 @@ const MetricCard = ({
             </OverlayTrigger>
           )}
         </div>
-        <div className="d-flex  mt-2 justify-content-between">
+        <div className="d-flex mt-2 justify-content-between">
           {icon && (
             <img
               src={icon}

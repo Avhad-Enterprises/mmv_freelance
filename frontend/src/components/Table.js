@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import RowsPerPageSelector from "./RowsPerPageSelector";
 import moment from "moment";
 import Button from "../components/Button";
@@ -14,7 +14,7 @@ const Table = ({
   data,
   columns,
   filteredData,
-  updateStatus,
+  onStatusChange,
   setFilteredData,
   paginated = true,
   updateQuantity,
@@ -32,11 +32,15 @@ const Table = ({
   const { showAlert } = useSweetAlert();
 
   // Ensure filteredData is an array
-  const safeFilteredData = Array.isArray(filteredData) ? filteredData : [];
+  // Memoize safeFilteredData to stabilize it
+  const safeFilteredData = useMemo(
+    () => (Array.isArray(filteredData) ? filteredData : []),
+    [filteredData]
+  );
 
   const startIndex = paginated ? (currentPage - 1) * rowsPerPage : 0;
   const endIndex = paginated ? startIndex + rowsPerPage : safeFilteredData.length;
-  const currentData = safeFilteredData.slice(startIndex, endIndex);
+  const currentData = sortedData.slice(startIndex, endIndex);
   const totalPages = Math.ceil(safeFilteredData.length / rowsPerPage) || 1;
 
   const handleEditClick = (rowData) => {
@@ -66,7 +70,7 @@ const Table = ({
 
   useEffect(() => {
     setSortedData(safeFilteredData);
-  }, [filteredData]);
+  }, [filteredData, safeFilteredData, setSortedData]);
 
   useEffect(() => {
     setQuantities(
@@ -97,7 +101,7 @@ const Table = ({
     } else {
       setSortedData(data || []);
     }
-  }, [data, sortColumn, sortOrder]);
+  }, [data, sortColumn, sortOrder, setSortedData]);
 
   const sortData = (data, column, order) => {
     return [...data].sort((a, b) => {
@@ -230,26 +234,45 @@ const Table = ({
 
     if (type === "status") {
       return (
-        <div className="status-control">
-          <button
-            className="btn btn-outline-success me-2"
-            onClick={() => updateStatus(rowData.id, 1)} // 1 = Accept
-          >
-            <FaCheck />
-          </button>
-          <button
-            className="btn btn-outline-danger me-2"
-            onClick={() => updateStatus(rowData.id, 2)} // 2 = Reject
-          >
-            <RxCross1 />
-          </button>
-          <button
-            className="btn btn-outline-secondary"
-            onClick={() => updateStatus(rowData.id, 0)} // 0 = Not Assigned
-          >
-            <FaQuestion />
-          </button>
-        </div>
+        <>
+          {rowData.status === 0 ? (
+            <div className="status-control d-flex align-items-center">
+              <button
+                className="btn btn-outline-success me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 1, rowData.user_id)} // Accept
+                title="Accept"
+              >
+                <FaCheck />
+              </button>
+              <button
+                className="btn btn-outline-danger me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 2, rowData.user_id)} // Reject
+                title="Reject"
+              >
+                <RxCross1 />
+              </button>
+              <button
+                className="btn btn-outline-secondary me-2"
+                onClick={() => onStatusChange(rowData.projects_task_id, 0, rowData.user_id)} // Pending
+                title="Pending"
+              >
+                <FaQuestion />
+              </button>
+            </div>
+          ) : (
+            <>
+              {rowData.status === 1 && (
+                <span className="text-success fw-bold">Accepted</span>
+              )}
+              {rowData.status === 2 && (
+                <span className="text-danger fw-bold">Rejected</span>
+              )}
+              {rowData.status === 0 && (
+                <span className="text-secondary fw-bold">Pending</span>
+              )}
+            </>
+          )}
+        </>
       );
     }
 
@@ -372,7 +395,7 @@ const Table = ({
       return (
         <img
           src={value || ""}
-          alt="Image"
+          alt={value ? "Table image" : ""}
           style={{ width: "100%", height: "40px", borderRadius: "5px" }}
         />
       );
@@ -637,7 +660,9 @@ const Table = ({
                   )}
                   {columns.map((column) => (
                     <td key={column.dbcol} style={{ whiteSpace: "nowrap" }}>
-                      {renderCellContent(column, row[column.dbcol], row)}
+                      {column.render
+                        ? column.render(row) // if you have a custom render function
+                        : renderCellContent(column, row[column.dbcol], row)}
                     </td>
                   ))}
                 </tr>

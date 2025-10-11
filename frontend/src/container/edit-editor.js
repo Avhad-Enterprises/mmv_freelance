@@ -3,13 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
-import SelectComponent from "../components/SelectComponent";
-import TagInput from "../components/TagInput";
+import SkillInput from "../components/SkillInput";
 import Aetextarea from "../components/Aetextarea";
-import CheckboxInput from "../components/CheckboxInput";
-import { Badge } from "react-bootstrap";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePostRequest, makePutRequest, makeGetRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -26,36 +23,17 @@ const EditEditor = () => {
     last_name: "",
     email: "",
     phone_number: "",
-    email_verified: "",
-    phone_verified: "",
-    email_notifications: "",
-    aadhaar_verification: "",
-    kyc_verified: "",
     address_line_first: "",
     address_line_second: "",
     city: "",
     state: "",
     country: "",
     pincode: "",
-    availability: "full-time",
-    notes: "",
-    tags: [],
     skill: [],
-    role: "",
-    account_type: "",
-    account_status: "Active",
-    is_active: true,
-    is_banned: false,
     bio: "",
-    experience: "",
-    education: "",
-    timezone: "",
-    certification: "",
-    projects_created: 0,
-    total_spent: 0,
-    hire_count: "",
-    review_id: "",
-    total_earnings: "",
+    experience: [],
+    education: [],
+    certification: [],
   });
   const [loading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState(null);
@@ -90,7 +68,7 @@ const EditEditor = () => {
         }
 
         // Set canEdit based on permissions (e.g., only admins can edit)
-        setCanEdit(user.role === "admin"); // Adjust based on your permission logic
+        setCanEdit(true); // Adjust based on your permission logic
 
         let parsedTags = [];
         if (Array.isArray(editors.tags)) {
@@ -107,16 +85,26 @@ const EditEditor = () => {
 
         let parsedSkills = [];
         if (Array.isArray(editors.skill)) {
-          parsedSkills = editors.skill;
+          parsedSkills = editors.skill.map((s) => (typeof s === "string" ? s : s.skill_name));
         } else if (typeof editors.skill === "string") {
           try {
-            parsedSkills = JSON.parse(editors.skill);
+            const parsed = JSON.parse(editors.skill);
+            parsedSkills = Array.isArray(parsed)
+              ? parsed.map((s) => (typeof s === "string" ? s : s.skill_name))
+              : [];
           } catch (e) {
             console.error("Error parsing skill:", e);
             parsedSkills = [];
           }
         }
-        setSelectedSkillTags(parsedSkills);
+
+        const skillObjects = parsedSkills.map((s, idx) =>
+          typeof s === "string" ? { skill_id: `tmp-${idx}`, skill_name: s } : s
+        );
+
+        setSelectedSkillTags(skillObjects);
+
+
 
         const newFormData = {
           //   user_id: parseInt(Editor.user_id, 10),
@@ -124,36 +112,19 @@ const EditEditor = () => {
           last_name: editors.last_name || "",
           email: editors.email || "",
           phone_number: editors.phone_number || "",
-          email_verified: editors.email_verified || "",
-          email_notifications: editors.email_notifications || "",
-          phone_verified: editors.phone_verified || "",
-          aadhaar_verification: editors.aadhaar_verification || "",
-          kyc_verified: editors.kyc_verified || "",
           address_line_first: editors.address_line_first || "",
           address_line_second: editors.address_line_second || "",
           city: editors.city || "",
           state: editors.state || "",
           country: editors.country || "",
           pincode: editors.pincode || "",
-          availability: editors.availability || "full-time",
-          notes: editors.notes || "",
-          tags: parsedTags,
           skill: parsedSkills,
-          role: editors.role || "",
-          account_type: editors.account_type || "",
-          account_status: editors.account_status || "",
-          is_active: editors.is_active?.toString() || "0",
-          is_banned: editors.is_banned || false,
           bio: editors.bio || "",
           experience: editors.experience || "",
           education: editors.education || "",
-          timezone: editors.timezone || "",
           certification: editors.certification || "",
-          projects_created: editors.projects_created || 0,
-          total_spent: editors.total_spent || 0,
-          hire_count: editors.hire_count || "",
-          review_id: editors.review_id || "",
-          total_earnings: editors.total_earnings || "",
+          services: editors.services || "",
+          previous_works: editors.previous_works || "",
         };
 
         console.log("New Form Data:", newFormData); // Debug log
@@ -222,6 +193,15 @@ const EditEditor = () => {
     [canEdit]
   );
 
+  const handleDynamicChange = (field, index, key, value) => {
+    setFormData(prev => {
+      const updatedField = [...prev[field]];
+      updatedField[index] = { ...updatedField[index], [key]: value };
+      return { ...prev, [field]: updatedField };
+    });
+  };
+
+
   // const handleTagsChange = (newTags) => {
   //   setFormData((prev) => ({
   //     ...prev,
@@ -247,38 +227,24 @@ const EditEditor = () => {
   );
 
 
-  const handleCheckboxChange = useCallback(
-    (checked) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this Editor.");
-        return;
-      }
-      setFormData((prev) => ({
-        ...prev,
-        is_active: checked,
-      }));
-    },
-    [canEdit]
-  );
-
   const [availableTags, setAvailableTags] = useState([]);
   const [availableSkillTags, setAvailableSkillTags] = useState([]);
   useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await makeGetRequest("tags/geteventtags");
-        const fetchedTags = response.data?.data || [];
-        const tagNames = fetchedTags.map((tag) => tag.tag_name) || ["default-tag"];
-        setAvailableTags(tagNames);
-      } catch (error) {
-        console.error("Failed to fetch tags:", error);
-        setAvailableTags(["default-tag"]);
-      }
-    };
+    // const fetchTags = async () => {
+    //   try {
+    //     const response = await makeGetRequest("tags/geteventtags");
+    //     const fetchedTags = response.data?.data || [];
+    //     const tagNames = fetchedTags.map((tag) => tag.tag_name) || ["default-tag"];
+    //     setAvailableTags(tagNames);
+    //   } catch (error) {
+    //     console.error("Failed to fetch tags:", error);
+    //     setAvailableTags(["default-tag"]);
+    //   }
+    // };
 
     const fetchSkillsTags = async () => {
       try {
-        const response = await makeGetRequest("tags/getskilltags");
+        const response = await makeGetRequest("tags/getallskill ");
         const fetchSkillsTags = response.data?.data || [];
         const skillNames = fetchSkillsTags.map((tag) => tag.tag_name) || ["default-skill"];
         setAvailableSkillTags(skillNames);
@@ -288,7 +254,7 @@ const EditEditor = () => {
       }
     };
 
-    fetchTags();
+    // fetchTags();
     fetchSkillsTags();
   }, []);
 
@@ -317,38 +283,25 @@ const EditEditor = () => {
       last_name: formData.last_name,
       email: formData.email,
       phone_number: formData.phone_number,
-      email_verified: formData.email_verified,
-      phone_verified: formData.phone_verified,
-      email_notifications: formData.email_notifications,
-      aadhaar_verification: formData.aadhaar_verification,
-      kyc_verified: formData.kyc_verified,
       address_line_first: formData.address_line_first,
       address_line_second: formData.address_line_second,
       city: formData.city,
       state: formData.state,
       country: formData.country,
       pincode: formData.pincode,
-      availability: formData.availability,
-      notes: formData.notes,
-      tags: JSON.stringify(selectedTags),
-      skill: JSON.stringify(selectedSkillTags),
-      role: formData.role,
-      account_type: formData.account_type,
-      account_status: formData.account_status,
-      is_active: formData.is_active,
-      is_banned: formData.is_banned,
+      skill: JSON.stringify(
+        selectedSkillTags.map(s => s.skill_name)
+      ),
       bio: formData.bio,
-      experience: formData.experience,
-      education: formData.education,
-      certification: formData.certification,
-      timezone: formData.timezone,
-      hire_count: formData.hire_count,
-      review_id: formData.review_id,
-      total_earnings: formData.total_earnings,
+      experience: JSON.stringify(formData.experience || []),
+      education: JSON.stringify(formData.education || []),
+      certification: JSON.stringify(formData.certification || []),
+      services: JSON.stringify(formData.services || []),
+      previous_works: JSON.stringify(formData.previous_works || []),
     };
 
     try {
-      await makePutRequest(`users/updateuserbyid`, payload);
+      await makePostRequest(`users/update_user_by_id`, payload);
       showSuccessToast("🎉 Editor updated successfully!");
       setHasChanges(false);
       navigate("/editors");
@@ -396,6 +349,36 @@ const EditEditor = () => {
     }
   };
 
+  const handleDelete = async () => {
+    showAlert({
+      title: "Are you sure?",
+      text: "This will soft delete the editor. You can’t undo this action.",
+      icon: "warning",
+      confirmButton: {
+        text: "Yes, Delete",
+        backgroundColor: "#c0392b",
+        textColor: "#fff",
+      },
+      cancelButton: {
+        text: "Cancel",
+        backgroundColor: "#2c333a",
+        textColor: "#fff",
+      },
+      onConfirm: async () => {
+        try {
+          const payload = { user_id: parseInt(id, 10) };
+          await makePostRequest("users/soft_delete_user", payload);
+          showSuccessToast("🗑️ Editor soft-deleted successfully!");
+          navigate("/editors");
+        } catch (err) {
+          console.error("Delete error:", err);
+          showErrorToast(err.response?.data?.message || "Failed to delete editor.");
+        }
+      },
+    });
+  };
+
+
   const accountStatusOptions = [
     { value: "0", label: "inActive" },
     { value: "1", label: "Active" },
@@ -415,9 +398,10 @@ const EditEditor = () => {
         <FormHeader
           title="Edit Editor"
           showUpdate={hasChanges && canEdit}
-          showDelete={false} // Add delete functionality if needed
+          showDelete
           backUrl="/editors"
           onBack={handleBackNavigation}
+          onDelete={handleDelete}
         />
         <Row>
           <Col md={7}>
@@ -474,159 +458,18 @@ const EditEditor = () => {
                     disabled={!canEdit}
                   />
                 </Col>
-              </Row>
-
-              <Row className="mb-3">
-                <Col md={6}>
-                  <CheckboxInput
-                    label="Agreed to receive emails"
-                    name="email_verified"
-                    checked={formData.email_verified || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-                <Col md={6}>
-                  <CheckboxInput
-                    label="Agreed to receive emails notification"
-                    name="email_notifications"
-                    checked={formData.email_notifications || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-                <Col md={6}>
-                  <CheckboxInput
-                    label="Agreed to receive text/SMS"
-                    name="phone_verified"
-                    checked={formData.phone_verified || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-                <Col md={6}>
-                  <CheckboxInput
-                    label="Agreed to recieve Aadhar Verification"
-                    name="aadhaar_verification"
-                    checked={formData.aadhaar_verification || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-                <Col md={6}>
-                  <CheckboxInput
-                    label="Agreed to receive KYC Verification"
-                    name="kyc_verified"
-                    checked={formData.kyc_verified || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-              </Row>
-
-            </div>
-            <div className="form_section">
-              <h6 className="card-title">Editors Professional Details</h6>
-              <Row>
-                <Col>
+                <Col md={12}>
                   <Aetextarea
                     label="Bio"
                     name="bio"
-                    placeholder="Type Editor bio"
+                    placeholder="Type editor bio"
                     value={formData.bio || ""}
                     onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                  <Aetextarea
-                    label="Experience"
-                    name="experience"
-                    placeholder="Type Editor experience"
-                    value={formData.experience || ""}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                  <TextInput
-                    label="Education"
-                    name="education"
-                    placeholder="Enter education"
-                    value={formData.education || ""}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                  <TextInput
-                    label="Certification"
-                    name="certification"
-                    placeholder="Enter certification"
-                    value={formData.certification || ""}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
                   />
                 </Col>
               </Row>
-            </div>
-            <div className="form_section">
-              <h6 className="card-title">
-                Account Role & Status
-                {formData.is_banned === true && (
-                  <Badge bg="danger" className="ms-2">Banned</Badge>
-                )}
-                {formData.is_banned === false && (
-                  <Badge bg="danger" className="ms-2">Empty</Badge>
-                )}
-              </h6>
-              <Row>
-                <Col md={6}>
-                  <TextInput
-                    label="Account Type"
-                    name="account_type"
-                    value={formData.account_type || ""}
-                    disabled
-                  />
-                </Col>
-                <Col md={6}>
-                  <TextInput
-                    label="Account Status"
-                    name="account_status"
-                    options={accountStatusOptions}
-                    value={formData.account_status || ""}
-                    onChange={(value) => handleInputChange("account_status", value)}
-                    disabled
-                  />
-                </Col>
-              </Row>
-            </div>
-            <div className="form_section">
-              <h6 className="card-title">Performance Indicators</h6>
-              <Row>
-                <Col md={6}>
-                  <TextInput
-                    label="Hire Count"
-                    name="hire_count"
-                    value={formData.hire_count}
-                    disabled
-                  />
-                </Col>
-                <Col md={6}>
-                  <TextInput
-                    label="Review ID"
-                    name="review_id"
-                    value={formData.review_id}
-                    disabled
-                  />
-                </Col>
-                <Col md={6}>
-                  <TextInput
-                    label="Total Earnings"
-                    name="total_earnings"
-                    value={formData.total_earnings}
-                    disabled
-                  />
-                </Col>
-              </Row>
-            </div>
-          </Col>
 
-          <Col md={5}>
+            </div>
             <div className="form_section">
               <h6 className="card-title">Editor Address</h6>
               <TextInput
@@ -696,57 +539,301 @@ const EditEditor = () => {
               </Row>
             </div>
 
+          </Col>
+
+          <Col md={5}>
             <div className="form_section">
-              <h6 className="card-title">Availability & Timezone</h6>
-              <TextInput
-                label="Availability"
-                name="availability"
-                value={formData.availability || ""}
-                disabled // 🔒 Make it non-editable
-              />
-              <TextInput
-                label="Timezone"
-                name="timezone"
-                value={formData.timezone || ""}
-                disabled // 🔒 Make it non-editable
+              <SkillInput
+                selectedSkills={selectedSkillTags}
+                setSelectedSkills={(skills) => handleTagsChange(skills, "skill")}
+                availableSkills={availableSkillTags.filter((s) => s)}
               />
             </div>
 
-            <div className="form_section">
-              <Aetextarea
-                label="Notes"
-                name="notes"
-                placeholder="Type notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-              />
+            {/* ===== Education Section ===== */}
+            <div className="form_section mb-3">
+              <h6 className="card-title">Education</h6>
+              {formData.education?.map((edu, index) => (
+                <Row key={index} className="mb-2 align-items-end">
+                  <Col md={4}>
+                    <TextInput
+                      label="Degree"
+                      value={edu.degree || ""}
+                      onChange={(name, value) => handleDynamicChange("education", index, "degree", value)}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <TextInput
+                      label="Institution"
+                      value={edu.institution || ""}
+                      onChange={(name, value) => handleDynamicChange("education", index, "institution", value)}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <TextInput
+                      label="Year"
+                      value={edu.year_of_completion || ""}
+                      onChange={(name, value) => handleDynamicChange("education", index, "year_of_completion", value)}
+                    />
+                  </Col>
+                  <Col md={1} className="text-end">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        setFormData(prev => ({
+                          ...prev,
+                          education: prev.education.filter((_, i) => i !== index),
+                        }));
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </Col>
+                </Row>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2"
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    education: [
+                      ...formData.education,
+                      { degree: "", institution: "", year_of_completion: "" },
+                    ],
+                  })
+                }
+              >
+                + Add Education
+              </button>
             </div>
 
-            <Col>
-              <div className="form_section">
-                <TagInput
-                  label="Skills"
-                  name="skill"
-                  availableTags={availableSkillTags}
-                  initialTags={selectedSkillTags}
-                  onTagsChange={(skill) => handleTagsChange(skill, "skill")}
-                  info="Select or add skills"
-                  tagTypeFieldName="tag_type"
-                  tagTypeValue="skill"
-                  disabled={!canEdit}
-                />
-                <TagInput
-                  name="tags"
-                  availableTags={availableTags}
-                  initialTags={selectedTags}
-                  onTagsChange={(tags) => handleTagsChange(tags, "tags")}
-                  info="Select or add tags"
-                  tagTypeFieldName="tag_type"
-                  tagTypeValue="events"
-                  disabled={!canEdit}
-                />
-              </div>
-            </Col>
+            {/* ===== Certification Section ===== */}
+            <div className="form_section mb-3">
+              <h6 className="card-title">Certifications</h6>
+              {formData.certification?.map((cert, index) => (
+                <Row key={index} className="mb-2 align-items-end">
+                  <Col md={4}>
+                    <TextInput
+                      label="Name"
+                      value={cert.name || ""}
+                      onChange={(name, value) => handleDynamicChange("certification", index, "name", value)}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <TextInput
+                      label="Issued By"
+                      value={cert.issued_by || ""}
+                      onChange={(name, value) => handleDynamicChange("certification", index, "issued_by", value)}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <TextInput
+                      label="Year"
+                      value={cert.year || ""}
+                      onChange={(name, value) => handleDynamicChange("certification", index, "year", value)}
+                    />
+                  </Col>
+                  <Col md={1} className="text-end">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        const updated = formData.certification.filter((_, i) => i !== index);
+                        setFormData({ ...formData, certification: updated });
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </Col>
+                </Row>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2"
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    certification: [
+                      ...formData.certification,
+                      { name: "", issued_by: "", year: "" },
+                    ],
+                  })
+                }
+              >
+                + Add Certification
+              </button>
+            </div>
+
+            {/* ===== Experience Section ===== */}
+            <div className="form_section mb-3">
+              <h6 className="card-title">Experience</h6>
+              {formData.experience?.map((exp, index) => (
+                <Row key={index} className="mb-2 align-items-end">
+                  <Col md={4}>
+                    <TextInput
+                      label="Company"
+                      value={exp.company || ""}
+                      onChange={(name, value) => handleDynamicChange("experience", index, "company", value)}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <TextInput
+                      label="Role"
+                      value={exp.role || ""}
+                      onChange={(name, value) => handleDynamicChange("experience", index, "role", value)}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <TextInput
+                      label="Duration"
+                      value={exp.duration || ""}
+                      onChange={(name, value) => handleDynamicChange("experience", index, "duration", value)}
+                    />
+                  </Col>
+                  <Col md={1} className="text-end">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        const updated = formData.experience.filter((_, i) => i !== index);
+                        setFormData({ ...formData, experience: updated });
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </Col>
+                </Row>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2"
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    experience: [
+                      ...formData.experience,
+                      { company: "", role: "", duration: "" },
+                    ],
+                  })
+                }
+              >
+                + Add Experience
+              </button>
+            </div>
+
+            {/* ===== Services Section ===== */}
+            <div className="form_section mb-3">
+              <h6 className="card-title">Services</h6>
+              {formData.services?.map((srv, index) => (
+                <Row key={index} className="mb-2 align-items-end">
+                  <Col md={4}>
+                    <TextInput
+                      label="Title"
+                      value={srv.title || ""}
+                      onChange={(name, value) => handleDynamicChange("services", index, "title", value)}
+                    />
+                  </Col>
+                  <Col md={4}>
+                    <TextInput
+                      type="number"
+                      label="Rate"
+                      value={srv.rate || ""}
+                      onChange={(name, value) => handleDynamicChange("services", index, "rate", value)}
+                    />
+                  </Col>
+                  <Col md={3}>
+                    <TextInput
+                      label="Currency"
+                      value={srv.currency || ""}
+                      onChange={(name, value) => handleDynamicChange("services", index, "currency", value)}
+                    />
+                  </Col>
+                  <Col md={1} className="text-end">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        const updated = formData.services.filter((_, i) => i !== index);
+                        setFormData({ ...formData, services: updated });
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </Col>
+                </Row>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2"
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    services: [...formData.services, { title: "", rate: "", currency: "" }],
+                  })
+                }
+              >
+                + Add Service
+              </button>
+            </div>
+
+            {/* ===== Previous Works Section ===== */}
+            <div className="form_section mb-3">
+              <h6 className="card-title">Previous Works</h6>
+              {formData.previous_works?.map((work, index) => (
+                <Row key={index} className="mb-2 align-items-end">
+                  <Col md={4}>
+                    <TextInput
+                      label="Title"
+                      value={work.title || ""}
+                      onChange={(name, value) => handleDynamicChange("previous_works", index, "title", value)}
+                    />
+                  </Col>
+                  <Col md={5}>
+                    <TextInput
+                      label="Description"
+                      value={work.description || ""}
+                      onChange={(name, value) => handleDynamicChange("previous_works", index, "description", value)}
+                    />
+                  </Col>
+                  <Col md={2}>
+                    <TextInput
+                      label="URL"
+                      value={work.url || ""}
+                      onChange={(name, value) => handleDynamicChange("previous_works", index, "url", value)}
+                    />
+                  </Col>
+                  <Col md={1} className="text-end">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={() => {
+                        const updated = formData.previous_works.filter((_, i) => i !== index);
+                        setFormData({ ...formData, previous_works: updated });
+                      }}
+                    >
+                      ✕
+                    </button>
+                  </Col>
+                </Row>
+              ))}
+              <button
+                type="button"
+                className="btn btn-primary mt-2"
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    previous_works: [
+                      ...formData.previous_works,
+                      { title: "", description: "", url: "" },
+                    ],
+                  })
+                }
+              >
+                + Add Previous Work
+              </button>
+            </div>
 
           </Col>
         </Row>

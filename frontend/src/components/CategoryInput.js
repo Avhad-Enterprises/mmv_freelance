@@ -14,13 +14,13 @@ const CategoryInput = ({
   placeholder = "Select or type category",
   onCategoryAdded,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingCategory, setPendingCategory] = useState("");
   const [valueSlug, setValueSlug] = useState("");
 
   const generateSlug = (text) =>
-    text.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+    text.toLowerCase().trim().replace(/\s+/g, "-").replace(/[^a-z0-9]/g, "");
 
   const handleAddClick = () => {
     if (!inputValue.trim()) {

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest, makePostRequest } from "../utils/api"; // Changed to makePostRequest
+import { makeGetRequest } from "../utils/api"; // Changed to makePostRequest
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
-import DateInput from "../components/DateInput";
 import Button from "../components/Button";
 import { showErrorToast } from "../utils/toastUtils"; // Added for error handling
 
@@ -20,52 +19,38 @@ const Clients = () => {
   const [loading, setLoading] = useState(true);
   const tableRef = useRef();
   const navigate = useNavigate();
-  const [selectedDates, setSelectedDates] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [allData, setAllData] = useState([]); // assume this is your full dataset
-  const [isFiltered, setIsFiltered] = useState(false);
-  const [tableKey, setTableKey] = useState(0);
-
-  const handleDateChange = (range) => {
-    if (!range || range.length === 0 || !range[0]) {
-      setSelectedDates([]);
-      setFilteredData([]);
-      setIsFiltered(false); // No filter
-      return;
-    }
-
-    setSelectedDates(range);
-
-    const normalizeToLocalMidnight = (date) => {
-      const d = new Date(date);
-      d.setHours(0, 0, 0, 0);
-      return d.getTime();
-    };
-
-    const start = normalizeToLocalMidnight(range[0]);
-    const end = range.length === 2 ? normalizeToLocalMidnight(range[1]) : start;
-
-    const filtered = allData.filter((item) => {
-      if (!item.created_at) return false;
-
-      const itemDate = normalizeToLocalMidnight(new Date(item.created_at));
-      return itemDate >= start && itemDate <= end;
-    });
-
-    setFilteredData(filtered);
-    setIsFiltered(true);
-    setTableKey(prev => prev + 1); // 👈 Force remount
-  };
+  const [filteredData] = useState([]);
+  const [isFiltered] = useState(false);
+  const [tableKey] = useState(0);
 
   useEffect(() => {
     const fetchClientData = async () => {
       try {
         // Use makePostRequest to match backend route
-        const response = await makeGetRequest("users/customers/active");
+        const response = await makeGetRequest("clients/getallclient");
         console.log("Clients API Response:", response); // Debug log
-        const data = Array.isArray(response.data?.data) ? response.data.data : [];
-        console.log("Parsed Client Data:", data); // Debug log
-        setClientData(data);
+        const data = Array.isArray(response.data?.data)
+          ? response.data.data.map(client => ({
+            ...client,
+            full_name: `${client.first_name || ""} ${client.last_name || ""}`.trim(),
+          }))
+          : [];
+
+        console.log("Parsed Client Data:", data);
+
+        const clientsWithCounts = await Promise.all(
+          data.map(async (client) => {
+            try {
+              const res = await makeGetRequest(`projectsTask/count/client/${client.user_id}`);
+              console.log("Client:", client.user_id, "API Response:", res.data);
+              return { ...client, projects_posted: res.data?.projects_count || 0 };
+            } catch (err) {
+              console.error(`Error fetching project count for client ${client.user_id}`, err);
+              return { ...client, projects_posted: 0 };
+            }
+          })
+        );
+        setClientData(clientsWithCounts);
       } catch (error) {
         console.error("Error fetching clients:", error);
         showErrorToast("Failed to load client data.");
@@ -83,35 +68,50 @@ const Clients = () => {
     }
   }, [navigate]);
 
-  const handleRefresh = () => {
-    window.location.reload();
-  };
+  // useEffect(() => {
+  //   const fetchProjectCount = async () => {
+  //     try {
+  //       const res = await makeGetRequest("projectsTask/countbyprojects_task");
+  //       console.log("Project Count API:", res.data);
+  //       setTotalProjects(res.data?.count || 0);
+  //     } catch (err) {
+  //       console.error("Error fetching project count:", err);
+  //       setTotalProjects(0);
+  //     }
+  //   };
 
-  // Updated columns to match expected API response fields
+  //   fetchProjectCount();
+  // }, []);
+
+
   const columns = [
-    {
-      headname: "Client ID",
-      dbcol: "user_id",
-      type: "link",
-      linkTemplate: "/client/edit/:user_id",
-      linkLabelFromRow: "first_name", // Changed to use name for link label
-      linkParamKey: "user_id",
-    },
+    // {
+    //   headname: "Client ID",
+    //   dbcol: "user_id",
+    //   type: "link",
+    //   linkTemplate: "/client/edit/:user_id",
+    //   linkLabelFromRow: "first_name", // Changed to use name for link label
+    //   linkParamKey: "user_id",
+    // },
     {
       headname: "Name",
-      dbcol: "first_name", // Updated to match API response
-      type: "",
+      dbcol: "full_name", // Updated to match API response
+      type: "link",
+      linkTemplate: "/client/edit/:user_id",
+      linkLabelFromRow: "full_name", // Changed to use name for link label
+      linkParamKey: "user_id",
+
     },
     {
       headname: "Projects Posted",
-      dbcol: "projects_created", // Updated to match a likely field name
+      dbcol: "projects_posted", // Updated to match a likely field name
       type: "",
     },
-    {
-      headname: "Rating",
-      dbcol: "review_id", // Updated to match a likely field name
-      type: "",
-    },
+    // {
+    //   headname: "Rating",
+    //   dbcol: "review_id", // Updated to match a likely field name
+    //   type: "",
+    // },
     {
       headname: "Status",
       dbcol: "is_active",
@@ -128,21 +128,12 @@ const Clients = () => {
     <Layout>
       <div className="d-flex justify-content-between">
         <div className="mt-3 d-flex align-items-center">
-          <div className="d-flex gap-5 md-date">
-            <DateInput label="" type="range" includeTime={false} onChange={handleDateChange} />
-          </div>
-          <div className="mb-2 ps-3 md-refresh">
-            <i
-              className="bi bi-arrow-repeat icon-refresh"
-              onClick={handleRefresh}
-            ></i>
-          </div>
         </div>
         <div className="text-right gap-3 mt-3 ie-btn d-flex">
           <div className="dropdown">
             <Button
               buttonType="add"
-              onClick={() => navigate("/client/create-project")}
+              onClick={() => navigate("/client/add-new-client")}
               label="Add New"
             />
           </div>
@@ -157,7 +148,7 @@ const Clients = () => {
               operation="count"
               column="is_active"
               jsonData={clientData}
-              customFilter={(item) => item.is_active === 1} // Filter active clients
+              customFilter={(item) => item.is_active === true} // Filter active clients
               icon={calender}
               tooltipText="This shows the count of active clients"
             />
@@ -165,7 +156,7 @@ const Clients = () => {
           <Col xs={4} md={3}>
             <MetricCard
               title="Projects Posted"
-              operation="sum"
+              operation="total"
               column="projects_posted"
               jsonData={clientData}
               icon={wallet}
@@ -201,7 +192,7 @@ const Clients = () => {
         <div>No clients found.</div>
       ) : (
         <DataTable
-          key={tableKey} // 👈 This forces re-render
+          key={tableKey}
           id="table1"
           tableRef={tableRef}
           columns={columns}

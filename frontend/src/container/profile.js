@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { Form, Button } from "react-bootstrap";
-import { makePostRequest, makeGetRequest } from "../utils/api";
-import { getLoggedInUser } from "../utils/auth";
+import { makePostRequest, makeGetRequest, makePutRequest } from "../utils/api";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TextInput from "../components/TextInput";
@@ -13,9 +12,9 @@ import DataTable from "../components/DataTable";
 import FileUploadComponent from "../components/FileUploadComponent";
 
 const Profile = () => {
-  const [inviteName, setInviteName] = useState("");
+  const [inviteLastName, setInviteLastName] = useState("");
+  const [inviteFirstName, setInviteFirstName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteDept, setInviteDept] = useState("");
   const [inviteTitle, setInviteTitle] = useState("");
   const [inviteError, setInviteError] = useState("");
   const [invitesData, setinvitesData] = useState([]);
@@ -37,6 +36,7 @@ const Profile = () => {
     country: "",
     pincode: "",
   });
+  const inputRefs = useRef({});
 
   const handleUserInputChange = (name, value) => {
     setUserForm((prev) => ({
@@ -52,53 +52,54 @@ const Profile = () => {
 
   const [initialUserForm, setInitialUserForm] = useState({});
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("jwtToken");
-        if (!token) return;
-        const decoded = jwtDecode(token);
-        const user_id = decoded.user_id;
-        const response = await makePostRequest("users/get_user_by_id", { user_id });
-        const user = response.data?.data;
-        if (user) {
-          const full_name = `${user.first_name} ${user.last_name}`;
-          setUserData({
-            full_name,
-            profile_picture: user.profile_picture || "",
-          });
-        }
-        setUserForm({
-          first_name: user.first_name || "",
-          last_name: user.last_name || "",
-          email: user.email || "",
-          username: user.username || "",
-          phone_number: user.phone_number || "",
-          address_line_first: user.address_line_first || "",
-          address_line_second: user.address_line_second || "",
-          city: user.city || "",
-          state: user.state || "",
-          country: user.country || "",
-          pincode: user.pincode || "",
+  const fetchUserData = async () => {
+    try {
+      const token = localStorage.getItem("jwtToken");
+      if (!token) return;
+      const decoded = jwtDecode(token);
+      const user_id = decoded.user_id;
+      const response = await makeGetRequest(`users/${user_id}`);
+      const user = response.data?.data;
+      if (user) {
+        const full_name = `${user.first_name} ${user.last_name}`;
+        setUserData({
+          full_name,
           profile_picture: user.profile_picture || "",
         });
-        setInitialUserForm({
-          first_name: user.first_name || "",
-          last_name: user.last_name || "",
-          email: user.email || "",
-          username: user.username || "",
-          phone_number: user.phone_number || "",
-          address_line_first: user.address_line_first || "",
-          address_line_second: user.address_line_second || "",
-          city: user.city || "",
-          state: user.state || "",
-          country: user.country || "",
-          pincode: user.pincode || "",
-          profile_picture: user.profile_picture || "",
-        });
-      } catch (error) {
       }
-    };
+      setUserForm({
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        email: user.email || "",
+        username: user.username || "",
+        phone_number: user.phone_number || "",
+        address_line_first: user.address_line_first || "",
+        address_line_second: user.address_line_second || "",
+        city: user.city || "",
+        state: user.state || "",
+        country: user.country || "",
+        pincode: user.pincode || "",
+        profile_picture: user.profile_picture || "",
+      });
+      setInitialUserForm({
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        email: user.email || "",
+        username: user.username || "",
+        phone_number: user.phone_number || "",
+        address_line_first: user.address_line_first || "",
+        address_line_second: user.address_line_second || "",
+        city: user.city || "",
+        state: user.state || "",
+        country: user.country || "",
+        pincode: user.pincode || "",
+        profile_picture: user.profile_picture || "",
+      });
+    } catch (error) {
+    }
+  };
+
+  useEffect(() => {
     fetchUserData();
   }, []);
 
@@ -188,6 +189,19 @@ const Profile = () => {
 
   const handleUserProfileSave = async () => {
     try {
+      let allValid = true;
+      Object.values(inputRefs.current).forEach((ref) => {
+        if (ref && !ref.validate()) {
+          allValid = false;
+        }
+      });
+
+      if (!allValid) {
+        showErrorToast("Please fix the errors before saving.");
+        return;
+      }
+
+
       const token = localStorage.getItem("jwtToken");
       const decoded = jwtDecode(token);
       const user_id = decoded.user_id;
@@ -208,10 +222,11 @@ const Profile = () => {
         profile_picture: userForm.profile_picture,
       };
 
-      const response = await makePostRequest("users/update_user_by_id", payload);
+      const response = await makePutRequest(`users/${user_id}`, payload);
 
       if (response.data?.success || response.status === 200) {
         showSuccessToast("🎉 Profile updated successfully!");
+        setInitialUserForm(userForm);
       } else {
         showErrorToast("Something went wrong while updating the profile.");
       }
@@ -220,6 +235,33 @@ const Profile = () => {
       showErrorToast("Failed to update profile. Please try again.");
     }
   };
+
+  const handleDeleteProfilePic = async () => {
+    try {
+      const confirmDelete = window.confirm("Are you sure you want to delete your profile picture?");
+      if (!confirmDelete) return;
+
+      const token = localStorage.getItem("jwtToken");
+      if (!token) return;
+
+      const decoded = jwtDecode(token);
+      const user_id = decoded.user_id;
+
+      // Call API to delete profile picture (set it to null or empty string)
+      const response = await makePutRequest(`users/${user_id}`, { profile_picture: "" });
+
+      if (response.data?.success || response.status === 200) {
+        showSuccessToast("Profile picture deleted successfully!");
+        window.location.reload();
+      } else {
+        showErrorToast("Failed to delete profile picture.");
+      }
+    } catch (error) {
+      console.error("Error deleting profile picture:", error);
+      showErrorToast("Something went wrong. Please try again.");
+    }
+  };
+
 
   useEffect(() => {
     const fetchEventsData = async () => {
@@ -254,7 +296,7 @@ const Profile = () => {
   const handleInviteSend = async () => {
     setInviteError("");
 
-    if (!inviteName || !inviteEmail || !inviteDept || !inviteTitle) {
+    if (!inviteFirstName || !inviteLastName || !inviteEmail || !inviteTitle) {
       setInviteError("Please fill in all fields.");
       return;
     }
@@ -266,17 +308,19 @@ const Profile = () => {
 
     try {
       const res = await makePostRequest("users/invite", {
-        full_name: inviteName,
+        first_name: inviteFirstName,
+        last_name: inviteLastName,
         email: inviteEmail,
-        department: inviteDept,
+        // department: inviteDept,
         job_title: inviteTitle,
       });
 
       if (res.data.success) {
         showSuccessToast("✅ Invitation sent!");
-        setInviteName("");
+        setInviteFirstName("");
+        setInviteLastName("");
         setInviteEmail("");
-        setInviteDept("");
+        // setInviteDept("");
         setInviteTitle("");
       } else {
         setInviteError("Failed to send invite.");
@@ -360,6 +404,7 @@ const Profile = () => {
             <Row>
               <Col>
                 <TextInput
+                  ref={(el) => (inputRefs.current.first_name = el)}
                   label="First Name"
                   placeholder="Enter your first name"
                   name="first_name"
@@ -369,6 +414,7 @@ const Profile = () => {
                 />
 
                 <TextInput
+                  ref={(el) => (inputRefs.current.username = el)}
                   label="Username"
                   placeholder="Enter your username"
                   name="username"
@@ -378,12 +424,17 @@ const Profile = () => {
                 />
 
                 <TextInput
+                  ref={(el) => (inputRefs.current.phone_number = el)}
+                  type="number"
                   label="Phone Number"
                   placeholder="Enter phone number"
                   name="phone_number"
                   value={userForm.phone_number}
                   onChange={handleUserInputChange}
                   required={true}
+                  minLength={10}
+                  maxLength={10}
+
                 />
                 <TextInput
                   label="Address Line 2"
@@ -407,6 +458,7 @@ const Profile = () => {
               </Col>
               <Col>
                 <TextInput
+                  ref={(el) => (inputRefs.current.last_name = el)}
                   label="Last Name"
                   placeholder="Enter your last name"
                   name="last_name"
@@ -416,6 +468,7 @@ const Profile = () => {
                 />
 
                 <TextInput
+                  ref={(el) => (inputRefs.current.email = el)}
                   label="Email"
                   placeholder="Enter your email"
                   name="email"
@@ -431,21 +484,18 @@ const Profile = () => {
                   value={userForm.address_line_first}
                   onChange={handleUserInputChange}
                 />
-
-                <TextInput
-                  label="City"
-                  name="city"
-                  value={userForm.city}
-                  onChange={handleUserInputChange}
-                />
                 <TextInput
                   label="Country"
                   name="country"
                   value={userForm.country}
                   onChange={handleUserInputChange}
                 />
-
-
+                <TextInput
+                  label="City"
+                  name="city"
+                  value={userForm.city}
+                  onChange={handleUserInputChange}
+                />
               </Col>
 
             </Row>
@@ -461,14 +511,25 @@ const Profile = () => {
             <div className="form_section mb-4">
               <div className="row">
                 <div className="col-md-6 mb-3">
-                  <label htmlFor="inviteName" className="form-label">Full Name</label>
+                  <label htmlFor="inviteFirstName" className="form-label">First Name</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="inviteName"
-                    value={inviteName}
-                    onChange={(e) => setInviteName(e.target.value)}
-                    placeholder="Enter full name"
+                    id="inviteFirstName"
+                    value={inviteFirstName}
+                    onChange={(e) => setInviteFirstName(e.target.value)}
+                    placeholder="Enter first name"
+                  />
+                </div>
+                <div className="col-md-6 mb-3">
+                  <label htmlFor="inviteLastName" className="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inviteLastName"
+                    value={inviteLastName}
+                    onChange={(e) => setInviteLastName(e.target.value)}
+                    placeholder="Enter last name"
                   />
                 </div>
 
@@ -485,7 +546,7 @@ const Profile = () => {
                   {inviteError && <div className="text-danger mt-1">{inviteError}</div>}
                 </div>
 
-                <div className="col-md-6 mb-3">
+                {/* <div className="col-md-6 mb-3">
                   <label htmlFor="inviteDept" className="form-label">Department</label>
                   <select
                     className="form-select"
@@ -509,7 +570,7 @@ const Profile = () => {
                       <option key={dept} value={dept}>{dept}</option>
                     ))}
                   </select>
-                </div>
+                </div> */}
 
                 <div className="col-md-6 mb-3">
                   <label htmlFor="inviteTitle" className="form-label">Job Title</label>
@@ -665,15 +726,34 @@ const Profile = () => {
             <div className="form_section">
               <div className="d-flex justify-content-center flex-column align-items-center mb-3">
                 <img
-                  src={userData.profile_picture || "https://img.freepik.com/free-photo/one-beautiful-woman-smiling-looking-camera-exuding-confidence-generated-by-artificial-intelligence_188544-126053.jpg?t=st=1735450234~exp=1735453834~hmac=a300e3ba21a31cb8631eab23d0b36d09d351e20f240756dc296bd090ab1259b7&w=1380"}
+                  src={
+                    userData.profile_picture ||
+                    "https://ae-event-management-bucket.s3.ap-south-1.amazonaws.com/uploads/usericon.jpeg"
+                  }
                   alt="Profile"
                   className="rounded-circle d-block mx-auto img-thumbnail"
-                  style={{ width: "150px", height: "150px", objectFit: "cover", marginBottom: "10px" }}
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    objectFit: "cover",
+                    // marginBottom: "10px",
+                  }}
                 />
+
+                {/* ✅ Show delete button only if profile_picture exists */}
+                {userData.profile_picture && (
+                  <button
+                    className="btn btn-sm btn-outline-danger mt-2"
+                    onClick={handleDeleteProfilePic}
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                )}
                 <h3 className="d-block mt-2 text-muted fw-bold" style={{ fontSize: "18px" }}>
                   {userData.full_name}
                 </h3>
               </div>
+
               <ul className="list-unstyled profile-menu">
                 <li>
                   <Link
@@ -687,7 +767,7 @@ const Profile = () => {
                     Personal Info
                   </Link>
                 </li>
-                <li>
+                {/* <li>
                   <Link
                     to="#"
                     onClick={(e) => {
@@ -734,7 +814,7 @@ const Profile = () => {
                   >
                     Notifications
                   </Link>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

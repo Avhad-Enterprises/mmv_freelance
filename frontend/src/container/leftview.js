@@ -110,16 +110,60 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
               </div>
             </li>
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/editors") ? "active" : ""}`}>
                 <Link to="/editors" className="d-flex align-items-center">
                   <i className="bi bi-person-workspace"></i>
                   <div className="LeftMenuHead ml-2">Editors</div>
                 </Link>
               </div>
-            </li>
+            </li> */}
 
             <li className="nav-item">
+              <div
+                className={`nav-link d-flex justify-content-between align-items-center ${openDropdowns["editors"] ? "active" : ""}`}
+                onClick={() => handleDropdown("editors")}
+                style={{ cursor: "pointer" }}
+              >
+                <span className="d-flex align-items-center">
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/editors" ? "active" : ""}`}
+                    to="/editors"
+                  >
+                    <i className="bi bi-person-workspace"></i>
+                    <div className="LeftMenuHead ml-2">Freelancers</div>
+                  </Link>
+                </span>
+                <i
+                  className={`bi ${openDropdowns["editors"] ? "bi-chevron-down" : "bi-chevron-right"}`}
+                ></i>
+              </div>
+
+              {/* Submenu */}
+              <ul className={`submenu collapse ${openDropdowns["editors"] ? "show" : ""}`}>
+                <li>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/videoeditorhomepage" ? "active" : ""}`}
+                    to="/videoeditorhomepage"
+                  >
+                    <i className="bi bi-dash"></i>
+                    <div className="LeftMenuHead ml-2">Video Editors</div>
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/videographerhomepage" ? "active" : ""}`}
+                    to="/videographerhomepage"
+                  >
+                    <i className="bi bi-dash"></i>
+                    <div className="LeftMenuHead ml-2">Videographers</div>
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+
+            {/* <li className="nav-item">
               <div
                 className={`nav-link d-flex justify-content-between align-items-center ${openDropdowns["resources"] ? "active" : ""}`}
                 onClick={() => handleDropdown("resources")}
@@ -161,9 +205,9 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
                   <div className="LeftMenuHead ml-2">Sample</div>
                 </Link>
               </div>
-            </li>
+            </li> */}
 
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <div
                 className={`nav-link d-flex align-items-center ${location.pathname.includes("/customerservice") ? "active" : ""
                   }`}
@@ -201,22 +245,77 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
                   </Link>
                 </li>
               </ul>
-            </li>
-            <li className="nav-item">
+            </li> */}
+            {/* <li className="nav-item">
               <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/fmpayouts") ? "active" : ""}`}>
                 <Link to="/fmpayouts" className="d-flex align-items-center">
                   <i className="bi bi-person-fill"></i>
                   <div className="LeftMenuHead ml-2">Financial Management & Payouts</div>
                 </Link>
               </div>
+            </li> */}
+            {/* <li className="nav-item">
+              <div
+                className={`nav-link ${openDropdowns["onlinestore"] ? "active" : ""
+                  }`}
+                onClick={() => handleDropdown("onlinestore")}
+              >
+                <Link to="/onlinestore">
+                  <i className="bi bi-shop shop-icon"></i>Online Store
+                </Link>
+                <i
+                  className={`bi ${openDropdowns["onlinestore"]
+                    ? "bi-chevron-down"
+                    : "bi-chevron-right"
+                    }`}
+                ></i>
+              </div>
+              <ul
+                className={`submenu collapse ${openDropdowns["onlinestore"] ? "show" : ""
+                  }`}
+              >
+                <li>
+                  <Link className="dropdown-item" to=" ">
+                    <i className="bi bi-dash"></i> Preferences
+                  </Link>
+                </li>
+              </ul>
+            </li> */}
+
+            <li className="nav-item">
+              <div
+                className={`nav-link d-flex align-items-center ${location.pathname.includes("/cms") ? "active" : ""
+                  }`}
+              >
+                <Link to="/cms" className="d-flex align-items-center">
+                  <i className="bi bi-person-fill"></i>
+                  <div className="LeftMenuHead ml-2">CMS</div>
+                </Link>
+                <i
+                  className="bi bi-chevron-down"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#cmsSubmenu"
+                  style={{ cursor: "pointer" }}
+                ></i>
+              </div>
+              <ul className="submenu collapse" id="cmsSubmenu">
+                <li>
+                  <Link
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/cmshome" ? "active" : ""
+                      }`}
+                    to="/cmshome"
+                  >
+                    <i className="bi bi-dash"></i>
+                    <div className="LeftMenuHead ml-2">Home</div>
+                  </Link>
+                </li>
+              </ul>
             </li>
-
-
           </ul>
         </div>
 
         <p className="logout">
-          <a href="#">
+          <a href="#0">
             Logout <i className="bi mx-1 bi-arrow-right"></i>
           </a>
         </p>

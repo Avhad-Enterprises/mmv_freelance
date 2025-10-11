@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// const BASE_URL = "http://13.235.113.131:8000/api/v1/";
 const BASE_URL = "http://localhost:8000/api/v1/";
 
 const apiClient = axios.create({
@@ -34,6 +35,10 @@ export async function makePutRequest(endpoint, bodyData) {
 
 export async function makePatchRequest(endpoint, bodyData) {
   return await apiClient.patch(endpoint, bodyData);
+}
+
+export async function makeDeleteRequest(endpoint, data = {}) {
+  return await apiClient.delete(endpoint, { data });
 }
 
 

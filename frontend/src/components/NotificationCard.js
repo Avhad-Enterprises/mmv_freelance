@@ -46,7 +46,7 @@ const NotificationCard = ({ notification }) => {
 
             {/* Time and Actions */}
             <div className="col-2 home_act">
-                <a>
+                <a href="#more-options">
                     <i className="bi p-1 bi-three-dots"></i>
                 </a>
                 <p>{time}</p>

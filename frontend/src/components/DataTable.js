@@ -15,23 +15,24 @@ const DataTable = ({
   searchable = true,
   filterable = true,
   sortable = true,
+  refresh = true,
   paginated = true,
   showCheckbox = true,
   grid = true,
   children,
+  onStatusChange
 }) => {
   const [filteredData, setFilteredData] = useState(data);
   const [view, setView] = useState(defaultView);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
 
-  const handleViewToggle = () => {
-    setView((prevView) => (prevView === "table" ? "grid" : "table"));
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
-  const handleSorting = (column, order) => {
-    setSortColumn(column);
-    setSortOrder(order);
+  const handleViewToggle = () => {
+    setView((prevView) => (prevView === "table" ? "grid" : "table"));
   };
 
   const handleSearch = (query) => {
@@ -88,6 +89,14 @@ const DataTable = ({
 
         <Col className="mt-2 col-auto">
           <div className="d-flex justify-content-end gap-2">
+            {refresh && (
+              <div className="table-btn">
+                <button className="btn grid-btn" onClick={handleRefresh}>
+                  <i className="bi bi-arrow-repeat"></i>
+                </button>
+              </div>
+            )}
+
             {filterable && (
               <Filter
                 columns={columns}
@@ -132,6 +141,7 @@ const DataTable = ({
           setFilteredData={setFilteredData}
           paginated={paginated}
           enableHorizontalScroll={true}
+          onStatusChange={onStatusChange}
         />
       ) : (
         <>

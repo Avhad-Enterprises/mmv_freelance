@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Form, Button, Card, InputGroup } from "react-bootstrap";
+import React, { useState } from "react";
+import { Row, Col, Form } from "react-bootstrap";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
-import TextInput from "../components/TextInput";
-import Aetextarea from "../components/Aetextarea";
-import axios from "axios";
 import { makePostRequest } from "../utils/api";
 
 const AddNewTicket = () => {
@@ -59,6 +56,7 @@ const AddNewTicket = () => {
 
         try {
             const res = await makePostRequest("support_ticket/reply", payload);
+            console.log(res);
             alert("Reply sent successfully!");
             setReplyMessage("");
         } catch (err) {

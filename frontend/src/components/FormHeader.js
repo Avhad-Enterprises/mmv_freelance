@@ -1,8 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye } from "react-icons/fa6";
-import { ImBin } from "react-icons/im";
-import { Button } from "react-bootstrap";
+import { Button, Dropdown } from "react-bootstrap";
 
 const FormHeader = ({
   title,
@@ -10,6 +9,7 @@ const FormHeader = ({
   previewUrl = null,
   showAdd = false,
   showUpdate = false,
+  showSave = false,
   showDelete = false,
   showPreview = false,
   onDelete = () => { },
@@ -39,7 +39,7 @@ const FormHeader = ({
 
   return (
     <h3 className="d-flex justify-content-between align-items-center">
-      <a onClick={handleBack} style={{ cursor: "pointer" }}>
+      <a href={backUrl || "#"} onClick={handleBack} style={{ cursor: "pointer", color: "black" }}>
         <i className="bi bi-arrow-left m-3"></i>
         {title}
       </a>
@@ -65,20 +65,34 @@ const FormHeader = ({
             Applications
           </Button>
         )}
-
-        {showDelete && (
-          <button
-            type="button"
-            className="btn secondary-btn-primary"
-            onClick={onDelete}
-          >
-            <ImBin size={16} />
-          </button>
-        )}
         {showUpdate && (
           <button type="submit" className="btn a-btn-primary">
             Update
           </button>
+        )}
+        {showSave && (
+          <button type="submit" className="btn btn-primary">
+            Save CMS
+          </button>
+        )}
+
+        {showDelete && (
+          <Dropdown align="end" className="d-inline">
+            <Dropdown.Toggle
+              as="button"
+              type="button"
+              bsPrefix="btn"
+              className="btn secondary-btn-primary"
+            >
+              <i className="bi bi-three-dots"></i>
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={onDelete} className="text-danger">
+                <i className="bi bi-trash me-2"></i> Delete
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
         )}
       </div>
     </h3>

@@ -3,11 +3,8 @@ import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import DataTable from "../components/DataTable";
-import { makePostRequest, makePatchRequest } from "../utils/api";
+import { makePostRequest, makePatchRequest, makeGetRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { FaCheck } from "react-icons/fa";
-import { RxCross1 } from "react-icons/rx";
-import { FaQuestion } from "react-icons/fa6";
 
 const ApplicationData = () => {
     const navigate = useNavigate();
@@ -22,10 +19,9 @@ const ApplicationData = () => {
         const fetchProjectTitle = async () => {
             try {
                 const payload = { projects_task_id: id };
-                const response = await makePostRequest(
-                    "projectsTask/getprojects_taskbyid",
-                    payload
-                );
+                const response = await makeGetRequest(`projectsTask/getprojects_taskbyid/${id}`);
+
+                console.log("API Response: ", response);
 
                 const project = response?.data?.projects;
                 if (project?.project_title) {
@@ -41,11 +37,8 @@ const ApplicationData = () => {
 
         const fetchApplications = async () => {
             try {
-                const payload = { projects_task_id: id };
-                const response = await makePostRequest(
-                    "applications/projects/get-applications",
-                    payload
-                );
+                const response = await makeGetRequest("applications/my-applications");
+                console.log("Application Response: ", response);
 
                 const applications = response?.data?.data;
                 if (Array.isArray(applications)) {
@@ -53,6 +46,14 @@ const ApplicationData = () => {
                     const formattedData = applications.map((item) => ({
                         ...item,
                         name: `${item.first_name || ''} ${item.last_name || ''}`.trim(),
+                        experience: Array.isArray(item.experience)
+                            ? item.experience
+                                .map(
+                                    (exp) =>
+                                        `${exp.role || "N/A"} at ${exp.company || "N/A"} (${exp.duration || "N/A"})`
+                                )
+                                .join(", ")
+                            : "0",
                     }));
                     setApplicationsData(formattedData);
                 } else {
@@ -76,13 +77,15 @@ const ApplicationData = () => {
         }
     }, [navigate, id]);
 
-    const updateStatus = async (applied_projects_id, newStatus) => {
+    const updateStatus = async (projects_task_id, newStatus, user_id) => {
         try {
             const payload = {
-                applied_projects_id,
+                projects_task_id,
                 status: newStatus,
+                user_id: user_id
             };
-            const response = await makePatchRequest("applications/update-status", payload);
+            const response = await makePatchRequest("projectsTask/updatestatus", payload);
+            console.log(response);
             showSuccessToast("Status updated!");
         } catch (error) {
             console.error("Error updating status:", error);
@@ -93,18 +96,39 @@ const ApplicationData = () => {
 
     const applicationsColumns = [
         {
+            headname: "Profile Picture",
+            dbcol: "profile_picture",
+            type: "custom", // Mark as custom
+            render: (row) => (
+                row.profile_picture ? (
+                    <img
+                        src={row.profile_picture}
+                        alt={row.name || "Profile"}
+                        style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: "50%",
+                            objectFit: "cover"
+                        }}
+                    />
+                ) : (
+                    <span>No Image</span>
+                )
+            ),
+        },
+        {
             headname: "Name",
             dbcol: "name",
         },
         {
-            headname: "Experience",
-            dbcol: "experience",
-            type: "text",
+            headname: "Email",
+            dbcol: "email",
+            type: "",
         },
         {
-            headname: "Skills",
-            dbcol: "skill",
-            type: "tags",
+            headname: "Bio",
+            dbcol: "bio",
+            type: "",
         },
         {
             headname: "Status",
@@ -138,6 +162,7 @@ const ApplicationData = () => {
                     onFilteredDataChange={(data) =>
                         console.log("Filtered Data:", data)
                     }
+                    onStatusChange={updateStatus}
                 />
             )}
         </Layout>

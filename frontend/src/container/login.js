@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { makePostRequest } from "../utils/api";
-import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
+import { showSuccessToast } from "../utils/toastUtils";
+import "../login-page.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,23 +13,30 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      setErrorMessage("Email and password are required.");
+    if (!email) {
+      setErrorMessage("Email are required.");
+      return;
+    }
+    if (!password) {
+      setErrorMessage("password are required.");
       return;
     }
 
     try {
-      const response = await makePostRequest("users/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        // "http://13.235.113.131:8000/api/v1/users/login",
+        "http://localhost:8000/api/v1/auth/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
 
       const { data } = response.data;
 
       if (data?.token) {
         localStorage.setItem("jwtToken", data.token);
-        const decoded = jwtDecode(data.token);
-        const fullName = `${decoded.first_name} ${decoded.last_name}`;
+        // const decoded = jwtDecode(data.token);
+        const fullName = `${data.user.first_name} ${data.user.last_name}`;
+
         showSuccessToast(`🎉 Welcome, ${fullName}!`);
         navigate("/dashboard");
       } else {
@@ -46,35 +54,28 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      className="container d-flex justify-content-center align-items-center"
-      style={{ height: "100vh" }}
-    >
-      <div className="card p-4" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4">Login</h3>
-        {errorMessage && (
-          <div className="alert alert-danger">{errorMessage}</div>
-        )}
+    <div className="login-container">
+      <div className="login-card">
+        <h3 className="login-title">Login</h3>
+        {errorMessage && <div className="error">{errorMessage}</div>}
         <form onSubmit={handleLogin}>
-          <div className="form-group mb-3">
+          <div className="input-group">
             <label>Email address</label>
             <input
               type="email"
-              className="form-control"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="form-group mb-3">
+          <div className="input-group">
             <label>Password</label>
             <input
               type="password"
-              className="form-control"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100">
+          <button type="submit" className="login-button">
             Login
           </button>
         </form>

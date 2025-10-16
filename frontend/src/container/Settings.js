@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { makePostRequest } from "../utils/api";
 
-const Settings = ({show, onClose}) => {
+const Settings = ({ show, onClose }) => {
   const [formData, setFormData] = useState({
     user_id: "",
     oldPassword: "",
@@ -29,12 +29,11 @@ const Settings = ({show, onClose}) => {
 
       const payload = {
         user_id: formData.user_id,
-        oldPassword: formData.oldPassword,
-        newPassword: formData.newPassword,
-        confirmPassword: formData.confirmPassword,
+        old_password: formData.oldPassword, // 👈 correct key
+        new_password: formData.newPassword, // 👈 correct key
       };
 
-      const response = await makePostRequest("users/change-password", payload); // your util already handles headers
+      const response = await makePostRequest("users/change-password", payload);
 
       alert(response.data.message || "Password changed successfully!");
 
@@ -52,6 +51,7 @@ const Settings = ({show, onClose}) => {
       setLoading(false);
     }
   };
+
 
   return (
     <Modal show={show} onHide={onClose} centered>

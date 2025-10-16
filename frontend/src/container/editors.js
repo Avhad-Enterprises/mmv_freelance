@@ -6,7 +6,6 @@ import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DataTable from "../components/DataTable";
-import Button from "../components/Button";
 import { showErrorToast } from "../utils/toastUtils"; // Added for error handling
 
 import wallet from "../assets/svg/wallet.svg";
@@ -20,7 +19,7 @@ const Editors = () => {
   const tableRef = useRef();
   const navigate = useNavigate();
   const [filteredData] = useState([]);
-  const [allData, setAllData] = useState([]);
+  const [, setAllData] = useState([]);
   const [isFiltered] = useState(false);
   const [tableKey] = useState(0);
 
@@ -73,58 +72,25 @@ const Editors = () => {
     }
   }, [navigate]);
 
-  // useEffect(() => {
-  //   const fetchEditorCounts = async () => {
-  //     try {
-  //       const response = await makeGetRequest("users/geteditorcount/active");
-  //       const counts = Array.isArray(response.data?.data) ? response.data.data : [];
-
-  //       // Merge counts into editorsData
-  //       setEditorsData((prevEditors) =>
-  //         prevEditors.map((editor) => {
-  //           const match = counts.find((c) => c.editor_id === editor.user_id);
-  //           return { ...editor, task_count: match?.task_count ?? 0 };
-  //         })
-  //       );
-  //     } catch (error) {
-  //       console.error("Error fetching editor project counts:", error);
-  //       showErrorToast("Failed to load editor project counts.");
-  //     }
-  //   };
-
-  //   if (localStorage.getItem("jwtToken")) {
-  //     fetchEditorCounts();
-  //   }
-  // }, []);
-
-
   const columns = [
-    // {
-    //   headname: "Editor ID",
-    //   dbcol: "user_id",
-    //   type: "link",
-    //   linkTemplate: "/editors/edit/:user_id",
-    //   linkLabelFromRow: "full_name", // Changed to use name for link label
-    //   linkParamKey: "user_id",
-    // },
     {
       headname: "Name",
       dbcol: "full_name", // Updated to match API response
-      type: "link",
-      linkTemplate: "/editors/edit/:user_id",
-      linkLabelFromRow: "full_name",
-      linkParamKey: "user_id",
+      type: "",
+      // linkTemplate: "/editors/edit/:user_id",
+      // linkLabelFromRow: "full_name",
+      // linkParamKey: "user_id",
     },
     {
       headname: "Projects Handled",
       dbcol: "task_count", // Updated to match a likely field name
       type: "",
     },
-    // {
-    //   headname: "Rating",
-    //   dbcol: "review_id", // Updated to match a likely field name
-    //   type: "",
-    // },
+    {
+      headname: "Role",
+      dbcol: "role_name", // Updated to match a likely field name
+      type: "",
+    },
     {
       headname: "Status",
       dbcol: "is_active",

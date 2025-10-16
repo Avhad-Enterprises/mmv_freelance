@@ -51,7 +51,7 @@ const CreateEditor = () => {
     });
 
     const [selectedSkills, setSelectedSkills] = useState([]);
-    const [availableSkills, setAvailableSkills] = useState([]);
+    const [, setAvailableSkills] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
     const [countries, setCountries] = useState([]);
@@ -63,7 +63,7 @@ const CreateEditor = () => {
     const [isReviewMode, setIsReviewMode] = useState(false);
     const [links, setLinks] = useState(["", "", ""]);
     const [profilePhoto, setProfilePhoto] = useState(null);
-    const [showErrors, setShowErrors] = useState(false);
+    const [showErrors, ] = useState(false);
     const [superpowersOptions, setSuperpowersOptions] = useState([]);
     const [selectedSuperpowers, setSelectedSuperpowers] = useState([]);
 
@@ -117,19 +117,8 @@ const CreateEditor = () => {
         }
     }, [selectedCountry, selectedState]);
 
-    // fetch tags & skills
+    // fetch skills
     useEffect(() => {
-        // const fetchTags = async () => {
-        //     try {
-        //         const response = await makeGetRequest("tags/geteventtags");
-        //         const fetchedTags = response.data?.data || [];
-        //         const tagNames = fetchedTags.map((tag) => tag.tag_name) || ["default-tag"];
-        //         setAvailableTags(tagNames);
-        //     } catch (error) {
-        //         console.error("Failed to fetch tags:", error);
-        //         setAvailableTags(["default-tag"]);
-        //     }
-        // };
 
         const fetchSkills = async () => {
             try {
@@ -142,8 +131,7 @@ const CreateEditor = () => {
                 setAvailableSkills(["default-skill"]);
             }
         };
-
-        // fetchTags();
+        
         fetchSkills();
     }, []);
 
@@ -212,16 +200,6 @@ const CreateEditor = () => {
             setProfilePhoto(file);
         }
     };
-
-    // const handleTagsChange = useCallback((newTags, type) => {
-    //     if (type === "tags") {
-    //         setSelectedTags(newTags);
-    //         setFormData((prev) => ({ ...prev, tags: newTags }));
-    //     } else if (type === "skill") {
-    //         setSelectedSkillTags(newTags);
-    //         setFormData((prev) => ({ ...prev, skill: newTags }));
-    //     }
-    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

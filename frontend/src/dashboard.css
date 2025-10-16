@@ -197,11 +197,11 @@ button {
 
 option {
   padding: 10px;
-  color: black;
+  color: rgb(0, 0, 0);
 }
 
 a {
-  color: rgb(255 255 255);
+  color: rgb(25, 151, 213);
 }
 
 .resizable-textarea {

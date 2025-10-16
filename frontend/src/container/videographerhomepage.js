@@ -62,7 +62,7 @@ const VideoGraphers = () => {
       headname: "Name",
       dbcol: "full_name",
       type: "link",
-      linkTemplate: "/videographer/edit/:user_id",
+      linkTemplate: "/videographerhomepage/edit/:user_id",
       linkLabelFromRow: "full_name",
       linkParamKey: "user_id",
     },

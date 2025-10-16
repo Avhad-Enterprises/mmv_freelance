@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import Layout from "./layout";
@@ -8,13 +8,12 @@ import NumberInputComponent from "../components/NumberInputComponent";
 import Aetextarea from "../components/Aetextarea";
 import SelectComponent from "../components/SelectComponent";
 import DateInput from "../components/DateInput";
-import DataTable from "../components/DataTable";
 import CheckboxInput from "../components/CheckboxInput";
 import SkillInput from "../components/SkillInput";
 import CategoryInput from "../components/CategoryInput";
 import TagInput from "../components/TagInput";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePutRequest, makeGetRequest, makePostRequest, makeDeleteRequest } from "../utils/api";
+import { makePutRequest, makeGetRequest, makeDeleteRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -58,22 +57,20 @@ const EditProject = () => {
   });
   const [sampleProjectFile, setSampleProjectFile] = useState(null);
   const [uploadedProjectFiles, setUploadedProjectFiles] = useState([]);
-  const tableRef = useRef();
   const [uploadedShowFiles, setUploadedShowFiles] = useState([]);
   const [showAllFiles, setShowAllFiles] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
   const [skillsTags, setSkillsTags] = useState([]);
   const [availableCategories, setAvailableCategory] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
-  const [availableSkills, setAvailableSkills] = useState([]);
+  const [, setAvailableSkills] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [clients, setClients] = useState([]);
-  const [ApplicationaData, setApplicationaData] = useState([]);
-  const [viewMode, setViewMode] = useState("form")
+  const [viewMode, ] = useState("form")
 
   const areObjectsEqual = (obj1, obj2) => {
     return _.isEqual(obj1, obj2);
@@ -141,7 +138,7 @@ const EditProject = () => {
         console.log("Project Data: ", response);
         const project = response.data.projects;
 
-        setCanEdit(user.user_id === project.created_by);
+        setCanEdit(user.user_id);
         const categoryOptions = await fetchCategories();
         const projectCategoryName = project.project_category || "";
         const selectedCategory = categoryOptions.find(
@@ -404,24 +401,24 @@ const EditProject = () => {
     setShowAudioDescription(Boolean(formData.audio_description && formData.audio_description.trim()));
   }, [formData.audio_description]);
 
-  const handleCheckboxChange = useCallback(
-    (checked) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this project.");
-        return;
-      }
-      setShowAudioDescription(checked);
+  // const handleCheckboxChange = useCallback(
+  //   (checked) => {
+  //     if (!canEdit) {
+  //       showErrorToast("You are not authorized to edit this project.");
+  //       return;
+  //     }
+  //     setShowAudioDescription(checked);
 
-      // Clear audio description if checkbox is unchecked
-      if (!checked) {
-        setFormData((prev) => ({
-          ...prev,
-          audio_description: "",
-        }));
-      }
-    },
-    [canEdit]
-  );
+  //     // Clear audio description if checkbox is unchecked
+  //     if (!checked) {
+  //       setFormData((prev) => ({
+  //         ...prev,
+  //         audio_description: "",
+  //       }));
+  //     }
+  //   },
+  //   [canEdit]
+  // );
 
 
   const handleTagsChange = useCallback(
@@ -830,6 +827,7 @@ const EditProject = () => {
         <FormHeader
           title={viewMode === "form" ? "Edit Project" : "Applications"}
           showUpdate={hasChanges && canEdit && viewMode === "form"}
+          onUpdate={handleSubmit}
           // onApplications={handleViewChange}
           // applicationsBtnStyle="col col-md-3"
           // applicationsClassName="a-btn-primary"

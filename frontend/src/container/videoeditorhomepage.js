@@ -61,7 +61,7 @@ const VideoEditors = () => {
       headname: "Name",
       dbcol: "full_name",
       type: "link",
-      linkTemplate: "/editor/edit/:user_id",
+      linkTemplate: "/videoeditorhomepage/edit/:user_id",
       linkLabelFromRow: "full_name",
       linkParamKey: "user_id",
     },

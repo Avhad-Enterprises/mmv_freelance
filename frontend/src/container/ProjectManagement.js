@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { useNavigate } from "react-router-dom";
-import { makeGetRequest, makePostRequest } from "../utils/api";
+import { makeGetRequest } from "../utils/api";
 import MetricCard from "../components/MetricCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,7 +11,6 @@ import Button from "../components/Button";
 import wallet from "../assets/svg/wallet.svg";
 import calender from "../assets/svg/calender.svg";
 import channel from "../assets/svg/channel.svg";
-import group from "../assets/svg/group.svg";
 
 const Projects = () => {
   const [projectData, setprojectData] = useState([]);

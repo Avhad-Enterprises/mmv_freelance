@@ -68,31 +68,8 @@ const Clients = () => {
     }
   }, [navigate]);
 
-  // useEffect(() => {
-  //   const fetchProjectCount = async () => {
-  //     try {
-  //       const res = await makeGetRequest("projectsTask/countbyprojects_task");
-  //       console.log("Project Count API:", res.data);
-  //       setTotalProjects(res.data?.count || 0);
-  //     } catch (err) {
-  //       console.error("Error fetching project count:", err);
-  //       setTotalProjects(0);
-  //     }
-  //   };
-
-  //   fetchProjectCount();
-  // }, []);
-
 
   const columns = [
-    // {
-    //   headname: "Client ID",
-    //   dbcol: "user_id",
-    //   type: "link",
-    //   linkTemplate: "/client/edit/:user_id",
-    //   linkLabelFromRow: "first_name", // Changed to use name for link label
-    //   linkParamKey: "user_id",
-    // },
     {
       headname: "Name",
       dbcol: "full_name", // Updated to match API response
@@ -107,11 +84,6 @@ const Clients = () => {
       dbcol: "projects_posted", // Updated to match a likely field name
       type: "",
     },
-    // {
-    //   headname: "Rating",
-    //   dbcol: "review_id", // Updated to match a likely field name
-    //   type: "",
-    // },
     {
       headname: "Status",
       dbcol: "is_active",

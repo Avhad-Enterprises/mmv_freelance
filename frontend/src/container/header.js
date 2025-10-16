@@ -75,9 +75,8 @@ const Header = ({ toggleSidebar }) => {
     const fetchNotifications = async () => {
       try {
         const user = getLoggedInUser();
-        const payload = { user_id: user.user_id };
 
-        const response = await makePostRequest("notification/getnotification", payload);
+        const response = await makeGetRequest("notification/my-notifications");
         setNotifications(response.data?.data || []);
 
         // Count unread
@@ -94,28 +93,28 @@ const Header = ({ toggleSidebar }) => {
     }
   }, []);
 
-  const markAsRead = async (id) => {
-    try {
-      await makePostRequest(`notification/read/${id}`);
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, is_read: 1 } : n))
-      );
-      setUnreadCount((prev) => Math.max(prev - 1, 0));
-    } catch (error) {
-      console.error("Error marking notification as read:", error);
-    }
-  };
+  // const markAsRead = async (id) => {
+  //   try {
+  //     await makePostRequest(`notification/read/${id}`);
+  //     setNotifications((prev) =>
+  //       prev.map((n) => (n.id === id ? { ...n, is_read: 1 } : n))
+  //     );
+  //     setUnreadCount((prev) => Math.max(prev - 1, 0));
+  //   } catch (error) {
+  //     console.error("Error marking notification as read:", error);
+  //   }
+  // };
 
-  const markAllAsRead = async () => {
-    const user = getLoggedInUser();
-    try {
-      await makePostRequest(`notification/read-all`, { user_id: user.user_id });
-      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: 1 })));
-      setUnreadCount(0);
-    } catch (error) {
-      console.error("Error marking all as read:", error);
-    }
-  };
+  // const markAllAsRead = async () => {
+  //   const user = getLoggedInUser();
+  //   try {
+  //     await makePostRequest(`notification/read-all`, { user_id: user.user_id });
+  //     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: 1 })));
+  //     setUnreadCount(0);
+  //   } catch (error) {
+  //     console.error("Error marking all as read:", error);
+  //   }
+  // };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -274,12 +273,12 @@ const Header = ({ toggleSidebar }) => {
                 >
                   Change Password
                 </button>
-                <button
+                {/* <button
                   className="dropdown-item"
                   onClick={() => navigate("/team-membersr")}
                 >
                   Team Member
-                </button>
+                </button> */}
                 <button
                   className="dropdown-item"
                   onClick={() => navigate("/sendinvitation")}

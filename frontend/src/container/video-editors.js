@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "react-select";
@@ -7,7 +7,7 @@ import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
 import { videoProductionSkills } from "../data/skilllist";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePostRequest, makeGetRequest } from "../utils/api";
+import { makeGetRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { getLoggedInUser } from "../utils/auth";
@@ -50,7 +50,7 @@ const CreateEditor = () => {
     });
 
     const [selectedSkills, setSelectedSkills] = useState([]);
-    const [availableSkills, setAvailableSkills] = useState([]);
+    const [, setAvailableSkills] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
     const [countries, setCountries] = useState([]);
@@ -61,7 +61,7 @@ const CreateEditor = () => {
     const [selectedCity, setSelectedCity] = useState("");
     const [isReviewMode, setIsReviewMode] = useState(false);
     const [links, setLinks] = useState(["", "", ""]);
-    const [showErrors, setShowErrors] = useState(false);
+    const [showErrors, ] = useState(false);
     const [superpowersOptions, setSuperpowersOptions] = useState([]);
     const [selectedSuperpowers, setSelectedSuperpowers] = useState([]);
     const [profilePhoto, setProfilePhoto] = useState(null);
@@ -173,7 +173,7 @@ const CreateEditor = () => {
 
     const handleInputChange = (e, customValue = null) => {
         if (e?.target) {
-            const { name, type, value } = e.target;
+            const { name, value } = e.target;
             setFormData(prev => ({ ...prev, [name]: value }));
         } else if (customValue !== null) {
             setFormData(prev => ({ ...prev, [e]: customValue }));
@@ -212,16 +212,6 @@ const CreateEditor = () => {
             setProfilePhoto(file);
         }
     };
-
-    // const handleTagsChange = useCallback((newTags, type) => {
-    //     if (type === "tags") {
-    //         setSelectedTags(newTags);
-    //         setFormData((prev) => ({ ...prev, tags: newTags }));
-    //     } else if (type === "skill") {
-    //         setSelectedSkillTags(newTags);
-    //         setFormData((prev) => ({ ...prev, skill: newTags }));
-    //     }
-    // }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

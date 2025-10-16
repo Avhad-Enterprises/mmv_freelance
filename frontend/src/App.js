@@ -21,8 +21,6 @@ import ViewTicket from "./container/view-ticket";
 import FMPayouts from "./container/fm-payout";
 import ViewPayouts from "./container/view-fmpayout";
 import ApplicationData from "./container/application-data";
-import OnlineStore from "./container/online-store";
-import CustomizePage from "./container/os-customizepage";
 import Preferences from "./container/preference";
 import Home from "./container/cms-home";
 import AddNewClient from "./container/add-new-client";
@@ -34,6 +32,8 @@ import VideoEditors from "./container/video-editors";
 import VideoGrapher from "./container/videographer";
 import VideoEditorHomePage from "./container/videoeditorhomepage";
 import VideoGrapherHomePage from "./container/videographerhomepage";
+import EditVideoEditor from "./container/edit-video-editor";
+import EditVideoGrapher from "./container/edit-videographer";
 
 const App = () => {
   return (
@@ -214,24 +214,6 @@ const App = () => {
         />
 
         <Route
-          path="/onlinestore"
-          element={
-            <ProtectedRoute>
-              <OnlineStore />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/customize"
-          element={
-            <ProtectedRoute>
-              <CustomizePage />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
           path="/preferences"
           element={
             <ProtectedRoute>
@@ -299,6 +281,24 @@ const App = () => {
           element={
             <ProtectedRoute>
               <VideoGrapherHomePage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/videoeditorhomepage/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditVideoEditor />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/videographerhomepage/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditVideoGrapher />
             </ProtectedRoute>
           }
         />

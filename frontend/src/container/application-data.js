@@ -3,7 +3,7 @@ import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import { useNavigate, useParams } from "react-router-dom";
 import DataTable from "../components/DataTable";
-import { makePostRequest, makePatchRequest, makeGetRequest } from "../utils/api";
+import { makePatchRequest, makeGetRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 
 const ApplicationData = () => {
@@ -18,7 +18,6 @@ const ApplicationData = () => {
     useEffect(() => {
         const fetchProjectTitle = async () => {
             try {
-                const payload = { projects_task_id: id };
                 const response = await makeGetRequest(`projectsTask/getprojects_taskbyid/${id}`);
 
                 console.log("API Response: ", response);

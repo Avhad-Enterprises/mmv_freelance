@@ -14,7 +14,7 @@ const CMSHome = () => {
         description: "",
         categories: [],
     });
-    const [loading, setLoading] = useState(false);
+    const [, setLoading] = useState(false);
     const [cmsId, setCmsId] = useState(null);
 
     // ✅ Fetch CMS Data on Mount

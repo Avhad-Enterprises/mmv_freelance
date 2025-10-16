@@ -51,11 +51,10 @@ const CreateProject = () => {
   const [uploadedShowFiles] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [availableCategories, setAvailableCategory] = useState([]);
-  const [skillsTags, setSkillsTags] = useState([]);
+  const [, setSkillsTags] = useState([]);
   const [availableTags, setAvailableTags] = useState([]);
   const [showAudioDescription, setShowAudioDescription] = useState(false);
   const [availableSkills, setAvailableSkills] = useState([]);
-  const [selectedSkills, setSelectedSkills] = useState([]);
   const [clients, setClients] = useState([]);
 
   useEffect(() => {

@@ -3,11 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
-import TagInput from "../components/TagInput";
-import Aetextarea from "../components/Aetextarea";
-import CheckboxInput from "../components/CheckboxInput";
+import SelectComponent from "../components/SelectComponent";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePostRequest, makeGetRequest } from "../utils/api";
+import { makeDeleteRequest, makeGetRequest, makePutRequest, makePostRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -22,26 +20,36 @@ const EditClient = () => {
     user_id: null,
     first_name: "",
     last_name: "",
+    username: "",
     email: "",
     phone_number: "",
     address_line_first: "",
-    address_line_second: "",
     city: "",
     state: "",
     country: "",
     pincode: "",
-    // notes: "",
-    tags: [],
-    is_active: true,
-    bio: "",
-    projects_created: 0,
-    total_spent: 0,
+    profile_photo: "",
+    tax_id: "",
+    business_document_url: "", // for file
+    company_name: "",
+    industry: "",
+    website: "",
+    social_links: "",
+    company_size: "",
+    services_required: [], // multi-select
+    work_arrangement: "",
+    project_frequency: "",
+    hiring_preferences: "",
   });
   const [loading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState(null);
-  const [selectedTags, setSelectedTags] = useState([]);
   const [hasChanges, setHasChanges] = useState(false);
   const [canEdit, setCanEdit] = useState(true); // Adjust based on permissions
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [businessDocument, setBusinessDocument] = useState(null);
+  const [isBanned, setIsBanned] = useState(false);
+  const [, setBannedReason] = useState(""); // optional, if you want to display reason
+
 
   const areObjectsEqual = (obj1, obj2) => {
     return _.isEqual(obj1, obj2);
@@ -57,55 +65,54 @@ const EditClient = () => {
           return;
         }
 
-        const payload = { user_id: parseInt(id, 10) };
         const response = await makeGetRequest(`clients/${id}`);
         console.log("Client API Response:", response); // Debug log
-        const client = response.data?.data;
+        const clientUser = response.data?.data?.user || {};
+        setIsBanned(!!clientUser.is_banned);
+        setBannedReason(clientUser.banned_reason || "");
+        const clientProfile = response.data?.data?.profile || {};
 
-        if (!client) {
+        if (!clientUser && !clientProfile) {
           showErrorToast("Client not found.");
           navigate("/client");
           return;
         }
 
-        // Set canEdit based on permissions (e.g., only admins can edit)
-        setCanEdit(true); // Adjust based on your permission logic
-
-        let parsedTags = [];
-        if (Array.isArray(client.tags)) {
-          parsedTags = client.tags;
-        } else if (typeof client.tags === "string") {
-          try {
-            parsedTags = JSON.parse(client.tags);
-          } catch (e) {
-            console.error("Error parsing tags:", e);
-            parsedTags = [];
-          }
-        }
-        setSelectedTags(parsedTags);
+        setCanEdit(true);
 
         const newFormData = {
-          //   user_id: parseInt(client.user_id, 10),
-          first_name: client.first_name || "",
-          last_name: client.last_name || "",
-          email: client.email || "",
-          phone_number: client.phone_number || "",
-          address_line_first: client.address_line_first || "",
-          address_line_second: client.address_line_second || "",
-          city: client.city || "",
-          state: client.state || "",
-          country: client.country || "",
-          pincode: client.pincode || "",
-          // notes: client.notes || "",
-          tags: parsedTags,
-          is_active: !!client.is_active,
-          bio: client.bio || "",
-          projects_created: client.projects_created || 0,
-          total_spent: client.total_spent || 0,
+          user_id: clientUser.user_id || null,
+          first_name: clientUser.first_name || "",
+          last_name: clientUser.last_name || "",
+          username: clientUser.username || "",
+          email: clientUser.email || "",
+          phone_number: clientUser.phone_number || "",
+          address_line_first: clientUser.address_line_first_line_first || "",
+          city: clientUser.city || "",
+          state: clientUser.state || "",
+          country: clientUser.country || "",
+          pincode: clientUser.pincode || "",
+          profile_photo: clientUser.profile_picture || "",
+
+          // Profile fields
+          tax_id: clientProfile.tax_id || "",
+          business_document_url: clientProfile.business_document_url || "",
+          company_name: clientProfile.company_name || "",
+          industry: clientProfile.industry || "",
+          website: clientProfile.website || "",
+          social_links: clientProfile.social_links || "",
+          company_size: clientProfile.company_size || "",
+          services_required: clientProfile.services_required || [],
+          work_arrangement: clientProfile.work_arrangement || "",
+          project_frequency: clientProfile.project_frequency || "",
+          hiring_preferences: clientProfile.hiring_preferences || "",
         };
+
 
         console.log("New Form Data:", newFormData); // Debug log
         setFormData(newFormData);
+        setProfilePhoto(clientUser.profile_picture || null);
+        setBusinessDocument(clientProfile.business_document_url || null);
         setInitialState({ formData: { ...newFormData } });
         setLoading(false);
       } catch (error) {
@@ -170,43 +177,19 @@ const EditClient = () => {
     [canEdit]
   );
 
-  // const handleTagsChange = (newTags) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     tags: newTags,
-  //   }));
-  // };
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePhoto(file);
+    }
+  };
 
-  const handleTagsChange = useCallback(
-    (newTags, type) => {
-      if (!canEdit) {
-        showErrorToast("You are not authorized to edit this project.");
-        return;
-      }
-      if (type === "tags") {
-        setSelectedTags(newTags);
-        setFormData((prev) => ({ ...prev, tags: newTags }));
-      }
-    },
-    [canEdit]
-  );
-
-  const [availableTags, setAvailableTags] = useState([]);
-  useEffect(() => {
-    const fetchTags = async () => {
-      try {
-        const response = await makeGetRequest("tags/geteventtags");
-        const fetchedTags = response.data?.data || [];
-        const tagNames = fetchedTags.map((tag) => tag.tag_name) || ["default-tag"];
-        setAvailableTags(tagNames);
-      } catch (error) {
-        console.error("Failed to fetch tags:", error);
-        setAvailableTags(["default-tag"]);
-      }
-    };
-
-    fetchTags();
-  }, []);
+  const handleBusinessDocumentChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setBusinessDocument(file);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -231,23 +214,30 @@ const EditClient = () => {
       user_id: parseInt(id, 10),
       first_name: formData.first_name,
       last_name: formData.last_name,
+      username: formData.username,
       email: formData.email,
       phone_number: formData.phone_number,
       address_line_first: formData.address_line_first,
-      address_line_second: formData.address_line_second,
       city: formData.city,
       state: formData.state,
       country: formData.country,
       pincode: formData.pincode,
-      // notes: formData.notes,
-      tags: JSON.stringify(selectedTags),
-      role: formData.role,
-      is_active: formData.is_active,
-      bio: formData.bio,
+      profile_picture: formData.profile_photo,
+      // business_document_url: formData.business_document_url,
+      // tax_id: formData.tax_id,
+      // company_name: formData.company_name,
+      // industry: formData.industry,
+      // website: formData.website,
+      // social_links: formData.social_links,
+      // company_size: formData.company_size,
+      // services_required: formData.services_required,
+      // work_arrangement: formData.work_arrangement,
+      // project_frequency: formData.project_frequency,
+      // hiring_preferences: formData.hiring_preferences,
     };
 
     try {
-      await makePostRequest(`users/update_user_by_id`, payload);
+      await makePutRequest(`users/${id}`, payload);
       showSuccessToast("🎉 Client updated successfully!");
       setHasChanges(false);
       navigate("/client");
@@ -317,7 +307,7 @@ const EditClient = () => {
       },
       onConfirm: async () => {
         try {
-          await makePostRequest("users/soft_delete_user", { user_id: parseInt(id, 10) });
+          await makeDeleteRequest(`users/${id}`);
           showSuccessToast("Client deleted successfully!");
           navigate("/client");
         } catch (error) {
@@ -327,6 +317,59 @@ const EditClient = () => {
       },
     });
   };
+
+  const handleBanToggle = async () => {
+    try {
+      const user = getLoggedInUser();
+      if (!user?.user_id) {
+        showErrorToast("User not authenticated.");
+        return;
+      }
+
+      const endpoint = `users/${id}/${isBanned ? "unban" : "ban"}`;
+      await makePostRequest(endpoint);
+
+      showSuccessToast(isBanned ? "User unbanned successfully!" : "User banned successfully!");
+      setIsBanned(!isBanned);
+      setBannedReason(isBanned ? "" : "Banned by admin");
+    } catch (error) {
+      console.error("Ban/Unban error:", error);
+      showErrorToast(error.response?.data?.message || "Failed to update ban status.");
+    }
+  };
+
+
+  const industryOptions = [
+    { value: "", label: "Select Industry Type" },
+    { value: "film", label: "Film" },
+    { value: "ad_agency", label: "Ad Agency" },
+    { value: "events", label: "Events" },
+    { value: "youtube", label: "Youtube" },
+    { value: "corporate", label: "Corporate" },
+    { value: "other", label: "Other" },
+  ];
+
+  const companySizeOptions = [
+    { value: "", label: "Select company size" },
+    { value: "1-10", label: "1-10" },
+    { value: "11-50", label: "11-50" },
+    { value: "51-200", label: "51-200" },
+    { value: "200+", label: "200+" },
+  ];
+
+  const servicesOptions = [
+    { value: "video_production", label: "Video Production" },
+    { value: "photography", label: "Photography" },
+    { value: "animation", label: "Animation" },
+    { value: "motion_graphics", label: "Motion Graphics" },
+    { value: "video_editing", label: "Video Editing" },
+    { value: "sound_design", label: "Sound Design" },
+    { value: "color_grading", label: "Color Grading" },
+    { value: "vfx", label: "VFX" },
+    { value: "live_streaming", label: "Live Streaming" },
+    { value: "360_video", label: "360° Video" },
+    { value: "drone_videography", label: "Drone Videography" },
+  ];
 
   if (loading) {
     return (
@@ -342,8 +385,12 @@ const EditClient = () => {
         <FormHeader
           title="Edit Client"
           showUpdate={hasChanges && canEdit}
+          onUpdate={handleSubmit}
           showDelete
           onDelete={handleDelete}
+          showBan
+          isBanned={isBanned}
+          onBanToggle={handleBanToggle}
           backUrl="/client"
           onBack={handleBackNavigation}
         />
@@ -375,10 +422,16 @@ const EditClient = () => {
                     disabled={!canEdit}
                   />
                 </Col>
-              </Row>
-
-              {/* Row 2: Email & Phone Number */}
-              <Row className="mb-3">
+                <Col md={6}>
+                  <TextInput
+                    label="User Name"
+                    name="username"
+                    placeholder="Type last name"
+                    value={formData.username || ""}
+                    onChange={handleInputChange}
+                    disabled={!canEdit}
+                  />
+                </Col>
                 <Col md={6}>
                   <TextInput
                     label="Email"
@@ -391,80 +444,67 @@ const EditClient = () => {
                     disabled={!canEdit}
                   />
                 </Col>
-                <Col md={6}>
-                  <TextInput
-                    label="Phone Number"
-                    name="phone_number"
-                    placeholder="Type phone number"
-                    value={formData.phone_number || ""}
-                    onChange={handleInputChange}
-                    required
-                    disabled={!canEdit}
-                  />
-                </Col>
               </Row>
-
-              {/* Row 3: Bio */}
-              <Row>
-                <Col md={12}>
-                  <Aetextarea
-                    label="Bio"
-                    name="bio"
-                    placeholder="Type client bio"
-                    value={formData.bio || ""}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-              </Row>
-
-              {/* <Row className="mb-3">
-                <Col md={12}>
-                  <CheckboxInput
-                    label="Clients agreed to receive emails"
-                    name="email_verified"
-                    checked={formData.agreed_to_emails || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-                <Col md={12}>
-                  <CheckboxInput
-                    label="Clients agreed to receive text/SMS"
-                    name="phone_verified"
-                    checked={formData.agreed_to_sms || false}
-                    onChange={handleInputChange}
-                    disabled={!canEdit}
-                  />
-                </Col>
-              </Row> */}
-
             </div>
-            {/* <div className="form_section">
-              <h6 className="card-title">Project Details</h6>
-
-            </div> */}
-          </Col>
-
-          <Col md={5}>
             <div className="form_section">
-              <h6 className="card-title">Client Address</h6>
+              <h6 className="card-title">Contact Details</h6>
 
               <TextInput
-                label="Address Line 1"
-                name="address_line_first"
-                placeholder="Type address line 1"
-                value={formData.address_line_first || ""}
+                label="Phone Number"
+                name="phone_number"
+                placeholder="Type phone number"
+                value={formData.phone_number || ""}
                 onChange={handleInputChange}
                 required
                 disabled={!canEdit}
               />
+
+
+              <label className="form-label">Profile Picture</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
+                className="form-control"
+              />
+
+              {/* ✅ Show Preview */}
+              {profilePhoto ? (
+                <div className="mt-3 text-left">
+                  <img
+                    src={
+                      typeof profilePhoto === "string"
+                        ? profilePhoto.includes("http")
+                          ? profilePhoto // already full URL from backend
+                          : `${process.env.REACT_APP_API_BASE_URL}/${profilePhoto}` // backend path
+                        : URL.createObjectURL(profilePhoto)
+                    }
+                    alt="Profile"
+                    style={{
+                      width: "120px",
+                      height: "120px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                      border: "2px solid #ddd",
+                    }}
+                  />
+                  <p className="mt-2 text-muted" style={{ fontSize: "0.9rem" }}>
+                    Profile Preview
+                  </p>
+                </div>
+              ) : (
+                <p className="text-muted mt-2">No photo uploaded</p>
+              )}
+
+
+
               <TextInput
-                label="Address Line 2"
-                name="address_line_second"
-                placeholder="Type address line 2"
-                value={formData.address_line_second || ""}
+                label="Address"
+                name="address_line_first"
+                // placeholder="Type address_line_first"
+                value={formData.address_line_first || ""}
                 onChange={handleInputChange}
+                required
                 disabled={!canEdit}
               />
 
@@ -511,33 +551,157 @@ const EditClient = () => {
                   />
                 </Col>
               </Row>
-            </div>
-
-            {/* <div className="form_section">
-              <Aetextarea
-                label="Notes"
-                name="notes"
-                placeholder="Type notes"
-                value={formData.notes}
-                onChange={handleInputChange}
+              <label className="form-label">Business Registration Document</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={handleBusinessDocumentChange} // separate handler if needed
+                className="form-control"
               />
-            </div> */}
 
-            <Col>
-              <div className="form_section">
-                <TagInput
-                  name="tags"
-                  availableTags={availableTags}
-                  initialTags={selectedTags}
-                  onTagsChange={(tags) => handleTagsChange(tags, "tags")}
-                  info="Select or add tags"
-                  tagTypeFieldName="tag_type"
-                  tagTypeValue="events"
-                  disabled={!canEdit}
-                />
-              </div>
-            </Col>
+              {/* ✅ Show Preview */}
+              {businessDocument ? (
+                <div className="mt-3">
+                  {typeof businessDocument === "string" ? (
+                    <a
+                      href={
+                        businessDocument.includes("http")
+                          ? businessDocument
+                          : `${process.env.REACT_APP_API_BASE_URL}/${businessDocument}`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Download Document
+                    </a>
+                  ) : (
+                    <p>{businessDocument.name}</p> // newly uploaded file
+                  )}
+                </div>
+              ) : (
+                <p className="text-muted mt-2">No document uploaded</p>
+              )}
 
+
+              <TextInput
+                label="Tax ID / Business Number"
+                name="tax_id"
+                // placeholder="Type pincode"
+                value={formData.tax_id || ""}
+                onChange={handleInputChange}
+                disabled={!canEdit}
+              />
+
+            </div>
+          </Col>
+
+          <Col md={5}>
+            <div className="form_section">
+              <h6 className="card-title">Professinal Details</h6>
+
+              <TextInput
+                label="Company/Brand Name"
+                name="company_name"
+                placeholder="Type company name"
+                value={formData.company_name || ""}
+                onChange={handleInputChange}
+                required
+                disabled={!canEdit}
+              />
+              <SelectComponent
+                label="Industry"
+                name="industry"
+                placeholder="Select industry"
+                options={industryOptions}
+                value={formData.industry || ""}
+                onChange={(value) => handleInputChange("industry", value)}
+                required
+                disabled={!canEdit}
+              />
+              <TextInput
+                label="Website"
+                name="website"
+                placeholder="Type website name"
+                value={formData.website || ""}
+                onChange={handleInputChange}
+                required
+                disabled={!canEdit}
+              />
+              <TextInput
+                label="Social Link"
+                name="social_links"
+                placeholder="Type company name"
+                value={formData.social_links || ""}
+                onChange={handleInputChange}
+                required
+                disabled={!canEdit}
+              />
+              <SelectComponent
+                label="Company Size"
+                name="company_size"
+                placeholder="Select industry"
+                options={companySizeOptions}
+                value={formData.company_size || ""}
+                onChange={(value) => handleInputChange("company_size", value)}
+                required
+                disabled={!canEdit}
+              />
+              <SelectComponent
+                label="Services Required"
+                name="services_required"
+                placeholder="Select services"
+                options={servicesOptions} // create a proper array for services
+                value={formData.services_required || []}
+                onChange={(value) => handleInputChange("services_required", value)}
+                disabled={!canEdit}
+              />
+
+            </div>
+            <div className="form_section">
+              <h6 className="card-title">Work Preferences</h6>
+              <SelectComponent
+                label="Preferred Work Arrangement"
+                name="work_arrangement"
+                value={formData.work_arrangement || ""}
+                onChange={(val) => handleInputChange("work_arrangement", val)}
+                options={[
+                  { value: "", label: "Select Work Arrangement" },
+                  { value: "remote", label: "Remote Only" },
+                  { value: "hybrid", label: "Hybrid" },
+                  { value: "on_site", label: "On Site" },
+                ]}
+                required
+                disabled={!canEdit}
+              />
+              <SelectComponent
+                label="Project Frequency"
+                name="project_frequency"
+                value={formData.project_frequency || ""}
+                onChange={(val) => handleInputChange("project_frequency", val)}
+                options={[
+                  { value: "", label: "Select Project Frequency" },
+                  { value: "one_time", label: "One Time" },
+                  { value: "occasional", label: "Occasional" },
+                  { value: "ongoing", label: "On Going" },
+                ]}
+                required
+                disabled={!canEdit}
+              />
+              <SelectComponent
+                label="Hiring Preferences"
+                name="hiring_preferences"
+                value={formData.hiring_preferences || ""}
+                onChange={(val) => handleInputChange("hiring_preferences", val)}
+                options={[
+                  { value: "", label: "Select Hiring Preferences" },
+                  { value: "individuals", label: "Individual Freelancers" },
+                  { value: "agencies", label: "Agencies Only" },
+                  { value: "both", label: "Both Individuals and Agencies" },
+                ]}
+                required
+                disabled={!canEdit}
+              />
+            </div>
           </Col>
         </Row>
       </form>

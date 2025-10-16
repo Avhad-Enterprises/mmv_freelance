@@ -6,7 +6,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import positive from "../assets/svg/positive_metrix.svg";
-import negative from "../assets/svg/negative_metrix.svg";
 
 import notificationData from "../assets/json/notifications.json";
 import campaignData from "../assets/json/campaigns.json";
@@ -27,8 +26,8 @@ const Dashboard = () => {
   const [signupsLast24hrs, setSignupsLast24hrs] = useState(0);
   const [clients, setClients] = useState([]);
   const [clientCount, setClientCount] = useState(0);
-  const [editors, setEditors] = useState([]);
-  const [editorCount, setEditorCount] = useState(0);
+  const [, setFreelancer] = useState([]);
+  const [freelancerCount, setFreelancerCount] = useState(0);
 
   useEffect(() => {
     const fetchTotalProjects = async () => {
@@ -64,23 +63,23 @@ const Dashboard = () => {
       }
     };
 
-    const fetchEditors = async () => {
+    const fetchFreelancers = async () => {
       try {
-        const response = await makeGetRequest("users/freelancers/active");
-        const editorData = response.data?.data || [];
-        setEditors(editorData);
-        setEditorCount(editorData.length);
+        const response = await makeGetRequest("freelancers/getfreelancers");
+        const freelancerData = response.data?.data || [];
+        setFreelancer(freelancerData);
+        setFreelancerCount(freelancerData.length);
       } catch (error) {
-        console.error("Failed to fetch editors:", error);
-        setEditors([]);
-        setEditorCount(0);
+        console.error("Failed to fetch freelancer:", error);
+        setFreelancer([]);
+        setFreelancerCount(0);
       }
     };
 
     fetchTotalProjects();
     fetchSignups();
     fetchClients();
-    fetchEditors();
+    fetchFreelancers();
   }, []);
 
   return (
@@ -143,8 +142,8 @@ const Dashboard = () => {
 
           <Col xs={4} md>
             <MetricCard>
-              <p className="w-100">Total Editors</p>
-              <h3>{editorCount}</h3>
+              <p className="w-100">Total Freelancers</p>
+              <h3>{freelancerCount}</h3>
               <div className="d-flex  w-100 align-items-end justify-content-between">
                 <span>
                   <img src={positive} alt="positive metrix" />

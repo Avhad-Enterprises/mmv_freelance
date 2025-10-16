@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Select from "react-select";
@@ -6,9 +6,6 @@ import Layout from "./layout";
 import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
 import SelectComponent from "../components/SelectComponent";
-import FileUploadComponent from "../components/FileUploadComponent";
-import SkillInput from "../components/SkillInput";
-import Aetextarea from "../components/Aetextarea";
 import { languages } from "../data/languages";
 import { videoProductionSkills } from "../data/skilllist";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
@@ -49,11 +46,8 @@ const CreateEditor = () => {
         languages: [],
     });
 
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [selectedSkillTags, setSelectedSkillTags] = useState([]);
-    const [availableTags, setAvailableTags] = useState([]);
     const [selectedSkills, setSelectedSkills] = useState([]);
-    const [availableSkills, setAvailableSkills] = useState([]);
+    const [, setAvailableSkills] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
     const [countries, setCountries] = useState([]);
@@ -174,7 +168,7 @@ const CreateEditor = () => {
 
     const handleInputChange = (e, customValue = null) => {
         if (e?.target) {
-            const { name, type, value } = e.target;
+            const { name, value } = e.target;
             setFormData(prev => ({ ...prev, [name]: value }));
         } else if (customValue !== null) {
             setFormData(prev => ({ ...prev, [e]: customValue }));

@@ -5,14 +5,13 @@ import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 
 const SendInvitation = () => {
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
+    full_name: "",
     username: "",
     email: "",
     phone_number: "",
     password: "",
   });
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,8 +24,7 @@ const SendInvitation = () => {
 
     try {
       const payload = {
-        first_name: formData.first_name,
-        last_name: formData.last_name,
+        full_name: formData.full_name,
         username: formData.username,
         email: formData.email,
         phone_number: formData.phone_number,
@@ -41,8 +39,7 @@ const SendInvitation = () => {
 
       //Reset Form
       setFormData({
-        first_name: "",
-        last_name: "",
+        full_name: "",
         username: "",
         email: "",
         phone_number: "",
@@ -67,30 +64,16 @@ const SendInvitation = () => {
             <h5 className="mb-4 fw-bold">Send Invitation</h5>
 
             {/* First + Last Name Row */}
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <label className="form-label">First Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="first_name"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <label className="form-label">Last Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="last_name"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            <div className="mb-3">
+              <label className="form-label">Full Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="mb-3">

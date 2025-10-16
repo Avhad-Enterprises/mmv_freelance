@@ -37,7 +37,7 @@ const EditEditor = () => {
   });
   const [loading, setLoading] = useState(true);
   const [initialState, setInitialState] = useState(null);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [, setSelectedTags] = useState([]);
   const [selectedSkillTags, setSelectedSkillTags] = useState([]);
   const [hasChanges, setHasChanges] = useState(false);
   const [canEdit, setCanEdit] = useState(true); // Adjust based on permissions
@@ -226,8 +226,6 @@ const EditEditor = () => {
     [canEdit]
   );
 
-
-  const [availableTags, setAvailableTags] = useState([]);
   const [availableSkillTags, setAvailableSkillTags] = useState([]);
   useEffect(() => {
     // const fetchTags = async () => {
@@ -377,12 +375,6 @@ const EditEditor = () => {
       },
     });
   };
-
-
-  const accountStatusOptions = [
-    { value: "0", label: "inActive" },
-    { value: "1", label: "Active" },
-  ];
 
   if (loading) {
     return (

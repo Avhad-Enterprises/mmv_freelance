@@ -9,7 +9,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import DataTable from "../components/DataTable";
-import FileUploadComponent from "../components/FileUploadComponent";
 
 const Profile = () => {
   const [inviteLastName, setInviteLastName] = useState("");
@@ -23,6 +22,7 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("personal");
   const [notifications, setNotifications] = useState([]);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
+  const [selectedProfilePhoto, setSelectedProfilePhoto] = useState(null);
   const [userForm, setUserForm] = useState({
     first_name: "",
     last_name: "",
@@ -184,57 +184,88 @@ const Profile = () => {
   };
 
   const isFormChanged = () => {
-    return JSON.stringify(userForm) !== JSON.stringify(initialUserForm);
+    return JSON.stringify(userForm) !== JSON.stringify(initialUserForm) || selectedProfilePhoto !== null;
+  };
+
+  const handleProfilePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files are allowed!");
+        return;
+      }
+      setSelectedProfilePhoto(file);
+    }
   };
 
   const handleUserProfileSave = async () => {
     try {
-      let allValid = true;
-      Object.values(inputRefs.current).forEach((ref) => {
-        if (ref && !ref.validate()) {
-          allValid = false;
-        }
-      });
-
-      if (!allValid) {
-        showErrorToast("Please fix the errors before saving.");
+      const token = localStorage.getItem("jwtToken");
+      if (!token) {
+        showErrorToast("User not authenticated.");
         return;
       }
 
-
-      const token = localStorage.getItem("jwtToken");
       const decoded = jwtDecode(token);
       const user_id = decoded.user_id;
 
-      const payload = {
-        user_id,
-        first_name: userForm.first_name,
-        last_name: userForm.last_name,
-        username: userForm.username,
-        email: userForm.email,
-        phone_number: userForm.phone_number,
-        address_line_first: userForm.address_line_first,
-        address_line_second: userForm.address_line_second,
-        city: userForm.city,
-        state: userForm.state,
-        country: userForm.country,
-        pincode: userForm.pincode,
-        profile_picture: userForm.profile_picture,
-      };
+      // Build FormData
+      const fd = new FormData();
+      fd.append("user_id", user_id);
+      fd.append("first_name", userForm.first_name);
+      fd.append("last_name", userForm.last_name);
+      fd.append("username", userForm.username);
+      fd.append("email", userForm.email);
+      fd.append("phone_number", userForm.phone_number);
+      fd.append("address_line_first", userForm.address_line_first);
+      fd.append("address_line_second", userForm.address_line_second);
+      fd.append("city", userForm.city);
+      fd.append("state", userForm.state);
+      fd.append("country", userForm.country);
+      fd.append("pincode", userForm.pincode);
 
-      const response = await makePutRequest(`users/${user_id}`, payload);
-
-      if (response.data?.success || response.status === 200) {
-        showSuccessToast("🎉 Profile updated successfully!");
-        setInitialUserForm(userForm);
+      // Append profile picture if selected
+      if (selectedProfilePhoto) {
+        fd.append("profile_picture", selectedProfilePhoto);
       } else {
-        showErrorToast("Something went wrong while updating the profile.");
+        fd.append("profile_picture", userForm.profile_picture || "");
+      }
+
+      // Send request using fetch
+      const response = await fetch(
+        `http://localhost:8000/api/v1/users/${user_id}`,
+        {
+          method: "PUT",
+          body: fd,
+          headers: {
+            Authorization: `Bearer ${token}`, // << Add this line
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        showSuccessToast("🎉 Profile updated successfully!");
+
+        // Update displayed profile picture
+        setUserData((prev) => ({
+          ...prev,
+          profile_picture: selectedProfilePhoto
+            ? URL.createObjectURL(selectedProfilePhoto)
+            : userForm.profile_picture,
+        }));
+
+        setSelectedProfilePhoto(null);
+      } else {
+        showErrorToast(data.message || "Failed to update profile.");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      showErrorToast("Failed to update profile. Please try again.");
+      showErrorToast("Something went wrong. Please try again.");
     }
   };
+
 
   const handleDeleteProfilePic = async () => {
     try {
@@ -376,21 +407,12 @@ const Profile = () => {
 
             <Row>
               <Col md={6} className="mb-3">
-                <FileUploadComponent
-                  name="profile_picture"
-                  folderPath="uploads/profile"
-                  allowedClasses="image"
-                  info="Required Size: 300 x 300px, 500 x 500px, Formats: JPG, PNG, JPEG"
-                  multiple={false}
-                  onChange={(files) => {
-                    const uploadedUrl = files?.[0]?.fileUrl;
-                    if (uploadedUrl) {
-                      setUserForm((prev) => ({
-                        ...prev,
-                        profile_picture: uploadedUrl,
-                      }));
-                    }
-                  }}
+                <input
+                  type="file"
+                  id="profilePhoto"
+                  accept="image/*"
+                  onChange={handleProfilePhotoChange}
+                  className="form-control"
                 />
               </Col>
             </Row>

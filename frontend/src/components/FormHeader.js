@@ -13,9 +13,13 @@ const FormHeader = ({
   showDelete = false,
   showPreview = false,
   onDelete = () => { },
+  onUpdate = () => { },
   onApplications,
   applicationsBtnStyle,
   applicationsClassName,
+  showBan = false,
+  isBanned = false,
+  onBanToggle,
   onBack = null,
   onPreview = null,
 }) => {
@@ -66,7 +70,11 @@ const FormHeader = ({
           </Button>
         )}
         {showUpdate && (
-          <button type="submit" className="btn a-btn-primary">
+          <button
+            type="button"
+            className="btn a-btn-primary"
+            onClick={onUpdate}   // <--- call the submit handler directly
+          >
             Update
           </button>
         )}
@@ -88,12 +96,28 @@ const FormHeader = ({
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
+              {/* Delete */}
               <Dropdown.Item onClick={onDelete} className="text-danger">
                 <i className="bi bi-trash me-2"></i> Delete
               </Dropdown.Item>
+
+              {/* Ban / Unban */}
+              {showBan && (
+                <Dropdown.Item
+                  onClick={onBanToggle}
+                  className={isBanned ? "text-success" : "text-warning"}
+                >
+                  <i
+                    className={`bi me-2 ${isBanned ? "bi-person-check" : "bi-person-x"
+                      }`}
+                  ></i>
+                  {isBanned ? "Unban User" : "Ban User"}
+                </Dropdown.Item>
+              )}
             </Dropdown.Menu>
           </Dropdown>
         )}
+
       </div>
     </h3>
   );

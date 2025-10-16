@@ -13,7 +13,7 @@ const Prefernces = () => {
   const tableRef = useRef();
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("footerpages");
+  const [activeTab] = useState("footerpages");
 
   const columns1 = [
     { headname: "id", type: "id", dbcol: "col1" },
@@ -45,9 +45,9 @@ const Prefernces = () => {
       content: <div>Store Restrictions content goes here</div>,
     },
   ];
-  const handleTabClick = (tabId) => {
-    setActiveTab(tabId);
-  };
+  // const handleTabClick = (tabId) => {
+  //   setActiveTab(tabId);
+  // };
 
   return (
     <Layout>

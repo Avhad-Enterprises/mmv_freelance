@@ -160,7 +160,7 @@ const CreateProject = () => {
         const response = await makeGetRequest("clients/getallclient", {});
         const fetchedClients = response.data?.data || [];
         const clientOptions = fetchedClients.map((client) => ({
-          value: client.user_id,
+          value: client.client_id,
           label: client.name || `${client.first_name || ""} ${client.last_name || ""}`.trim(),
         }));
         setClients(clientOptions);
@@ -172,7 +172,7 @@ const CreateProject = () => {
 
     const fetchTags = async () => {
       try {
-        const response = await makeGetRequest("tags/geteventtags");
+        const response = await makeGetRequest("tags");
         const fetchedTags = response.data?.data || [];
         const tagNames = fetchedTags.map((tag) => tag.tag_name);
         setAvailableTags(tagNames);
@@ -184,7 +184,7 @@ const CreateProject = () => {
 
     const fetchSkills = async () => {
       try {
-        const response = await makeGetRequest("tags/getallskill");
+        const response = await makeGetRequest("skills");
         const fetchedSkills = response.data?.data || [];
         console.log("Fetched skills:", fetchedSkills);
         const skillNames = fetchedSkills.map((skill) => skill.tag_name).filter((name) => !!name);
@@ -197,7 +197,7 @@ const CreateProject = () => {
 
     const fetchCategories = async () => {
       try {
-        const response = await makeGetRequest("category/getallcategorys");
+        const response = await makeGetRequest("categories");
         const fetchedCategories = response.data?.data || [];
         const categoryOptions = fetchedCategories.map((cat) => ({
           value: cat.category_id,
@@ -335,7 +335,7 @@ const CreateProject = () => {
 
     try {
       console.log("Sending API request...");
-      const response = await makePostRequest("projectsTask/insertprojects_task", payload);
+      const response = await makePostRequest("projects-tasks", payload);
       console.log("API Response:", response);
       showSuccessToast("🎉 Project created successfully!");
       navigate("/projectmanagement");

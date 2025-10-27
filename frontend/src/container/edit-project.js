@@ -70,7 +70,7 @@ const EditProject = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [clients, setClients] = useState([]);
-  const [viewMode, ] = useState("form")
+  const [viewMode,] = useState("form")
 
   const areObjectsEqual = (obj1, obj2) => {
     return _.isEqual(obj1, obj2);
@@ -119,7 +119,7 @@ const EditProject = () => {
         const fetchCategories = async () => {
           try {
             // use your existing route
-            const response = await makeGetRequest("category/getallcategorys");
+            const response = await makeGetRequest("categories");
             const fetchedCategories = response.data?.data || [];
             const categoryOptions = fetchedCategories.map((cat) => ({
               value: cat.category_id,
@@ -133,7 +133,7 @@ const EditProject = () => {
           }
         };
 
-        const response = await makeGetRequest(`projectsTask/getprojects_taskbyid/${id}`);
+        const response = await makeGetRequest(`projects-tasks/${id}`);
 
         console.log("Project Data: ", response);
         const project = response.data.projects;
@@ -495,7 +495,7 @@ const EditProject = () => {
   useEffect(() => {
     const fetchTags = async () => {
       try {
-        const response = await makeGetRequest("tags/geteventtags");
+        const response = await makeGetRequest("tags");
         const fetchedTags = response.data?.data || [];
         const tagNames = fetchedTags.map((tag) => tag.tag_name) || ["default-tag"];
         setAvailableTags(tagNames);
@@ -507,7 +507,7 @@ const EditProject = () => {
 
     const fetchSkills = async () => {
       try {
-        const response = await makeGetRequest("tags/getallskill");
+        const response = await makeGetRequest("skills");
         const fetchedSkills = response.data?.data || [];
         const skillNames =
           Array.isArray(fetchedSkills) && fetchedSkills.length > 0
@@ -585,7 +585,7 @@ const EditProject = () => {
     };
 
     try {
-      await makePutRequest(`projectsTask/updateprojects_taskbyid`, payload);
+      await makePutRequest(`projects-tasks/${id}`, payload);
       showSuccessToast("🎉 Project updated successfully!");
       setHasChanges(false);
       navigate("/projectmanagement");
@@ -659,7 +659,7 @@ const EditProject = () => {
       },
       onConfirm: async () => {
         try {
-          const response = await makeDeleteRequest(`projectsTask/delete/${projectId}`);
+          const response = await makeDeleteRequest(`projects-tasks/${projectId}`);
           console.log("Delete Response:", response);
           showSuccessToast("Project deleted successfully!");
           navigate("/projectmanagement");

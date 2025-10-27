@@ -18,6 +18,8 @@ const CreateEditor = () => {
     const inputRefs = useRef({});
 
     const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
         full_name: "",
         username: "",
         password: "",
@@ -48,6 +50,8 @@ const CreateEditor = () => {
         id_document: "",
         languages: [],
         account_type: "videographer",
+        terms_accepted: false,
+        privacy_policy_accepted: false,
     });
 
     const [selectedSkills, setSelectedSkills] = useState([]);
@@ -63,11 +67,14 @@ const CreateEditor = () => {
     const [isReviewMode, setIsReviewMode] = useState(false);
     const [links, setLinks] = useState(["", "", ""]);
     const [profilePhoto, setProfilePhoto] = useState(null);
-    const [showErrors, ] = useState(false);
+    const [showErrors,] = useState(false);
     const [superpowersOptions, setSuperpowersOptions] = useState([]);
     const [selectedSuperpowers, setSelectedSuperpowers] = useState([]);
 
     const skillOptions = videoProductionSkills.map(skill => ({ value: skill, label: skill }));
+
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [acceptedPrivacy, setAcceptedPrivacy] = useState(false);
 
     const { full_name } = formData;
 
@@ -131,14 +138,14 @@ const CreateEditor = () => {
                 setAvailableSkills(["default-skill"]);
             }
         };
-        
+
         fetchSkills();
     }, []);
 
     useEffect(() => {
         const fetchSuperpowers = async () => {
             try {
-                const response = await makeGetRequest("category/getallcategorys");
+                const response = await makeGetRequest("categories");
                 const fetched = response.data?.data || [];
 
                 const editorCategories = fetched
@@ -161,8 +168,9 @@ const CreateEditor = () => {
 
     const handleInputChange = (e, customValue = null) => {
         if (e?.target) {
-            const { name, value } = e.target;
+            const { name, value, type, checked } = e.target;
             setFormData(prev => ({ ...prev, [name]: value }));
+            setFormData((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
         } else if (customValue !== null) {
             setFormData(prev => ({ ...prev, [e]: customValue }));
         }
@@ -215,10 +223,16 @@ const CreateEditor = () => {
             return;
         }
 
+        if (!formData.terms_accepted || !formData.privacy_policy_accepted) {
+            showErrorToast("Please accept Terms & Privacy Policy before continuing.");
+            return;
+        }
+
         try {
             const fd = new FormData();
 
-            fd.append("full_name", formData.full_name);
+            fd.append("first_name", formData.first_name);
+            fd.append("last_name", formData.last_name);
             fd.append("username", formData.username);
             fd.append("email", formData.email);
             fd.append("password", formData.password || "Test@1234");
@@ -240,6 +254,8 @@ const CreateEditor = () => {
             fd.append("skill_tags", JSON.stringify(formData.skill_tags || []));
             fd.append("portfolio_links", JSON.stringify(links.filter((l) => l.trim() !== "")));
             fd.append("account_type", formData.account_type || "videographer");
+            fd.append("terms_accepted", formData.terms_accepted);
+            fd.append("privacy_policy_accepted", formData.privacy_policy_accepted);
 
             // Send request
             const response = await fetch(
@@ -290,13 +306,22 @@ const CreateEditor = () => {
                             <Row className="mb-3">
                                 <Col md={6}>
                                     <TextInput
-                                        ref={(el) => (inputRefs.current.full_name = el)}
-                                        label="Full Name"
-                                        name="full_name"
-                                        placeholder="Type Full Name"
-                                        value={formData.full_name}
+                                        label="First Name"
+                                        name="first_name"
+                                        placeholder="Type First Name"
+                                        value={formData.first_name}
                                         onChange={handleInputChange}
-                                        required={true}
+                                        required
+                                    />
+                                </Col>
+                                <Col md={6}>
+                                    <TextInput
+                                        label="Last Name"
+                                        name="last_name"
+                                        placeholder="Type Last Name"
+                                        value={formData.last_name}
+                                        onChange={handleInputChange}
+                                        required
                                     />
                                 </Col>
                                 <Col md={6}>
@@ -768,6 +793,45 @@ const CreateEditor = () => {
                                 </div>
                             </Col>
                         </Row>
+
+                        {/* ✅ NEW SECTION: Terms and Privacy */}
+                        <div className="form_section mt-3">
+                            <h6 className="card-title">Legal Agreements</h6>
+
+                            <div className="form-check">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="terms"
+                                    name="terms_accepted"
+                                    checked={formData.terms_accepted}
+                                    onChange={handleInputChange}
+                                />
+                                <label htmlFor="terms" className="form-check-label">
+                                    I agree to the{" "}
+                                    <a href="/terms" target="_blank" rel="noopener noreferrer">
+                                        Terms and Conditions
+                                    </a>
+                                </label>
+                            </div>
+
+                            <div className="form-check mt-2">
+                                <input
+                                    type="checkbox"
+                                    className="form-check-input"
+                                    id="privacy"
+                                    name="privacy_policy_accepted"
+                                    checked={formData.privacy_policy_accepted}
+                                    onChange={handleInputChange}
+                                />
+                                <label htmlFor="privacy" className="form-check-label">
+                                    I have read and accept the{" "}
+                                    <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                                        Privacy Policy
+                                    </a>
+                                </label>
+                            </div>
+                        </div>
 
                         <div className="text-end mt-3">
                             <button type="button" className="btn a-btn-primary" onClick={handleSubmit}>

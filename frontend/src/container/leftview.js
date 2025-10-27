@@ -154,12 +154,48 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
             </li>
 
             <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/tags") ? "active" : ""}`}>
+                <Link to="/tags" className="d-flex align-items-center">
+                  <i className="bi bi-tag"></i>
+                  <div className="LeftMenuHead ml-2">Tag</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/skill") ? "active" : ""}`}>
+                <Link to="/skill" className="d-flex align-items-center">
+                  <i className="bi bi-patch-check"></i>
+                  <div className="LeftMenuHead ml-2">Skill</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/category") ? "active" : ""}`}>
+                <Link to="/category" className="d-flex align-items-center">
+                  <i className="bi bi-folder2-open"></i>
+                  <div className="LeftMenuHead ml-2">Category</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/faq") ? "active" : ""}`}>
+                <Link to="/faq" className="d-flex align-items-center">
+                  <i className="bi bi-question-circle"></i>
+                  <div className="LeftMenuHead ml-2">FAQ</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
               <div
                 className={`nav-link d-flex align-items-center ${location.pathname.includes("/cms") ? "active" : ""
                   }`}
               >
                 <Link to="/cms" className="d-flex align-items-center">
-                  <i className="bi bi-person-fill"></i>
+                  <i className="bi bi-gear"></i>
                   <div className="LeftMenuHead ml-2">CMS</div>
                 </Link>
                 <i

@@ -17,7 +17,7 @@ const SkillInput = ({ selectedSkills, setSelectedSkills }) => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await makeGetRequest("tags/getallskill");
+        const res = await makeGetRequest("skills");
         const skills = res.data?.data || [];
         const validSkills = skills.filter(s => s?.skill_name && s?.skill_id);
         setAvailableSkills(validSkills);
@@ -74,7 +74,7 @@ const SkillInput = ({ selectedSkills, setSelectedSkills }) => {
     if (!user?.user_id) return showErrorToast("User not authenticated");
 
     try {
-      const res = await makePostRequest("tags/insertskill", {
+      const res = await makePostRequest("skills", {
         skill_name: pendingSkill.trim(),
         created_by: user.user_id,
         is_active: 1,

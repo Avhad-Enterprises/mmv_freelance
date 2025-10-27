@@ -5,7 +5,7 @@ import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
 import SelectComponent from "../components/SelectComponent";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePutRequest, makeGetRequest, makeDeleteRequest, makePostRequest } from "../utils/api";
+import { makePutRequest, makeGetRequest, makeDeleteRequest, makePostRequest, makePatchRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -200,7 +200,7 @@ const EditVideoEditor = () => {
     useEffect(() => {
         const fetchSuperpowers = async () => {
             try {
-                const response = await makeGetRequest("category/getallcategorys");
+                const response = await makeGetRequest("categories");
                 const fetched = response.data?.data || [];
 
                 const editorCategories = fetched
@@ -219,7 +219,7 @@ const EditVideoEditor = () => {
 
         const fetchSkills = async () => {
             try {
-                const response = await makeGetRequest("tags/getallskill");
+                const response = await makeGetRequest("skills");
                 const fetchedSkills = response.data?.data || [];
                 const skillNames = fetchedSkills.map(tag => ({
                     value: tag.skill_name,
@@ -291,10 +291,8 @@ const EditVideoEditor = () => {
             return;
         }
 
-        const payload = {
+        const userPayload = {
             user_id: parseInt(id, 10),
-
-            // --- User Basic Info ---
             first_name: formData.first_name,
             last_name: formData.last_name,
             username: formData.username,
@@ -305,22 +303,31 @@ const EditVideoEditor = () => {
             state: formData.state,
             country: formData.country,
             pincode: formData.pincode,
-            profile_picture: profilePhoto, // can be a File or URL string
-            // id_document: idDocument,     // can be a File or URL string
-            // profile_title: formData.profile_title,
-            // short_description: formData.short_description,
-            // skill_tags: formData.skill_tags,
-            // superpowers: formData.superpowers,
-            // portfolio_links: links.filter(l => l.trim() !== ""),
-            // rate_amount: formData.rate_amount,
-            // rate_currency: formData.rate_currency,
-            // availability: formData.availability,
-            // languages: formData.languages,
+            profile_picture: profilePhoto,
         };
 
+        const profilePayload = {
+            user_id: parseInt(id, 10),
+            profile_title: formData.profile_title,
+            short_description: formData.short_description,
+            skill_tags: formData.skill_tags,
+            superpowers: formData.superpowers,
+            portfolio_links: links.filter((l) => l.trim() !== ""),
+            rate_amount: formData.rate_amount,
+            rate_currency: formData.rate_currency,
+            // availability: formData.availability,
+            id_type: formData.id_type,
+            id_document_url: idDocument,
+            languages: formData.languages,
+        };
 
         try {
-            await makePutRequest(`users/${id}`, payload);
+            // 1️⃣ Update basic user info
+            await makePutRequest(`users/${id}`, userPayload);
+
+            // 2️⃣ Update profile info (for video editor)
+            await makePatchRequest(`videoeditors/profile`, profilePayload); // or makePatchRequest if you have it
+
             showSuccessToast("🎉 Video Editor updated successfully!");
             setHasChanges(false);
             navigate("/videoeditorhomepage");
@@ -330,8 +337,9 @@ const EditVideoEditor = () => {
                 response: err.response?.data,
                 status: err.response?.status,
             });
-            showErrorToast(err.response?.data?.message || "Failed to update videoeditor.");
+            showErrorToast(err.response?.data?.message || "Failed to update video editor.");
         }
+
     };
 
     const handleBackNavigation = () => {
@@ -769,17 +777,20 @@ const EditVideoEditor = () => {
                             />
                             <Row className="md-3">
                                 <Col md={6}>
-                                    <SelectComponent
-                                        label="Availability"
-                                        name="availability"
-                                        placeholder="Select languages"
-                                        options={availabilityOptions}
-                                        value={formData.availability || ""} // array of selected languages
-                                        onChange={(value) => handleInputChange("availability", value)}
-                                        isMulti={true} // allow multiple selections
-                                        required
-                                        disabled={!canEdit}
-                                    />
+                                    <label className="form-label">Availability*</label>
+                                    <select
+                                        className="form-control"
+                                        value={formData.availability}
+                                        onChange={(e) =>
+                                            setFormData((prev) => ({ ...prev, availability: e.target.value }))
+                                        }
+                                    >
+                                        <option value="">Select Availability</option>
+                                        <option value="part-time">Part-Time</option>
+                                        <option value="full-time">Full-Time</option>
+                                        <option value="flexible"> Flexible</option>
+                                        <option value="on-demand">On-Demand</option>
+                                    </select>
                                 </Col>
                                 <Col md={6}>
                                     <SelectComponent

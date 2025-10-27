@@ -25,7 +25,7 @@ const Projects = () => {
   useEffect(() => {
     const fetchprojectData = async () => {
       try {
-        const response = await makeGetRequest("projectsTask/getallprojects_task");
+        const response = await makeGetRequest("projects-tasks/listings");
         const data = Array.isArray(response.data.data) ? response.data.data : [];
 
         // Combine first and last names

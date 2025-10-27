@@ -124,7 +124,7 @@ const TagInput = ({
     };
 
     try {
-      await makePostRequest("tags/insertetag", tagData);
+      await makePostRequest("tags", tagData);
       addTag(pendingTag.trim());
       showSuccessToast("Tag added successfully");
       setModalOpen(false);

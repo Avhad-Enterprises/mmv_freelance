@@ -5,7 +5,7 @@ import FormHeader from "../components/FormHeader";
 import TextInput from "../components/TextInput";
 import SelectComponent from "../components/SelectComponent";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
-import { makePutRequest, makeGetRequest, makeDeleteRequest, makePostRequest } from "../utils/api";
+import { makePutRequest, makeGetRequest, makeDeleteRequest, makePostRequest, makePatchRequest } from "../utils/api";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useSweetAlert } from "../components/SweetAlert";
@@ -198,7 +198,7 @@ const EditVideoGrapher = () => {
     useEffect(() => {
         const fetchSuperpowers = async () => {
             try {
-                const response = await makeGetRequest("category/getallcategorys");
+                const response = await makeGetRequest("categories");
                 const fetched = response.data?.data || [];
 
                 const editorCategories = fetched
@@ -217,7 +217,7 @@ const EditVideoGrapher = () => {
 
         const fetchSkills = async () => {
             try {
-                const response = await makeGetRequest("tags/getallskill");
+                const response = await makeGetRequest("skills");
                 const fetchedSkills = response.data?.data || [];
                 const skillNames = fetchedSkills.map(tag => ({
                     value: tag.skill_name,
@@ -274,7 +274,7 @@ const EditVideoGrapher = () => {
         e.preventDefault();
 
         if (!canEdit) {
-            showErrorToast("You are not authorized to edit this video grapher.");
+            showErrorToast("You are not authorized to edit this videographer.");
             return;
         }
 
@@ -289,37 +289,46 @@ const EditVideoGrapher = () => {
             return;
         }
 
-        const payload = {
-            user_id: parseInt(id, 10),
-
-            // --- User Basic Info ---
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            username: formData.username,
-            email: formData.email,
-            phone_number: formData.phone_number,
-            address_line_first: formData.address_line_first,
-            city: formData.city,
-            state: formData.state,
-            country: formData.country,
-            pincode: formData.pincode,
-            profile_picture: profilePhoto, // can be a File or URL string
-            // id_document: idDocument,     // can be a File or URL string
-            // profile_title: formData.profile_title,
-            // short_description: formData.short_description,
-            // skill_tags: formData.skill_tags,
-            // superpowers: formData.superpowers,
-            // portfolio_links: links.filter((l) => l.trim() !== ""),
-            // rate_amount: formData.rate_amount,
-            // rate_currency: formData.rate_currency,
-            // availability: formData.availability,
-            // languages: formData.languages,
-        };
-
-
         try {
-            await makePutRequest(`users/${id}`, payload);
-            showSuccessToast("🎉 Video Grapher updated successfully!");
+            // ✅ 1. Basic User Info Payload
+            const basicInfoPayload = {
+                user_id: parseInt(id, 10),
+                first_name: formData.first_name,
+                last_name: formData.last_name,
+                username: formData.username,
+                email: formData.email,
+                phone_number: formData.phone_number,
+                address_line_first: formData.address_line_first,
+                city: formData.city,
+                state: formData.state,
+                country: formData.country,
+                pincode: formData.pincode,
+                profile_picture: profilePhoto,
+            };
+
+            // ✅ 2. Professional / Profile Payload
+            const profilePayload = {
+                user_id: parseInt(id, 10),
+                profile_title: formData.profile_title,
+                short_description: formData.short_description,
+                skill_tags: formData.skill_tags,
+                superpowers: formData.superpowers,
+                portfolio_links: links.filter((l) => l.trim() !== ""),
+                rate_amount: formData.rate_amount,
+                rate_currency: formData.rate_currency,
+                availability: formData.availability,
+                id_type: formData.id_type,
+                id_document_url: idDocument,
+                languages: formData.languages,
+            };
+
+            // ✅ 1. Update user info
+            await makePutRequest(`users/${id}`, basicInfoPayload);
+
+            // ✅ 2. Update videographer profile
+            await makePutRequest(`videographers/profile`, profilePayload);
+
+            showSuccessToast("🎉 Videographer profile updated successfully!");
             setHasChanges(false);
             navigate("/videographerhomepage");
         } catch (err) {
@@ -328,7 +337,7 @@ const EditVideoGrapher = () => {
                 response: err.response?.data,
                 status: err.response?.status,
             });
-            showErrorToast(err.response?.data?.message || "Failed to update videographer.");
+            showErrorToast(err.response?.data?.message || "Failed to update videographer profile.");
         }
     };
 

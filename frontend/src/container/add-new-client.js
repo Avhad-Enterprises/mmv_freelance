@@ -16,6 +16,8 @@ const CreateClient = () => {
   const navigate = useNavigate();
   const inputRefs = useRef({});
   const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
     full_name: "",
     username: "",
     password: "",
@@ -39,6 +41,8 @@ const CreateClient = () => {
     work_arrangement: "",
     project_frequency: "",
     hiring_preferences: "",
+    terms_accepted: false,
+    privacy_policy_accepted: false,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -141,10 +145,16 @@ const CreateClient = () => {
       return;
     }
 
+    if (!formData.terms_accepted || !formData.privacy_policy_accepted) {
+      showErrorToast("Please accept Terms & Privacy Policy before continuing.");
+      return;
+    }
+
     try {
       // ✅ Build multipart/form-data
       const fd = new FormData();
-      fd.append("full_name", formData.full_name);
+      fd.append("first_name", formData.first_name);
+      fd.append("last_name", formData.last_name);
       fd.append("username", formData.username);
       fd.append("password", formData.password || "Client@1234");
       fd.append("email", formData.email);
@@ -170,6 +180,8 @@ const CreateClient = () => {
       if (formData.business_document_url instanceof File) {
         fd.append("business_document", formData.business_document_url); // match backend
       }
+      fd.append("terms_accepted", formData.terms_accepted);
+      fd.append("privacy_policy_accepted", formData.privacy_policy_accepted);
 
       // ✅ Send request
       const response = await fetch("http://localhost:8000/api/v1/auth/register/client", {
@@ -233,11 +245,22 @@ const CreateClient = () => {
               <Row className="mb-3">
                 <Col md={6}>
                   <TextInput
-                    ref={(el) => (inputRefs.current.full_name = el)}
-                    label="Full Name"
-                    name="full_name"
-                    placeholder="Type full name"
-                    value={formData.full_name}
+                    ref={(el) => (inputRefs.current.first_name = el)}
+                    label="First Name"
+                    name="first_name"
+                    placeholder="Type first name"
+                    value={formData.first_name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Col>
+                <Col md={6}>
+                  <TextInput
+                    ref={(el) => (inputRefs.current.last_name = el)}
+                    label="Last Name"
+                    name="last_name"
+                    placeholder="Type last name"
+                    value={formData.last_name}
                     onChange={handleInputChange}
                     required
                   />
@@ -624,7 +647,8 @@ const CreateClient = () => {
               {/* Left Column: Basic & Contact Details */}
               <Col md={6}>
                 <h6 className="card-title">Basic Information</h6>
-                <p><strong>Full Name:</strong> {formData.full_name}</p>
+                <p><strong>First Name:</strong> {formData.first_name}</p>
+                <p><strong>Last Name:</strong> {formData.last_name}</p>
                 <p><strong>Username:</strong> {formData.username}</p>
                 <p><strong>Email:</strong> {formData.email}</p>
 
@@ -663,6 +687,45 @@ const CreateClient = () => {
                 <p><strong>Hiring Preferences:</strong> {formData.hiring_preferences}</p>
               </Col>
             </Row>
+
+            {/* ✅ NEW SECTION: Terms and Privacy */}
+            <div className="form_section mt-3">
+              <h6 className="card-title">Legal Agreements</h6>
+
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="terms"
+                  name="terms_accepted"
+                  checked={formData.terms_accepted}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="terms" className="form-check-label">
+                  I agree to the{" "}
+                  <a href="/terms" target="_blank" rel="noopener noreferrer">
+                    Terms and Conditions
+                  </a>
+                </label>
+              </div>
+
+              <div className="form-check mt-2">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="privacy"
+                  name="privacy_policy_accepted"
+                  checked={formData.privacy_policy_accepted}
+                  onChange={handleInputChange}
+                />
+                <label htmlFor="privacy" className="form-check-label">
+                  I have read and accept the{" "}
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer">
+                    Privacy Policy
+                  </a>
+                </label>
+              </div>
+            </div>
 
             <div className="text-end mt-3">
               <button

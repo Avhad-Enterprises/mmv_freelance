@@ -13,6 +13,9 @@ const CMSHome = () => {
         title: "",
         description: "",
         categories: [],
+        faq: [],
+        blog: [],
+        footer: [],
     });
     const [, setLoading] = useState(false);
     const [cmsId, setCmsId] = useState(null);
@@ -32,6 +35,15 @@ const CMSHome = () => {
                         // hero_subtitle: cms.hero_subtitle || "",
                         categories: cms.category
                             ? JSON.parse(cms.category).map(item => JSON.parse(item))
+                            : [],
+                        faq: cms.faq
+                            ? JSON.parse(cms.faq).map(item => JSON.parse(item))
+                            : [],
+                        blog: cms.blog
+                            ? JSON.parse(cms.blog).map(item => JSON.parse(item))
+                            : [],
+                        footer: cms.footer
+                            ? JSON.parse(cms.footer).map(item => JSON.parse(item))
                             : [],
                     });
                     setCmsId(cms.id);
@@ -68,9 +80,11 @@ const CMSHome = () => {
                 carousel: (formData.carousel || []).filter(Boolean).join(","),
                 title: formData.title,
                 description: formData.description,
-                category: JSON.stringify(formData.categories || []),
+                category: formData.categories || [],
                 created_by: parseInt(user.user_id, 10),
-            };  
+                faq: formData.faq || [],
+                blog: formData.blog || [],
+            };
 
             let response;
             if (cmsId) {
@@ -295,6 +309,170 @@ const CMSHome = () => {
                             </button>
                         </div>
                     </div>
+
+                    {/* FAQ Section */}
+                    <div className="col-12">
+                        <div className="form_section">
+                            <h6>FAQ (Frequently Asked Questions)</h6>
+
+                            {formData.faq?.map((item, index) => (
+                                <div
+                                    key={index}
+                                    className="border rounded p-3 mb-3"
+                                    style={{ background: "#fafafa" }}
+                                >
+                                    <div className="mb-2">
+                                        <label className="form-label">Question</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Enter question"
+                                            value={item.question}
+                                            onChange={(e) => {
+                                                const updatedFaq = [...formData.faq];
+                                                updatedFaq[index].question = e.target.value;
+                                                setFormData({ ...formData, faq: updatedFaq });
+                                            }}
+                                        />
+                                    </div>
+
+                                    <div className="mb-2">
+                                        <label className="form-label">Answer</label>
+                                        <textarea
+                                            className="form-control"
+                                            placeholder="Enter answer"
+                                            rows={2}
+                                            value={item.answer}
+                                            onChange={(e) => {
+                                                const updatedFaq = [...formData.faq];
+                                                updatedFaq[index].answer = e.target.value;
+                                                setFormData({ ...formData, faq: updatedFaq });
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Delete Button */}
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-danger"
+                                        onClick={() => {
+                                            const updatedFaq = formData.faq.filter((_, i) => i !== index);
+                                            setFormData({ ...formData, faq: updatedFaq });
+                                        }}
+                                    >
+                                        ✕ Remove FAQ
+                                    </button>
+                                </div>
+                            ))}
+
+                            {/* Add New FAQ Button */}
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-primary"
+                                onClick={() =>
+                                    setFormData({
+                                        ...formData,
+                                        faq: [...(formData.faq || []), { question: "", answer: "" }],
+                                    })
+                                }
+                            >
+                                + Add FAQ
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* ✅ blog Section */}
+                    <div className="col-12">
+                        <div className="form_section">
+                            <h6>Features</h6>
+
+                            {formData.blog?.map((feature, index) => (
+                                <div
+                                    key={index}
+                                    className="border rounded p-3 mb-3"
+                                    style={{ background: "#fafafa" }}
+                                >
+                                    {/* Icon Upload */}
+                                    <FileUploadComponent
+                                        name={`feature_icon_${index}`}
+                                        allowedClasses="image"
+                                        required={false}
+                                        initialFile={feature.icon ? { fileUrl: feature.icon } : null}
+                                        onChange={(files) => {
+                                            if (files.length > 0 && files[0].fileUrl) {
+                                                const updatedblog = [...formData.blog];
+                                                updatedblog[index].icon = files[0].fileUrl;
+                                                setFormData({ ...formData, blog: updatedblog });
+                                            }
+                                        }}
+                                    />
+
+                                    {/* Title */}
+                                    <div className="mb-2">
+                                        <label className="form-label">Title</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Enter feature title"
+                                            value={feature.title}
+                                            onChange={(e) => {
+                                                const updated = [...formData.blog];
+                                                updated[index].title = e.target.value;
+                                                setFormData({ ...formData, blog: updated });
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Description */}
+                                    <div className="mb-2">
+                                        <label className="form-label">Description</label>
+                                        <textarea
+                                            className="form-control"
+                                            placeholder="Enter feature description"
+                                            rows={2}
+                                            value={feature.description}
+                                            onChange={(e) => {
+                                                const updated = [...formData.blog];
+                                                updated[index].description = e.target.value;
+                                                setFormData({ ...formData, blog: updated });
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Delete Button */}
+                                    <button
+                                        type="button"
+                                        className="btn btn-sm btn-danger"
+                                        onClick={() => {
+                                            const updated = formData.blog.filter((_, i) => i !== index);
+                                            setFormData({ ...formData, blog: updated });
+                                        }}
+                                    >
+                                        ✕ Remove Feature
+                                    </button>
+                                </div>
+                            ))}
+
+                            {/* Add New Feature Button */}
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-primary"
+                                onClick={() =>
+                                    setFormData({
+                                        ...formData,
+                                        blog: [
+                                            ...(formData.blog || []),
+                                            { icon: "", title: "", description: "" },
+                                        ],
+                                    })
+                                }
+                            >
+                                + Add Feature
+                            </button>
+                        </div>
+                    </div>
+
+
                 </form>
             </div>
         </Layout>

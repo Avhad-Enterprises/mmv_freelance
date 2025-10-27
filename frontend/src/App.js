@@ -34,6 +34,13 @@ import VideoEditorHomePage from "./container/videoeditorhomepage";
 import VideoGrapherHomePage from "./container/videographerhomepage";
 import EditVideoEditor from "./container/edit-video-editor";
 import EditVideoGrapher from "./container/edit-videographer";
+import Skill from "./container/Skills";
+import CreateSkill from "./container/CreateSkill";
+import Category from "./container/category";
+import CreateCategory from "./container/CreateCategory";
+import FAQ from "./container/FAQ";
+import Tags from "./container/tags";
+import CreateTag from "./container/create-tag";
 
 const App = () => {
   return (
@@ -299,6 +306,69 @@ const App = () => {
           element={
             <ProtectedRoute>
               <EditVideoGrapher />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/skill"
+          element={
+            <ProtectedRoute>
+              <Skill />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/skills/create"
+          element={
+            <ProtectedRoute>
+              <CreateSkill />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/category"
+          element={
+            <ProtectedRoute>
+              <Category />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/category/create"
+          element={
+            <ProtectedRoute>
+              <CreateCategory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/faq"
+          element={
+            <ProtectedRoute>
+              <FAQ />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/tags"
+          element={
+            <ProtectedRoute>
+              <Tags />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/tags/create"
+          element={
+            <ProtectedRoute>
+              <CreateTag />
             </ProtectedRoute>
           }
         />

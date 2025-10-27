@@ -209,62 +209,46 @@ const Profile = () => {
       const decoded = jwtDecode(token);
       const user_id = decoded.user_id;
 
-      // Build FormData
-      const fd = new FormData();
-      fd.append("user_id", user_id);
-      fd.append("first_name", userForm.first_name);
-      fd.append("last_name", userForm.last_name);
-      fd.append("username", userForm.username);
-      fd.append("email", userForm.email);
-      fd.append("phone_number", userForm.phone_number);
-      fd.append("address_line_first", userForm.address_line_first);
-      fd.append("address_line_second", userForm.address_line_second);
-      fd.append("city", userForm.city);
-      fd.append("state", userForm.state);
-      fd.append("country", userForm.country);
-      fd.append("pincode", userForm.pincode);
+      // Prepare payload as JSON
+      const payload = {
+        first_name: userForm.first_name,
+        last_name: userForm.last_name,
+        username: userForm.username,
+        email: userForm.email,
+        phone_number: userForm.phone_number,
+        address_line_first: userForm.address_line_first,
+        address_line_second: userForm.address_line_second,
+        city: userForm.city,
+        state: userForm.state,
+        country: userForm.country,
+        pincode: userForm.pincode,
+        // profile_picture will be handled separately if needed
+      };
 
-      // Append profile picture if selected
-      if (selectedProfilePhoto) {
-        fd.append("profile_picture", selectedProfilePhoto);
-      } else {
-        fd.append("profile_picture", userForm.profile_picture || "");
-      }
+      // Send PUT request using makePutRequest
+      const response = await makePutRequest(`users/${user_id}`, payload);
 
-      // Send request using fetch
-      const response = await fetch(
-        `http://localhost:8000/api/v1/users/${user_id}`,
-        {
-          method: "PUT",
-          body: fd,
-          headers: {
-            Authorization: `Bearer ${token}`, // << Add this line
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.success) {
+      if (response.data?.success) {
         showSuccessToast("🎉 Profile updated successfully!");
 
-        // Update displayed profile picture
+        // Update displayed user info
         setUserData((prev) => ({
           ...prev,
-          profile_picture: selectedProfilePhoto
-            ? URL.createObjectURL(selectedProfilePhoto)
-            : userForm.profile_picture,
+          full_name: `${userForm.first_name} ${userForm.last_name}`,
         }));
 
+        // Reset selected profile photo
         setSelectedProfilePhoto(null);
+
       } else {
-        showErrorToast(data.message || "Failed to update profile.");
+        showErrorToast(response.data?.message || "Failed to update profile.");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
       showErrorToast("Something went wrong. Please try again.");
     }
   };
+
 
 
   const handleDeleteProfilePic = async () => {

@@ -111,14 +111,14 @@ const Tags = () => {
             className="btn p-0 border-0 bg-transparent text-primary"
             onClick={() => handleEditClick(row)}
           >
-            <i className="bi bi-pencil"></i>
+            <i className="bi bi-pencil" style={{ fontSize: "22px" }}></i>
           </button>
           <button
             type="button"
             className="btn p-0 border-0 bg-transparent text-danger"
             onClick={() => handleDelete(row.tag_id)}
           >
-            <i className="bi bi-trash"></i>
+            <i className="bi bi-trash" style={{ fontSize: "22px" }}></i>
           </button>
         </div>
       ),
@@ -184,12 +184,12 @@ const Tags = () => {
             <Modal.Footer>
               <button
                 type="button"
-                className="btn btn-secondary"
+                className="btn a-btn-primary"
                 onClick={handleCloseModal}
               >
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn a-btn-primary">
                 Update Tag
               </button>
             </Modal.Footer>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./layout";
+import FormHeader from "../components/FormHeader";
 import { makePostRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { getLoggedInUser } from "../utils/auth";
@@ -54,7 +55,7 @@ const CreateTag = () => {
       console.error("Create tag error:", error);
       showErrorToast(
         error?.response?.data?.message ||
-          "Failed to create tag. Please try again."
+        "Failed to create tag. Please try again."
       );
     } finally {
       setLoading(false);
@@ -63,6 +64,12 @@ const CreateTag = () => {
 
   return (
     <Layout>
+      <FormHeader
+        title="Add New Tag"
+        // showAdd
+        backUrl="/tags"
+        onBack={() => navigate("/tags")}
+      />
       <div
         className="container d-flex justify-content-center align-items-center"
         style={{ minHeight: "80vh" }}
@@ -131,7 +138,7 @@ const CreateTag = () => {
             </div>
 
             {/* Submit Button */}
-            <button type="submit" className="btn btn-primary w-100">
+            <button type="submit" className="btn a-btn-primary">
               Create Tag
             </button>
           </form>

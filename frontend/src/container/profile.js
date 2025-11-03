@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Layout from "./layout";
 import { Form, Button } from "react-bootstrap";
-import { makePostRequest, makeGetRequest, makePutRequest } from "../utils/api";
+import { makePostRequest, makeGetRequest, makePutRequest, makePatchRequest } from "../utils/api";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import TextInput from "../components/TextInput";
@@ -29,6 +29,7 @@ const Profile = () => {
     email: "",
     phone_number: "",
     username: "",
+    profile_picture: "",
     address_line_first: "",
     address_line_second: "",
     city: "",
@@ -226,7 +227,7 @@ const Profile = () => {
       };
 
       // Send PUT request using makePutRequest
-      const response = await makePutRequest(`users/${user_id}`, payload);
+      const response = await makePatchRequest(`users/me`, payload);
 
       if (response.data?.success) {
         showSuccessToast("🎉 Profile updated successfully!");

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./layout";
+import FormHeader from "../components/FormHeader";
 import { makePostRequest } from "../utils/api";
 import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import { getLoggedInUser } from "../utils/auth";
@@ -57,6 +58,12 @@ const CreateSkill = () => {
 
     return (
         <Layout>
+            <FormHeader
+                title="Add New Skill"
+                // showAdd
+                backUrl="/skill"
+                onBack={() => navigate("/skill")}
+            />
             <div
                 className="container d-flex justify-content-center align-items-center"
                 style={{ minHeight: "80vh" }}
@@ -95,7 +102,7 @@ const CreateSkill = () => {
                             </label>
                         </div>
 
-                        <button type="submit" className="btn btn-primary w-100">
+                        <button type="submit" className="btn a-btn-primary">
                             Create Skill
                         </button>
                     </form>

@@ -79,7 +79,7 @@ const FormHeader = ({
           </button>
         )}
         {showSave && (
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn a-btn-primary">
             Save CMS
           </button>
         )}

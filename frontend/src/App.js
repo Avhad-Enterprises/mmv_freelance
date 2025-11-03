@@ -39,8 +39,12 @@ import CreateSkill from "./container/CreateSkill";
 import Category from "./container/category";
 import CreateCategory from "./container/CreateCategory";
 import FAQ from "./container/FAQ";
+import CreateFaq from "./container/createFaq";
 import Tags from "./container/tags";
 import CreateTag from "./container/create-tag";
+import Blog from "./container/blog";
+import CreateBlog from "./container/createblog";
+import EditBlog from "./container/editblogpage";
 
 const App = () => {
   return (
@@ -356,6 +360,15 @@ const App = () => {
         />
 
         <Route
+          path="/faq/create"
+          element={
+            <ProtectedRoute>
+              <CreateFaq />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/tags"
           element={
             <ProtectedRoute>
@@ -369,6 +382,33 @@ const App = () => {
           element={
             <ProtectedRoute>
               <CreateTag />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/blog"
+          element={
+            <ProtectedRoute>
+              <Blog />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/blog/create"
+          element={
+            <ProtectedRoute>
+              <CreateBlog />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/blog/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditBlog />
             </ProtectedRoute>
           }
         />

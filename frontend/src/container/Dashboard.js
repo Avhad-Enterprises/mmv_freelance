@@ -89,11 +89,12 @@ const Dashboard = () => {
           {/* Total Revenue */}
 
           <Col xs={4} md>
-            <MetricCard>
-              <p className="w-100">Total Projects</p>
+            <MetricCard
+              title="Total Projects"
+              tooltipText="This shows the count of total number of projects in the system"
+            >
               <h3>{totalProjects}</h3>
               <div className="d-flex w-100 align-items-end justify-content-between">
-                {/* <span className="positive_metrix">+5%</span> */}
                 <span>
                   <img src={positive} alt="positive metrix" />
                 </span>
@@ -102,8 +103,10 @@ const Dashboard = () => {
           </Col>
 
           <Col xs={4} md>
-            <MetricCard>
-              <p className="w-100">Signup Users(Last 24 hrs)</p>
+            <MetricCard
+              title="Signup Users(Last 24 hrs)"
+              tooltipText="This shows the count of total number of Signup Users(Last 24 hrs) in the system"
+            >
               <h3>{signupsLast24hrs}</h3>
               <div className="d-flex  w-100 align-items-end justify-content-between">
                 {/* optional percentage */}
@@ -116,8 +119,10 @@ const Dashboard = () => {
           </Col>
 
           <Col xs={4} md>
-            <MetricCard>
-              <p className="w-100">Total Clients</p>
+            <MetricCard
+              title="Total Clients"
+              tooltipText="This shows the count of total clients"
+            >
               <h3>{clientCount}</h3>
               <div className="d-flex w-100 align-items-end justify-content-between">
                 <span>
@@ -141,8 +146,10 @@ const Dashboard = () => {
           </Col> */}
 
           <Col xs={4} md>
-            <MetricCard>
-              <p className="w-100">Total Freelancers</p>
+            <MetricCard
+              title="Total Freelancers"
+              tooltipText="This shows the count of total freelancers"
+            >
               <h3>{freelancerCount}</h3>
               <div className="d-flex  w-100 align-items-end justify-content-between">
                 <span>

@@ -297,7 +297,7 @@ const CMSHome = () => {
                             {/* Add New Category Button */}
                             <button
                                 type="button"
-                                className="btn btn-sm btn-primary"
+                                className="btn a-btn-primary"
                                 onClick={() =>
                                     setFormData({
                                         ...formData,
@@ -368,7 +368,7 @@ const CMSHome = () => {
                             {/* Add New FAQ Button */}
                             <button
                                 type="button"
-                                className="btn btn-sm btn-primary"
+                                className="btn a-btn-primary"
                                 onClick={() =>
                                     setFormData({
                                         ...formData,
@@ -456,7 +456,7 @@ const CMSHome = () => {
                             {/* Add New Feature Button */}
                             <button
                                 type="button"
-                                className="btn btn-sm btn-primary"
+                                className="btn a-btn-primary"
                                 onClick={() =>
                                     setFormData({
                                         ...formData,

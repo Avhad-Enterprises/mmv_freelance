@@ -22,7 +22,7 @@ const CreateEditor = () => {
         last_name: "",
         full_name: "",
         username: "",
-        password: "",
+        password: "",   
         profile_photo: "",
         email: "",
         phone_number: "",

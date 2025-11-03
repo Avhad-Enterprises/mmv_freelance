@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../App.css";
 import "../dashboard.css";
@@ -93,28 +93,28 @@ const Header = ({ toggleSidebar }) => {
     }
   }, []);
 
-  // const markAsRead = async (id) => {
-  //   try {
-  //     await makePostRequest(`notification/read/${id}`);
-  //     setNotifications((prev) =>
-  //       prev.map((n) => (n.id === id ? { ...n, is_read: 1 } : n))
-  //     );
-  //     setUnreadCount((prev) => Math.max(prev - 1, 0));
-  //   } catch (error) {
-  //     console.error("Error marking notification as read:", error);
-  //   }
-  // };
+  const markAsRead = async (id) => {
+    try {
+      await makePostRequest(`notification/read/${id}`);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: 1 } : n))
+      );
+      setUnreadCount((prev) => Math.max(prev - 1, 0));
+    } catch (error) {
+      console.error("Error marking notification as read:", error);
+    }
+  };
 
-  // const markAllAsRead = async () => {
-  //   const user = getLoggedInUser();
-  //   try {
-  //     await makePostRequest(`notification/read-all`, { user_id: user.user_id });
-  //     setNotifications((prev) => prev.map((n) => ({ ...n, is_read: 1 })));
-  //     setUnreadCount(0);
-  //   } catch (error) {
-  //     console.error("Error marking all as read:", error);
-  //   }
-  // };
+  const markAllAsRead = async () => {
+    const user = getLoggedInUser();
+    try {
+      await makePostRequest(`notification/read-all`, { user_id: user.user_id });
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: 1 })));
+      setUnreadCount(0);
+    } catch (error) {
+      console.error("Error marking all as read:", error);
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -166,7 +166,7 @@ const Header = ({ toggleSidebar }) => {
 
         <div className="d-flex">
           <div className="d-flex align-items-center position-relative">
-            {/* <div className="position-relative me-3">
+            <div className="position-relative me-3">
               <div
                 className="notification-icon d-flex"
                 style={{ cursor: "pointer", position: "relative" }}
@@ -224,7 +224,7 @@ const Header = ({ toggleSidebar }) => {
                 </ul>
               )}
 
-            </div> */}
+            </div>
             <div
               className="down-icon d-flex align-items-center"
               onClick={() => setShowDropdown((prev) => !prev)}

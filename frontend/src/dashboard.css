@@ -5,6 +5,15 @@
   text-align: center;
 }
 
+.ae-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 2;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+}
+
+
 .timeline {
   list-style-type: none;
   padding-left: 0;
@@ -145,11 +154,11 @@ h4 {
 }
 
 .LeftHeading {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .LeftMenuHead {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 select::-ms-expand {
@@ -201,7 +210,7 @@ option {
 }
 
 a {
-  color: rgb(25, 151, 213);
+  color: rgb(203, 214, 212);
 }
 
 .resizable-textarea {
@@ -548,8 +557,8 @@ input::placeholder {
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  padding-inline: 30px;
-  font-size: 28px;
+  padding-inline: 16px;
+  font-size: 23px;
 }
 
 .down-icon {
@@ -1412,12 +1421,14 @@ a.search-input-wrapper .ae-search-container {
   overflow-y: auto;
 }
 
-.suggestion, .suggestion-add-new {
+.suggestion,
+.suggestion-add-new {
   padding: 6px 10px;
   cursor: pointer;
 }
 
-.suggestion:hover, .suggestion-add-new:hover {
+.suggestion:hover,
+.suggestion-add-new:hover {
   background-color: #f0f0f0;
 }
 
@@ -2679,7 +2690,8 @@ li a {
 .dropdown-item.active,
 .dropdown-item.active a {
   color: white !important;
-  background: #b4ae9d8a; /* light background */
+  background: #b4ae9d8a;
+  /* light background */
   /* color: #0d6efd !important;  */
   font-weight: 600;
   border-radius: 6px;

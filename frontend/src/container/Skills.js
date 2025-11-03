@@ -110,14 +110,14 @@ const Skills = () => {
             className="btn p-0 border-0 bg-transparent text-primary"
             onClick={() => handleEditClick(row)}
           >
-            <i className="bi bi-pencil"></i>
+            <i className="bi bi-pencil" style={{ fontSize: "22px" }}></i>
           </button>
           <button
             type="button"
             className="btn p-0 border-0 bg-transparent text-danger"
             onClick={() => handleDelete(row.skill_id)}
           >
-            <i className="bi bi-trash"></i>
+            <i className="bi bi-trash" style={{ fontSize: "22px" }}></i>
           </button>
         </div>
       ),
@@ -177,10 +177,10 @@ const Skills = () => {
               />
             </Modal.Body>
             <Modal.Footer>
-              <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+              <button type="button" className="btn a-btn-primary" onClick={handleCloseModal}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn a-btn-primary">
                 Update Skill
               </button>
             </Modal.Footer>

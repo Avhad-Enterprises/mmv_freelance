@@ -190,6 +190,15 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
             </li>
 
             <li className="nav-item">
+              <div className={`nav-link d-flex align-items-center ${location.pathname.includes("/blog") ? "active" : ""}`}>
+                <Link to="/blog" className="d-flex align-items-center">
+                  <i className="bi bi-question-circle"></i>
+                  <div className="LeftMenuHead ml-2">Blog</div>
+                </Link>
+              </div>
+            </li>
+
+            <li className="nav-item">
               <div
                 className={`nav-link d-flex align-items-center ${location.pathname.includes("/cms") ? "active" : ""
                   }`}

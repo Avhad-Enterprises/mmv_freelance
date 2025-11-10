@@ -200,9 +200,9 @@ const GridCard = ({ rowData, columns, countryFlags }) => {
             </p>
           </div>
         ))}
-        <div className="btn-sack-top">
+        {/* <div className="btn-sack-top">
           <span></span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

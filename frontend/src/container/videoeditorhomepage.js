@@ -31,9 +31,9 @@ const VideoEditors = () => {
 
         const data = Array.isArray(response.data?.data)
           ? response.data.data.map((editor) => ({
-              ...editor,
-              full_name: `${editor.first_name || ""} ${editor.last_name || ""}`.trim(),
-            }))
+            ...editor,
+            full_name: `${editor.first_name || ""} ${editor.last_name || ""}`.trim(),
+          }))
           : [];
 
         console.log("Parsed Editor Data:", data);
@@ -67,8 +67,9 @@ const VideoEditors = () => {
     },
     {
       headname: "Projects Done",
-      dbcol: "projects_done",
+      dbcol: "projects_completed",
       type: "",
+      render: (row) => row.projects_done || "-",
     },
     {
       headname: "Status",

@@ -32,9 +32,9 @@ const VideoGraphers = () => {
 
         const data = Array.isArray(response.data?.data)
           ? response.data.data.map((grapher) => ({
-              ...grapher,
-              full_name: `${grapher.first_name || ""} ${grapher.last_name || ""}`.trim(),
-            }))
+            ...grapher,
+            full_name: `${grapher.first_name || ""} ${grapher.last_name || ""}`.trim(),
+          }))
           : [];
 
         console.log("Parsed Videographer Data:", data);
@@ -70,6 +70,7 @@ const VideoGraphers = () => {
       headname: "Projects Done",
       dbcol: "projects_done",
       type: "",
+      render: (row) => row.projects_done || "-",
     },
     {
       headname: "Status",

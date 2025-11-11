@@ -44,7 +44,7 @@ const EditProject = () => {
     sample_project_file: [],
     project_files: [],
     show_all_files: false,
-    is_active: "0",
+    is_active: true,
     created_by: null,
     updated_by: null,
     is_deleted: false,
@@ -106,8 +106,9 @@ const EditProject = () => {
             const response = await makeGetRequest("clients/getallclient", {});
             const fetchedClients = response.data?.data || [];
             const clientOptions = fetchedClients.map((client) => ({
-              value: client.user_id,
+              value: client.client_id || client.user_id,
               label: client.name || `${client.first_name || ""} ${client.last_name || ""}`.trim(),
+
             }));
             setClients(clientOptions);
           } catch (error) {
@@ -803,9 +804,8 @@ const EditProject = () => {
   };
 
   const activeOptions = [
-    { value: "0", label: "Inactive" },
-    { value: "1", label: "Active" },
-    { value: "2", label: "Archived" },
+    { value: "false", label: "Inactive" },
+    { value: "true", label: "Active" },
   ];
 
   const audioVoiceoverOptions = [
@@ -861,16 +861,13 @@ const EditProject = () => {
               <div className="form_section">
                 <h6 className="card-title">Project Details</h6>
                 <SelectComponent
-                  label="Client Name"
+                  label="Client"
                   name="client_id"
-                  options={clients}
                   value={formData.client_id}
-                  onChange={() => { }}
-                  readOnly
-                  placeholder="Select a client"
-                  required
-                  disabled={!canEdit}
+                  options={clients}
+                  onChange={(selected) => handleInputChange("client_id", selected.value)}
                 />
+
                 <TextInput
                   label="Project Title"
                   name="project_title"
@@ -997,7 +994,7 @@ const EditProject = () => {
                   name="is_active"
                   placeholder="Select status"
                   options={activeOptions}
-                  value={formData.is_active || "0"}
+                  value={formData.is_active || ""}
                   onChange={(value) => handleInputChange("is_active", value)}
                   required
                   disabled={!canEdit}
@@ -1028,7 +1025,7 @@ const EditProject = () => {
                   disabled={!canEdit}
                 />
                 <DateInput
-                  label="deadline"
+                  label="Deadline"
                   name="deadline"
                   type="future"
                   value={formData.deadline}

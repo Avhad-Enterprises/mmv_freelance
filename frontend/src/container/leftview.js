@@ -200,25 +200,25 @@ const LeftSidebar = ({ isVisible, toggleSidebar }) => {
 
             <li className="nav-item">
               <div
-                className={`nav-link d-flex align-items-center ${location.pathname.includes("/cms") ? "active" : ""
+                className={`nav-link d-flex justify-content-between align-items-center ${openDropdowns["cms"] ? "active" : ""
                   }`}
+                onClick={() => handleDropdown("cms")}
+                style={{ cursor: "pointer" }}
               >
-                <Link to="/cms" className="d-flex align-items-center">
-                  <i className="bi bi-gear"></i>
+                <span className="d-flex align-items-center">
+                  <i className="bi bi-shop" /> {/* or bi-cart3 / bi-bag-check for icon */}
                   <div className="LeftMenuHead ml-2">CMS</div>
-                </Link>
+                </span>
                 <i
-                  className="bi bi-chevron-down"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#cmsSubmenu"
-                  style={{ cursor: "pointer" }}
-                ></i>
+                  className={`bi ${openDropdowns["cms"] ? "bi-chevron-down" : "bi-chevron-right"
+                    }`}
+                />
               </div>
-              <ul className="submenu collapse" id="cmsSubmenu">
+
+              <ul className={`submenu collapse ${openDropdowns["cms"] ? "show" : ""}`}>
                 <li>
                   <Link
-                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/cmshome" ? "active" : ""
-                      }`}
+                    className={`dropdown-item d-flex align-items-center ${location.pathname === "/cmshome" ? "active" : ""}`}
                     to="/cmshome"
                   >
                     <i className="bi bi-dash"></i>

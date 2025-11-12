@@ -184,7 +184,7 @@ const CreateClient = () => {
       fd.append("privacy_policy_accepted", formData.privacy_policy_accepted);
 
       // ✅ Send request
-      const response = await fetch("http://localhost:8000/api/v1/auth/register/client", {
+      const response = await fetch("https://api.makemyvid.io/api/v1/auth/register/client", {
         method: "POST",
         body: fd,
       });

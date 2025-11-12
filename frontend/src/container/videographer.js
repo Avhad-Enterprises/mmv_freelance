@@ -259,7 +259,7 @@ const CreateEditor = () => {
 
             // Send request
             const response = await fetch(
-                "http://localhost:8000/api/v1/auth/register/videographer",
+                "https://api.makemyvid.io/api/v1/auth/register/videographer",
                 {
                     method: "POST",
                     body: fd, // FormData

@@ -24,7 +24,7 @@ const LoginPage = () => {
     try {
       const response = await axios.post(
         // "http://13.235.113.131:8000/api/v1/users/login",
-        "http://localhost:8000/api/v1/auth/login",
+        "https://api.makemyvid.io/api/v1/auth/login",
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );

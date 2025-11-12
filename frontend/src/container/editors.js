@@ -85,6 +85,7 @@ const Editors = () => {
       headname: "Projects Handled",
       dbcol: "task_count", // Updated to match a likely field name
       type: "",
+      render: (row) => row.task_count ?? 0,
     },
     {
       headname: "Role",

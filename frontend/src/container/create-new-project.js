@@ -36,7 +36,7 @@ const CreateProject = () => {
     audio_voiceover: "No",
     video_length: null,
     preferred_video_style: "",
-    is_active: 0,
+    is_active: true,
     created_by: null,
     updated_by: null,
     is_deleted: false,
@@ -136,10 +136,10 @@ const CreateProject = () => {
   }, []);
 
   const activeOptions = [
-    { value: 0, label: "Inactive" },
-    { value: 1, label: "Active" },
-    { value: 2, label: "Archived" },
+    { value: true, label: "Active" },
+    { value: false, label: "Inactive" },
   ];
+
 
   const audioVoiceoverOptions = [
     { value: "Yes", label: "Yes" },
@@ -235,7 +235,7 @@ const CreateProject = () => {
       audio_description: "",
       video_length: null,
       preferred_video_style: "",
-      is_active: 0,
+      is_active: true,
       created_by: user?.user_id || null,
       updated_by: null,
       is_deleted: false,
@@ -318,7 +318,7 @@ const CreateProject = () => {
       audio_description: formData.audio_description,
       video_length: formData.video_length,
       preferred_video_style: formData.preferred_video_style,
-      is_active: formData.is_active,
+      is_active: formData.is_active ? 1 : 0,
       created_by: formData.created_by,
       created_at: new Date().toISOString(),
       updated_by: formData.updated_by,
@@ -473,6 +473,7 @@ const CreateProject = () => {
                 onChange={(value) => handleInputChange("is_active", value)}
                 required
               />
+
               <TagInput
                 availableTags={availableTags}
                 initialTags={selectedTags}
@@ -496,7 +497,7 @@ const CreateProject = () => {
                 onChange={handleInputChange}
               />
               <DateInput
-                label="deadline"
+                label="Deadline"
                 name="deadline"
                 type="future"
                 includeTime={false}

@@ -106,10 +106,7 @@ const Projects = () => {
     {
       headname: "Application",
       dbcol: "count",
-      type: "link",
-      linkTemplate: "/projectmanagement/:projects_task_id",
-      linkLabelFromRow: "count",
-      linkParamKey: "projects_task_id",
+      type: "",
     },
     {
       headname: "Status",
@@ -154,7 +151,7 @@ const Projects = () => {
               operation="count"
               column="is_active"
               jsonData={projectData}
-              customFilter={(item) => item.is_active === 1}
+              customFilter={(item) => item.is_active === true}
               icon={calender}
               tooltipText="This shows the count of live blogs"
             />

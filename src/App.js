@@ -28,6 +28,7 @@ import AddNewEditor from "./container/add-new-editor";
 import SendInvitation from "./container/SendInvitation";
 import Settings from "./container/Settings";
 import AddNewAdmin from "./container/new-admin-register";
+import Register from "./container/register";
 import VideoEditors from "./container/video-editors";
 import VideoGrapher from "./container/videographer";
 import VideoEditorHomePage from "./container/videoeditorhomepage";
@@ -52,10 +53,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route
-          path="/register"
-          element={<AddNewAdmin />}
+          path="/admin/register"
+          element={
+            <ProtectedRoute>
+              <AddNewAdmin />
+            </ProtectedRoute>
+          }
         />
 
         <Route

@@ -11,10 +11,7 @@ import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import DataTable from "../components/DataTable";
 
 const Profile = () => {
-  const [inviteLastName, setInviteLastName] = useState("");
-  const [inviteFirstName, setInviteFirstName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteTitle, setInviteTitle] = useState("");
   const [inviteError, setInviteError] = useState("");
   const [invitesData, setinvitesData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -297,19 +294,18 @@ const Profile = () => {
   }, []);
 
   const invitationcolumns = [
-    { headname: "First Name", dbcol: "first_name" },
-    { headname: "Last Name", dbcol: "last_name" },
-    { headname: "Role", dbcol: "assigned_role" },
     { headname: "Email", dbcol: "email" },
-    { headname: "Expiry", dbcol: "expires_at", type: "datetime" },
     { headname: "Status", dbcol: "status" },
+    { headname: "Invited By", dbcol: "invited_by" },
+    { headname: "Expiry", dbcol: "expires_at", type: "datetime" },
+    { headname: "Created", dbcol: "created_at", type: "datetime" },
   ];
 
   const handleInviteSend = async () => {
     setInviteError("");
 
-    if (!inviteFirstName || !inviteLastName || !inviteEmail || !inviteTitle) {
-      setInviteError("Please fill in all fields.");
+    if (!inviteEmail) {
+      setInviteError("Please enter an email address.");
       return;
     }
 
@@ -320,24 +316,21 @@ const Profile = () => {
 
     try {
       const res = await makePostRequest("admin/invites", {
-        first_name: inviteFirstName,
-        last_name: inviteLastName,
         email: inviteEmail,
-        assigned_role: inviteTitle,
       });
 
-      if (res.data.success) {
-        showSuccessToast("✅ Invitation sent!");
-        setInviteFirstName("");
-        setInviteLastName("");
-        setInviteEmail("");
-        // setInviteDept("");
-        setInviteTitle("");
-      } else {
-        setInviteError("Failed to send invite.");
-      }
+      showSuccessToast(res.data?.message || "✅ Invitation sent!");
+      setInviteEmail("");
+      
+      // Refresh invitations list
+      const response = await makeGetRequest("admin/invites");
+      setinvitesData(
+        Array.isArray(response.data) ? response.data : []
+      );
     } catch (err) {
-      setInviteError("Something went wrong. Please try again.");
+      const errorMsg = err.response?.data?.message || "Something went wrong. Please try again.";
+      setInviteError(errorMsg);
+      showErrorToast(errorMsg);
     }
   };
 
@@ -511,31 +504,12 @@ const Profile = () => {
             </div>
 
             <div className="form_section mb-4">
+              <p className="text-muted small mb-3">
+                Enter the email address to invite a new admin. They will receive 
+                an email with a registration link to complete their profile.
+              </p>
               <div className="row">
-                <div className="col-md-6 mb-3">
-                  <label htmlFor="inviteFirstName" className="form-label">First Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inviteFirstName"
-                    value={inviteFirstName}
-                    onChange={(e) => setInviteFirstName(e.target.value)}
-                    placeholder="Enter first name"
-                  />
-                </div>
-                <div className="col-md-6 mb-3">
-                  <label htmlFor="inviteLastName" className="form-label">Last Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="inviteLastName"
-                    value={inviteLastName}
-                    onChange={(e) => setInviteLastName(e.target.value)}
-                    placeholder="Enter last name"
-                  />
-                </div>
-
-                <div className="col-md-6 mb-3">
+                <div className="col-md-8 mb-3">
                   <label htmlFor="inviteEmail" className="form-label">Email Address</label>
                   <input
                     type="email"
@@ -543,55 +517,15 @@ const Profile = () => {
                     id="inviteEmail"
                     value={inviteEmail}
                     onChange={(e) => setInviteEmail(e.target.value)}
-                    placeholder="Enter email to invite"
+                    placeholder="newadmin@example.com"
                   />
                   {inviteError && <div className="text-danger mt-1">{inviteError}</div>}
                 </div>
 
-                {/* <div className="col-md-6 mb-3">
-                  <label htmlFor="inviteDept" className="form-label">Department</label>
-                  <select
-                    className="form-select"
-                    id="inviteDept"
-                    value={inviteDept}
-                    onChange={(e) => setInviteDept(e.target.value)}
-                  >
-                    <option value="">Select Department</option>
-                    {[
-                      "Engineering",
-                      "Product",
-                      "Design",
-                      "Marketing",
-                      "Sales",
-                      "Customer Support",
-                      "Finance",
-                      "Human Resources",
-                      "Legal",
-                      "Operations"
-                    ].map((dept) => (
-                      <option key={dept} value={dept}>{dept}</option>
-                    ))}
-                  </select>
-                </div> */}
-
-                <div className="col-md-6 mb-3">
-                  <label htmlFor="inviteTitle" className="form-label">Assigned Role</label>
-                  <select
-                    className="form-select"
-                    id="inviteTitle"
-                    value={inviteTitle}
-                    onChange={(e) => setInviteTitle(e.target.value)}
-                  >
-                    <option value="">Select Role</option>
-                    <option value="CLIENT">Client</option>
-                    <option value="VIDEOGRAPHER">Videographer</option>
-                    <option value="VIDEO_EDITOR">Video Editor</option>
-                    <option value="ADMIN">Admin</option>
-                  </select>
-                </div>
-
-                <div className="col-12 d-flex justify-content-end">
-                  <button className="btn a-btn-primary" onClick={handleInviteSend}>Send Invite</button>
+                <div className="col-md-4 d-flex align-items-end mb-3">
+                  <button className="btn a-btn-primary w-100" onClick={handleInviteSend}>
+                    Send Invitation
+                  </button>
                 </div>
               </div>
             </div>

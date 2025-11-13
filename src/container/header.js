@@ -257,7 +257,7 @@ const Header = ({ toggleSidebar }) => {
               >
                 <button
                   className="dropdown-item"
-                  onClick={() => navigate("/register")}
+                  onClick={() => navigate("/admin/register")}
                 >
                   New Registration
                 </button>

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import { showSuccessToast } from "../utils/toastUtils";
+import { showSuccessToast, showErrorToast } from "../utils/toastUtils";
 import "../login-page.css";
 
 const LoginPage = () => {
@@ -9,6 +9,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get('token');
+
+  useEffect(() => {
+    if (token) {
+      navigate(`/register?token=${token}`);
+    }
+  }, [token, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -53,31 +61,74 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h3 className="login-title">Login</h3>
-        {errorMessage && <div className="error">{errorMessage}</div>}
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h2 className="auth-title">Welcome Back</h2>
+          <p className="auth-subtitle">Sign in to your account</p>
+        </div>
+        
+        {errorMessage && (
+          <div className="alert alert-danger" role="alert">
+            <i className="bi bi-exclamation-circle me-2"></i>
+            {errorMessage}
+          </div>
+        )}
+        
         <form onSubmit={handleLogin}>
-          <div className="input-group">
-            <label>Email address</label>
+          <div className="form-group">
+            <label className="form-label">
+              <i className="bi bi-envelope me-2"></i>
+              Email address
+            </label>
             <input
               type="email"
+              className="form-control"
+              placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
-          <div className="input-group">
-            <label>Password</label>
+          
+          <div className="form-group">
+            <label className="form-label">
+              <i className="bi bi-lock me-2"></i>
+              Password
+            </label>
             <input
               type="password"
+              className="form-control"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
-          <button type="submit" className="login-button">
-            Login
+          
+          <button type="submit" className="btn-primary w-100">
+            <i className="bi bi-box-arrow-in-right me-2"></i>
+            Sign In
           </button>
         </form>
+        
+        <div className="auth-footer">
+          <p>Don't have an account? 
+            <button 
+              className="link-button" 
+              onClick={() => navigate("/register")}
+            >
+              Register here
+            </button>
+          </p>
+          <button 
+            className="link-button" 
+            onClick={() => navigate("/")}
+          >
+            <i className="bi bi-arrow-left me-1"></i>
+            Back to Home
+          </button>
+        </div>
       </div>
     </div>
   );
